@@ -1,6 +1,3 @@
-library("data.table")
-library("Rcpp")
-
 #' Sample reader
 #'
 #' Reads scWGBS data from a sample bed file and generates a data.table
@@ -8,8 +5,7 @@ library("Rcpp")
 #' @param merged Whether the bed file has CGs merged or unmerged
 #' @return The sample as a data.table
 #'
-#' @import data.table
-#' @import Rcpp
+#' @importFrom data.table fread
 #' @export
 #'
 #' @examples
@@ -20,7 +16,7 @@ read_sample <- function(sample_name, merged) {
     sample_data <- fread(sample_name, col.names = sample_col_names, drop = 6),
     sample_data <- fread(sample_name, col.names = sample_col_names)
   )
-  message("Found", nrow(sample_data), "methylation loci\n")
+  message("Found ", nrow(sample_data), " methylation loci\n")
   sample_data[, encoded := mapply(encoder, beta, cov)][]
 }
 
@@ -36,8 +32,7 @@ read_sample <- function(sample_name, merged) {
 #' @param cpg_bed_file The gzipped bed file with CpG loci. This is used to make the matrix index
 #' @param merged Whether the bed files have CPs merged or unmerged
 #'
-#' @import data.table
-#' @import Rcpp
+#' @importFrom data.table fread
 #' @export
 #'
 #' @examples

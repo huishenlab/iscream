@@ -2,22 +2,22 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 encode_meth <- function(meth, unmeth) {
-    .Call(`_scrcpp_encode_meth`, meth, unmeth)
+    .Call('_scrcpp_encode_meth', PACKAGE = 'scrcpp', meth, unmeth)
 }
 
 decode_meth <- function(encoded) {
-    .Call(`_scrcpp_decode_meth`, encoded)
+    .Call('_scrcpp_decode_meth', PACKAGE = 'scrcpp', encoded)
 }
 
 decode_unmeth <- function(encoded) {
-    .Call(`_scrcpp_decode_unmeth`, encoded)
+    .Call('_scrcpp_decode_unmeth', PACKAGE = 'scrcpp', encoded)
 }
 
 encoder <- function(beta, cov) {
-    .Call(`_scrcpp_encoder`, beta, cov)
+    .Call('_scrcpp_encoder', PACKAGE = 'scrcpp', beta, cov)
 }
 
 decode_beta <- function(beta_col) {
-    .Call(`_scrcpp_decode_beta`, beta_col)
+    .Call('_scrcpp_decode_beta', PACKAGE = 'scrcpp', beta_col)
 }
 

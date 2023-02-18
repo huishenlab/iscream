@@ -3,6 +3,7 @@ pileup
 src/*.o
 src/*.so
 src/_*
+R/_*
 
 .ccls
 .ccls/*
