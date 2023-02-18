@@ -1,0 +1,12 @@
+data
+pileup
+src/*.o
+src/*.so
+src/_*
+
+.ccls
+.ccls/*
+.ccls-cache/*
+.direnv/*
+.envrc
+default.nix
