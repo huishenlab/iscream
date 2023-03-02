@@ -1,13 +1,18 @@
 Package: scrcpp
-Type: Package
-Title: Read and Analyze scWGBS Data
-Version: 1.0
-Date: 2023-02-18
-Author: James Eapen
-Maintainer: James Eapen <james.eapen@vai.org>
-Description: Reads scWGBS data in the form of bed files created by BISCUIT 
-    (https://github.com/huishenlab/BISCUIT) and provides analysis functions.
-License: GPL (>= 2)
-Imports: Rcpp (>= 1.0.10)
-LinkingTo: Rcpp
+Title: Methylation bed file reader and analyzer
+Version: 0.0.0.9000
+Authors@R: person("James", "Eapen",
+    email = "james.eapen@vai.org",
+    role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0001-6016-3598"))
+Description: This package aims to read bed files containing methylation data 
+            fast and using memory efficiently. It can be used with both bulk 
+            and scWGBS data.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+LinkingTo:
+    Rcpp
+Imports:
+    Rcpp
