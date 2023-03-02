@@ -44,15 +44,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// encoder
-int encoder(float beta, uint32_t cov);
-RcppExport SEXP _scrcpp_encoder(SEXP betaSEXP, SEXP covSEXP) {
+// vencoder
+IntegerVector vencoder(NumericVector beta_col, IntegerVector cov_col);
+RcppExport SEXP _scrcpp_vencoder(SEXP beta_colSEXP, SEXP cov_colSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< float >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< uint32_t >::type cov(covSEXP);
-    rcpp_result_gen = Rcpp::wrap(encoder(beta, cov));
+    Rcpp::traits::input_parameter< NumericVector >::type beta_col(beta_colSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type cov_col(cov_colSEXP);
+    rcpp_result_gen = Rcpp::wrap(vencoder(beta_col, cov_col));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -72,7 +72,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_scrcpp_encode_meth", (DL_FUNC) &_scrcpp_encode_meth, 2},
     {"_scrcpp_decode_meth", (DL_FUNC) &_scrcpp_decode_meth, 1},
     {"_scrcpp_decode_unmeth", (DL_FUNC) &_scrcpp_decode_unmeth, 1},
-    {"_scrcpp_encoder", (DL_FUNC) &_scrcpp_encoder, 2},
+    {"_scrcpp_vencoder", (DL_FUNC) &_scrcpp_vencoder, 2},
     {"_scrcpp_decode_beta", (DL_FUNC) &_scrcpp_decode_beta, 1},
     {NULL, NULL, 0}
 };
