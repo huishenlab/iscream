@@ -6,6 +6,8 @@
 #' @return The sample as a data.table
 #'
 #' @importFrom data.table fread
+#' @importFrom data.table :=
+#' @importFrom data.table .SD
 #' @export
 #'
 #' @examples
@@ -17,9 +19,21 @@ read_sample <- function(sample_name, merged) {
     sample_data <- fread(sample_name, col.names = sample_col_names)
   )
   message("Found ", nrow(sample_data), " methylation loci\n")
-  sample_data[, encoded := mapply(encoder, beta, cov)][]
+  vencoder_cols <- c("beta", "cov")
+  sample_data[, encoded := do.call(vencoder, setNames(.SD, names(vencoder_cols))),
+  .SDcols = vencoder_cols][]
 }
 
+#' Cpg and sample joiner
+#'
+#' Takes a sample data.table and joins it to the CpG index table on the
+#' chromosome and start columns
+#' @param cpg_table The table with CpG loci and any existing samples
+#' @param sample_dt The sample data table from read_sample
+#' @return The cpg_table with the sample_table tacked on
+#'
+#' @importFrom data.table :=
+#'
 .joiner <- function(cpg_table, sample_dt, sample_name) {
   cpg_table[sample_dt, on = .(chr, start), paste0(sample_name) := i.encoded][]
 }
@@ -33,6 +47,7 @@ read_sample <- function(sample_name, merged) {
 #' @param merged Whether the bed files have CPs merged or unmerged
 #'
 #' @importFrom data.table fread
+#' @importFrom data.table .SD
 #' @export
 #'
 #' @examples
@@ -54,4 +69,18 @@ make_meth_mat <- function(
   }, seq_along(sample_list)
   )
   cpgs
+}
+
+#' Beta-value matrix
+#'
+#' Make a beta matrix with methylation matrix
+#' @param encoded_matrix A matrix CpG loci and samples with encoded beta values
+#' @export
+#'
+#' @examples
+#' sample_matrix <- make_meth_mat(sample_list, "./pileup", "./data/cpgs.bed.gz")
+#' beta_mat <- make_beta_mat(sample_matrix)
+make_beta_mat <- function(encoded_matrix) {
+  encoded_matrix[complete.cases(encoded_matrix)][
+  , lapply(.SD, decode_beta), .SDcols = 4:ncol(encoded_matrix)][]
 }
