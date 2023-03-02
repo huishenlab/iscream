@@ -1,4 +1,5 @@
 data
+testdata/*
 pileup
 src/*.o
 src/*.so
@@ -9,5 +10,4 @@ R/_*
 .ccls/*
 .ccls-cache/*
 .direnv/*
-.envrc
-default.nix
+_test*
