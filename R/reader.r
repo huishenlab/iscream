@@ -59,7 +59,7 @@ make_meth_mat <- function(
   cpg_bed_file,
   merged = FALSE
 ) {
-  cpgs <- fread(cpg_bed_file, col.names = c("chr", "start", "end"))
+  cpgs <- fread(cpg_bed_file, col.names = c("chr", "start"), drop = 3)
   mapply(function(i) {
     sample_data <- read_sample(
       paste0(sample_path, sample_list[i], ".bed.gz"),
