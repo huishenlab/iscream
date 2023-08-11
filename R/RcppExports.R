@@ -7,7 +7,22 @@ vencoder <- function(beta_col, cov_col) {
 }
 
 #' @export
-decode_beta <- function(beta_col) {
-    .Call(`_scrcpp_decode_beta`, beta_col)
+decode_beta <- function(encoded) {
+    .Call(`_scrcpp_decode_beta`, encoded)
+}
+
+#' @export
+decode_cov <- function(encoded) {
+    .Call(`_scrcpp_decode_cov`, encoded)
+}
+
+#' Vector Decoder
+#' This function unpacks the encoded \eqn{\beta} and coverage values from the
+#' encoded column of a methylation matrix.
+#' @param encoded An encoded sample column from a data.table methylation matrix of CpG loci by samples
+#' @param measure The required decoded value: 1 for beta, 2 for coverage and 3 for M
+#' @export
+vdecoder <- function(encoded, measure) {
+    .Call(`_scrcpp_vdecoder`, encoded, measure)
 }
 
