@@ -55,12 +55,21 @@ make_m_mat <- function(encoded_matrix) {
 #'
 #' @export
 #'
-decoder <- function(encoded_matrix, measure) {
+decoder <- function(encoded_matrix, measure, sparse = TRUE) {
 
   stopifnot(
     "Unknown measure: Enter a measure of 1 for beta, 2 for coverage, and 3 for M value" = measure %in% 1:3
   )
 
-  beta_mat <- copy(encoded_matrix)
-  beta_mat[, lapply(.SD, vdecoder, measure), .SDcols = 3:ncol(encoded_matrix)][]
+  if (sparse) {
+    measures <- c(
+      "1" = "beta",
+      "2" = "coverage",
+      "3" = "M"
+    )
+    encoded_matrix[, c(1, 2, 3)][, paste(measures[measure]) := vdecoder(encoded, measure)][, 3][]
+  } else {
+    beta_mat <- copy(encoded_matrix)
+    beta_mat[, lapply(.SD, vdecoder, measure), .SDcols = 3:ncol(encoded_matrix)][]
+  }
 }

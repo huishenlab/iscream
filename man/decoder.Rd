@@ -4,7 +4,7 @@
 \alias{decoder}
 \title{Get decoded values}
 \usage{
-decoder(encoded_matrix, measure)
+decoder(encoded_matrix, measure, sparse = TRUE)
 }
 \arguments{
 \item{encoded_matrix}{A matrix CpG loci and samples with encoded beta values}
