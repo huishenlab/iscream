@@ -4,7 +4,13 @@
 \alias{make_meth_mat}
 \title{Methylation matrix}
 \usage{
-make_meth_mat(sample_list, sample_path, cpg_bed_file, merged = FALSE)
+make_meth_mat(
+  sample_list,
+  sample_path,
+  cpg_bed_file,
+  file_ext = ".bed.gz",
+  merged = FALSE
+)
 }
 \arguments{
 \item{sample_list}{A list of sample names for the bed files}

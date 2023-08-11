@@ -4,7 +4,7 @@
 \alias{make_sparse_mat}
 \title{Sparse Methylation matrix}
 \usage{
-make_sparse_mat(cpg_bed_file, sample_list, sample_path)
+make_sparse_mat(cpg_bed_file, sample_list, sample_path, file_ext = ".bed.gz")
 }
 \arguments{
 \item{cpg_bed_file}{The gzipped bed file with CpG loci. This is used to make the matrix index}

@@ -57,12 +57,13 @@ make_meth_mat <- function(
   sample_list,
   sample_path,
   cpg_bed_file,
+  file_ext = ".bed.gz",
   merged = FALSE
 ) {
   cpgs <- fread(cpg_bed_file, col.names = c("chr", "start"), drop = 3)
   mapply(function(i) {
     sample_data <- read_sample(
-      paste0(sample_path, sample_list[i], ".bed.gz"),
+      paste0(sample_path, sample_list[i], file_ext),
       merged
     )
     .joiner(cpgs, sample_data, sample_list[i])
@@ -103,13 +104,13 @@ make_cpg_index <- function(cpg_bed_file) {
 #' @examples
 #' sample_list <- c("sample1", "sample2", "sample3")
 #' sample_matrix <- make_meth_mat(sample_list, "./pileup", "./data/cpgs.bed.gz")
-make_sparse_mat <- function(cpg_bed_file, sample_list, sample_path) {
+make_sparse_mat <- function(cpg_bed_file, sample_list, sample_path, file_ext = ".bed.gz") {
 
   cpg_index <- make_cpg_index(cpg_bed_file)
 
   meth_mat_list <- vector("list", length(sample_list))
   mapply(function(i) {
-      meth_mat_list[[i]] <<- read_sample(paste0(sample_path, sample_list[i], ".bed.gz"), TRUE)[
+      meth_mat_list[[i]] <<- read_sample(paste0(sample_path, sample_list[i], file_ext), TRUE)[
         cpg_index, on = .(chr, start), .(cpg_id, encoded), nomatch = 0L
       ][, "sample_id" := i]
     }, seq_along(sample_list))
