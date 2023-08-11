@@ -1,6 +1,4 @@
-data
-testdata/*
-pileup
+# dev
 src/*.o
 src/*.so
 src/_*
@@ -9,5 +7,13 @@ R/_*
 .ccls
 .ccls/*
 .ccls-cache/*
-.direnv/*
-_test*
+
+# test data
+data
+pileup
+testdata/*
+
+# R files
+ _test*
+_libs/*
+.Rhistory
