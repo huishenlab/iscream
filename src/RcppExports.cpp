@@ -10,18 +10,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// vencoder
-IntegerVector vencoder(NumericVector beta_col, IntegerVector cov_col);
-RcppExport SEXP _scrcpp_vencoder(SEXP beta_colSEXP, SEXP cov_colSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type beta_col(beta_colSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type cov_col(cov_colSEXP);
-    rcpp_result_gen = Rcpp::wrap(vencoder(beta_col, cov_col));
-    return rcpp_result_gen;
-END_RCPP
-}
 // decode_beta
 inline int decode_beta(uint32_t encoded);
 RcppExport SEXP _scrcpp_decode_beta(SEXP encodedSEXP) {
@@ -68,13 +56,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// vencoder
+IntegerVector vencoder(NumericVector beta_col, IntegerVector cov_col);
+RcppExport SEXP _scrcpp_vencoder(SEXP beta_colSEXP, SEXP cov_colSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type beta_col(beta_colSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type cov_col(cov_colSEXP);
+    rcpp_result_gen = Rcpp::wrap(vencoder(beta_col, cov_col));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_scrcpp_vencoder", (DL_FUNC) &_scrcpp_vencoder, 2},
     {"_scrcpp_decode_beta", (DL_FUNC) &_scrcpp_decode_beta, 1},
     {"_scrcpp_decode_cov", (DL_FUNC) &_scrcpp_decode_cov, 1},
     {"_scrcpp_vdecoder", (DL_FUNC) &_scrcpp_vdecoder, 2},
     {"_scrcpp_vdouble_decoder", (DL_FUNC) &_scrcpp_vdouble_decoder, 2},
+    {"_scrcpp_vencoder", (DL_FUNC) &_scrcpp_vencoder, 2},
     {NULL, NULL, 0}
 };
 

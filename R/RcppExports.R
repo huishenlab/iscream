@@ -2,11 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @export
-vencoder <- function(beta_col, cov_col) {
-    .Call(`_scrcpp_vencoder`, beta_col, cov_col)
-}
-
-#' @export
 decode_beta <- function(encoded) {
     .Call(`_scrcpp_decode_beta`, encoded)
 }
@@ -34,5 +29,10 @@ vdecoder <- function(encoded, measure) {
 #' @export
 vdouble_decoder <- function(encoded, measure) {
     .Call(`_scrcpp_vdouble_decoder`, encoded, measure)
+}
+
+#' @export
+vencoder <- function(beta_col, cov_col) {
+    .Call(`_scrcpp_vencoder`, beta_col, cov_col)
 }
 
