@@ -8,6 +8,7 @@
 #' @importFrom data.table fread
 #' @importFrom data.table :=
 #' @importFrom data.table .SD
+#' @importFrom fs path
 #' @export
 #'
 #' @examples
@@ -63,7 +64,7 @@ make_meth_mat <- function(
   cpgs <- fread(cpg_bed_file, col.names = c("chr", "start"), drop = 3)
   mapply(function(i) {
     sample_data <- read_sample(
-      paste0(sample_path, sample_list[i], file_ext),
+      path(sample_path, paste0(sample_list[i], file_ext)),
       merged
     )
     .joiner(cpgs, sample_data, sample_list[i])
@@ -76,6 +77,7 @@ make_meth_mat <- function(
 #'
 #' Make a beta matrix with methylation matrix
 #' @param encoded_matrix A matrix CpG loci and samples with encoded beta values
+#' @importFrom fs path
 #' @export
 #'
 #' @examples
@@ -110,7 +112,7 @@ make_sparse_mat <- function(cpg_bed_file, sample_list, sample_path, file_ext = "
 
   meth_mat_list <- vector("list", length(sample_list))
   mapply(function(i) {
-      meth_mat_list[[i]] <<- read_sample(paste0(sample_path, sample_list[i], file_ext), TRUE)[
+      meth_mat_list[[i]] <<- read_sample(path(sample_path, paste0(sample_list[i], file_ext)), TRUE)[
         cpg_index, on = .(chr, start), .(cpg_id, encoded), nomatch = 0L
       ][, "sample_id" := i]
     }, seq_along(sample_list))
