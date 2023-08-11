@@ -27,7 +27,7 @@ mm_writer <- function(
 
   stopifnot("invalid MatrixMarket format: DT contains more than 3 columns" = ncol(DT) == 3)
 
-  fwrite(list("%%MatrixMarket matrix coordinate integer general"), filename, compress = "gzip")
+  fwrite(list("%%MatrixMarket matrix coordinate integer general"), file = filename, compress = "gzip")
   fwrite(
     list(row_count, col_count, entry_count),
     filename,

@@ -40,7 +40,12 @@ make_sparse_mat <- function(cpg_bed_file, sample_list, sample_path, to_mm = TRUE
     message("Writing sample_list")
     write(sample_list, "sample_list.txt")
     message("Writing methylation matrix")
-    mm_writer(result, length(cpg_index), length(sample_list), nrow(result))
+    mm_writer(
+      DT = result,
+      row_count = nrow(cpg_index),
+      col_count = length(sample_list),
+      filename = "result.mtx.gz"
+    )
     message("Done")
   } else {
     list(cpg_index = cpg_index, sample_index = sample_list, sparse_mat = result)
