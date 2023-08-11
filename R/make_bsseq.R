@@ -10,43 +10,35 @@
 #'
 make_bsseq_from_sparse <- function(sp, sample_list) {
 
-  C <- make_coverage_mat(sp$sparse_mat)
-  M <- make_m_mat(sp$sparse_mat)
-
+  message("Making Cov matrix")
   C <- DelayedArray::DelayedArray(
-    setnafill(
-      dcast(cbind(
-        sp$sparse_mat[, 1:2], M),
-        cpg_id ~ sample_id,
-        value.var = "encoded"
-      )[],
-      fill = 0L)
+    setnafill(dcast(
+      sp$sparse_mat[, c(1, 2, 3)],
+      cpg_id ~ sample_id,
+      value.var = "cov"), fill = 0L)
   )
+  gc()
 
-  gr <- GenomicRanges::GRanges(
-    sp$cpg_index[
-    list(cpg_id = C[, 1]),
-    on = "cpg_id", .(chr, start)
-    ][, end := start + 2][]
-  )
+  message("Making GRanges")
+  gr <- GRanges(sp$cpg_index[C[, 1]][, end := start + 2][, c(1, 2, 4)]); gc()
   C <- C[, -1]
+  gc()
 
+  message("Making M matrix")
   M <- DelayedArray::DelayedArray(
-    setnafill(
-      dcast(cbind(
-        sp$sparse_mat[, 1:2], M),
-        cpg_id ~ sample_id,
-        value.var = "encoded"
-      )[, cpg_id := NULL][],
-      fill = 0L
-    )
-  )
+    setnafill(dcast(
+      sp$sparse_mat[, c(1, 2, 4)],
+      cpg_id ~ sample_id, value.var = "M"),
+      fill = 0L)
+  )[, -1]
+  gc()
 
   rownames(C) <- NULL
   colnames(C) <- NULL
   rownames(M) <- NULL
   colnames(M) <- NULL
 
+  message("Making BSseq object")
   bsseq::BSseq(
     gr = gr,
     M = M,
