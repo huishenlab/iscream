@@ -3,12 +3,12 @@
 
 #' @export
 decode_beta <- function(encoded) {
-    .Call(`_scrcpp_decode_beta`, encoded)
+    .Call(`_iscream_decode_beta`, encoded)
 }
 
 #' @export
 decode_cov <- function(encoded) {
-    .Call(`_scrcpp_decode_cov`, encoded)
+    .Call(`_iscream_decode_cov`, encoded)
 }
 
 #' Vector Decoder
@@ -18,7 +18,7 @@ decode_cov <- function(encoded) {
 #' @param measure The required decoded value: 1 for beta, 2 for coverage and 3 for M
 #' @export
 vdecoder <- function(encoded, measure) {
-    .Call(`_scrcpp_vdecoder`, encoded, measure)
+    .Call(`_iscream_vdecoder`, encoded, measure)
 }
 
 #' Double Vector Decoder
@@ -28,11 +28,11 @@ vdecoder <- function(encoded, measure) {
 #' @param measure The required decoded value: 1 for beta, 2 for coverage and 3 for M
 #' @export
 vdouble_decoder <- function(encoded, measure) {
-    .Call(`_scrcpp_vdouble_decoder`, encoded, measure)
+    .Call(`_iscream_vdouble_decoder`, encoded, measure)
 }
 
 #' @export
 vencoder <- function(beta_col, cov_col) {
-    .Call(`_scrcpp_vencoder`, beta_col, cov_col)
+    .Call(`_iscream_vencoder`, beta_col, cov_col)
 }
 

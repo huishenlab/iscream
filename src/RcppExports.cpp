@@ -12,7 +12,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // decode_beta
 inline int decode_beta(uint32_t encoded);
-RcppExport SEXP _scrcpp_decode_beta(SEXP encodedSEXP) {
+RcppExport SEXP _iscream_decode_beta(SEXP encodedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,7 +23,7 @@ END_RCPP
 }
 // decode_cov
 inline int decode_cov(uint32_t encoded);
-RcppExport SEXP _scrcpp_decode_cov(SEXP encodedSEXP) {
+RcppExport SEXP _iscream_decode_cov(SEXP encodedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -34,7 +34,7 @@ END_RCPP
 }
 // vdecoder
 IntegerVector vdecoder(IntegerVector& encoded, int measure);
-RcppExport SEXP _scrcpp_vdecoder(SEXP encodedSEXP, SEXP measureSEXP) {
+RcppExport SEXP _iscream_vdecoder(SEXP encodedSEXP, SEXP measureSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -46,7 +46,7 @@ END_RCPP
 }
 // vdouble_decoder
 DoubleVector vdouble_decoder(DoubleVector& encoded, int measure);
-RcppExport SEXP _scrcpp_vdouble_decoder(SEXP encodedSEXP, SEXP measureSEXP) {
+RcppExport SEXP _iscream_vdouble_decoder(SEXP encodedSEXP, SEXP measureSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -58,7 +58,7 @@ END_RCPP
 }
 // vencoder
 IntegerVector vencoder(NumericVector beta_col, IntegerVector cov_col);
-RcppExport SEXP _scrcpp_vencoder(SEXP beta_colSEXP, SEXP cov_colSEXP) {
+RcppExport SEXP _iscream_vencoder(SEXP beta_colSEXP, SEXP cov_colSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -70,15 +70,15 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_scrcpp_decode_beta", (DL_FUNC) &_scrcpp_decode_beta, 1},
-    {"_scrcpp_decode_cov", (DL_FUNC) &_scrcpp_decode_cov, 1},
-    {"_scrcpp_vdecoder", (DL_FUNC) &_scrcpp_vdecoder, 2},
-    {"_scrcpp_vdouble_decoder", (DL_FUNC) &_scrcpp_vdouble_decoder, 2},
-    {"_scrcpp_vencoder", (DL_FUNC) &_scrcpp_vencoder, 2},
+    {"_iscream_decode_beta", (DL_FUNC) &_iscream_decode_beta, 1},
+    {"_iscream_decode_cov", (DL_FUNC) &_iscream_decode_cov, 1},
+    {"_iscream_vdecoder", (DL_FUNC) &_iscream_vdecoder, 2},
+    {"_iscream_vdouble_decoder", (DL_FUNC) &_iscream_vdouble_decoder, 2},
+    {"_iscream_vencoder", (DL_FUNC) &_iscream_vencoder, 2},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_scrcpp(DllInfo *dll) {
+RcppExport void R_init_iscream(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }
