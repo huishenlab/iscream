@@ -26,3 +26,13 @@ vdecoder <- function(encoded, measure) {
     .Call(`_scrcpp_vdecoder`, encoded, measure)
 }
 
+#' Double Vector Decoder
+#' This function unpacks the encoded \eqn{\beta} and coverage values from the
+#' encoded column of a methylation matrix.
+#' @param encoded An encoded sample column from a data.table methylation matrix of CpG loci by samples
+#' @param measure The required decoded value: 1 for beta, 2 for coverage and 3 for M
+#' @export
+vdouble_decoder <- function(encoded, measure) {
+    .Call(`_scrcpp_vdouble_decoder`, encoded, measure)
+}
+

@@ -56,12 +56,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// vdouble_decoder
+DoubleVector vdouble_decoder(DoubleVector& encoded, int measure);
+RcppExport SEXP _scrcpp_vdouble_decoder(SEXP encodedSEXP, SEXP measureSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< DoubleVector& >::type encoded(encodedSEXP);
+    Rcpp::traits::input_parameter< int >::type measure(measureSEXP);
+    rcpp_result_gen = Rcpp::wrap(vdouble_decoder(encoded, measure));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_scrcpp_vencoder", (DL_FUNC) &_scrcpp_vencoder, 2},
     {"_scrcpp_decode_beta", (DL_FUNC) &_scrcpp_decode_beta, 1},
     {"_scrcpp_decode_cov", (DL_FUNC) &_scrcpp_decode_cov, 1},
     {"_scrcpp_vdecoder", (DL_FUNC) &_scrcpp_vdecoder, 2},
+    {"_scrcpp_vdouble_decoder", (DL_FUNC) &_scrcpp_vdouble_decoder, 2},
     {NULL, NULL, 0}
 };
 
