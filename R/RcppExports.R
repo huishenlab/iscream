@@ -2,21 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @export
-encode_meth <- function(meth, unmeth) {
-    .Call(`_scrcpp_encode_meth`, meth, unmeth)
-}
-
-#' @export
-decode_meth <- function(encoded) {
-    .Call(`_scrcpp_decode_meth`, encoded)
-}
-
-#' @export
-decode_unmeth <- function(encoded) {
-    .Call(`_scrcpp_decode_unmeth`, encoded)
-}
-
-#' @export
 vencoder <- function(beta_col, cov_col) {
     .Call(`_scrcpp_vencoder`, beta_col, cov_col)
 }

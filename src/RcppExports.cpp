@@ -10,40 +10,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// encode_meth
-int encode_meth(uint32_t meth, uint32_t unmeth);
-RcppExport SEXP _scrcpp_encode_meth(SEXP methSEXP, SEXP unmethSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< uint32_t >::type meth(methSEXP);
-    Rcpp::traits::input_parameter< uint32_t >::type unmeth(unmethSEXP);
-    rcpp_result_gen = Rcpp::wrap(encode_meth(meth, unmeth));
-    return rcpp_result_gen;
-END_RCPP
-}
-// decode_meth
-int decode_meth(uint32_t encoded);
-RcppExport SEXP _scrcpp_decode_meth(SEXP encodedSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< uint32_t >::type encoded(encodedSEXP);
-    rcpp_result_gen = Rcpp::wrap(decode_meth(encoded));
-    return rcpp_result_gen;
-END_RCPP
-}
-// decode_unmeth
-int decode_unmeth(uint32_t encoded);
-RcppExport SEXP _scrcpp_decode_unmeth(SEXP encodedSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< uint32_t >::type encoded(encodedSEXP);
-    rcpp_result_gen = Rcpp::wrap(decode_unmeth(encoded));
-    return rcpp_result_gen;
-END_RCPP
-}
 // vencoder
 IntegerVector vencoder(NumericVector beta_col, IntegerVector cov_col);
 RcppExport SEXP _scrcpp_vencoder(SEXP beta_colSEXP, SEXP cov_colSEXP) {
@@ -69,9 +35,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_scrcpp_encode_meth", (DL_FUNC) &_scrcpp_encode_meth, 2},
-    {"_scrcpp_decode_meth", (DL_FUNC) &_scrcpp_decode_meth, 1},
-    {"_scrcpp_decode_unmeth", (DL_FUNC) &_scrcpp_decode_unmeth, 1},
     {"_scrcpp_vencoder", (DL_FUNC) &_scrcpp_vencoder, 2},
     {"_scrcpp_decode_beta", (DL_FUNC) &_scrcpp_decode_beta, 1},
     {NULL, NULL, 0}
