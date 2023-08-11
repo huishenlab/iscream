@@ -4,7 +4,13 @@
 \alias{make_sparse_mat}
 \title{Sparse Methylation matrix}
 \usage{
-make_sparse_mat(cpg_bed_file, sample_list, sample_path, file_ext = ".bed.gz")
+make_sparse_mat(
+  cpg_bed_file,
+  sample_list,
+  sample_path,
+  to_mm = TRUE,
+  file_ext = ".bed.gz"
+)
 }
 \arguments{
 \item{cpg_bed_file}{The gzipped bed file with CpG loci. This is used to make the matrix index}
@@ -12,11 +18,19 @@ make_sparse_mat(cpg_bed_file, sample_list, sample_path, file_ext = ".bed.gz")
 \item{sample_list}{A list of sample names for the bed files}
 
 \item{sample_path}{Path to the directory containing sample bed files}
+
+\item{to_mm}{Whether to write the matrix to a matrix market file}
+
+\item{file_ext}{The file extension of the sample files}
 }
 \description{
-Make a methylation matrix with given scWGBS sample bed files
+Make a sparse methylation matrix with given scWGBS sample bed files. The
+matrix is sparse in that it stores the cpg locus id, the sample id and the
+associated endcoded beta and coverage value. It is not a true sparse matrix
+as you would find in the Matrix package and has no functions associated with
+it.
 }
 \examples{
 sample_list <- c("sample1", "sample2", "sample3")
-sample_matrix <- make_meth_mat(sample_list, "./pileup", "./data/cpgs.bed.gz")
+sparse_mat <- make_sparse_mat(sample_list, "./pileup", "./data/cpgs.bed.gz")
 }
