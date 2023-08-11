@@ -3,8 +3,8 @@
 
 using namespace Rcpp;
 
-static inline int encoder(float beta, uint32_t cov) {
-    return (int)(std::round(beta * 100) + (cov << 16));
+static inline int encoder(float beta, int cov) {
+    return ((int) std::round(beta * 100) + (cov << 16));
 }
 
 //' @export
