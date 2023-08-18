@@ -15,7 +15,10 @@ RoxygenNote: 7.2.3
 LinkingTo:
     Rcpp
 Imports:
-    Rcpp
+    Rcpp,
+    Matrix,
+    fs,
+    data.table
 Suggests:
     bsseq,
     DelayedArray,

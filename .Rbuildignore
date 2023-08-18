@@ -1,1 +1,6 @@
 ^LICENSE\.md$
+data/*
+.ccls/*
+.envrc
+.lintr
+.direnv
