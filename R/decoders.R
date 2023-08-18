@@ -63,6 +63,7 @@ decoder <- function(encoded_matrix, measure, sparse = TRUE) {
     "Unknown measure: Enter a measure of 1 for beta, 2 for coverage, and 3 for M value" = measure %in% 1:3
   )
 
+  encoded <- NULL # suppress 'no visible binding' error
   if (sparse) {
     measures <- c(
       "1" = "beta",

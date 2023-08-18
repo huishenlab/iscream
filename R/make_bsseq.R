@@ -23,7 +23,7 @@ make_bsseq_hm <- function(sp, sample_list) {
   gc()
 
   message("Making GRanges")
-  gr <- GRanges(sp$cpg_index[C[, 1]][, end := start + 2][, c(1, 2, 4)]); gc()
+  gr <- GenomicRanges::GRanges(sp$cpg_index[C[, 1]][, end := start + 2][, c(1, 2, 4)]); gc()
   C <- C[, -1]
   gc()
 
@@ -83,14 +83,14 @@ make_bsseq_lm <- function(
   mm_writer(sparse_mat$sparse_mat[, c(1, 2, 4)], row_count, col_count, m_filename)
 
   message("Making GRanges")
-  gr <- GRanges(sparse_mat$cpg_index[, end := start + 2][, cpg_id := NULL])
+  gr <- GenomicRanges::GRanges(sparse_mat$cpg_index[, end := start + 2][, cpg_id := NULL])
   gc()
 
-  cov_mat <- DelayedArray(readMM(cov_filename))
-  M_mat <- DelayedArray(readMM(m_filename))
+  cov_mat <- DelayedArray::DelayedArray(readMM(cov_filename))
+  M_mat <- DelayedArray::DelayedArray(readMM(m_filename))
 
   message("Making BSseq object")
-  BSseq(
+  bsseq::BSseq(
     gr = gr,
     Cov = cov_mat,
     M = M_mat,
