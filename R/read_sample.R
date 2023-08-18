@@ -25,8 +25,7 @@ read_sample <- function(sample_name, merged) {
 
   message("Found ", nrow(sample_data), " methylation loci\n")
   vencoder_cols <- c("beta", "cov")
-  sample_data[, encoded := do.call(vencoder, setNames(.SD, names(vencoder_cols))),
-  .SDcols = vencoder_cols][]
+  sample_data[, encoded := vencoder(beta, cov)]
 }
 
 #' Cpg and sample joiner
