@@ -11,7 +11,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // decode_beta
-inline int decode_beta(uint32_t encoded);
+int decode_beta(uint32_t encoded);
 RcppExport SEXP _iscream_decode_beta(SEXP encodedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -22,7 +22,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // decode_cov
-inline int decode_cov(uint32_t encoded);
+int decode_cov(uint32_t encoded);
 RcppExport SEXP _iscream_decode_cov(SEXP encodedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

@@ -5,13 +5,13 @@ using namespace Rcpp;
 
 //' @export
 // [[Rcpp::export]]
-inline int decode_beta(uint32_t encoded) {
+int decode_beta(uint32_t encoded) {
     return (int) encoded & 0xffff;
 }
 
 //' @export
 // [[Rcpp::export]]
-inline int decode_cov(uint32_t encoded) {
+int decode_cov(uint32_t encoded) {
     return (int) encoded >> 16;
 }
 
