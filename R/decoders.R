@@ -50,7 +50,9 @@ make_m_mat <- function(encoded_matrix) {
 #' Get the decoded values from an encoded data.table methylation matrix
 #' @param encoded_matrix A matrix CpG loci and samples with encoded beta values
 #' @importFrom data.table copy
+#' @param encoded_matrix The matrix with bit-packed beta and cov values
 #' @param measure The required decoded value: 1 for beta, 2 for coverage and 3 for M
+#' @param sparse Whether the matrix is a sparse matrix object
 #' @return A data.table of the beta, coverage or M value by sample
 #'
 #' @export

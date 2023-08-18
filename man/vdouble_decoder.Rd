@@ -4,7 +4,7 @@
 \alias{vdouble_decoder}
 \title{Double Vector Decoder
 This function unpacks the encoded \eqn{\beta} and coverage values from the
-encoded column of a methylation matrix.}
+encoded column of a methylation matrix. Same as \code{vdecoder}, but accepts double columns}
 \usage{
 vdouble_decoder(encoded, measure)
 }
@@ -13,8 +13,11 @@ vdouble_decoder(encoded, measure)
 
 \item{measure}{The required decoded value: 1 for beta, 2 for coverage and 3 for M}
 }
+\value{
+A DoubleVector of unpacked beta, coverage or M values
+}
 \description{
 Double Vector Decoder
 This function unpacks the encoded \eqn{\beta} and coverage values from the
-encoded column of a methylation matrix.
+encoded column of a methylation matrix. Same as \code{vdecoder}, but accepts double columns
 }

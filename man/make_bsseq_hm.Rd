@@ -7,7 +7,9 @@
 make_bsseq_hm(sp, sample_list)
 }
 \arguments{
-\item{encoded_matrix}{A sparse matrix of CpG loci and samples with encoded beta values}
+\item{sp}{A sparse matrix/long table of CpG loci and samples with encoded beta values}
+
+\item{sample_list}{A list of sample names for the bed files}
 }
 \value{
 A BSSeq object

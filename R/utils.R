@@ -11,7 +11,7 @@
 #' @param row_count The number of rows in the matrix - this is not the same as `nrow(DT)`
 #' @param col_count The number of columns in the matrix - this is not the same as `ncol(DT)`
 #' @param filename The name of the file to write to
-#' @param compress: Whether to write a gzip compressed file or not
+#' @param compress Whether to write a gzip compressed file or not
 #' @importFrom data.table fwrite
 #'
 #' @export

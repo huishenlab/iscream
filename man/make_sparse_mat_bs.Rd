@@ -19,8 +19,6 @@ make_sparse_mat_bs(
 \item{sample_path}{Path to the directory containing sample bed files}
 
 \item{file_ext}{The file extension of the sample files}
-
-\item{to_mm}{Whether to write the matrix to a matrix market file}
 }
 \description{
 Make a sparse methylation matrix with given scWGBS sample bed files. The

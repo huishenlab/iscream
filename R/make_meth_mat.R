@@ -4,6 +4,7 @@
 #' @param sample_list A list of sample names for the bed files
 #' @param sample_path Path to the directory containing sample bed files
 #' @param cpg_bed_file The gzipped bed file with CpG loci. This is used to make the matrix index
+#' @param file_ext The extension of the cpg index and sample files
 #' @param merged Whether the bed files have CPs merged or unmerged
 #'
 #' @importFrom data.table fread

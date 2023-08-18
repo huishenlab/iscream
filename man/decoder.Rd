@@ -7,9 +7,11 @@
 decoder(encoded_matrix, measure, sparse = TRUE)
 }
 \arguments{
-\item{encoded_matrix}{A matrix CpG loci and samples with encoded beta values}
+\item{encoded_matrix}{The matrix with bit-packed beta and cov values}
 
 \item{measure}{The required decoded value: 1 for beta, 2 for coverage and 3 for M}
+
+\item{sparse}{Whether the matrix is a sparse matrix object}
 }
 \value{
 A data.table of the beta, coverage or M value by sample

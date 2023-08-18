@@ -3,7 +3,8 @@
 #' Create a BSSeq object using a encoded sparse methylation matrix. This method
 #' uses more memory than `make_bsseq_lm` since it uses dense coverage and
 #' methylation matrices when creating the BSSeq object.
-#' @param encoded_matrix A sparse matrix of CpG loci and samples with encoded beta values
+#' @param sp A sparse matrix/long table of CpG loci and samples with encoded beta values
+#' @param sample_list A list of sample names for the bed files
 #' @importFrom data.table dcast setnafill
 #'
 #' @return A BSSeq object
@@ -55,7 +56,10 @@ make_bsseq_hm <- function(sp, sample_list) {
 #' uses less memory than `make_bsseq_hm` since it uses sparse coverage and
 #' methylation matrices when creating the BSseq object. It is however slower in
 #' the BSseq object creation.
-#' @param encoded_matrix A sparse matrix of CpG loci and samples with encoded beta values
+#' @param sparse_mat A sparse matrix/long table of CpG loci and samples with beta and cov values 
+#' @param sample_list A list of sample names for the bed files
+#' @param cov_filename Filename to write the coverage matrix market file to
+#' @param m_filename Filename to write the M matrix market file to
 #' @importFrom data.table dcast setnafill
 #' @importFrom Matrix readMM
 #'

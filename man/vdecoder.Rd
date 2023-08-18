@@ -13,6 +13,9 @@ vdecoder(encoded, measure)
 
 \item{measure}{The required decoded value: 1 for beta, 2 for coverage and 3 for M}
 }
+\value{
+An IntegerVector of unpacked beta, coverage or M values
+}
 \description{
 Vector Decoder
 This function unpacks the encoded \eqn{\beta} and coverage values from the

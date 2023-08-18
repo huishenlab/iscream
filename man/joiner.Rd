@@ -10,6 +10,8 @@ joiner(cpg_table, sample_dt, sample_name)
 \item{cpg_table}{The table with CpG loci and any existing samples}
 
 \item{sample_dt}{The sample data table from read_sample}
+
+\item{sample_name}{name of the sample getting joined}
 }
 \value{
 The cpg_table with the sample_table tacked on

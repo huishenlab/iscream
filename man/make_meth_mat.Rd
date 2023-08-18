@@ -19,6 +19,8 @@ make_meth_mat(
 
 \item{cpg_bed_file}{The gzipped bed file with CpG loci. This is used to make the matrix index}
 
+\item{file_ext}{The extension of the cpg index and sample files}
+
 \item{merged}{Whether the bed files have CPs merged or unmerged}
 }
 \description{

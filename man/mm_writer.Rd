@@ -15,7 +15,7 @@ mm_writer(DT, row_count, col_count, filename, compress = TRUE)
 
 \item{filename}{The name of the file to write to}
 
-\item{compress:}{Whether to write a gzip compressed file or not}
+\item{compress}{Whether to write a gzip compressed file or not}
 }
 \description{
 Write a sparse matrix data.table to disk in the Matrix Market format.

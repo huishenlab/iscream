@@ -12,7 +12,13 @@ make_bsseq_lm(
 )
 }
 \arguments{
-\item{encoded_matrix}{A sparse matrix of CpG loci and samples with encoded beta values}
+\item{sparse_mat}{A sparse matrix/long table of CpG loci and samples with beta and cov values}
+
+\item{sample_list}{A list of sample names for the bed files}
+
+\item{cov_filename}{Filename to write the coverage matrix market file to}
+
+\item{m_filename}{Filename to write the M matrix market file to}
 }
 \value{
 A BSSeq object

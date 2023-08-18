@@ -5,9 +5,7 @@
 #' @param merged Whether the bed file has CGs merged or unmerged
 #' @return The sample as a data.table
 #'
-#' @importFrom data.table fread
-#' @importFrom data.table :=
-#' @importFrom data.table .SD
+#' @importFrom data.table fread := .SD
 #' @importFrom fs path
 #' @export
 #'
@@ -31,6 +29,7 @@ read_sample <- function(sample_name, merged) {
 #' chromosome and start columns
 #' @param cpg_table The table with CpG loci and any existing samples
 #' @param sample_dt The sample data table from read_sample
+#' @param sample_name name of the sample getting joined
 #' @return The cpg_table with the sample_table tacked on
 #'
 #' @importFrom data.table :=

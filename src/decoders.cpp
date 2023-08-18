@@ -3,12 +3,18 @@
 
 using namespace Rcpp;
 
+//' Beta value decoder
+//' @param encoded The bit-packed beta and cov Int
+//' @return The beta value
 //' @export
 // [[Rcpp::export]]
 int decode_beta(uint32_t encoded) {
     return (int) encoded & 0xffff;
 }
 
+//' Coverage value decoder
+//' @param encoded The bit-packed beta and cov Int
+//' @return The coverage value
 //' @export
 // [[Rcpp::export]]
 int decode_cov(uint32_t encoded) {
@@ -20,6 +26,7 @@ int decode_cov(uint32_t encoded) {
 //' encoded column of a methylation matrix.
 //' @param encoded An encoded sample column from a data.table methylation matrix of CpG loci by samples
 //' @param measure The required decoded value: 1 for beta, 2 for coverage and 3 for M
+//' @return An IntegerVector of unpacked beta, coverage or M values
 //' @export
 // [[Rcpp::export]]
 IntegerVector vdecoder(IntegerVector& encoded, int measure) {
@@ -40,9 +47,10 @@ IntegerVector vdecoder(IntegerVector& encoded, int measure) {
 
 //' Double Vector Decoder
 //' This function unpacks the encoded \eqn{\beta} and coverage values from the
-//' encoded column of a methylation matrix.
+//' encoded column of a methylation matrix. Same as `vdecoder`, but accepts double columns
 //' @param encoded An encoded sample column from a data.table methylation matrix of CpG loci by samples
 //' @param measure The required decoded value: 1 for beta, 2 for coverage and 3 for M
+//' @return A DoubleVector of unpacked beta, coverage or M values
 //' @export
 // [[Rcpp::export]]
 DoubleVector vdouble_decoder(DoubleVector& encoded, int measure) {

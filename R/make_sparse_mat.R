@@ -67,7 +67,6 @@ make_cpg_index <- function(cpg_bed_file) {
 #' @param cpg_bed_file The gzipped bed file with CpG loci. This is used to make the matrix index
 #' @param sample_list A list of sample names for the bed files
 #' @param sample_path Path to the directory containing sample bed files
-#' @param to_mm Whether to write the matrix to a matrix market file
 #' @param file_ext The file extension of the sample files
 #'
 #' @importFrom data.table rbindlist
