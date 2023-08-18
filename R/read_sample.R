@@ -35,7 +35,7 @@ read_sample <- function(sample_name, merged) {
 #'
 #' @importFrom data.table :=
 #'
-.joiner <- function(cpg_table, sample_dt, sample_name) {
+joiner <- function(cpg_table, sample_dt, sample_name) {
   cpg_table[sample_dt, on = .(chr, start), paste0(sample_name) := i.encoded][]
 }
 

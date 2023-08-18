@@ -26,7 +26,7 @@ make_meth_mat <- function(
       path(sample_path, paste0(sample_list[i], file_ext)),
       merged
     )
-    .joiner(cpgs, sample_data, sample_list[i])
+    joiner(cpgs, sample_data, sample_list[i])
   }, seq_along(sample_list)
   )
   cpgs
