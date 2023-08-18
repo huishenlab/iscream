@@ -23,6 +23,11 @@ make_bsseq_hm <- function(sp, sample_list) {
   gc()
 
   message("Making GRanges")
+
+  # suppress 'no visible binding' error
+  end <- NULL
+  start <- NULL
+
   gr <- GenomicRanges::GRanges(sp$cpg_index[C[, 1]][, end := start + 2][, c(1, 2, 4)]); gc()
   C <- C[, -1]
   gc()
@@ -83,6 +88,11 @@ make_bsseq_lm <- function(
   mm_writer(sparse_mat$sparse_mat[, c(1, 2, 4)], row_count, col_count, m_filename)
 
   message("Making GRanges")
+
+  # suppress 'no visible binding' error
+  end <- NULL
+  start <- NULL
+  cpg_id <- NULL
   gr <- GenomicRanges::GRanges(sparse_mat$cpg_index[, end := start + 2][, cpg_id := NULL])
   gc()
 

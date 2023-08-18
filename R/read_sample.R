@@ -17,6 +17,12 @@ read_sample <- function(sample_name, merged) {
     sample_data <- fread(sample_name, col.names = sample_col_names, drop = 6),
     sample_data <- fread(sample_name, col.names = sample_col_names)
   )
+
+  # suppress 'no visible binding' error
+  encoded <- NULL
+  beta <- NULL
+  cov <- NULL
+
   message("Found ", nrow(sample_data), " methylation loci\n")
   vencoder_cols <- c("beta", "cov")
   sample_data[, encoded := do.call(vencoder, setNames(.SD, names(vencoder_cols))),
@@ -35,6 +41,13 @@ read_sample <- function(sample_name, merged) {
 #' @importFrom data.table :=
 #'
 joiner <- function(cpg_table, sample_dt, sample_name) {
+
+  # suppress 'no visible binding' error
+  chr <- NULL
+  start <- NULL
+  i.encoded <- NULL
+  . <- NULL
+
   cpg_table[sample_dt, on = .(chr, start), paste0(sample_name) := i.encoded][]
 }
 
@@ -60,6 +73,11 @@ read_sample_bs <- function(sample_name, merged) {
     sample_data <- fread(sample_name, col.names = sample_col_names)
   )
   message("Found ", nrow(sample_data), " methylation loci\n")
+
+  # suppress 'no visible binding' error
+  beta <- NULL
+  cov <- NULL
+
   vencoder_cols <- c("beta", "cov")
   sample_data[, "M" := round(beta * cov)][, beta := NULL]
 }

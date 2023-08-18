@@ -21,6 +21,13 @@ make_sparse_mat <- function(cpg_bed_file, sample_list, sample_path, to_mm = TRUE
 
   cpg_index <- make_cpg_index(cpg_bed_file)
 
+  # suppress 'no visible binding' error
+  chr <- NULL
+  start <- NULL
+  cpg_id <- NULL
+  encoded <- NULL
+  . <- NULL
+
   meth_mat_list <- vector("list", length(sample_list))
   mapply(function(i) {
       meth_mat_list[[i]] <<- read_sample(path(sample_path, paste0(sample_list[i], file_ext)), TRUE)[
@@ -79,6 +86,15 @@ make_cpg_index <- function(cpg_bed_file) {
 make_sparse_mat_bs <- function(cpg_bed_file, sample_list, sample_path, file_ext = ".bed.gz") {
 
   cpg_index <- make_cpg_index(cpg_bed_file)
+
+  # suppress 'no visible binding' error
+  chr <- NULL
+  start <- NULL
+  cpg_id <- NULL
+  encoded <- NULL
+  cov <- NULL
+  M <- NULL
+  . <- NULL
 
   meth_mat_list <- vector("list", length(sample_list))
   mapply(function(i) {
