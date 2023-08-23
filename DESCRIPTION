@@ -8,7 +8,7 @@ Authors@R: person("James", "Eapen",
 Description: Methylation bed file reader and analyzer This package aims to read
              bed files containing methylation data fast and using memory
              efficiently. It can be used with both bulk and scWGBS data.
-License: GPL (>= 3)
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
