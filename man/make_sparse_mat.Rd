@@ -30,7 +30,3 @@ associated endcoded beta and coverage value. It is not a true sparse matrix
 as you would find in the Matrix package and has no functions associated with
 it.
 }
-\examples{
-sample_list <- c("sample1", "sample2", "sample3")
-sparse_mat <- make_sparse_mat(sample_list, "./pileup", "./data/cpgs.bed.gz")
-}

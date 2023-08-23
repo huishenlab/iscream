@@ -10,7 +10,7 @@
 #' @export
 #'
 #' @examples
-#' sample1 <- read_sample("sample1", TRUE)
+# TODO: write working examples
 read_sample <- function(sample_name, merged) {
   sample_col_names <- c("chr", "start", "end", "beta", "cov")
   ifelse(merged,
@@ -64,7 +64,7 @@ joiner <- function(cpg_table, sample_dt, sample_name) {
 #' @export
 #'
 #' @examples
-#' sample1 <- read_sample("sample", TRUE)
+# TODO: write working examples
 read_sample_bs <- function(sample_name, merged) {
   sample_col_names <- c("chr", "start", "end", "beta", "cov", "extra")
   ifelse(merged,

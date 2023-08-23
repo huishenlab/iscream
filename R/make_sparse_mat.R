@@ -15,8 +15,7 @@
 #' @export
 #'
 #' @examples
-#' sample_list <- c("sample1", "sample2", "sample3")
-#' sparse_mat <- make_sparse_mat(sample_list, "./pileup", "./data/cpgs.bed.gz")
+# TODO: write working examples
 make_sparse_mat <- function(cpg_bed_file, sample_list, sample_path, to_mm = TRUE, file_ext = ".bed.gz") {
 
   cpg_index <- make_cpg_index(cpg_bed_file)
@@ -80,9 +79,7 @@ make_cpg_index <- function(cpg_bed_file) {
 #' @export
 #'
 #' @examples
-#' sample_list <- c("sample1", "sample2", "sample3")
-#' sample_matrix <- make_sparse_mat(sample_list, "./pileup", "./data/cpgs.bed.gz", to_mm = FALSE)
-#' make_sparse_mat(sample_list, "./pileup", "./data/cpgs.bed.gz")
+# TODO: write working examples
 make_sparse_mat_bs <- function(cpg_bed_file, sample_list, sample_path, file_ext = ".bed.gz") {
 
   cpg_index <- make_cpg_index(cpg_bed_file)

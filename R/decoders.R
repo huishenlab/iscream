@@ -7,8 +7,7 @@
 #' @export
 #'
 #' @examples
-#' sample_matrix <- make_meth_mat(sample_list, "./pileup", "./data/cpgs.bed.gz")
-#' beta_mat <- make_beta_mat(sample_matrix)
+# TODO: write working examples
 make_beta_mat <- function(encoded_matrix) {
   decoder(encoded_matrix, 1)
 }
@@ -24,8 +23,7 @@ make_beta_mat <- function(encoded_matrix) {
 #' @export
 #'
 #' @examples
-#' sample_matrix <- make_meth_mat(sample_list, "./pileup", "./data/cpgs.bed.gz")
-#' beta_mat <- make_beta_mat(sample_matrix)
+# TODO: write working examples
 make_coverage_mat <- function(encoded_matrix) {
   decoder(encoded_matrix, 2)
 }
@@ -39,8 +37,7 @@ make_coverage_mat <- function(encoded_matrix) {
 #' @export
 #'
 #' @examples
-#' sample_matrix <- make_meth_mat(sample_list, "./pileup", "./data/cpgs.bed.gz")
-#' beta_mat <- make_beta_mat(sample_matrix)
+# TODO: write working examples
 make_m_mat <- function(encoded_matrix) {
   decoder(encoded_matrix, 3)
 }
@@ -57,6 +54,8 @@ make_m_mat <- function(encoded_matrix) {
 #'
 #' @export
 #'
+#' @examples
+# TODO: write working examples
 decoder <- function(encoded_matrix, measure, sparse = TRUE) {
 
   stopifnot(

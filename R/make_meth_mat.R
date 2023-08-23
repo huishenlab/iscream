@@ -12,8 +12,7 @@
 #' @export
 #'
 #' @examples
-#' sample_list <- c("sample1", "sample2", "sample3")
-#' sample_matrix <- make_meth_mat(sample_list, "./pileup", "./data/cpgs.bed.gz")
+# TODO: write working examples
 make_meth_mat <- function(
   sample_list,
   sample_path,

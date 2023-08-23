@@ -15,7 +15,3 @@ A data.table of M values for each sample
 \description{
 Make a beta matrix with methylation matrix. Wrapper for \code{decoder}.
 }
-\examples{
-sample_matrix <- make_meth_mat(sample_list, "./pileup", "./data/cpgs.bed.gz")
-beta_mat <- make_beta_mat(sample_matrix)
-}

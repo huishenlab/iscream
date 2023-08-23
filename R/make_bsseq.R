@@ -11,6 +11,7 @@
 #'
 #' @export
 #'
+# TODO: write working examples
 make_bsseq_hm <- function(sp, sample_list) {
 
   message("Making Cov matrix")
@@ -72,6 +73,7 @@ make_bsseq_hm <- function(sp, sample_list) {
 #'
 #' @export
 #'
+# TODO: write working examples
 make_bsseq_lm <- function(
     sparse_mat,
     sample_list,

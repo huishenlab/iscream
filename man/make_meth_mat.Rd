@@ -26,7 +26,3 @@ make_meth_mat(
 \description{
 Make a methylation matrix with given scWGBS sample bed files
 }
-\examples{
-sample_list <- c("sample1", "sample2", "sample3")
-sample_matrix <- make_meth_mat(sample_list, "./pileup", "./data/cpgs.bed.gz")
-}
