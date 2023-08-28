@@ -66,7 +66,7 @@ joiner <- function(cpg_table, sample_dt, sample_name) {
 #' @examples
 # TODO: write working examples
 read_sample_bs <- function(sample_name, merged) {
-  sample_col_names <- c("chr", "start", "end", "beta", "cov", "extra")
+  sample_col_names <- c("chr", "start", "end", "beta", "cov")
   ifelse(merged,
     sample_data <- fread(sample_name, col.names = sample_col_names, drop = 6),
     sample_data <- fread(sample_name, col.names = sample_col_names)
