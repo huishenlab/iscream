@@ -4,4 +4,5 @@ data/*
 .envrc
 .lintr
 .direnv
-^\.github$
+.github
+_test*
