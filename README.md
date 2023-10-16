@@ -1,4 +1,4 @@
-## iscream
+## iscream <a href="https://huishenlab.github.io/iscream/"><img src="man/figures/logo.png" align="right" height="138" style="float:right; height:138px;"/></a>
 
 *Integrating Single-Cell Results for Exploring and Analyzing Methylation*
 
