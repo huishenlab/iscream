@@ -17,3 +17,4 @@ testdata/*
  _test*
 _libs/*
 .Rhistory
+docs

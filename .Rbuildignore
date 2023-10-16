@@ -6,3 +6,6 @@ data/*
 .direnv
 .github
 _test*
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
