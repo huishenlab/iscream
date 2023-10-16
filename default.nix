@@ -23,6 +23,7 @@ let
 
   _libs = with pkgs; [
     ccls # Cpp LSP
+    htslib
   ];
 
   in mkShell {
