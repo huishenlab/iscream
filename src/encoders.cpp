@@ -1,11 +1,6 @@
-#include <cmath>
-#include <Rcpp.h>
+#include "encoders.hpp"
 
 using namespace Rcpp;
-
-static inline int encoder(float beta, int cov) {
-    return ((int) std::round(beta * 100) + (cov << 16));
-}
 
 //' Vector Encoder
 //' Bit-packs a vector of beta and coverage values
