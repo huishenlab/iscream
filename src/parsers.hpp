@@ -8,13 +8,16 @@
 #include "encoders.hpp"
 
 struct BedLine {
-    const char* chr;
+    std::string chr;
     int start;
-    int encoded;
+    int end;
+    int beta;
+    int cov;
+};
 
 };
 
-BedLine parseBEDRecord(const std::string bedString);
+BedLine parseBEDRecord(const std::string& bedString);
 
 #endif /* __cplusplus */
 

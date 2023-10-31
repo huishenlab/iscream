@@ -13,10 +13,11 @@ BedLine parseBEDRecord(const std::string& bedString) {
 
     std::string chrom = fields[0];
     int start = std::stoi(fields[1]);
-    int encoded = encoder(std::stof(fields[3]), std::stoi(fields[4]));
+    int end = std::stoi(fields[2]);
+    int beta = std::stoi(fields[3]);
+    int cov = std::stoi(fields[4]);
 
-    BedLine read = {chrom.c_str(), start, encoded};
-
+    BedLine read = {chrom, start, end, beta, cov};
     return read;
 }
 
