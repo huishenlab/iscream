@@ -21,3 +21,8 @@ BedLine parseBEDRecord(const std::string& bedString) {
     return read;
 }
 
+EncodedBedLine encodeBedRecord(const std::string& bedString) {
+    BedLine parsed_bedline = parseBEDRecord(bedString);
+    int encoded = encoder(parsed_bedline.beta, parsed_bedline.cov);
+    return EncodedBedLine{parsed_bedline.chr, parsed_bedline.start, encoded};
+}

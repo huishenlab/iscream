@@ -15,9 +15,14 @@ struct BedLine {
     int cov;
 };
 
+struct EncodedBedLine {
+    std::string chr;
+    int start;
+    int encoded;
 };
 
 BedLine parseBEDRecord(const std::string& bedString);
+EncodedBedLine encodeBedRecord(const std::string& bedString);
 
 #endif /* __cplusplus */
 
