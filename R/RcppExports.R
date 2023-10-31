@@ -48,7 +48,7 @@ vencoder <- function(beta_col, cov_col) {
     .Call(`_iscream_vencoder`, beta_col, cov_col)
 }
 
-#' Query a genomic interval and return the reads in it
+#' Query a genomic interval from a opened htsFile and return the reads in it
 #' @param region Genomic region string in the form "chr:start-end"
 #' @param bedFile The opened htslib bed file stream
 #' @param tbx The bed file's tab-index
@@ -60,11 +60,21 @@ NULL
 #' @param regions A vector of regions strings of the form "chr:start-end"
 NULL
 
-#' Get reads from multiple genomic regions from a tabixed bed file. Wrapper for query_file.
+#' Get list of reads from multiple genomic regions from a tabixed bed file.
 #' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
 #' @param regions A vector of regions strings of the form "chr:start-end"
 #' @export
-query_file <- function(fname, regions) {
-    .Call(`_iscream_query_file`, fname, regions)
+query_regions_from_file <- function(fname, regions) {
+    .Call(`_iscream_query_regions_from_file`, fname, regions)
+}
+
+#' Get reads from single genomic regions from multiple tabixed bed file.
+#' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
+#' @param regions A vector of regions strings of the form "chr:start-end"
+#' @export
+query_interval <- function(bedfiles, region) {
+    .Call(`_iscream_query_interval`, bedfiles, region)
+}
+
 }
 

@@ -69,15 +69,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// query_file
-Rcpp::List query_file(const char* fname, std::vector<std::string>& regions);
-RcppExport SEXP _iscream_query_file(SEXP fnameSEXP, SEXP regionsSEXP) {
+// query_regions_from_file
+Rcpp::List query_regions_from_file(const char* fname, std::vector<std::string>& regions);
+RcppExport SEXP _iscream_query_regions_from_file(SEXP fnameSEXP, SEXP regionsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const char* >::type fname(fnameSEXP);
     Rcpp::traits::input_parameter< std::vector<std::string>& >::type regions(regionsSEXP);
-    rcpp_result_gen = Rcpp::wrap(query_file(fname, regions));
+    rcpp_result_gen = Rcpp::wrap(query_regions_from_file(fname, regions));
+    return rcpp_result_gen;
+END_RCPP
+}
+// query_interval
+std::vector<std::vector<std::string>> query_interval(std::vector<std::string>& bedfiles, std::string& region);
+RcppExport SEXP _iscream_query_interval(SEXP bedfilesSEXP, SEXP regionSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<std::string>& >::type bedfiles(bedfilesSEXP);
+    Rcpp::traits::input_parameter< std::string& >::type region(regionSEXP);
+    rcpp_result_gen = Rcpp::wrap(query_interval(bedfiles, region));
+    return rcpp_result_gen;
+END_RCPP
+}
     return rcpp_result_gen;
 END_RCPP
 }
@@ -88,7 +103,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_vdecoder", (DL_FUNC) &_iscream_vdecoder, 2},
     {"_iscream_vdouble_decoder", (DL_FUNC) &_iscream_vdouble_decoder, 2},
     {"_iscream_vencoder", (DL_FUNC) &_iscream_vencoder, 2},
-    {"_iscream_query_file", (DL_FUNC) &_iscream_query_file, 2},
+    {"_iscream_query_regions_from_file", (DL_FUNC) &_iscream_query_regions_from_file, 2},
+    {"_iscream_query_interval", (DL_FUNC) &_iscream_query_interval, 2},
     {NULL, NULL, 0}
 };
 

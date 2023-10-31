@@ -8,9 +8,9 @@
 #include <string>
 #include "parsers.hpp"
 
-std::vector<std::string> query_region(const std::string& region, htsFile* bedFile, tbx_t* tbx);
-std::vector<std::vector<std::string>> query_file_priv(const char* fname, std::vector<std::string>& regions);
-Rcpp::List query_file(const char* fname, std::vector<std::string>& regions);
+std::vector<std::string> tabix_query(const std::string& region, htsFile* bedFile, tbx_t* tbx);
+std::vector<std::vector<std::string>> query_intervals(const char* fname, std::vector<std::string>& regions);
+Rcpp::List query_regions_from_file(const char* fname, std::vector<std::string>& regions);
 
 #endif /* __cplusplus */
 
