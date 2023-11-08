@@ -68,6 +68,11 @@ NULL
 #' @param regions A vector of regions strings of the form "chr:start-end"
 NULL
 
+#' Get reads from a single genomic region from one tabixed bed file.
+#' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
+#' @param regions A vector of regions strings of the form "chr:start-end"
+NULL
+
 #' Get list of reads from multiple genomic regions from a tabixed bed file.
 #' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
 #' @param regions A vector of regions strings of the form "chr:start-end"

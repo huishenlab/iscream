@@ -77,3 +77,19 @@ std::vector<std::vector<std::string>> query_interval(std::vector<std::string>& b
     return all_reads;
 
 }
+
+//' Get reads from a single genomic region from one tabixed bed file.
+//' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
+//' @param regions A vector of regions strings of the form "chr:start-end"
+std::vector<std::string> query_interval(std::string& bedfile, std::string& region) {
+
+    htsFile* bedFile = hts_open(bedfile.c_str(), "r");
+    tbx_t* tbx = tbx_index_load3(bedfile.c_str(), NULL, 0);
+
+    std::vector<std::string> regional_cpgs = tabix_query(region, bedFile, tbx);
+
+    tbx_destroy(tbx);
+    hts_close(bedFile);
+
+    return regional_cpgs;
+}
