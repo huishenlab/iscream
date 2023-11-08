@@ -26,3 +26,22 @@ EncodedBedLine encodeBedRecord(const std::string& bedString) {
     int encoded = encoder(parsed_bedline.beta, parsed_bedline.cov);
     return EncodedBedLine{parsed_bedline.chr, parsed_bedline.start, encoded};
 }
+
+std::string CpGID(const std::string& bedString) {
+
+    std::istringstream ss(bedString);
+    std::string token;
+    std::vector<std::string> fields;
+
+    while (std::getline(ss, token, '\t')) {
+        fields.push_back(token);
+    }
+
+    std::string chrom = fields[0];
+    std::string start = fields[1];
+
+    std::stringstream cpg_stream;
+
+    cpg_stream << chrom << ":" << start;
+    return cpg_stream.str();
+}
