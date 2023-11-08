@@ -12,7 +12,6 @@ std::vector<std::string> tabix_query(const std::string& region, htsFile* bedFile
 
     while (tbx_itr_next(bedFile, tbx, iter, &str) >= 0) {
         reads.push_back(str.s);
-        /* printf("%s\n", str.s); */
     }
 
     free(str.s);
