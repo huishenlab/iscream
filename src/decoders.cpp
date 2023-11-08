@@ -1,5 +1,6 @@
 #include <cmath>
 #include <Rcpp.h>
+#include "decoders.hpp"
 
 using namespace Rcpp;
 
