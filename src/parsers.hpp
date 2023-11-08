@@ -11,7 +11,7 @@ struct BedLine {
     std::string chr;
     int start;
     int end;
-    int beta;
+    float beta;
     int cov;
 };
 
