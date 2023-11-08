@@ -33,6 +33,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// decode_m
+int decode_m(uint32_t encoded);
+RcppExport SEXP _iscream_decode_m(SEXP encodedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< uint32_t >::type encoded(encodedSEXP);
+    rcpp_result_gen = Rcpp::wrap(decode_m(encoded));
+    return rcpp_result_gen;
+END_RCPP
+}
 // vdecoder
 IntegerVector vdecoder(IntegerVector& encoded, int measure);
 RcppExport SEXP _iscream_vdecoder(SEXP encodedSEXP, SEXP measureSEXP) {
@@ -100,6 +111,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_iscream_decode_beta", (DL_FUNC) &_iscream_decode_beta, 1},
     {"_iscream_decode_cov", (DL_FUNC) &_iscream_decode_cov, 1},
+    {"_iscream_decode_m", (DL_FUNC) &_iscream_decode_m, 1},
     {"_iscream_vdecoder", (DL_FUNC) &_iscream_vdecoder, 2},
     {"_iscream_vdouble_decoder", (DL_FUNC) &_iscream_vdouble_decoder, 2},
     {"_iscream_vencoder", (DL_FUNC) &_iscream_vencoder, 2},

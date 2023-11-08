@@ -22,6 +22,15 @@ int decode_cov(uint32_t encoded) {
     return (int) encoded >> 16;
 }
 
+//' M value decoder
+//' @param encoded The bit-packed beta and cov Int
+//' @return The M value
+//' @export
+// [[Rcpp::export]]
+int decode_m(uint32_t encoded) {
+    return std::round((float) (decode_beta(encoded) * decode_cov(encoded)) / 100);
+}
+
 //' Vector Decoder
 //' This function unpacks the encoded \eqn{\beta} and coverage values from the
 //' encoded column of a methylation matrix.
@@ -39,7 +48,7 @@ IntegerVector vdecoder(IntegerVector& encoded, int measure) {
     } else if (measure == 2) {
         encoded[i] = decode_cov(encoded[i]);
     } else if (measure == 3) {
-        encoded[i] = std::round((float) (decode_beta(encoded[i]) * decode_cov(encoded[i])) / 100);
+        encoded[i] = decode_m(encoded[i]);
     }
   }
   return encoded;
@@ -63,7 +72,7 @@ DoubleVector vdouble_decoder(DoubleVector& encoded, int measure) {
     } else if (measure == 2) {
         encoded[i] = decode_cov(encoded[i]);
     } else if (measure == 3) {
-        encoded[i] = std::round((float) (decode_beta(encoded[i]) * decode_cov(encoded[i])) / 100);
+        encoded[i] = decode_m(encoded[i]);
     }
   }
   return encoded;

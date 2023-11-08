@@ -17,6 +17,14 @@ decode_cov <- function(encoded) {
     .Call(`_iscream_decode_cov`, encoded)
 }
 
+#' M value decoder
+#' @param encoded The bit-packed beta and cov Int
+#' @return The M value
+#' @export
+decode_m <- function(encoded) {
+    .Call(`_iscream_decode_m`, encoded)
+}
+
 #' Vector Decoder
 #' This function unpacks the encoded \eqn{\beta} and coverage values from the
 #' encoded column of a methylation matrix.

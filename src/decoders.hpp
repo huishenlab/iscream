@@ -7,6 +7,7 @@
 
 int decode_beta(uint32_t encoded);
 int decode_cov(uint32_t encoded);
+int decode_m(uint32_t encoded);
 Rcpp::IntegerVector vdecoder(Rcpp::IntegerVector& encoded, int measure);
 Rcpp::DoubleVector vdouble_decoder(Rcpp::DoubleVector& encoded, int measure);
 
