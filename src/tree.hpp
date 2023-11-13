@@ -14,22 +14,20 @@ typedef std::vector<std::vector<EncodedBedLine>> ReadMatrix;
 class Tree {
 
 private:
-    struct DataPoint {
-        DataPoint();
-        DataPoint(int sample_number, int encoded_value);
+
+    struct CpG {
+        CpG();
+        CpG(int sample_number, int encoded_value);
         uint16_t sample;
         uint32_t encoded;
     };
 
+
+    typedef std::unordered_map<std::string, std::vector<CpG>*> CpGMap;
     struct Interval {
         Interval(std::string& region, std::vector<std::string>& bedfile_vec);
         std::string interval_str;
-        std::string chr;
-        int start;
-        int end;
-        int n_cpgs;
-
-        std::unordered_map<std::string, std::vector<DataPoint>*> cpg_map;
+        CpGMap cpg_map;
     };
 
     std::vector<Interval> intervals;

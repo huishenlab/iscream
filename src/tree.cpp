@@ -20,13 +20,12 @@ Tree::Tree(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regi
 
 }
 
-Tree::DataPoint::DataPoint() {
+Tree::CpG::CpG() {
     sample = 0;
     encoded = 0;
 }
 
-
-Tree::DataPoint::DataPoint(int sample_number, int encoded_value) {
+Tree::CpG::CpG(int sample_number, int encoded_value) {
     sample = sample_number;
     encoded = encoded_value;
 }
@@ -43,19 +42,19 @@ Tree::Interval::Interval(std::string& line, std::vector<std::string>& bedfile_ve
 
         // for each cpg in the line region from this file
         // add them to the hashmap with the encoded value and sample number
-        for (int cpg = 0; cpg < cpgs_1region_1file.size(); cpg++) {
+        for (int cpg_n = 0; cpg_n < cpgs_1region_1file.size(); cpg_n++) {
 
-            std::string cpg_id = CpGID(cpgs_1region_1file[cpg]);
+            std::string cpg_id = CpGID(cpgs_1region_1file[cpg_n]);
 
             if (!cpg_map.count(cpg_id)) {
-                std::vector<DataPoint>* cpg_data_vec = new std::vector<DataPoint>;
+                std::vector<CpG>* cpg_data_vec = new std::vector<CpG>;
                 cpg_map.insert({cpg_id, cpg_data_vec});
             }
 
-            EncodedBedLine encoded_cpg_line = encodeBedRecord(cpgs_1region_1file[cpg]);
-            DataPoint tmp_dp = DataPoint(bedfile_n, encoded_cpg_line.encoded);
+            EncodedBedLine encoded_cpg_line = encodeBedRecord(cpgs_1region_1file[cpg_n]);
+            CpG tmp_cpg = CpG(bedfile_n, encoded_cpg_line.encoded);
 
-            cpg_map[cpg_id]->push_back(tmp_dp);
+            cpg_map[cpg_id]->push_back(tmp_cpg);
         }
     }
 }
@@ -75,9 +74,9 @@ void Tree::printTree() {
 
     for (Interval i : intervals) {
         for (auto item : i.cpg_map) {
-            for (DataPoint dp : *item.second) {
-                fprintf(m_matrix, "%s\t%d\t%d\n", item.first.c_str(), dp.sample + 1, decode_m(dp.encoded));
-                fprintf(cov_matrix, "%s\t%d\t%d\n", item.first.c_str(), dp.sample + 1, decode_cov(dp.encoded));
+            for (CpG cpg : *item.second) {
+                fprintf(m_matrix, "%s\t%d\t%d\n", item.first.c_str(), cpg.sample + 1, decode_m(cpg.encoded));
+                fprintf(cov_matrix, "%s\t%d\t%d\n", item.first.c_str(), cpg.sample + 1, decode_cov(cpg.encoded));
             }
             delete(item.second);
         }
