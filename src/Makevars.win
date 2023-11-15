@@ -1,1 +1,3 @@
-PKG_CPPFLAGS= -I /nix/store/3gbvp3fiy1axl9cm4q4pf6g4850zfccc-htslib-1.18/include/htslib/
+PKG_CPPFLAGS=-I $(I_HTSLIB)
+PKG_LIBS=$(L_HTSLIB) $(L_CURL)
+CPPFLAGS="-O"

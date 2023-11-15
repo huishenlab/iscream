@@ -32,8 +32,25 @@ let
       _libs
     ];
     shellHook = ''
+      export I_RCPP=${rPackages.Rcpp}/library/Rcpp/include/
+      export I_EIGEN=${rPackages.RcppEigen}/library/RcppEigen/include/
+      export I_HTSLIB=${pkgs.htslib}/include/
+      export L_HTSLIB=${pkgs.htslib}/lib/libhts.a
+      export I_R=${pkgs.R}/lib/R/include/
+      export L_CURL=${pkgs.curl.out}/lib/libcurl.so
+
       mkdir -p "$HOME/.R"
       export R_LIBS_USER="$HOME/.R"
+
+      cat > .ccls << EOF
+      clang
+      %c -std=c11
+      %cpp -std=c++2a
+      -I$I_RCPP
+      -I$I_EIGEN
+      -I$I_R
+      -I$I_HTSLIB
+      EOF
       '';
   }
 

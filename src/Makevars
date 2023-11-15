@@ -1,3 +1,4 @@
-PKG_CPPFLAGS= -I/nix/store/3gbvp3fiy1axl9cm4q4pf6g4850zfccc-htslib-1.18/include/
-PKG_LIBS=/nix/store/3gbvp3fiy1axl9cm4q4pf6g4850zfccc-htslib-1.18/lib/libhts.a /nix/store/bhmynyjwzc2r6iqf7fhc3yzjcv3paiwa-curl-8.3.0/lib/libcurl.so
+PKG_CPPFLAGS=-I $(I_HTSLIB)
+PKG_LIBS=$(L_HTSLIB) $(L_CURL)
 CPPFLAGS="-O"
+
