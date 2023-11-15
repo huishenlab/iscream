@@ -40,21 +40,6 @@ std::vector<std::vector<std::string>> query_intervals(const char* fname, std::ve
     return all_reads;
 }
 
-//' Get list of reads from multiple genomic regions from a tabixed bed file.
-//' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
-//' @param regions A vector of regions strings of the form "chr:start-end"
-//' @export
-// [[Rcpp::export]]
-Rcpp::List query_regions_from_file(const char* fname, std::vector<std::string>& regions) {
-
-    std::vector<std::vector<std::string>> reads_in_file = query_intervals(fname, regions);
-    Rcpp::List read_list = Rcpp::wrap(reads_in_file);
-
-    read_list.attr("names") = regions;
-
-    return read_list;
-}
-
 //' Get reads from single genomic regions from multiple tabixed bed file.
 //' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
 //' @param regions A vector of regions strings of the form "chr:start-end"

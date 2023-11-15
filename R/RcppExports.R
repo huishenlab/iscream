@@ -73,14 +73,6 @@ NULL
 #' @param regions A vector of regions strings of the form "chr:start-end"
 NULL
 
-#' Get list of reads from multiple genomic regions from a tabixed bed file.
-#' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
-#' @param regions A vector of regions strings of the form "chr:start-end"
-#' @export
-query_regions_from_file <- function(fname, regions) {
-    .Call(`_iscream_query_regions_from_file`, fname, regions)
-}
-
 #' Get reads from single genomic regions from multiple tabixed bed file.
 #' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
 #' @param regions A vector of regions strings of the form "chr:start-end"
