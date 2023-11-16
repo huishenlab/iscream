@@ -6,6 +6,11 @@ agg_cpgs_file <- function(bedfile_vec, regions) {
     invisible(.Call(`_iscream_agg_cpgs_file`, bedfile_vec, regions))
 }
 
+#' @export
+agg_cpgs_df <- function(bedfile_vec, regions) {
+    .Call(`_iscream_agg_cpgs_df`, bedfile_vec, regions)
+}
+
 #' Beta value decoder
 #' @param encoded The bit-packed beta and cov Int
 #' @return The beta value
