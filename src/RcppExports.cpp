@@ -11,6 +11,17 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// agg_cpgs_file
+void agg_cpgs_file(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions);
+RcppExport SEXP _iscream_agg_cpgs_file(SEXP bedfile_vecSEXP, SEXP regionsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<std::string>& >::type bedfile_vec(bedfile_vecSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string>& >::type regions(regionsSEXP);
+    agg_cpgs_file(bedfile_vec, regions);
+    return R_NilValue;
+END_RCPP
+}
 // decode_beta
 int decode_beta(uint32_t encoded);
 RcppExport SEXP _iscream_decode_beta(SEXP encodedSEXP) {
