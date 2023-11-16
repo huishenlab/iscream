@@ -23,15 +23,15 @@ std::vector<std::string> tabix_query(const std::string& region, htsFile* bedFile
 //' Get reads from multiple genomic regions from a tabixed bed file
 //' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
 //' @param regions A vector of regions strings of the form "chr:start-end"
-std::vector<std::vector<std::string>> query_intervals(const char* fname, std::vector<std::string>& regions) {
+std::vector<MultiRegionQuery> query_intervals(const char* fname, std::vector<std::string>& regions) {
 
     htsFile* bedFile = hts_open(fname, "r");
     tbx_t* tbx = tbx_index_load3(fname, NULL, 0);
 
-    std::vector<std::vector<std::string>> all_reads(regions.size());
+    std::vector<MultiRegionQuery> all_reads(regions.size());
 
     for (int i = 0; i < regions.size(); i++) {
-        all_reads[i] = tabix_query(regions[i], bedFile, tbx);
+        all_reads[i] = MultiRegionQuery(regions[i], tabix_query(regions[i], bedFile, tbx));
     }
 
     tbx_destroy(tbx);

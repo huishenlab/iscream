@@ -8,6 +8,14 @@
 #include <string>
 #include "parsers.hpp"
 
+struct MultiRegionQuery{
+    MultiRegionQuery() : interval_str(), cpgs_in_interval() {}
+    MultiRegionQuery(std::string interval_str, std::vector<std::string> cpgs_in_interval) : interval_str(interval_str), cpgs_in_interval(cpgs_in_interval){}
+    std::string interval_str;
+    std::vector<std::string> cpgs_in_interval;
+};
+
+
 std::vector<std::string> tabix_query(const std::string& region, htsFile* bedFile, tbx_t* tbx);
 std::vector<MultiRegionQuery> query_intervals(const char* fname, std::vector<std::string>& regions);
 std::vector<std::vector<std::string>> query_interval(std::vector<std::string>& bedfiles, std::string& region);
