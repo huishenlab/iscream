@@ -34,18 +34,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// opt_aggregate_cpgs_to_df
-Rcpp::DataFrame opt_aggregate_cpgs_to_df(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions);
-RcppExport SEXP _iscream_opt_aggregate_cpgs_to_df(SEXP bedfile_vecSEXP, SEXP regionsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::vector<std::string>& >::type bedfile_vec(bedfile_vecSEXP);
-    Rcpp::traits::input_parameter< std::vector<std::string>& >::type regions(regionsSEXP);
-    rcpp_result_gen = Rcpp::wrap(opt_aggregate_cpgs_to_df(bedfile_vec, regions));
-    return rcpp_result_gen;
-END_RCPP
-}
 // decode_beta
 int decode_beta(uint32_t encoded);
 RcppExport SEXP _iscream_decode_beta(SEXP encodedSEXP) {
@@ -132,6 +120,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_iscream_agg_cpgs_file", (DL_FUNC) &_iscream_agg_cpgs_file, 2},
+    {"_iscream_agg_cpgs_df", (DL_FUNC) &_iscream_agg_cpgs_df, 2},
     {"_iscream_decode_beta", (DL_FUNC) &_iscream_decode_beta, 1},
     {"_iscream_decode_cov", (DL_FUNC) &_iscream_decode_cov, 1},
     {"_iscream_decode_m", (DL_FUNC) &_iscream_decode_m, 1},

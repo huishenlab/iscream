@@ -4,6 +4,15 @@
 #include <filesystem>
 #include "query.hpp"
 
+void aggregate(MultiRegionQuery& interval, int& total_m, int& total_cov) {
+
+    for (std::string& each_cpg : interval.cpgs_in_interval) {
+        BedLine parsed_cpg = parseBEDRecord(each_cpg);
+        total_m += (int) std::round(parsed_cpg.cov * parsed_cpg.beta);
+        total_cov += parsed_cpg.cov;
+    }
+}
+
 //' @export
 // [[Rcpp::export]]
 void agg_cpgs_file(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions) {
@@ -23,11 +32,7 @@ void agg_cpgs_file(std::vector<std::string>& bedfile_vec, std::vector<std::strin
             int total_m = 0;
             int total_cov = 0;
             printf("%s\n", bedfile_name.c_str());
-            for (std::string& each_cpg : interval.cpgs_in_interval) {
-                BedLine parsed_cpg = parseBEDRecord(each_cpg);
-                total_m += (int) std::round(parsed_cpg.cov * parsed_cpg.beta);
-                total_cov += parsed_cpg.cov;
-            }
+            aggregate(interval, total_m, total_cov);
             fprintf(scmet_matrix, "%s\t%s\t%d\t%d\n", interval.interval_str.c_str(), bed_path.stem().stem().c_str(), total_cov, total_m);
         }
     }
@@ -55,18 +60,14 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfile_vec, std::vector<s
         cpgs_in_file = query_intervals(bedfile_name.c_str(), regions);
 
         for (MultiRegionQuery interval : cpgs_in_file) {
-            int total_m = 0;
-            int total_cov = 0;
+            int mut_total_m = 0;
+            int mut_total_cov = 0;
             printf("%s\n", bedfile_name.c_str());
-            for (std::string& each_cpg : interval.cpgs_in_interval) {
-                BedLine parsed_cpg = parseBEDRecord(each_cpg);
-                total_m += (int) std::round(parsed_cpg.cov * parsed_cpg.beta);
-                total_cov += parsed_cpg.cov;
-            }
+            aggregate(interval, mut_total_m, mut_total_cov);
             feature_col[row_count] = interval.interval_str;
             cell[row_count] = bed_path.stem().stem();
-            total_reads[row_count] = total_cov;
-            me_reads[row_count] = total_m;
+            total_reads[row_count] = mut_total_cov;
+            me_reads[row_count] = mut_total_m;
             row_count++;
         }
     }
@@ -80,4 +81,3 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfile_vec, std::vector<s
 
     return result;
 }
-
