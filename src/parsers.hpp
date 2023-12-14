@@ -23,7 +23,7 @@ struct EncodedBedLine {
 
 BedLine parseBEDRecord(const std::string& bedString);
 EncodedBedLine encodeBedRecord(const std::string& bedString);
-std::string CpGID(const std::string& bedString);
+std::string CpGID(BedLine& parsed_bedline);
 
 #endif /* __cplusplus */
 

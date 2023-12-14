@@ -44,7 +44,8 @@ Tree::Interval::Interval(std::string& line, std::vector<std::string>& bedfile_ve
         // add them to the hashmap with the encoded value and sample number
         for (int cpg_n = 0; cpg_n < cpgs_1region_1file.size(); cpg_n++) {
 
-            std::string cpg_id = CpGID(cpgs_1region_1file[cpg_n]);
+            BedLine parsed_bedline = parseBEDRecord(cpgs_1region_1file[cpg_n]);
+            std::string cpg_id = CpGID(parsed_bedline);
 
             if (!cpg_map.count(cpg_id)) {
                 std::vector<CpG>* cpg_data_vec = new std::vector<CpG>;
