@@ -63,25 +63,25 @@ const int Tree::size() const {
     return n_intervals;
 }
 
-void Tree::printTree() {
+void Tree::printTree(const std::string& m_matrix, const std::string cov_matrix) {
 
     printf("%s\n", "printing");
-    FILE *m_matrix;
-    FILE *cov_matrix;
+    FILE *m_matrix_io;
+    FILE *cov_matrix_io;
 
-    m_matrix = std::fopen("M.mtx", "w");
-    cov_matrix = std::fopen("cov.mtx", "w");
+    m_matrix_io = std::fopen(m_matrix.c_str(), "w");
+    cov_matrix_io = std::fopen(cov_matrix.c_str(), "w");
 
     for (Interval i : intervals) {
         for (auto item : i.cpg_map) {
             for (CpG cpg : *item.second) {
-                fprintf(m_matrix, "%s\t%d\t%d\n", item.first.c_str(), cpg.sample + 1, decode_m(cpg.encoded));
-                fprintf(cov_matrix, "%s\t%d\t%d\n", item.first.c_str(), cpg.sample + 1, decode_cov(cpg.encoded));
+                fprintf(m_matrix_io, "%s\t%d\t%d\n", item.first.c_str(), cpg.sample + 1, decode_m(cpg.encoded));
+                fprintf(cov_matrix_io, "%s\t%d\t%d\n", item.first.c_str(), cpg.sample + 1, decode_cov(cpg.encoded));
             }
             delete(item.second);
         }
     }
 
-    fclose(m_matrix);
-    fclose(cov_matrix);
+    fclose(m_matrix_io);
+    fclose(cov_matrix_io);
 }

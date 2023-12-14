@@ -37,7 +37,7 @@ public:
     Tree();
     Tree(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions);
     const int size() const;
-    void printTree();
+    void printTree(const std::string& m_matrix = "M.mtx", const std::string cov_matrix = "cov.mtx");
 };
 
 #endif /* __cplusplus */
