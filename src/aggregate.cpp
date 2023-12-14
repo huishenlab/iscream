@@ -4,7 +4,7 @@
 #include <filesystem>
 #include "query.hpp"
 
-void aggregate(MultiRegionQuery& interval, int& total_m, int& total_cov) {
+void aggregate(RegionQuery& interval, int& total_m, int& total_cov) {
 
     for (std::string& each_cpg : interval.cpgs_in_interval) {
         BedLine parsed_cpg = parseBEDRecord(each_cpg);
@@ -21,14 +21,14 @@ void agg_cpgs_file(std::vector<std::string>& bedfile_vec, std::vector<std::strin
 
     FILE *scmet_matrix;
     scmet_matrix = std::fopen("scmet2.tsv", "w");
-    std::vector<MultiRegionQuery> cpgs_in_file(0);
+    std::vector<RegionQuery> cpgs_in_file(0);
 
     for (std::string& bedfile_name : bedfile_vec) {
 
         std::filesystem::path bed_path = bedfile_name;
         cpgs_in_file = query_intervals(bedfile_name.c_str(), regions);
 
-        for (MultiRegionQuery interval : cpgs_in_file) {
+        for (RegionQuery interval : cpgs_in_file) {
             int total_m = 0;
             int total_cov = 0;
             printf("%s\n", bedfile_name.c_str());
@@ -51,7 +51,7 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfile_vec, std::vector<s
     std::vector<int> total_reads(rowsize);
     std::vector<int> me_reads(rowsize);
 
-    std::vector<MultiRegionQuery> cpgs_in_file(0);
+    std::vector<RegionQuery> cpgs_in_file(0);
     int row_count = 0;
 
     for (std::string& bedfile_name : bedfile_vec) {
@@ -59,7 +59,7 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfile_vec, std::vector<s
         std::filesystem::path bed_path = bedfile_name;
         cpgs_in_file = query_intervals(bedfile_name.c_str(), regions);
 
-        for (MultiRegionQuery interval : cpgs_in_file) {
+        for (RegionQuery interval : cpgs_in_file) {
             int mut_total_m = 0;
             int mut_total_cov = 0;
             printf("%s\n", bedfile_name.c_str());
