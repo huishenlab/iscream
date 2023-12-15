@@ -15,6 +15,8 @@ struct RegionQuery{
     std::vector<std::string> cpgs_in_interval;
 };
 
+typedef std::vector<RegionQuery> MultiRegionQuery;
+
 
 std::vector<std::string> tabix_query(const std::string& region, htsFile* bedFile, tbx_t* tbx);
 std::vector<RegionQuery> query_intervals(const char* fname, std::vector<std::string>& regions);
