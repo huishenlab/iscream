@@ -26,12 +26,12 @@ void agg_cpgs_file(std::vector<std::string>& bedfile_vec, std::vector<std::strin
     for (std::string& bedfile_name : bedfile_vec) {
 
         std::filesystem::path bed_path = bedfile_name;
+        printf("Querying %s\n", bedfile_name.c_str());
         cpgs_in_file = query_intervals(bedfile_name.c_str(), regions);
 
         for (RegionQuery interval : cpgs_in_file) {
             int total_m = 0;
             int total_cov = 0;
-            printf("%s\n", bedfile_name.c_str());
             aggregate(interval, total_m, total_cov);
             fprintf(scmet_matrix, "%s\t%s\t%d\t%d\n", interval.interval_str.c_str(), bed_path.stem().stem().c_str(), total_cov, total_m);
         }
@@ -57,12 +57,12 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfile_vec, std::vector<s
     for (std::string& bedfile_name : bedfile_vec) {
 
         std::filesystem::path bed_path = bedfile_name;
+        printf("Querying %s\n", bedfile_name.c_str());
         cpgs_in_file = query_intervals(bedfile_name.c_str(), regions);
 
         for (RegionQuery interval : cpgs_in_file) {
             int mut_total_m = 0;
             int mut_total_cov = 0;
-            printf("%s\n", bedfile_name.c_str());
             aggregate(interval, mut_total_m, mut_total_cov);
             feature_col[row_count] = interval.interval_str;
             cell[row_count] = bed_path.stem().stem();
