@@ -3,8 +3,10 @@
 
 #if defined __cplusplus
 
+#include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
 #include <cmath>
-#include <Rcpp.h>
 #include "query.hpp"
 #include "parsers.hpp"
 #include "decoders.hpp"
@@ -23,16 +25,17 @@ private:
     int n_samples;
 
 public:
+
     BS();
     BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions);
-    void populate_matrix_cols(RegionQuery& query, int& row_n);
-    void resize_mats(const size_t newsize);
+    void populate_arma_cols(RegionQuery& query, int& row_n);
     void print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name);
     void print_BS();
     const int size() const;
 
-    std::vector<std::vector<int>> cov_matrix_cols;
-    std::vector<std::vector<int>> m_matrix_cols;
+    arma::umat cov_mat;
+    arma::umat m_mat;
+    Rcpp::List assays;
 };
 
 #endif /* __cplusplus */

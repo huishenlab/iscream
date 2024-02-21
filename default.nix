@@ -7,6 +7,7 @@ let
   # Imports
     fs
     Rcpp
+    RcppArmadillo
     Matrix
     data_table
 
@@ -33,7 +34,7 @@ let
     ];
     shellHook = ''
       export I_RCPP=${rPackages.Rcpp}/library/Rcpp/include/
-      export I_EIGEN=${rPackages.RcppEigen}/library/RcppEigen/include/
+      export I_ARMA=${rPackages.RcppArmadillo}/library/RcppArmadillo/include/
       export I_HTSLIB=${pkgs.htslib}/include/
       export L_HTSLIB=${pkgs.htslib}/lib/libhts.a
       export I_R=${pkgs.R}/lib/R/include/
@@ -47,7 +48,7 @@ let
       %c -std=c11
       %cpp -std=c++2a
       -I$I_RCPP
-      -I$I_EIGEN
+      -I$I_ARMA
       -I$I_R
       -I$I_HTSLIB
       EOF

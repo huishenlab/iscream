@@ -11,26 +11,37 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
     n_intervals  = 0;
     n_cpgs = 0;
     n_samples = bedfile_vec.size();
-    cov_matrix_cols.resize(bedfile_vec.size(), std::vector<int>(10));
-    m_matrix_cols.resize(bedfile_vec.size(), std::vector<int>(10));
+    cov_mat.resize(5, bedfile_vec.size());
+    m_mat.resize(5, bedfile_vec.size());
 
     printf("n_bedfiles: %zu\n", bedfile_vec.size());
     printf("n_intervals: %zu\n", regions.size());
     for (int bedfile_n = 0; bedfile_n < bedfile_vec.size(); bedfile_n++) {
-        printf("file: %s\n", bedfile_vec[bedfile_n].c_str());
+        printf("File: %s\n", bedfile_vec[bedfile_n].c_str());
         MultiRegionQuery cpgs_in_file = query_intervals(bedfile_vec[bedfile_n].c_str(), regions);
         for (RegionQuery cpgs_in_interval : cpgs_in_file) {
-            populate_matrix_cols(cpgs_in_interval, bedfile_n);
+            populate_arma_cols(cpgs_in_interval, bedfile_n);
         }
     }
-    if (cov_matrix_cols[0].size() > cpg_map.size()) {
-        resize_mats(cpg_map.size());
+
+    if (cov_mat.n_rows > cpg_map.size()) {
+        printf("Correcting matrix size\n");
+        int diff_rows = cov_mat.n_rows - cpg_map.size();
+        cov_mat.resize(cpg_map.size(), bedfile_vec.size());
+        m_mat.resize(cpg_map.size(), bedfile_vec.size());
     }
+
+    Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
+    Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
+    assays = Rcpp::List::create(
+        Rcpp::_["Cov"] = cov_rmat,
+        Rcpp::_["M"] = M_rmat
+    );
 }
 
-void BS::populate_matrix_cols(RegionQuery& query, int& col_n) {
-    for (std::string cpg_string : query.cpgs_in_interval) {
+void BS::populate_arma_cols(RegionQuery& query, int& col_n) {
 
+    for (std::string cpg_string : query.cpgs_in_interval) {
         BedLine parsed_bedline = parseBEDRecord(cpg_string);
         std::string cpg_id = CpGID(parsed_bedline);
         if (!cpg_map.count(cpg_id)) {
@@ -38,22 +49,16 @@ void BS::populate_matrix_cols(RegionQuery& query, int& col_n) {
             cpg_map.insert({cpg_id, n_cpgs});
         }
 
-        if (cov_matrix_cols[col_n].size() < cpg_map.size()) {
-            resize_mats(cov_matrix_cols[col_n].size() + query.cpgs_in_interval.size());
+        if (cov_mat.n_rows < cpg_map.size()) {
+            int extra_rows = cpg_map.size() - cov_mat.n_rows;
+            cov_mat.resize(cov_mat.n_rows + extra_rows, cov_mat.n_cols);
+            m_mat.resize(m_mat.n_rows + extra_rows, cov_mat.n_cols);
         }
 
-        cov_matrix_cols[col_n][cpg_map[cpg_id] - 1] = parsed_bedline.cov;
-        m_matrix_cols[col_n][cpg_map[cpg_id] - 1] = (int) std::round(parsed_bedline.cov * parsed_bedline.beta);
+        cov_mat(cpg_map[cpg_id] - 1, col_n) = parsed_bedline.cov;
+        m_mat(cpg_map[cpg_id] - 1, col_n) =  (int) std::round(parsed_bedline.cov * parsed_bedline.beta);
     }
 }
-
-void BS::resize_mats(const size_t newsize) {
-    for (int col_n = 0; col_n < cov_matrix_cols.size(); col_n++) {
-        cov_matrix_cols[col_n].resize(newsize);
-        m_matrix_cols[col_n].resize(newsize);
-    }
-}
-
 
 void BS::print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name) {
     printf("%s\n", matrix_name.c_str());
@@ -67,9 +72,10 @@ void BS::print_mat(std::vector<std::vector<int>>& matrix, const std::string& mat
 }
 
 void BS::print_BS() {
-    print_mat(cov_matrix_cols, "Cov");
-    print_mat(m_matrix_cols, "M");
-}
+    printf("Cov\n");
+    cov_mat.print();
+    printf("M\n");
+    m_mat.print();
 }
 
 const int BS::size() const {
