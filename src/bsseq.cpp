@@ -7,17 +7,15 @@ BS::BS() {
 }
 
 BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions) {
-
-    n_intervals  = 0;
     n_cpgs = 0;
     n_samples = bedfile_vec.size();
+    n_intervals = regions.size();
     sample_names = bedfile_vec;
 
     cov_mat.resize(5, bedfile_vec.size());
     m_mat.resize(5, bedfile_vec.size());
 
-    printf("n_bedfiles: %zu\n", bedfile_vec.size());
-    printf("n_intervals: %zu\n", regions.size());
+    printf("Querying %zu regions from %zu bedfiles\n", regions.size(), bedfile_vec.size());
     for (int bedfile_n = 0; bedfile_n < bedfile_vec.size(); bedfile_n++) {
         printf("File: %s\n", bedfile_vec[bedfile_n].c_str());
         MultiRegionQuery cpgs_in_file = query_intervals(bedfile_vec[bedfile_n].c_str(), regions);
