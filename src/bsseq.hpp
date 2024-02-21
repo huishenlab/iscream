@@ -23,6 +23,7 @@ private:
     int n_intervals;
     int n_cpgs;
     int n_samples;
+    std::vector<std::string> sample_names;
 
 public:
 
@@ -36,6 +37,29 @@ public:
     arma::umat cov_mat;
     arma::umat m_mat;
     Rcpp::List assays;
+    Rcpp::S4 wrap() {
+
+        // @assays
+        Rcpp::S4 bss4(std::string("BSseq"));
+        Rcpp::S4 simple_assays(std::string("SimpleAssays"));
+        Rcpp::S4 data(std::string("SimpleList"));
+        data.slot("listData") = assays;
+        simple_assays.slot("data") = data;
+        bss4.slot("assays") = simple_assays;
+
+        // @colData
+        Rcpp::S4 colData(std::string("DFrame"));
+        colData.attr("nrows") = n_samples;
+        colData.attr("rownames") = sample_names;
+        bss4.slot("colData") = colData;
+
+        // @elementMetadata
+        Rcpp::S4 elementMetadata(std::string("DFrame"));
+        elementMetadata.attr("nrows") = cpg_map.size();
+        bss4.slot("elementMetadata") = elementMetadata;
+
+        return bss4;
+    }
 };
 
 #endif /* __cplusplus */

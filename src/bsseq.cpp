@@ -11,6 +11,8 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
     n_intervals  = 0;
     n_cpgs = 0;
     n_samples = bedfile_vec.size();
+    sample_names = bedfile_vec;
+
     cov_mat.resize(5, bedfile_vec.size());
     m_mat.resize(5, bedfile_vec.size());
 
