@@ -70,15 +70,6 @@ void BS::print_BS() {
     print_mat(cov_matrix_cols, "Cov");
     print_mat(m_matrix_cols, "M");
 }
-
-BS::CpG::CpG() {
-    sample = 0;
-    encoded = 0;
-}
-
-BS::CpG::CpG(int sample_number, int encoded_value) {
-    sample = sample_number;
-    encoded = encoded_value;
 }
 
 const int BS::size() const {

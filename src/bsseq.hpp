@@ -15,13 +15,6 @@ class BS {
 
 private:
 
-    struct CpG {
-        CpG();
-        CpG(int sample_number, int encoded_value);
-        uint16_t sample;
-        uint32_t encoded;
-    };
-
     typedef std::unordered_map<std::string, int> CpGMap;
     CpGMap cpg_map;
 
