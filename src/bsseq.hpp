@@ -23,6 +23,8 @@ private:
     int n_intervals;
     int n_cpgs;
     int n_samples;
+    Rcpp::CharacterVector chrs;
+    Rcpp::IntegerVector starts;
     std::vector<std::string> sample_names;
 
 public:
@@ -38,6 +40,20 @@ public:
     arma::umat m_mat;
     Rcpp::List assays;
     Rcpp::S4 wrap() {
+        Rcpp::Function BSseq("BSseq", Rcpp::Environment::namespace_env("bsseq"));
+        Rcpp::Function GRanges("GRanges", Rcpp::Environment::namespace_env("GenomicRanges"));
+        Rcpp::Function IRanges("IRanges", Rcpp::Environment::namespace_env("IRanges"));
+        Rcpp::IntegerVector start = starts;
+        Rcpp::IntegerVector end = starts;
+        Rcpp::CharacterVector seqnames = chrs;
+        return BSseq(
+            Rcpp::_("M") = assays["M"],
+            Rcpp::_("Cov") = assays["Cov"],
+            Rcpp::_("gr") = GRanges(seqnames, IRanges(start, end))
+        );
+    }
+
+    Rcpp::S4 nobs_wrap() {
 
         // @assays
         Rcpp::S4 bss4(std::string("BSseq"));

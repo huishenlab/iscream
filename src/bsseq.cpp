@@ -47,6 +47,8 @@ void BS::populate_arma_cols(RegionQuery& query, int& col_n) {
         if (!cpg_map.count(cpg_id)) {
             n_cpgs++;
             cpg_map.insert({cpg_id, n_cpgs});
+            chrs.push_back(parsed_bedline.chr);
+            starts.push_back(parsed_bedline.start);
         }
 
         if (cov_mat.n_rows < cpg_map.size()) {
