@@ -51,10 +51,10 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, std::vector<std:
     printf("Aggregating %zu regions from %zu bedfiles\n", regions.size(), bedfiles.size());
 
     ssize_t rowsize = bedfiles.size() * regions.size();
-    std::vector<std::string> feature_col(rowsize);
-    std::vector<std::string> cell(rowsize);
-    std::vector<int> total_reads(rowsize);
-    std::vector<int> me_reads(rowsize);
+    Rcpp::CharacterVector feature_col(rowsize);
+    Rcpp::CharacterVector cell(rowsize);
+    Rcpp::NumericVector total_reads(rowsize);
+    Rcpp::NumericVector me_reads(rowsize);
 
     std::vector<RegionQuery> cpgs_in_file(0);
     int row_count = 0;
@@ -75,14 +75,15 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, std::vector<std:
     for (std::string& bedfile_name : bedfiles) {
 
         std::filesystem::path bed_path = bedfile_name;
-        cpgs_in_file = query_intervals(bedfile_name.c_str(), regions);
+        std::vector<std::string> regions_vec = Rcpp::as<std::vector<std::string>>(regions);
+        cpgs_in_file = query_intervals(bedfile_name.c_str(), regions_vec);
 
         for (RegionQuery interval : cpgs_in_file) {
             int mut_total_m = 0;
             int mut_total_cov = 0;
             aggregate(interval, mut_total_m, mut_total_cov);
             feature_col[row_count] = interval.interval_str;
-            cell[row_count] = bed_path.stem().stem();
+            cell[row_count] = bed_path.stem().stem().c_str();
             total_reads[row_count] = mut_total_cov;
             me_reads[row_count] = mut_total_m;
             row_count++;
