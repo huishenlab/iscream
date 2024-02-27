@@ -13,17 +13,20 @@ void aggregate(RegionQuery& interval, int& total_m, int& total_cov) {
     }
 }
 
+//' Aggregate CpGs within features
+//' @param bedfiles A vector of bedfile paths
+//' @param regions A vector of genomic regions
 //' @export
 // [[Rcpp::export]]
-void agg_cpgs_file(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions) {
-    printf("n_bedfiles: %zu\n", bedfile_vec.size());
+void agg_cpgs_file(std::vector<std::string>& bedfiles, std::vector<std::string>& regions) {
+    printf("n_bedfiles: %zu\n", bedfiles.size());
     printf("n_intervals: %zu\n", regions.size());
 
     FILE *scmet_matrix;
     scmet_matrix = std::fopen("scmet2.tsv", "w");
     std::vector<RegionQuery> cpgs_in_file(0);
 
-    for (std::string& bedfile_name : bedfile_vec) {
+    for (std::string& bedfile_name : bedfiles) {
 
         std::filesystem::path bed_path = bedfile_name;
         printf("Querying %s\n", bedfile_name.c_str());
@@ -39,13 +42,16 @@ void agg_cpgs_file(std::vector<std::string>& bedfile_vec, std::vector<std::strin
     fclose(scmet_matrix);
 }
 
+//' Aggregate CpGs within features
+//' @param bedfiles A vector of bedfile paths
+//' @param regions A vector of genomic regions
 //' @export
 // [[Rcpp::export]]
-Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions) {
-    printf("n_bedfiles: %zu\n", bedfile_vec.size());
+Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, std::vector<std::string>& regions) {
+    printf("n_bedfiles: %zu\n", bedfiles.size());
     printf("n_intervals: %zu\n", regions.size());
 
-    ssize_t rowsize = bedfile_vec.size() * regions.size();
+    ssize_t rowsize = bedfiles.size() * regions.size();
     std::vector<std::string> feature_col(rowsize);
     std::vector<std::string> cell(rowsize);
     std::vector<int> total_reads(rowsize);
@@ -54,7 +60,7 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfile_vec, std::vector<s
     std::vector<RegionQuery> cpgs_in_file(0);
     int row_count = 0;
 
-    for (std::string& bedfile_name : bedfile_vec) {
+    for (std::string& bedfile_name : bedfiles) {
 
         std::filesystem::path bed_path = bedfile_name;
         printf("Querying %s\n", bedfile_name.c_str());
@@ -78,6 +84,5 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfile_vec, std::vector<s
         Rcpp::Named("total_reads") = total_reads,
         Rcpp::Named("met_reads") = me_reads
     );
-
     return result;
 }
