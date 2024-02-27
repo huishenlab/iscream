@@ -3,6 +3,7 @@
 #include <cmath>
 #include <filesystem>
 #include "query.hpp"
+#include "../inst/include/indicators.hpp"
 
 void aggregate(RegionQuery& interval, int& total_m, int& total_cov) {
 
@@ -19,8 +20,8 @@ void aggregate(RegionQuery& interval, int& total_m, int& total_cov) {
 //' @export
 // [[Rcpp::export]]
 void agg_cpgs_file(std::vector<std::string>& bedfiles, std::vector<std::string>& regions) {
-    printf("n_bedfiles: %zu\n", bedfiles.size());
-    printf("n_intervals: %zu\n", regions.size());
+
+    printf("Aggregating %zu regions from %zu bedfiles\n", regions.size(), bedfiles.size());
 
     FILE *scmet_matrix;
     scmet_matrix = std::fopen("scmet2.tsv", "w");
@@ -29,7 +30,6 @@ void agg_cpgs_file(std::vector<std::string>& bedfiles, std::vector<std::string>&
     for (std::string& bedfile_name : bedfiles) {
 
         std::filesystem::path bed_path = bedfile_name;
-        printf("Querying %s\n", bedfile_name.c_str());
         cpgs_in_file = query_intervals(bedfile_name.c_str(), regions);
 
         for (RegionQuery interval : cpgs_in_file) {
@@ -48,8 +48,7 @@ void agg_cpgs_file(std::vector<std::string>& bedfiles, std::vector<std::string>&
 //' @export
 // [[Rcpp::export]]
 Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, std::vector<std::string>& regions) {
-    printf("n_bedfiles: %zu\n", bedfiles.size());
-    printf("n_intervals: %zu\n", regions.size());
+    printf("Aggregating %zu regions from %zu bedfiles\n", regions.size(), bedfiles.size());
 
     ssize_t rowsize = bedfiles.size() * regions.size();
     std::vector<std::string> feature_col(rowsize);
@@ -60,10 +59,22 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, std::vector<std:
     std::vector<RegionQuery> cpgs_in_file(0);
     int row_count = 0;
 
+    indicators::ProgressBar bar {
+        indicators::option::BarWidth{50},
+        indicators::option::Start{"["},
+        indicators::option::Fill{"°"},
+        indicators::option::Lead{" "},
+        indicators::option::Remainder{" "},
+        indicators::option::End{"]"},
+        indicators::option::ShowPercentage{true},
+        indicators::option::ForegroundColor{indicators::Color::cyan},
+        indicators::option::FontStyles{std::vector<indicators::FontStyle>{indicators::FontStyle::bold}}
+    };
+
+    float completed_beds = 0;
     for (std::string& bedfile_name : bedfiles) {
 
         std::filesystem::path bed_path = bedfile_name;
-        printf("Querying %s\n", bedfile_name.c_str());
         cpgs_in_file = query_intervals(bedfile_name.c_str(), regions);
 
         for (RegionQuery interval : cpgs_in_file) {
@@ -75,6 +86,14 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, std::vector<std:
             total_reads[row_count] = mut_total_cov;
             me_reads[row_count] = mut_total_m;
             row_count++;
+        }
+        completed_beds++;
+        if (completed_beds < bedfiles.size()) {
+            bar.set_option(indicators::option::PostfixText{bedfile_name});
+            bar.set_progress((int) std::round(completed_beds / bedfiles.size() * 100));
+        } else {
+            bar.set_option(indicators::option::PostfixText{"Done!"});
+            bar.set_progress(100);
         }
     }
 

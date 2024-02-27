@@ -1,5 +1,6 @@
 #include <cstdio>
 #include "bsseq.hpp"
+#include "../inst/include/indicators.hpp"
 
 BS::BS() {
     n_intervals = 0;
@@ -12,15 +13,36 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
     n_intervals = regions.size();
     sample_names = bedfile_vec;
 
+    indicators::ProgressBar bar {
+        indicators::option::BarWidth{50},
+        indicators::option::Start{"["},
+        indicators::option::Fill{"°"},
+        indicators::option::Lead{" "},
+        indicators::option::Remainder{" "},
+        indicators::option::End{"]"},
+        indicators::option::ShowPercentage{true},
+        indicators::option::ForegroundColor{indicators::Color::cyan},
+        indicators::option::FontStyles{std::vector<indicators::FontStyle>{indicators::FontStyle::bold}}
+    };
+
     cov_mat.resize(5, bedfile_vec.size());
     m_mat.resize(5, bedfile_vec.size());
 
+    float completed_beds = 0;
     printf("Querying %zu regions from %zu bedfiles\n", regions.size(), bedfile_vec.size());
+    bar.set_progress(0);
     for (int bedfile_n = 0; bedfile_n < bedfile_vec.size(); bedfile_n++) {
-        printf("File: %s\n", bedfile_vec[bedfile_n].c_str());
         MultiRegionQuery cpgs_in_file = query_intervals(bedfile_vec[bedfile_n].c_str(), regions);
         for (RegionQuery cpgs_in_interval : cpgs_in_file) {
             populate_arma_cols(cpgs_in_interval, bedfile_n);
+        }
+        completed_beds++;
+        if (completed_beds < bedfile_vec.size()) {
+            bar.set_option(indicators::option::PostfixText{bedfile_vec[bedfile_n]});
+            bar.set_progress((int) std::round(completed_beds / bedfile_vec.size() * 100));
+        } else {
+            bar.set_option(indicators::option::PostfixText{"Done: " + std::to_string(cpg_map.size()) + " CpGs found!"});
+            bar.set_progress(100);
         }
     }
 
