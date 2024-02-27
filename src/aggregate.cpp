@@ -45,9 +45,10 @@ void agg_cpgs_file(std::vector<std::string>& bedfiles, std::vector<std::string>&
 //' Aggregate CpGs within features
 //' @param bedfiles A vector of bedfile paths
 //' @param regions A vector of genomic regions
+//' @param region_rownames Whether to set rownames to the regions
 //' @export
 // [[Rcpp::export]]
-Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, std::vector<std::string>& regions) {
+Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, bool region_rownames = false) {
     printf("Aggregating %zu regions from %zu bedfiles\n", regions.size(), bedfiles.size());
     ssize_t rowsize = bedfiles.size() * regions.size();
     Rcpp::CharacterVector feature_col(rowsize);
@@ -103,5 +104,10 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, std::vector<std:
         Rcpp::Named("total_reads") = total_reads,
         Rcpp::Named("met_reads") = me_reads
     );
+
+    if (region_rownames) {
+        result.attr("row.names") = feature_col;
+    }
+
     return result;
 }

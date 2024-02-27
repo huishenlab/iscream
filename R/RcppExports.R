@@ -6,9 +6,13 @@ agg_cpgs_file <- function(bedfile_vec, regions) {
     invisible(.Call(`_iscream_agg_cpgs_file`, bedfile_vec, regions))
 }
 
+#' Aggregate CpGs within features
+#' @param bedfiles A vector of bedfile paths
+#' @param regions A vector of genomic regions
+#' @param region_rownames Whether to set rownames to the regions
 #' @export
-agg_cpgs_df <- function(bedfile_vec, regions) {
-    .Call(`_iscream_agg_cpgs_df`, bedfile_vec, regions)
+agg_cpgs_df <- function(bedfiles, regions, region_rownames = FALSE) {
+    .Call(`_iscream_agg_cpgs_df`, bedfiles, regions, region_rownames)
 }
 
 #' Beta value decoder

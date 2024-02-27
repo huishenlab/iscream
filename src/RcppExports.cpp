@@ -24,14 +24,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // agg_cpgs_df
-Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions);
-RcppExport SEXP _iscream_agg_cpgs_df(SEXP bedfile_vecSEXP, SEXP regionsSEXP) {
+Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, bool region_rownames);
+RcppExport SEXP _iscream_agg_cpgs_df(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP region_rownamesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::vector<std::string>& >::type bedfile_vec(bedfile_vecSEXP);
-    Rcpp::traits::input_parameter< std::vector<std::string>& >::type regions(regionsSEXP);
-    rcpp_result_gen = Rcpp::wrap(agg_cpgs_df(bedfile_vec, regions));
+    Rcpp::traits::input_parameter< std::vector<std::string>& >::type bedfiles(bedfilesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector& >::type regions(regionsSEXP);
+    Rcpp::traits::input_parameter< bool >::type region_rownames(region_rownamesSEXP);
+    rcpp_result_gen = Rcpp::wrap(agg_cpgs_df(bedfiles, regions, region_rownames));
     return rcpp_result_gen;
 END_RCPP
 }
