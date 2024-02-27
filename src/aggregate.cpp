@@ -49,7 +49,6 @@ void agg_cpgs_file(std::vector<std::string>& bedfiles, std::vector<std::string>&
 // [[Rcpp::export]]
 Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, std::vector<std::string>& regions) {
     printf("Aggregating %zu regions from %zu bedfiles\n", regions.size(), bedfiles.size());
-
     ssize_t rowsize = bedfiles.size() * regions.size();
     Rcpp::CharacterVector feature_col(rowsize);
     Rcpp::CharacterVector cell(rowsize);
@@ -99,7 +98,7 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, std::vector<std:
     }
 
     Rcpp::DataFrame result = Rcpp::DataFrame::create(
-        Rcpp::Named("Feature") = feature_col,
+        Rcpp::Named("Feature") = (regions.hasAttribute("names") ? (Rcpp::CharacterVector) regions.names() : feature_col),
         Rcpp::Named("Cell") = cell,
         Rcpp::Named("total_reads") = total_reads,
         Rcpp::Named("met_reads") = me_reads
