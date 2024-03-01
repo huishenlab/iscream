@@ -5,21 +5,29 @@ let
     R
 
   # Imports
+    # R
+    data_table
     fs
+    Matrix
+
+    # Rcpp
     Rcpp
     RcppArmadillo
-    Matrix
-    data_table
 
   # Suggests
+    biscuiteer
     bsseq
     DelayedArray
     GenomicRanges
 
   # dev dependencies
-    pkgdown
+    bench
+    lobstr
     pkgbuild
+    pkgdown
+    RcppClock
     roxygen2
+    styler
   ];
 
   _libs = with pkgs; [
@@ -33,11 +41,13 @@ let
       _libs
     ];
     shellHook = ''
+      export I_R=${pkgs.R}/lib/R/include/
       export I_RCPP=${rPackages.Rcpp}/library/Rcpp/include/
       export I_ARMA=${rPackages.RcppArmadillo}/library/RcppArmadillo/include/
+      export I_CLOCK=${rPackages.RcppClock}/library/RcppClock/include/
+
       export I_HTSLIB=${pkgs.htslib}/include/
       export L_HTSLIB=${pkgs.htslib}/lib/libhts.a
-      export I_R=${pkgs.R}/lib/R/include/
       export L_CURL=${pkgs.curl.out}/lib/libcurl.so
 
       mkdir -p "$HOME/.R"
@@ -47,10 +57,11 @@ let
       clang
       %c -std=c11
       %cpp -std=c++2a
+      -I$I_R
       -I$I_RCPP
       -I$I_ARMA
-      -I$I_R
       -I$I_HTSLIB
+      -I$I_CLOCK
       EOF
       '';
   }
