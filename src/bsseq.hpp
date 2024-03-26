@@ -49,7 +49,8 @@ public:
         return BSseq(
             Rcpp::_("M") = assays["M"],
             Rcpp::_("Cov") = assays["Cov"],
-            Rcpp::_("gr") = GRanges(seqnames, IRanges(start, end))
+            Rcpp::_("gr") = GRanges(seqnames, IRanges(start, end)),
+            Rcpp::_("sampleNames") = sample_names
         );
     }
 

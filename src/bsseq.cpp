@@ -1,5 +1,6 @@
 #include <cstdio>
 #include "bsseq.hpp"
+#include <filesystem>
 #include "../inst/include/indicators.hpp"
 
 BS::BS() {
@@ -55,6 +56,13 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
 
     Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
     Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
+    for (int i = 0; i < sample_names.size(); i++) {
+        std::filesystem::path sample_path = sample_names[i];
+        sample_names[i] = sample_path.extension() == ".gz" ? sample_path.stem().stem().string() : sample_path.stem().string();
+    }
+
+    Rcpp::colnames(cov_rmat) = Rcpp::wrap(sample_names);
+    Rcpp::colnames(M_rmat) = Rcpp::wrap(sample_names);
     assays = Rcpp::List::create(
         Rcpp::_["Cov"] = cov_rmat,
         Rcpp::_["M"] = M_rmat
