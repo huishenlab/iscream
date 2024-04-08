@@ -77,6 +77,7 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, Rcpp::CharacterV
         std::filesystem::path bed_path = bedfile_name;
         std::vector<std::string> regions_vec = Rcpp::as<std::vector<std::string>>(regions);
         cpgs_in_file = query_intervals(bedfile_name.c_str(), regions_vec);
+        int cpg_sum = 0; // to check for empties
 
         for (RegionQuery interval : cpgs_in_file) {
             int mut_total_m = 0;
@@ -87,6 +88,12 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, Rcpp::CharacterV
             total_reads[row_count] = mut_total_cov;
             me_reads[row_count] = mut_total_m;
             row_count++;
+            cpg_sum += interval.cpgs_in_interval.size();
+        }
+
+        printf("sum: %d\\n", cpg_sum);
+        if (cpg_sum == 0) {
+            Rcpp::warning("No CpGs found in %s. Check the region vector if CpGs are expected.", bedfile_name);
         }
         completed_beds++;
         if (completed_beds < bedfiles.size()) {
