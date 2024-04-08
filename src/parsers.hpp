@@ -3,7 +3,6 @@
 
 # if defined __cplusplus
 
-#include <Rcpp.h>
 #include <string>
 #include "encoders.hpp"
 

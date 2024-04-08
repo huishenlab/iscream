@@ -4,7 +4,6 @@
 #if defined __cplusplus
 
 #include "../inst/include/iscream_types.h"
-#include <Rcpp.h>
 #include <string>
 #include "parsers.hpp"
 
