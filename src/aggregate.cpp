@@ -8,6 +8,11 @@
 #include <progress.hpp>
 #include <progress_bar.hpp>
 
+// Protect against compilers without OpenMP
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 void aggregate(RegionQuery& interval, int& total_m, int& total_cov) {
 
     for (std::string& each_cpg : interval.cpgs_in_interval) {
@@ -49,9 +54,14 @@ void agg_cpgs_file(std::vector<std::string>& bedfiles, std::vector<std::string>&
 //' @param bedfiles A vector of bedfile paths
 //' @param regions A vector of genomic regions
 //' @param region_rownames Whether to set rownames to the regions
+//' @param nthreads Number of cores to use. See details.
+//'
+//' @details
+//' The optimal number of threads depends on the number of bedfiles.
+//'
 //' @export
 // [[Rcpp::export]]
-Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, bool region_rownames = false) {
+Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, bool region_rownames = false, int nthreads = 1) {
     printf("Aggregating %zu regions from %zu bedfiles\n", regions.size(), bedfiles.size());
     ssize_t rowsize = bedfiles.size() * regions.size();
     Rcpp::CharacterVector feature_col(rowsize);
@@ -59,17 +69,21 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, Rcpp::CharacterV
     Rcpp::NumericVector total_reads(rowsize);
     Rcpp::NumericVector me_reads(rowsize);
 
-    std::vector<RegionQuery> cpgs_in_file(0);
-    int row_count = 0;
+    std::vector<std::string> regions_vec = Rcpp::as<std::vector<std::string>>(regions);
     Progress bar(bedfiles.size(), true);
+    int completed_beds = 0;
 
-    for (std::string& bedfile_name : bedfiles) {
-
+    #if defined(_OPENMP)
+        #pragma omp parallel for num_threads(nthreads)
+    #endif
+    for (int bedfile_n = 0; bedfile_n < bedfiles.size(); bedfile_n++) {
+        std::vector<RegionQuery> cpgs_in_file(0);
+        std::string bedfile_name = bedfiles[bedfile_n];
         std::filesystem::path bed_path = bedfile_name;
-        std::vector<std::string> regions_vec = Rcpp::as<std::vector<std::string>>(regions);
         cpgs_in_file = query_intervals(bedfile_name.c_str(), regions_vec);
         int empty_cpg_count = 0;
 
+        int row_count = bedfile_n * regions_vec.size();
         for (RegionQuery interval : cpgs_in_file) {
             int mut_total_m = 0;
             int mut_total_cov = 0;
