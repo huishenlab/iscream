@@ -3,7 +3,10 @@
 #include <cmath>
 #include <filesystem>
 #include "query.hpp"
-#include "../inst/include/indicators.hpp"
+
+// [[Rcpp::depends(RcppProgress)]]
+#include <progress.hpp>
+#include <progress_bar.hpp>
 
 void aggregate(RegionQuery& interval, int& total_m, int& total_cov) {
 
@@ -58,20 +61,8 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, Rcpp::CharacterV
 
     std::vector<RegionQuery> cpgs_in_file(0);
     int row_count = 0;
+    Progress bar(bedfiles.size(), true);
 
-    indicators::ProgressBar bar {
-        indicators::option::BarWidth{50},
-        indicators::option::Start{"["},
-        indicators::option::Fill{"°"},
-        indicators::option::Lead{" "},
-        indicators::option::Remainder{" "},
-        indicators::option::End{"]"},
-        indicators::option::ShowPercentage{true},
-        indicators::option::ForegroundColor{indicators::Color::cyan},
-        indicators::option::FontStyles{std::vector<indicators::FontStyle>{indicators::FontStyle::bold}}
-    };
-
-    float completed_beds = 0;
     for (std::string& bedfile_name : bedfiles) {
 
         std::filesystem::path bed_path = bedfile_name;
@@ -94,14 +85,7 @@ Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, Rcpp::CharacterV
         if (empty_cpg_count == 0) {
             Rcpp::warning("No CpGs found in %s. Check the region vector if CpGs are expected.", bedfile_name);
         }
-        completed_beds++;
-        if (completed_beds < bedfiles.size()) {
-            bar.set_option(indicators::option::PostfixText{bedfile_name});
-            bar.set_progress((int) std::round(completed_beds / bedfiles.size() * 100));
-        } else {
-            bar.set_option(indicators::option::PostfixText{"Done!"});
-            bar.set_progress(100);
-        }
+        bar.increment();
     }
 
     Rcpp::DataFrame result = Rcpp::DataFrame::create(
