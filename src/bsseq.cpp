@@ -93,7 +93,3 @@ void BS::print_BS() {
     printf("M\n");
     m_mat.print();
 }
-
-const int BS::size() const {
-    return n_intervals;
-}

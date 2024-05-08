@@ -34,7 +34,6 @@ public:
     void populate_arma_cols(RegionQuery& query, int& row_n);
     void print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name);
     void print_BS();
-    const int size() const;
 
     arma::umat cov_mat;
     arma::umat m_mat;
