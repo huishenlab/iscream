@@ -70,6 +70,13 @@ vencoder <- function(beta_col, cov_col) {
     .Call(`_iscream_vencoder`, beta_col, cov_col)
 }
 
+#' Get the numebr of available threads
+#' @param verbose Whether to be verbose on available omp threads
+#' @export
+get_omp_threads <- function(verbose) {
+    .Call(`_iscream_get_omp_threads`, verbose)
+}
+
 #' Query a genomic interval from a opened htsFile and return the reads in it
 #' @param region Genomic region string in the form "chr:start-end"
 #' @param bedFile The opened htslib bed file stream

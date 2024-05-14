@@ -105,6 +105,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_omp_threads
+int get_omp_threads(bool verbose);
+RcppExport SEXP _iscream_get_omp_threads(SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_omp_threads(verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
 // query_interval
 std::vector<std::vector<std::string>> query_interval(std::vector<std::string>& bedfiles, std::string& region);
 RcppExport SEXP _iscream_query_interval(SEXP bedfilesSEXP, SEXP regionSEXP) {
@@ -130,6 +141,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_vdecoder", (DL_FUNC) &_iscream_vdecoder, 2},
     {"_iscream_vdouble_decoder", (DL_FUNC) &_iscream_vdouble_decoder, 2},
     {"_iscream_vencoder", (DL_FUNC) &_iscream_vencoder, 2},
+    {"_iscream_get_omp_threads", (DL_FUNC) &_iscream_get_omp_threads, 1},
     {"_iscream_query_interval", (DL_FUNC) &_iscream_query_interval, 2},
     {NULL, NULL, 0}
 };
