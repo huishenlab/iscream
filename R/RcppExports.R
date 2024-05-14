@@ -2,8 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @export
-agg_cpgs_file <- function(bedfile_vec, regions) {
-    invisible(.Call(`_iscream_agg_cpgs_file`, bedfile_vec, regions))
 }
 
 #' Sum CpGs M values and coverage

@@ -35,33 +35,6 @@ void mean(RegionQuery& interval, float& mut_beta_avg, float& mut_cov_avg, bool m
     mut_beta_avg = n_cpg == 0 ? 0.0 : mut_beta_sum / n_cpg;
     mut_cov_avg = n_cpg == 0 ? 0 : mut_cov_sum / n_cpg;
 }
-//' Aggregate CpGs within features
-//' @param bedfiles A vector of bedfile paths
-//' @param regions A vector of genomic regions
-//' @export
-// [[Rcpp::export]]
-void agg_cpgs_file(std::vector<std::string>& bedfiles, std::vector<std::string>& regions) {
-
-    printf("Aggregating %zu regions from %zu bedfiles\n", regions.size(), bedfiles.size());
-
-    FILE *scmet_matrix;
-    scmet_matrix = std::fopen("scmet2.tsv", "w");
-    std::vector<RegionQuery> cpgs_in_file(0);
-
-    for (std::string& bedfile_name : bedfiles) {
-
-        std::filesystem::path bed_path = bedfile_name;
-        cpgs_in_file = query_intervals(bedfile_name.c_str(), regions);
-
-        for (RegionQuery interval : cpgs_in_file) {
-            int total_m = 0;
-            int total_cov = 0;
-            aggregate(interval, total_m, total_cov);
-            fprintf(scmet_matrix, "%s\t%s\t%d\t%d\n", interval.interval_str.c_str(), bed_path.stem().stem().c_str(), total_cov, total_m);
-        }
-    }
-    fclose(scmet_matrix);
-}
 
 //' Apply a function over CpGs within features
 //' @param bedfiles A vector of bedfile paths
