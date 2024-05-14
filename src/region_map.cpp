@@ -13,7 +13,7 @@
 #include <omp.h>
 #endif
 
-//' Sum CpGs M values and coverage
+// Sum CpGs M values and coverage
 void aggregate(RegionQuery& interval, float& total_beta, float& total_cov, bool mval) {
 
     for (std::string& each_cpg : interval.cpgs_in_interval) {
@@ -23,7 +23,7 @@ void aggregate(RegionQuery& interval, float& total_beta, float& total_cov, bool 
     }
 }
 
-//' Get mean of betas and coverage
+// Get mean of betas and coverage
 void mean(RegionQuery& interval, float& mut_beta_avg, float& mut_cov_avg, bool mval) {
 
     float mut_beta_sum = 0;

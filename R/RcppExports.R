@@ -4,12 +4,6 @@
 #' @export
 }
 
-#' Sum CpGs M values and coverage
-NULL
-
-#' Get mean of betas and coverage
-NULL
-
 #' Apply a function over CpGs within features
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector of genomic regions
