@@ -51,18 +51,23 @@ void agg_cpgs_file(std::vector<std::string>& bedfiles, std::vector<std::string>&
     fclose(scmet_matrix);
 }
 
-//' Aggregate CpGs within features
+//' Apply a function over CpGs within features
 //' @param bedfiles A vector of bedfile paths
 //' @param regions A vector of genomic regions
-//' @param region_rownames Whether to set rownames to the regions
+//' @param fun One of the supported functions to apply over the CpGs in the
+//' regions: `"aggregate"`, `"average"`.
+//' @param mval Calculates M values when TRUE, use beta values when FALSE
+//' @param region_rownames Whether to set rownames to the regions strings
 //' @param nthreads Number of cores to use. See details.
 //'
 //' @details
-//' The optimal number of threads depends on the number of bedfiles.
+//' The optimal number of threads depends on the number of bedfiles, but is set
+//' to half the available OpenMP cores. See `?get_threads` for more details. It
+//' can be manaully set with `set_threads()`.
 //'
 //' @export
 // [[Rcpp::export]]
-Rcpp::DataFrame cpg_apply(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, bool calculate_m, bool region_rownames = false, int nthreads = 1) {
+Rcpp::DataFrame cpg_apply(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, std::string fun, bool mval, bool region_rownames = false, int nthreads = 1) {
     printf("Aggregating %zu regions from %zu bedfiles\n", regions.size(), bedfiles.size());
     ssize_t rowsize = bedfiles.size() * regions.size();
     Rcpp::CharacterVector feature_col(rowsize);
@@ -70,10 +75,14 @@ Rcpp::DataFrame cpg_apply(std::vector<std::string>& bedfiles, Rcpp::CharacterVec
     Rcpp::NumericVector total_reads(rowsize);
     Rcpp::NumericVector me_reads(rowsize);
 
+    auto f = aggregate;
+    if (fun == "average") {
+        f = mean;
+    }
+
     std::vector<std::string> regions_vec = Rcpp::as<std::vector<std::string>>(regions);
     Progress bar(bedfiles.size(), true);
     int completed_beds = 0;
-
     #if defined(_OPENMP)
         #pragma omp parallel for num_threads(nthreads)
     #endif
@@ -88,12 +97,13 @@ Rcpp::DataFrame cpg_apply(std::vector<std::string>& bedfiles, Rcpp::CharacterVec
         for (RegionQuery interval : cpgs_in_file) {
             float mut_m_val = 0;
             float mut_cov_val = 0;
-            aggregate(interval, mut_m_val, mut_cov_val, calculate_m);
+            f(interval, mut_m_val, mut_cov_val, mval);
 
             feature_col[row_count] = interval.interval_str;
             cell[row_count] = bed_path.stem().stem().c_str();
-            total_reads[row_count] = mut_total_cov;
-            me_reads[row_count] = mut_total_m;
+            total_reads[row_count] = mut_cov_val;
+            me_reads[row_count] = mut_m_val;
+
             row_count++;
             empty_cpg_count += interval.cpgs_in_interval.size();
         }
