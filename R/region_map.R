@@ -5,13 +5,14 @@
 #' @param befiles A vector of bedfile paths
 #' @param regions A vector of genomic regions strings
 #' @param fun Function to apply over the region. See details.
-#' @param mval Whether to calculate the m value (coverage \eqn{$\times$ beta})
+#' @param mval Whether to calculate the M value (coverage \eqn{\times \beta})
+#' or use the beta value
 #' when applying the function.
 #' @details
-#' Available function:
-#' - "aggregate"` sums the values in the region with aggregated beta values if
+#' Available functions:
+#' - `"aggregate"` sums the values in the region with aggregated beta values if
 #' `mval =` FALSE and aggregated M values if `mval =` TRUE
-#' - "average"` averages the values in the region with average beta values if
+#' - `"average"` averages the values in the region with average beta values if
 #' `mval =` FALSE and average M values if `mval =` TRUE
 #' @importFrom fs file_exists
 #' @return A data.frame

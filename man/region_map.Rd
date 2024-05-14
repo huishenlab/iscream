@@ -11,7 +11,8 @@ region_map(bedfiles, regions, fun = "aggregate", mval = TRUE)
 
 \item{fun}{Function to apply over the region. See details.}
 
-\item{mval}{Whether to calculate the m value (coverage \eqn{$\times$ beta})
+\item{mval}{Whether to calculate the M value (coverage \eqn{\times \beta})
+or use the beta value
 when applying the function.}
 
 \item{befiles}{A vector of bedfile paths}
@@ -24,9 +25,11 @@ Run a function on the CpGs in bedfiles across genomic regions. Currently
 supported functions are aggregate, average, and ...
 }
 \details{
-Available function:
+Available functions:
 \itemize{
-\item "aggregate"\verb{sums the values in the region with aggregated beta values if}mval =\verb{FALSE and aggregated M values if}mval =` TRUE
-\item "average"\verb{averages the values in the region with average beta values if}mval =\verb{FALSE and average M values if}mval =` TRUE
+\item \code{"aggregate"} sums the values in the region with aggregated beta values if
+\verb{mval =} FALSE and aggregated M values if \verb{mval =} TRUE
+\item \code{"average"} averages the values in the region with average beta values if
+\verb{mval =} FALSE and average M values if \verb{mval =} TRUE
 }
 }

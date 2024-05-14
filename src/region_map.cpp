@@ -37,6 +37,8 @@ void mean(RegionQuery& interval, float& mut_beta_avg, float& mut_cov_avg, bool m
 }
 
 //' Apply a function over CpGs within features
+//' This function should be called from `region_map()` since there are few
+//' sanity checks on the C++ side.
 //' @param bedfiles A vector of bedfile paths
 //' @param regions A vector of genomic regions
 //' @param fun One of the supported functions to apply over the CpGs in the
