@@ -97,10 +97,8 @@ Rcpp::DataFrame cpg_apply(std::vector<std::string>& bedfiles, Rcpp::CharacterVec
             row_count++;
             empty_cpg_count += interval.cpgs_in_interval.size();
         }
-
-        if (empty_cpg_count == 0) {
-            Rcpp::warning("No CpGs found in %s. Check the region vector if CpGs are expected.", bedfile_name);
-        }
+        // TODO: thread-safe way to warn when no cpgs are found in interval.
+        // Lots of warnings from multiple threads cause stack overflow
         bar.increment();
     }
 
