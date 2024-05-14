@@ -36,5 +36,5 @@ region_map <- function(bedfiles, regions, fun = "aggregate", mval = TRUE) {
   }
 
   n_threads <- getOption("iscream.threads")
-  cpg_apply(bedfiles, regions, fun, mval, nthreads = n_threads)
+  Cpp_region_map(bedfiles, regions, fun, mval, nthreads = n_threads)
 }

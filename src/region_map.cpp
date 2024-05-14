@@ -54,7 +54,7 @@ void mean(RegionQuery& interval, float& mut_beta_avg, float& mut_cov_avg, bool m
 //'
 //' @export
 // [[Rcpp::export]]
-Rcpp::DataFrame cpg_apply(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, std::string fun, bool mval, bool region_rownames = false, int nthreads = 1) {
+Rcpp::DataFrame Cpp_region_map(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, std::string fun, bool mval, bool region_rownames = false, int nthreads = 1) {
     printf("Aggregating %zu regions from %zu bedfiles\n", regions.size(), bedfiles.size());
     ssize_t rowsize = bedfiles.size() * regions.size();
     Rcpp::CharacterVector feature_col(rowsize);

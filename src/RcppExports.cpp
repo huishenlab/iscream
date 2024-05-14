@@ -120,9 +120,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cpg_apply
-Rcpp::DataFrame cpg_apply(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, std::string fun, bool mval, bool region_rownames, int nthreads);
-RcppExport SEXP _iscream_cpg_apply(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP funSEXP, SEXP mvalSEXP, SEXP region_rownamesSEXP, SEXP nthreadsSEXP) {
+// Cpp_region_map
+Rcpp::DataFrame Cpp_region_map(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, std::string fun, bool mval, bool region_rownames, int nthreads);
+RcppExport SEXP _iscream_Cpp_region_map(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP funSEXP, SEXP mvalSEXP, SEXP region_rownamesSEXP, SEXP nthreadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -132,7 +132,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type mval(mvalSEXP);
     Rcpp::traits::input_parameter< bool >::type region_rownames(region_rownamesSEXP);
     Rcpp::traits::input_parameter< int >::type nthreads(nthreadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpg_apply(bedfiles, regions, fun, mval, region_rownames, nthreads));
+    rcpp_result_gen = Rcpp::wrap(Cpp_region_map(bedfiles, regions, fun, mval, region_rownames, nthreads));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -149,7 +149,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_vencoder", (DL_FUNC) &_iscream_vencoder, 2},
     {"_iscream_get_omp_threads", (DL_FUNC) &_iscream_get_omp_threads, 1},
     {"_iscream_query_interval", (DL_FUNC) &_iscream_query_interval, 2},
-    {"_iscream_cpg_apply", (DL_FUNC) &_iscream_cpg_apply, 6},
+    {"_iscream_Cpp_region_map", (DL_FUNC) &_iscream_Cpp_region_map, 6},
     {NULL, NULL, 0}
 };
 

@@ -110,8 +110,8 @@ query_interval <- function(bedfiles, region) {
 #' can be manaully set with `set_threads()`.
 #'
 #' @export
-cpg_apply <- function(bedfiles, regions, fun, mval, region_rownames = FALSE, nthreads = 1L) {
-    .Call(`_iscream_cpg_apply`, bedfiles, regions, fun, mval, region_rownames, nthreads)
+Cpp_region_map <- function(bedfiles, regions, fun, mval, region_rownames = FALSE, nthreads = 1L) {
+    .Call(`_iscream_Cpp_region_map`, bedfiles, regions, fun, mval, region_rownames, nthreads)
 }
 
 }
