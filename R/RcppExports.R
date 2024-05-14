@@ -4,25 +4,6 @@
 #' @export
 }
 
-#' Apply a function over CpGs within features
-#' @param bedfiles A vector of bedfile paths
-#' @param regions A vector of genomic regions
-#' @param fun One of the supported functions to apply over the CpGs in the
-#' regions: `"aggregate"`, `"average"`.
-#' @param mval Calculates M values when TRUE, use beta values when FALSE
-#' @param region_rownames Whether to set rownames to the regions strings
-#' @param nthreads Number of cores to use. See details.
-#'
-#' @details
-#' The optimal number of threads depends on the number of bedfiles, but is set
-#' to half the available OpenMP cores. See `?get_threads` for more details. It
-#' can be manaully set with `set_threads()`.
-#'
-#' @export
-cpg_apply <- function(bedfiles, regions, fun, mval, region_rownames = FALSE, nthreads = 1L) {
-    .Call(`_iscream_cpg_apply`, bedfiles, regions, fun, mval, region_rownames, nthreads)
-}
-
 #' Beta value decoder
 #' @param encoded The bit-packed beta and cov Int
 #' @return The beta value
@@ -108,6 +89,25 @@ NULL
 #' @export
 query_interval <- function(bedfiles, region) {
     .Call(`_iscream_query_interval`, bedfiles, region)
+}
+
+#' Apply a function over CpGs within features
+#' @param bedfiles A vector of bedfile paths
+#' @param regions A vector of genomic regions
+#' @param fun One of the supported functions to apply over the CpGs in the
+#' regions: `"aggregate"`, `"average"`.
+#' @param mval Calculates M values when TRUE, use beta values when FALSE
+#' @param region_rownames Whether to set rownames to the regions strings
+#' @param nthreads Number of cores to use. See details.
+#'
+#' @details
+#' The optimal number of threads depends on the number of bedfiles, but is set
+#' to half the available OpenMP cores. See `?get_threads` for more details. It
+#' can be manaully set with `set_threads()`.
+#'
+#' @export
+cpg_apply <- function(bedfiles, regions, fun, mval, region_rownames = FALSE, nthreads = 1L) {
+    .Call(`_iscream_cpg_apply`, bedfiles, regions, fun, mval, region_rownames, nthreads)
 }
 
 }

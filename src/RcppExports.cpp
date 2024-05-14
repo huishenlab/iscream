@@ -18,9 +18,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::vector<std::string>& >::type regions(regionsSEXP);
 END_RCPP
 }
-// agg_cpgs_df
-Rcpp::DataFrame agg_cpgs_df(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, bool region_rownames);
-RcppExport SEXP _iscream_agg_cpgs_df(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP region_rownamesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -123,12 +120,27 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpg_apply
+Rcpp::DataFrame cpg_apply(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, std::string fun, bool mval, bool region_rownames, int nthreads);
+RcppExport SEXP _iscream_cpg_apply(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP funSEXP, SEXP mvalSEXP, SEXP region_rownamesSEXP, SEXP nthreadsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<std::string>& >::type bedfiles(bedfilesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector& >::type regions(regionsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type fun(funSEXP);
+    Rcpp::traits::input_parameter< bool >::type mval(mvalSEXP);
+    Rcpp::traits::input_parameter< bool >::type region_rownames(region_rownamesSEXP);
+    Rcpp::traits::input_parameter< int >::type nthreads(nthreadsSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpg_apply(bedfiles, regions, fun, mval, region_rownames, nthreads));
+    return rcpp_result_gen;
+END_RCPP
+}
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_iscream_cpg_apply", (DL_FUNC) &_iscream_cpg_apply, 6},
     {"_iscream_decode_beta", (DL_FUNC) &_iscream_decode_beta, 1},
     {"_iscream_decode_cov", (DL_FUNC) &_iscream_decode_cov, 1},
     {"_iscream_decode_m", (DL_FUNC) &_iscream_decode_m, 1},
@@ -137,6 +149,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_vencoder", (DL_FUNC) &_iscream_vencoder, 2},
     {"_iscream_get_omp_threads", (DL_FUNC) &_iscream_get_omp_threads, 1},
     {"_iscream_query_interval", (DL_FUNC) &_iscream_query_interval, 2},
+    {"_iscream_cpg_apply", (DL_FUNC) &_iscream_cpg_apply, 6},
     {NULL, NULL, 0}
 };
 
