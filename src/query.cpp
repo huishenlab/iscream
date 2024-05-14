@@ -8,6 +8,10 @@
 std::vector<std::string> tabix_query(const std::string& region, htsFile* bedFile, tbx_t* tbx) {
     std::vector<std::string> reads;
     hts_itr_t* iter = tbx_itr_querys(tbx, region.c_str());
+    // TODO: catch errors here
+    // its currently just returning nothing if the region string is invalid
+    // Rcpp::stop causes a core dump instead of exiting gracefully because of
+    // openmp threads dying before being destroyed
     kstring_t str = {0, 0, 0};
 
     while (tbx_itr_next(bedFile, tbx, iter, &str) >= 0) {
