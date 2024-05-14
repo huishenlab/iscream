@@ -23,6 +23,18 @@ void aggregate(RegionQuery& interval, float& total_beta, float& total_cov, bool 
     }
 }
 
+//' Get mean of betas and coverage
+void mean(RegionQuery& interval, float& mut_beta_avg, float& mut_cov_avg, bool mval) {
+
+    float mut_beta_sum = 0;
+    float mut_cov_sum = 0;
+    int n_cpg = interval.cpgs_in_interval.size();
+
+    aggregate(interval, mut_beta_sum, mut_cov_sum, mval);
+
+    mut_beta_avg = n_cpg == 0 ? 0.0 : mut_beta_sum / n_cpg;
+    mut_cov_avg = n_cpg == 0 ? 0 : mut_cov_sum / n_cpg;
+}
 //' Aggregate CpGs within features
 //' @param bedfiles A vector of bedfile paths
 //' @param regions A vector of genomic regions
