@@ -12,3 +12,6 @@ get_omp_threads(verbose)
 \description{
 Get the numebr of available threads
 }
+\examples{
+get_omp_threads(verbose = T)
+}

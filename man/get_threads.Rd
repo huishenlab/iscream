@@ -2,7 +2,7 @@
 % Please edit documentation in R/threads.R
 \name{get_threads}
 \alias{get_threads}
-\title{Get the numebr of available threads}
+\title{Get the number of available threads}
 \usage{
 get_threads(verbose = FALSE)
 }
@@ -13,4 +13,7 @@ get_threads(verbose = FALSE)
 This function returns the half the number of available OpenMP threads. To
 set the number of threads use setDTthreads sets it to half the available
 number.
+}
+\examples{
+get_threads(verbose = TRUE)
 }

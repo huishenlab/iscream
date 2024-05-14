@@ -2,7 +2,9 @@
 % Please edit documentation in R/RcppExports.R
 \name{cpg_apply}
 \alias{cpg_apply}
-\title{Apply a function over CpGs within features}
+\title{Apply a function over CpGs within features
+This function should be called from \code{region_map()} since there are few
+sanity checks on the C++ side.}
 \usage{
 cpg_apply(bedfiles, regions, fun, mval, region_rownames = FALSE, nthreads = 1L)
 }
@@ -22,6 +24,8 @@ regions: \code{"aggregate"}, \code{"average"}.}
 }
 \description{
 Apply a function over CpGs within features
+This function should be called from \code{region_map()} since there are few
+sanity checks on the C++ side.
 }
 \details{
 The optimal number of threads depends on the number of bedfiles, but is set

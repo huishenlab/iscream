@@ -2,7 +2,7 @@
 % Please edit documentation in R/threads.R
 \name{set_threads}
 \alias{set_threads}
-\title{Set the numebr of available threads}
+\title{Set the number of available threads}
 \usage{
 set_threads(n_threads)
 }
@@ -12,4 +12,7 @@ set_threads(n_threads)
 \description{
 This function sets the 'iscream.thread' option to \code{n_threads}. To
 see how many threads are available, run \code{get_omp_threads}.
+}
+\examples{
+set_threads(4)
 }
