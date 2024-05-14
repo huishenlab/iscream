@@ -26,7 +26,7 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
     for (int bedfile_n = 0; bedfile_n < bedfile_vec.size(); bedfile_n++) {
         MultiRegionQuery cpgs_in_file = query_intervals(bedfile_vec[bedfile_n].c_str(), regions);
         for (RegionQuery cpgs_in_interval : cpgs_in_file) {
-            populate_arma_cols(cpgs_in_interval, bedfile_n);
+            populate_matrix(cpgs_in_interval, bedfile_n);
         }
         bar.increment();
     }
@@ -53,26 +53,34 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
     );
 }
 
-void BS::populate_arma_cols(RegionQuery& query, int& col_n) {
+void BS::populate_matrix(RegionQuery& query, int& col_n) {
 
+    std::vector<BedLine> lines;
+    std::vector<std::string> ids;
     for (std::string cpg_string : query.cpgs_in_interval) {
+
         BedLine parsed_bedline = parseBEDRecord(cpg_string);
+        lines.push_back(parsed_bedline);
         std::string cpg_id = CpGID(parsed_bedline);
+        ids.push_back(cpg_id);
+
         if (!cpg_map.count(cpg_id)) {
             n_cpgs++;
             cpg_map.insert({cpg_id, n_cpgs});
             chrs.push_back(parsed_bedline.chr);
             starts.push_back(parsed_bedline.start);
         }
+    }
 
-        if (cov_mat.n_rows < cpg_map.size()) {
-            int extra_rows = cpg_map.size() - cov_mat.n_rows;
-            cov_mat.resize(cov_mat.n_rows + extra_rows, cov_mat.n_cols);
-            m_mat.resize(m_mat.n_rows + extra_rows, cov_mat.n_cols);
-        }
+    if (cov_mat.n_rows < cpg_map.size()) {
+        int extra_rows = (cpg_map.size() - cov_mat.n_rows) * 1000;
+        cov_mat.resize(cov_mat.n_rows + extra_rows, cov_mat.n_cols);
+        m_mat.resize(m_mat.n_rows + extra_rows, cov_mat.n_cols);
+    }
 
-        cov_mat(cpg_map[cpg_id] - 1, col_n) = parsed_bedline.cov;
-        m_mat(cpg_map[cpg_id] - 1, col_n) =  (int) std::round(parsed_bedline.cov * parsed_bedline.beta);
+    for (size_t i = 0; i < lines.size(); i++) {
+        cov_mat(cpg_map[ids[i]] - 1, col_n) = lines[i].cov;
+        m_mat(cpg_map[ids[i]] - 1, col_n) =  (int) std::round(lines[i].cov * lines[i].beta);
     }
 }
 
