@@ -6,7 +6,7 @@
     options(iscream.threads = threads["use threads"])
   }
 
-  msg <- paste0("iscream using ", threads["use threads"], " threads of ", threads["available threads"], ". See ?get_threads")
+  msg <- paste0("iscream using ", threads["use threads"], " threads of ", threads["available threads"], " available threads. See ?get_threads.")
   packageStartupMessage(msg)
   invisible()
 }

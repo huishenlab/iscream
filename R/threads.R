@@ -26,8 +26,9 @@ get_threads <- function(verbose = FALSE) {
 set_threads <- function(n_threads) {
   avail_threads <- get_omp_threads(verbose = FALSE)
   if (avail_threads < n_threads) {
-    stop(paste0("Cannot use ", n_threads, ". Your system has only ", avail_threads, " threads."))
+    stop(paste0("Cannot use ", n_threads, " threads. Your system has only ", avail_threads, " threads."))
   }
   options(iscream.threads = n_threads)
+  message(paste0("iscream now using ", n_threads, " of ", avail_threads, " available threads."))
 }
 
