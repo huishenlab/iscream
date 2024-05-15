@@ -9,7 +9,7 @@
 #' @examples
 #' get_threads(verbose = TRUE)
 get_threads <- function(verbose = FALSE) {
-  avail_threads <- get_omp_threads(verbose = FALSE)
+  avail_threads <- get_omp_threads(verbose = verbose)
   use_threads <- ifelse(avail_threads < 1, 1, round(avail_threads / 2))
   return(c("available threads" = avail_threads, "use threads" = use_threads))
 }
