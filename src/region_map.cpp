@@ -14,7 +14,12 @@
 #endif
 
 // Sum CpGs M values and coverage
-void aggregate(RegionQuery& interval, float& total_beta, float& total_cov, bool mval) {
+void aggregate(
+    RegionQuery& interval,
+    float& total_beta,
+    float& total_cov,
+    bool mval
+) {
 
     for (std::string& each_cpg : interval.cpgs_in_interval) {
         BedLine parsed_cpg = parseBEDRecord(each_cpg);
@@ -24,7 +29,12 @@ void aggregate(RegionQuery& interval, float& total_beta, float& total_cov, bool 
 }
 
 // Get mean of betas and coverage
-void mean(RegionQuery& interval, float& mut_beta_avg, float& mut_cov_avg, bool mval) {
+void mean(
+    RegionQuery& interval,
+    float& mut_beta_avg,
+    float& mut_cov_avg,
+    bool mval
+) {
 
     float mut_beta_sum = 0;
     float mut_cov_sum = 0;
@@ -54,7 +64,15 @@ void mean(RegionQuery& interval, float& mut_beta_avg, float& mut_cov_avg, bool m
 //'
 //' @export
 // [[Rcpp::export]]
-Rcpp::DataFrame Cpp_region_map(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, std::string fun, bool mval, bool region_rownames = false, int nthreads = 1) {
+Rcpp::DataFrame Cpp_region_map(
+    std::vector<std::string>& bedfiles,
+    Rcpp::CharacterVector& regions,
+    std::string fun,
+    bool mval,
+    bool region_rownames = false,
+    int nthreads = 1
+) {
+
     printf("Aggregating %zu regions from %zu bedfiles\n", regions.size(), bedfiles.size());
     ssize_t rowsize = bedfiles.size() * regions.size();
     Rcpp::CharacterVector feature_col(rowsize);
@@ -70,9 +88,9 @@ Rcpp::DataFrame Cpp_region_map(std::vector<std::string>& bedfiles, Rcpp::Charact
     std::vector<std::string> regions_vec = Rcpp::as<std::vector<std::string>>(regions);
     Progress bar(bedfiles.size(), true);
     int completed_beds = 0;
-    #if defined(_OPENMP)
-        #pragma omp parallel for num_threads(nthreads)
-    #endif
+#if defined(_OPENMP)
+    #pragma omp parallel for num_threads(nthreads)
+#endif
     for (int bedfile_n = 0; bedfile_n < bedfiles.size(); bedfile_n++) {
         std::vector<RegionQuery> cpgs_in_file(0);
         std::string bedfile_name = bedfiles[bedfile_n];

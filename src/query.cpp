@@ -5,7 +5,10 @@
 //' @param bedFile The opened htslib bed file stream
 //' @param tbx The bed file's tab-index
 //' @returns A vector of strings from the matching region of the bed file
-std::vector<std::string> tabix_query(const std::string& region, htsFile* bedFile, tbx_t* tbx) {
+std::vector<std::string> tabix_query(
+    const std::string& region,
+    htsFile* bedFile, tbx_t* tbx
+) {
     std::vector<std::string> reads;
     hts_itr_t* iter = tbx_itr_querys(tbx, region.c_str());
     // TODO: catch errors here
@@ -27,7 +30,10 @@ std::vector<std::string> tabix_query(const std::string& region, htsFile* bedFile
 //' Get reads from multiple genomic regions from a tabixed bed file
 //' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
 //' @param regions A vector of regions strings of the form "chr:start-end"
-std::vector<RegionQuery> query_intervals(const char* fname, std::vector<std::string>& regions) {
+std::vector<RegionQuery> query_intervals(
+    const char* fname,
+    std::vector<std::string>& regions
+) {
 
     htsFile* bedFile = hts_open(fname, "r");
     tbx_t* tbx = tbx_index_load3(fname, NULL, 0);
@@ -49,7 +55,10 @@ std::vector<RegionQuery> query_intervals(const char* fname, std::vector<std::str
 //' @param regions A vector of regions strings of the form "chr:start-end"
 //' @export
 // [[Rcpp::export]]
-std::vector<std::vector<std::string>> query_interval(std::vector<std::string>& bedfiles, std::string& region) {
+std::vector<std::vector<std::string>> query_interval(
+    std::vector<std::string>& bedfiles,
+    std::string& region
+) {
 
     std::vector<std::vector<std::string>> all_reads(bedfiles.size());
 
@@ -70,8 +79,10 @@ std::vector<std::vector<std::string>> query_interval(std::vector<std::string>& b
 //' Get reads from a single genomic region from one tabixed bed file.
 //' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
 //' @param regions A vector of regions strings of the form "chr:start-end"
-std::vector<std::string> query_interval(std::string& bedfile, std::string& region) {
-
+std::vector<std::string> query_interval(
+    std::string& bedfile,
+    std::string& region
+) {
     htsFile* bedFile = hts_open(bedfile.c_str(), "r");
     tbx_t* tbx = tbx_index_load3(bedfile.c_str(), NULL, 0);
 
