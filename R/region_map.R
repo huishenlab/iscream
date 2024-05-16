@@ -23,11 +23,7 @@ region_map <- function(bedfiles, regions, fun = "aggregate", mval = TRUE) {
   supported_funcs <- c("aggregate", "average")
   stopifnot("Selected function not supported" = fun %in% supported_funcs)
 
-  valid_files <- sapply(bedfiles, fs::file_exists)
-  missing_files <- bedfiles[!valid_files]
-  if (length(missing_files != 0)) {
-    stop(paste0("File: ", missing_files, " could not be found"))
-  }
+  verify_files_or_stop(bedfiles, verify_tabix = TRUE)
 
   valid_regions <- sapply(regions, function(i) grepl("^chr", i))
   invalid_regions <- regions[!valid_regions]
