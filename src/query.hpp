@@ -18,9 +18,9 @@ typedef std::vector<RegionQuery> MultiRegionQuery;
 
 
 std::vector<std::string> tabix_query(const std::string& region, htsFile* bedFile, tbx_t* tbx);
-std::vector<RegionQuery> query_intervals(const char* fname, std::vector<std::string>& regions);
-std::vector<std::vector<std::string>> query_interval(std::vector<std::string>& bedfiles, std::string& region);
-std::vector<std::string> query_interval(std::string& bedfile, std::string& region);
+std::vector<RegionQuery> query_intervals(const char* fname, const std::vector<std::string>& regions);
+std::vector<std::vector<std::string>> query_interval(const std::vector<std::string>& bedfiles, const std::string& region);
+std::vector<std::string> query_interval(const std::string& bedfile, const std::string& region);
 
 #endif /* __cplusplus */
 

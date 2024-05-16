@@ -32,7 +32,7 @@ std::vector<std::string> tabix_query(
 //' @param regions A vector of regions strings of the form "chr:start-end"
 std::vector<RegionQuery> query_intervals(
     const char* fname,
-    std::vector<std::string>& regions
+    const std::vector<std::string>& regions
 ) {
 
     htsFile* bedFile = hts_open(fname, "r");
@@ -56,8 +56,8 @@ std::vector<RegionQuery> query_intervals(
 //' @export
 // [[Rcpp::export]]
 std::vector<std::vector<std::string>> query_interval(
-    std::vector<std::string>& bedfiles,
-    std::string& region
+    const std::vector<std::string>& bedfiles,
+    const std::string& region
 ) {
 
     std::vector<std::vector<std::string>> all_reads(bedfiles.size());
@@ -80,8 +80,8 @@ std::vector<std::vector<std::string>> query_interval(
 //' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
 //' @param regions A vector of regions strings of the form "chr:start-end"
 std::vector<std::string> query_interval(
-    std::string& bedfile,
-    std::string& region
+    const std::string& bedfile,
+    const std::string& region
 ) {
     htsFile* bedFile = hts_open(bedfile.c_str(), "r");
     tbx_t* tbx = tbx_index_load3(bedfile.c_str(), NULL, 0);

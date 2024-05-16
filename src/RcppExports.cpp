@@ -109,29 +109,29 @@ BEGIN_RCPP
 END_RCPP
 }
 // query_interval
-std::vector<std::vector<std::string>> query_interval(std::vector<std::string>& bedfiles, std::string& region);
+std::vector<std::vector<std::string>> query_interval(const std::vector<std::string>& bedfiles, const std::string& region);
 RcppExport SEXP _iscream_query_interval(SEXP bedfilesSEXP, SEXP regionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::vector<std::string>& >::type bedfiles(bedfilesSEXP);
-    Rcpp::traits::input_parameter< std::string& >::type region(regionSEXP);
+    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type bedfiles(bedfilesSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type region(regionSEXP);
     rcpp_result_gen = Rcpp::wrap(query_interval(bedfiles, region));
     return rcpp_result_gen;
 END_RCPP
 }
 // Cpp_region_map
-Rcpp::DataFrame Cpp_region_map(std::vector<std::string>& bedfiles, Rcpp::CharacterVector& regions, std::string fun, bool mval, bool region_rownames, int nthreads);
+Rcpp::DataFrame Cpp_region_map(const std::vector<std::string>& bedfiles, const Rcpp::CharacterVector& regions, const std::string& fun, const bool mval, const bool region_rownames, const int& nthreads);
 RcppExport SEXP _iscream_Cpp_region_map(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP funSEXP, SEXP mvalSEXP, SEXP region_rownamesSEXP, SEXP nthreadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::vector<std::string>& >::type bedfiles(bedfilesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector& >::type regions(regionsSEXP);
-    Rcpp::traits::input_parameter< std::string >::type fun(funSEXP);
-    Rcpp::traits::input_parameter< bool >::type mval(mvalSEXP);
-    Rcpp::traits::input_parameter< bool >::type region_rownames(region_rownamesSEXP);
-    Rcpp::traits::input_parameter< int >::type nthreads(nthreadsSEXP);
+    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type bedfiles(bedfilesSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::CharacterVector& >::type regions(regionsSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type fun(funSEXP);
+    Rcpp::traits::input_parameter< const bool >::type mval(mvalSEXP);
+    Rcpp::traits::input_parameter< const bool >::type region_rownames(region_rownamesSEXP);
+    Rcpp::traits::input_parameter< const int& >::type nthreads(nthreadsSEXP);
     rcpp_result_gen = Rcpp::wrap(Cpp_region_map(bedfiles, regions, fun, mval, region_rownames, nthreads));
     return rcpp_result_gen;
 END_RCPP
