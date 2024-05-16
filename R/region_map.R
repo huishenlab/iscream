@@ -32,8 +32,10 @@ region_map <- function(bedfiles, regions, fun = "aggregate", mval = TRUE) {
   valid_regions <- sapply(regions, function(i) grepl("^chr", i))
   invalid_regions <- regions[!valid_regions]
   if (length(invalid_regions != 0)) {
-    stop(paste0(invalid_regions, " are invalid regions"))
+    stop(paste0(invalid_regions, " are invalid regions\n"))
   }
+
+  stopifnot("'mval' must be TRUE or FALSE" = mval %in% c(T, F))
 
   n_threads <- getOption("iscream.threads")
   Cpp_region_map(bedfiles, regions, fun, mval, nthreads = n_threads)
