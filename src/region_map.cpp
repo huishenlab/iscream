@@ -81,13 +81,14 @@ Rcpp::DataFrame Cpp_region_map(std::vector<std::string>& bedfiles, Rcpp::Charact
         int empty_cpg_count = 0;
 
         int row_count = bedfile_n * regions_vec.size();
+        std::string bedfile_prefix = bed_path.stem().stem();
         for (RegionQuery interval : cpgs_in_file) {
             float mut_m_val = 0;
             float mut_cov_val = 0;
             f(interval, mut_m_val, mut_cov_val, mval);
 
             feature_col[row_count] = interval.interval_str;
-            cell[row_count] = bed_path.stem().stem().c_str();
+            cell[row_count] = bedfile_prefix.c_str();
             total_reads[row_count] = mut_cov_val;
             me_reads[row_count] = mut_m_val;
 
