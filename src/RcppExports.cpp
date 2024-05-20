@@ -12,19 +12,16 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::vector<std::string>& >::type bedfile_vec(bedfile_vecSEXP);
-    Rcpp::traits::input_parameter< std::vector<std::string>& >::type regions(regionsSEXP);
-END_RCPP
-}
+// make_bsseq
+Rcpp::S4 make_bsseq(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, bool print);
+RcppExport SEXP _iscream_make_bsseq(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP printSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::vector<std::string>& >::type bedfiles(bedfilesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector& >::type regions(regionsSEXP);
-    Rcpp::traits::input_parameter< bool >::type region_rownames(region_rownamesSEXP);
-    rcpp_result_gen = Rcpp::wrap(agg_cpgs_df(bedfiles, regions, region_rownames));
+    Rcpp::traits::input_parameter< std::vector<std::string>& >::type regions(regionsSEXP);
+    Rcpp::traits::input_parameter< bool >::type print(printSEXP);
+    rcpp_result_gen = Rcpp::wrap(make_bsseq(bedfiles, regions, print));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -136,11 +133,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_iscream_make_bsseq", (DL_FUNC) &_iscream_make_bsseq, 3},
     {"_iscream_decode_beta", (DL_FUNC) &_iscream_decode_beta, 1},
     {"_iscream_decode_cov", (DL_FUNC) &_iscream_decode_cov, 1},
     {"_iscream_decode_m", (DL_FUNC) &_iscream_decode_m, 1},
