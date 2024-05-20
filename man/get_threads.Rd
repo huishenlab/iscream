@@ -4,16 +4,17 @@
 \alias{get_threads}
 \title{Get the number of available threads}
 \usage{
-get_threads(verbose = FALSE)
+get_threads()
 }
 \arguments{
 \item{verbose}{Whether to be verbose on available omp threads}
 }
 \description{
-This function returns the half the number of available OpenMP threads. To
-set the number of threads use setDTthreads sets it to half the available
-number.
+This function sets the number of threads iscream uses to 1 if the
+\code{iscream.threads} option is not set. To set the number of threads use
+setDTthreads or set the \code{iscream.threads} option in your \verb{~/.Rprofile}. See
+\code{?set_threads} for more information.
 }
 \examples{
-get_threads(verbose = TRUE)
+get_threads()
 }

@@ -20,7 +20,8 @@ Imports:
     Rcpp,
     Matrix,
     fs,
-    data.table
+    data.table,
+    parallelly
 Suggests:
     bsseq,
     DelayedArray,

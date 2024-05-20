@@ -11,8 +11,43 @@ set_threads(n_threads)
 }
 \description{
 This function sets the 'iscream.thread' option to \code{n_threads}. To
-see how many threads are available, run \code{get_omp_threads}.
+see how many threads you have available see \code{parallelly::availableCores}.
+}
+\details{
+iscream uses OpenMP to parallelize certain functions. You can use
+as many threads as are available to you on your system to varying degrees of
+performance improvements. The \code{parallelly::availableCores()} function will
+report the number of available threads. To get more information about OpenMP
+threads, run \code{get_omp_threads(verbose = TRUE)}. However, on high preformance
+computers (HPCs) with resource allocating job schedulers like SLURM, OpenMP
+may detect all available threads across the HPC and not limit itself to the
+cores that were allocated to you by the scheduler. If your system
+administrator has not set up any limits, this may result in your job taking
+resources from other jobs. If there are limits, trying to use more threads
+that those available will reduce iscream's performance. Job schedulers will
+typically have an environment variable (e.g. SLURM_CPUS_ON_NODE with SLURM)
+that gives you the actual number of available cores. Further, on
+hyperthreaded systems, this count may be double that of the available
+processors. Using hyperthreading does not guarantee any performance
+improvement - it may be better to set the number of threads to half the
+reported number. \code{parallelly::availableCores()} takes HPC
+scheduler/CRAN/Bioconductor limits into account when reporting the number of
+available threads but it may not reliably report hyperthreading ('system' or
+'nproc'). To set the number of threads without having to call
+\code{set_threads()} in every session, put
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{options(iscream.threads = [n_threads])
+}\if{html}{\out{</div>}}
+
+in your .Rprofile. See help('Rprofile') for information on startup options.
+
+Functions currently using OpenMP:
+\itemize{
+\item \code{region_map()}
+}
 }
 \examples{
+\dontrun{
 set_threads(4)
+}
 }
