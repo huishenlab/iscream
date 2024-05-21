@@ -47,7 +47,8 @@ Functions currently using OpenMP:
 }
 }
 \examples{
+(ncores <- parallelly::availableCores())
 \dontrun{
-set_threads(4)
+set_threads(ncores)
 }
 }

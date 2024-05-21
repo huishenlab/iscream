@@ -66,8 +66,9 @@ get_threads <- function() {
 #' - `region_map()`
 #' @export
 #' @examples
+#' (ncores <- parallelly::availableCores())
 #' \dontrun{
-#' set_threads(4)
+#' set_threads(ncores)
 #' }
 set_threads <- function(n_threads) {
   avail_threads <- availableCores()
