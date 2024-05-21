@@ -11,10 +11,11 @@
 #' @examples
 #' get_threads()
 get_threads <- function() {
+  opt_set = TRUE
   opt_threads <- getOption("iscream.threads")
-  avail_threads <- availableCores()
+  avail_threads <- unname(availableCores())
   if (is.null(opt_threads)) {
-    return(1)
+    return(c("use_threads" = 1, "opt_set" = FALSE))
   }
 
   if (avail_threads < opt_threads) {
@@ -24,12 +25,12 @@ get_threads <- function() {
       " threads. See parallelly::availableCores(which = 'all') for more information on available resources."
     )
   }
-  opt_threads
+  c("use_threads" = opt_threads, "opt_set" = opt_set, "avail_threads" = avail_threads)
 }
 
 #' Set the number of available threads
 #'
-#' This function sets the 'iscream.thread' option to `n_threads`. To
+#' This function sets the 'iscream.threads' option to `n_threads`. To
 #' see how many threads you have available see `parallelly::availableCores`.
 #' @param n_threads The number of threads to use
 #' @importFrom parallelly availableCores
