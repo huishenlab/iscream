@@ -10,7 +10,7 @@ set_threads(n_threads)
 \item{n_threads}{The number of threads to use}
 }
 \description{
-This function sets the 'iscream.thread' option to \code{n_threads}. To
+This function sets the 'iscream.threads' option to \code{n_threads}. To
 see how many threads you have available see \code{parallelly::availableCores}.
 }
 \details{
