@@ -9,10 +9,12 @@ let
     data_table
     fs
     Matrix
+    parallelly
 
     # Rcpp
     Rcpp
     RcppArmadillo
+    RcppProgress
 
   # Suggests
     biscuiteer
@@ -28,11 +30,14 @@ let
     RcppClock
     roxygen2
     styler
+    usethis
+    testthat
   ];
 
   _libs = with pkgs; [
     ccls # Cpp LSP
     htslib
+    pkg-config
   ];
 
   in mkShell {
