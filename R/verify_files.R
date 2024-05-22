@@ -1,3 +1,9 @@
+#' Check that files exist
+#'
+#' @param files_vec A vector of file paths
+#' @importFrom fs file_exists
+#' @return TRUE if all input bedfiles have an associated tabix index file.
+#' FALSE if not
 check_files_exist <- function(files_vec, error_file_prefix = "File") {
   valid_files <- file_exists(files_vec)
   missing_files <- files_vec[!valid_files]
@@ -8,12 +14,10 @@ check_files_exist <- function(files_vec, error_file_prefix = "File") {
 
 #' Verify that bedfiles are tabixed
 #'
-#' @param befiles A vector of bedfile paths
+#' @param bedfiles A vector of bedfile paths
 #' @importFrom fs file_exists
 #' @return TRUE if all input bedfiles have an associated tabix index file.
 #' FALSE if not
-#'
-#' @export
 verify_files_or_stop <- function(bedfiles, verify_tabix = T) {
   check_files_exist(bedfiles)
   if (verify_tabix) {

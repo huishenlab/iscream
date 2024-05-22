@@ -7,7 +7,7 @@
 verify_files_or_stop(bedfiles, verify_tabix = T)
 }
 \arguments{
-\item{befiles}{A vector of bedfile paths}
+\item{bedfiles}{A vector of bedfile paths}
 }
 \value{
 TRUE if all input bedfiles have an associated tabix index file.
