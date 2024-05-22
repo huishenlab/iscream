@@ -26,3 +26,4 @@ Suggests:
     bsseq,
     DelayedArray,
     GenomicRanges
+SystemRequirements: GNU make
