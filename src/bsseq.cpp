@@ -16,30 +16,41 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
     n_samples = bedfile_vec.size();
     n_intervals = regions.size();
     sample_names = bedfile_vec;
+    cpg_map = khmap_init();
 
     cov_mat.resize(5, bedfile_vec.size());
     m_mat.resize(5, bedfile_vec.size());
 
     printf("Querying %zu regions from %zu bedfiles\n", regions.size(), bedfile_vec.size());
-    Progress bar(bedfile_vec.size(), true);
+    Progress bar(bedfile_vec.size(), true); 
 
     for (int bedfile_n = 0; bedfile_n < bedfile_vec.size(); bedfile_n++) {
         MultiRegionQuery cpgs_in_file = query_intervals(bedfile_vec[bedfile_n].c_str(), regions);
         for (RegionQuery cpgs_in_interval : cpgs_in_file) {
             populate_matrix(cpgs_in_interval, bedfile_n);
         }
-        bar.increment();
+         bar.increment(); 
     }
 
-    if (cov_mat.n_rows > cpg_map.size()) {
+    int mapsize = kh_size(cpg_map);
+    if (cov_mat.n_rows > mapsize) {
         printf("Correcting matrix size\n");
-        int diff_rows = cov_mat.n_rows - cpg_map.size();
-        cov_mat.resize(cpg_map.size(), bedfile_vec.size());
-        m_mat.resize(cpg_map.size(), bedfile_vec.size());
+        int diff_rows = cov_mat.n_rows - mapsize;
+        cov_mat.resize(mapsize, bedfile_vec.size());
+        m_mat.resize(mapsize, bedfile_vec.size());
     }
+
+    for (int k = 0; k < kh_end(cpg_map); ++k) {
+        if (kh_exist(cpg_map, k)) {
+            char* key = kh_key(cpg_map, k);
+            free(key);
+        }
+    }
+
 
     Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
     Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
+
     for (int i = 0; i < sample_names.size(); i++) {
         std::filesystem::path sample_path = sample_names[i];
         sample_names[i] = sample_path.extension() == ".gz" ? sample_path.stem().stem().string() : sample_path.stem().string();
@@ -57,6 +68,7 @@ void BS::populate_matrix(RegionQuery& query, int& col_n) {
 
     std::vector<BedLine> lines;
     std::vector<std::string> ids;
+    khmap_m_resize(cpg_map, query.cpgs_in_interval.size());
     for (std::string cpg_string : query.cpgs_in_interval) {
 
         BedLine parsed_bedline = parseBEDRecord(cpg_string);
@@ -64,23 +76,32 @@ void BS::populate_matrix(RegionQuery& query, int& col_n) {
         std::string cpg_id = CpGID(parsed_bedline);
         ids.push_back(cpg_id);
 
-        if (!cpg_map.count(cpg_id)) {
+        khint_t insert_b;
+        int absent;
+        insert_b = khmap_put(cpg_map, strdup(cpg_id.c_str()), &absent);
+        if (absent) {
             n_cpgs++;
-            cpg_map.insert({cpg_id, n_cpgs});
+            kh_val(cpg_map, insert_b) = n_cpgs;
             chrs.push_back(parsed_bedline.chr);
             starts.push_back(parsed_bedline.start);
         }
     }
 
-    if (cov_mat.n_rows < cpg_map.size()) {
-        int extra_rows = (cpg_map.size() - cov_mat.n_rows) * 1000;
+    int mapsize = kh_size(cpg_map);
+    if (cov_mat.n_rows < mapsize) {
+        int extra_rows = (mapsize - cov_mat.n_rows) * 1000;
         cov_mat.resize(cov_mat.n_rows + extra_rows, cov_mat.n_cols);
         m_mat.resize(m_mat.n_rows + extra_rows, cov_mat.n_cols);
     }
 
+    khint_t retrieve_b;
+    int idx;
     for (size_t i = 0; i < lines.size(); i++) {
-        cov_mat(cpg_map[ids[i]] - 1, col_n) = lines[i].cov;
-        m_mat(cpg_map[ids[i]] - 1, col_n) =  (int) std::round(lines[i].cov * lines[i].beta);
+        char* idc = strdup(ids[i].c_str());
+        retrieve_b = khmap_get(cpg_map, idc);
+        idx = kh_val(cpg_map, retrieve_b);
+        cov_mat(idx - 1, col_n) = lines[i].cov;
+        m_mat(idx - 1, col_n) =  (int) std::round(lines[i].cov * lines[i].beta);
     }
 }
 

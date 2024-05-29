@@ -11,14 +11,19 @@
 #include "parsers.hpp"
 #include "decoders.hpp"
 #include <unordered_map>
+#include "../inst/include/khashl.h"
 #include "../inst/include/iscream_types.h"
+
+#ifndef __MAP_INIT
+#define __MAP_INIT
+KHASHL_MAP_INIT(static, khmap_t, khmap, char*, int, kh_hash_str, kh_eq_str);
+#endif /* ifndef __MAP_INIT */
 
 class BS {
 
 private:
 
-    typedef std::unordered_map<std::string, int> CpGMap;
-    CpGMap cpg_map;
+    khmap_t *cpg_map;
 
     int n_intervals;
     int n_cpgs;
