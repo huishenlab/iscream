@@ -13,6 +13,7 @@ BS::BS() {
 
 BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions) {
     n_cpgs = 0;
+    chr_id = 0;
     n_samples = bedfile_vec.size();
     n_intervals = regions.size();
     sample_names = bedfile_vec;
@@ -40,14 +41,6 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
         m_mat.resize(mapsize, bedfile_vec.size());
     }
 
-    for (int k = 0; k < kh_end(cpg_map); ++k) {
-        if (kh_exist(cpg_map, k)) {
-            char* key = kh_key(cpg_map, k);
-            free(key);
-        }
-    }
-
-
     Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
     Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
 
@@ -67,18 +60,23 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
 void BS::populate_matrix(RegionQuery& query, int& col_n) {
 
     std::vector<BedLine> lines;
-    std::vector<std::string> ids;
+    std::vector<CpG> ids;
     khmap_m_resize(cpg_map, query.cpgs_in_interval.size());
     for (std::string cpg_string : query.cpgs_in_interval) {
 
         BedLine parsed_bedline = parseBEDRecord(cpg_string);
         lines.push_back(parsed_bedline);
-        std::string cpg_id = CpGID(parsed_bedline);
-        ids.push_back(cpg_id);
+
+        unsigned int i = 0;
+        if (!chr_map.count(parsed_bedline.chr)) chr_map.insert({parsed_bedline.chr, ++chr_id});
+
+        CpG cpg = CpG{chr_map[parsed_bedline.chr], parsed_bedline.start};
+
+        ids.push_back(cpg);
 
         khint_t insert_b;
         int absent;
-        insert_b = khmap_put(cpg_map, strdup(cpg_id.c_str()), &absent);
+        insert_b = khmap_put(cpg_map, cpg, &absent);
         if (absent) {
             n_cpgs++;
             kh_val(cpg_map, insert_b) = n_cpgs;
@@ -97,8 +95,7 @@ void BS::populate_matrix(RegionQuery& query, int& col_n) {
     khint_t retrieve_b;
     int idx;
     for (size_t i = 0; i < lines.size(); i++) {
-        char* idc = strdup(ids[i].c_str());
-        retrieve_b = khmap_get(cpg_map, idc);
+        retrieve_b = khmap_get(cpg_map, ids[i]);
         idx = kh_val(cpg_map, retrieve_b);
         cov_mat(idx - 1, col_n) = lines[i].cov;
         m_mat(idx - 1, col_n) =  (int) std::round(lines[i].cov * lines[i].beta);
