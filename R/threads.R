@@ -15,7 +15,7 @@ get_threads <- function() {
   opt_threads <- getOption("iscream.threads")
   avail_threads <- unname(availableCores())
   if (is.null(opt_threads)) {
-    return(c("use_threads" = 1, "opt_set" = FALSE))
+    return(c("use_threads" = 1, "opt_set" = FALSE, "avail_threads" = avail_threads))
   }
 
   if (avail_threads < opt_threads) {
