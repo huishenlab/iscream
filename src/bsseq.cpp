@@ -33,6 +33,21 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
          bar.increment(); 
     }
 
+    Rcpp::CharacterVector c(kh_size(cpg_map));
+    Rcpp::IntegerVector s(kh_size(cpg_map));
+
+    khint_t iter;
+    for (iter = 0; iter < kh_end(cpg_map); ++iter) {
+        if (kh_exist(cpg_map, iter)) {
+            CpG cpg = kh_key(cpg_map, iter);
+            int row_idx = kh_val(cpg_map, iter) - 1;
+            s[row_idx] = cpg.start;
+            c[row_idx] = chr_rev_map[cpg.chr];
+        }
+    }
+    seqnames = c;
+    start = s;
+
     int mapsize = kh_size(cpg_map);
     if (cov_mat.n_rows > mapsize) {
         printf("Correcting matrix size\n");
@@ -67,8 +82,10 @@ void BS::populate_matrix(RegionQuery& query, int& col_n) {
         BedLine parsed_bedline = parseBEDRecord(cpg_string);
         lines.push_back(parsed_bedline);
 
-        unsigned int i = 0;
-        if (!chr_map.count(parsed_bedline.chr)) chr_map.insert({parsed_bedline.chr, ++chr_id});
+        if (!chr_map.count(parsed_bedline.chr)) {
+            chr_map.insert({parsed_bedline.chr, ++chr_id});
+            chr_rev_map.insert({chr_id, parsed_bedline.chr});
+        }
 
         CpG cpg = CpG{chr_map[parsed_bedline.chr], parsed_bedline.start};
 
@@ -80,8 +97,6 @@ void BS::populate_matrix(RegionQuery& query, int& col_n) {
         if (absent) {
             n_cpgs++;
             kh_val(cpg_map, insert_b) = n_cpgs;
-            chrs.push_back(parsed_bedline.chr);
-            starts.push_back(parsed_bedline.start);
         }
     }
 

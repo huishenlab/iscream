@@ -53,8 +53,8 @@ private:
     int n_cpgs;
     int chr_id;
     int n_samples;
-    Rcpp::CharacterVector chrs;
-    Rcpp::IntegerVector starts;
+    Rcpp::CharacterVector seqnames;
+    Rcpp::IntegerVector start;
     std::vector<std::string> sample_names;
 
 public:
@@ -72,9 +72,7 @@ public:
         Rcpp::Function BSseq("BSseq", Rcpp::Environment::namespace_env("bsseq"));
         Rcpp::Function GRanges("GRanges", Rcpp::Environment::namespace_env("GenomicRanges"));
         Rcpp::Function IRanges("IRanges", Rcpp::Environment::namespace_env("IRanges"));
-        Rcpp::IntegerVector start = starts;
-        Rcpp::IntegerVector end = starts;
-        Rcpp::CharacterVector seqnames = chrs;
+        Rcpp::IntegerVector end = start;
         return BSseq(
             Rcpp::_("M") = assays["M"],
             Rcpp::_("Cov") = assays["Cov"],
