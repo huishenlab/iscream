@@ -69,7 +69,7 @@ vencoder <- function(beta_col, cov_col) {
 #' @param verbose Whether to be verbose on available omp threads
 #' @export
 #' @examples
-#' get_omp_threads(verbose = T)
+#' get_omp_threads(verbose = TRUE)
 get_omp_threads <- function(verbose) {
     .Call(`_iscream_get_omp_threads`, verbose)
 }

@@ -10,7 +10,7 @@
 //' @param verbose Whether to be verbose on available omp threads
 //' @export
 //' @examples
-//' get_omp_threads(verbose = T)
+//' get_omp_threads(verbose = TRUE)
 // [[Rcpp::export]]
 int get_omp_threads(bool verbose) {
     if (verbose) {
