@@ -35,6 +35,7 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
 
     Rcpp::CharacterVector c(kh_size(cpg_map));
     Rcpp::IntegerVector s(kh_size(cpg_map));
+    Rcpp::CharacterVector rownames(kh_size(cpg_map));
 
     khint_t iter;
     for (iter = 0; iter < kh_end(cpg_map); ++iter) {
@@ -43,6 +44,9 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
             int row_idx = kh_val(cpg_map, iter) - 1;
             s[row_idx] = cpg.start;
             c[row_idx] = chr_rev_map[cpg.chr];
+            std::stringstream cpgid_stream;
+            cpgid_stream << chr_rev_map[cpg.chr] << ":" << cpg.start + 1;
+            rownames[row_idx] = cpgid_stream.str();
         }
     }
     seqnames = c;
@@ -58,6 +62,8 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
 
     Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
     Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
+    Rcpp::rownames(cov_rmat) = rownames;
+    Rcpp::rownames(M_rmat) = rownames;
 
     for (int i = 0; i < sample_names.size(); i++) {
         std::filesystem::path sample_path = sample_names[i];

@@ -72,11 +72,10 @@ public:
         Rcpp::Function BSseq("BSseq", Rcpp::Environment::namespace_env("bsseq"));
         Rcpp::Function GRanges("GRanges", Rcpp::Environment::namespace_env("GenomicRanges"));
         Rcpp::Function IRanges("IRanges", Rcpp::Environment::namespace_env("IRanges"));
-        Rcpp::IntegerVector end = start;
         return BSseq(
             Rcpp::_("M") = assays["M"],
             Rcpp::_("Cov") = assays["Cov"],
-            Rcpp::_("gr") = GRanges(seqnames, IRanges(start, end)),
+            Rcpp::_("gr") = GRanges(seqnames, IRanges(start + 1)),
             Rcpp::_("sampleNames") = sample_names
         );
     }
