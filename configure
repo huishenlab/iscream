@@ -1,0 +1,83 @@
+#!/bin/sh
+# Anticonf (tm) script originally by Jeroen Ooms (2015) from rlib/xml2
+# Modified by James Eapen (2024)
+# This script will query 'pkg-config' for the required cflags and ldflags.
+# If pkg-config is unavailable or does not find the library, try setting
+# INCLUDE_DIR and LIB_DIR manually via e.g:
+# R CMD INSTALL --configure-vars='INCLUDE_DIR=/.../include LIB_DIR=/.../lib'
+
+echo ""
+echo "Configuring for package installation..."
+# Library settings
+PKG_CONFIG_NAME="htslib"
+PKG_DEB_NAME="libhts-dev"
+PKG_RPM_NAME="htslib-devel"
+PKG_TEST_HEADER="<htslib/hts.h>"
+PKG_LIBS="-lhts"
+
+# Note that cflags may be empty in case of success
+if [ "$INCLUDE_DIR" ] || [ "$LIB_DIR" ]; then
+  echo "Found INCLUDE_DIR and/or LIB_DIR!"
+  PKG_CFLAGS="-I$INCLUDE_DIR $PKG_CFLAGS"
+  PKG_LIBS="-L$LIB_DIR $PKG_LIBS"
+else
+  pkg-config --version >/dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    PKGCONFIG_CFLAGS=$(pkg-config --cflags $PKG_CONFIG_NAME)
+    PKGCONFIG_LIBS=$(pkg-config --libs $PKG_CONFIG_NAME)
+  fi
+
+  if [ "$PKGCONFIG_CFLAGS" ] || [ "$PKGCONFIG_LIBS" ]; then
+    echo "Found pkg-config cflags and libs for ${PKG_CONFIG_NAME}!"
+    PKG_CFLAGS=${PKGCONFIG_CFLAGS}
+    PKG_LIBS=${PKGCONFIG_LIBS}
+  else
+      echo "------------------------- ANTICONF ERROR ---------------------------"
+      echo "Configuration failed because $PKG_CONFIG_NAME was not found. Try installing:"
+      echo " * deb: $PKG_DEB_NAME (Debian, Ubuntu, etc)"
+      echo " * rpm: $PKG_RPM_NAME (Fedora, CentOS, RHEL)"
+      echo "If $PKG_CONFIG_NAME is already installed, check that 'pkg-config' is in your"
+      echo "PATH and PKG_CONFIG_PATH contains a $PKG_CONFIG_NAME.pc file. If pkg-config"
+      echo "is unavailable you can set INCLUDE_DIR and LIB_DIR manually via:"
+      echo "R CMD INSTALL --configure-vars='INCLUDE_DIR=... LIB_DIR=...'"
+      echo "--------------------------------------------------------------------"
+      exit 1;
+  fi
+fi
+
+# Find compiler
+if ! R_EXEC=$(command -v R); then
+  echo "------------------------- ANTICONF ERROR ---------------------------"
+  echo "R not found in \$PATH"
+  echo "--------------------------------------------------------------------"
+  exit 1;
+else
+    echo "Using R from ${R_EXEC}"
+fi
+
+CC=$(${R_EXEC} CMD config CC)
+CFLAGS=$(${R_EXEC} CMD config CFLAGS)
+CPPFLAGS=$(${R_EXEC} CMD config CPPFLAGS)
+
+# For debugging
+echo "Using PKG_CFLAGS=$PKG_CFLAGS"
+echo "Using PKG_LIBS=$PKG_LIBS"
+
+# Test configuration
+echo "#include $PKG_TEST_HEADER" | ${CC} ${CPPFLAGS} ${PKG_CFLAGS} ${CFLAGS} -E -xc - >/dev/null 2>&1 || R_CONFIG_ERROR=1;
+
+if [ $R_CONFIG_ERROR ]; then
+  echo "------------------------- ANTICONF ERROR ---------------------------"
+  echo "Could not test config by compiling $PKG_TEST_HEADER with this command:"
+  echo "echo #include $PKG_TEST_HEADER | ${CC} ${CPPFLAGS} ${PKG_CFLAGS} ${CFLAGS} -E -xc -"
+  echo "--------------------------------------------------------------------"
+  exit 1;
+fi
+
+# Write to Makevars
+sed -e "s|@cflags@|$PKG_CFLAGS|" -e "s|@libs@|$PKG_LIBS|" src/Makevars.in > src/Makevars
+
+# Success
+echo "Success!"
+echo ""
+exit 0
