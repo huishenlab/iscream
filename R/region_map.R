@@ -18,7 +18,7 @@
 #' @return A data.frame
 #'
 #' @export
-region_map <- function(bedfiles, regions, fun = "aggregate", mval = TRUE) {
+region_map <- function(bedfiles, regions, fun = "aggregate", mval = TRUE, nthreads = NULL) {
 
   supported_funcs <- c("aggregate", "average")
   stopifnot("Selected function not supported" = fun %in% supported_funcs)
@@ -33,6 +33,6 @@ region_map <- function(bedfiles, regions, fun = "aggregate", mval = TRUE) {
 
   stopifnot("'mval' must be TRUE or FALSE" = mval %in% c(T, F))
 
-  n_threads <- getOption("iscream.threads")
+  n_threads <- ifelse(is.null(nthreads), getOption("iscream.threads"), nthreads)
   Cpp_region_map(bedfiles, regions, fun, mval, nthreads = n_threads)
 }

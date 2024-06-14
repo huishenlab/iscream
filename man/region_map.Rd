@@ -4,7 +4,7 @@
 \alias{region_map}
 \title{Run a defined function over genomic regions}
 \usage{
-region_map(bedfiles, regions, fun = "aggregate", mval = TRUE)
+region_map(bedfiles, regions, fun = "aggregate", mval = TRUE, nthreads = NULL)
 }
 \arguments{
 \item{regions}{A vector of genomic regions strings}
