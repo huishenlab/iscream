@@ -60,7 +60,7 @@ private:
 public:
 
     BS();
-    BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions);
+    BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const int nthreads);
     void populate_matrix(RegionQuery& query, int& col_n);
     void print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name);
     void print_BS();

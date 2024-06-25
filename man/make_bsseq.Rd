@@ -4,7 +4,7 @@
 \alias{make_bsseq}
 \title{Make a Bsseq object}
 \usage{
-make_bsseq(bedfiles, regions)
+make_bsseq(bedfiles, regions, nthreads)
 }
 \arguments{
 \item{bedfiles}{A vector of bedfiles}

@@ -6,12 +6,17 @@
 #include <progress.hpp>
 #include <progress_bar.hpp>
 
+// Protect against compilers without OpenMP
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 BS::BS() {
     n_intervals = 0;
     n_cpgs = 0;
 }
 
-BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions) {
+BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const int nthreads) {
     n_cpgs = 0;
     chr_id = 0;
     n_samples = bedfile_vec.size();
@@ -25,6 +30,9 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
     Rprintf("Querying %zu regions from %zu bedfiles\n", regions.size(), bedfile_vec.size());
     Progress bar(bedfile_vec.size(), true); 
 
+#if defined(_OPENMP)
+    #pragma omp parallel for num_threads(nthreads)
+#endif
     for (int bedfile_n = 0; bedfile_n < bedfile_vec.size(); bedfile_n++) {
         MultiRegionQuery cpgs_in_file = query_intervals(bedfile_vec[bedfile_n].c_str(), regions);
         for (RegionQuery cpgs_in_interval : cpgs_in_file) {
@@ -83,35 +91,47 @@ void BS::populate_matrix(RegionQuery& query, int& col_n) {
 
     std::vector<BedLine> lines;
     std::vector<CpG> ids;
-    khmap_m_resize(cpg_map, query.cpgs_in_interval.size());
+    #pragma omp critical
+    {
+        khmap_m_resize(cpg_map, query.cpgs_in_interval.size());
+    }
     for (std::string cpg_string : query.cpgs_in_interval) {
 
         BedLine parsed_bedline = parseBEDRecord(cpg_string);
         lines.push_back(parsed_bedline);
 
-        if (!chr_map.count(parsed_bedline.chr)) {
-            chr_map.insert({parsed_bedline.chr, ++chr_id});
-            chr_rev_map.insert({chr_id, parsed_bedline.chr});
+        #pragma omp critical
+        {
+            if (!chr_map.count(parsed_bedline.chr)) {
+                chr_map.insert({parsed_bedline.chr, ++chr_id});
+                chr_rev_map.insert({chr_id, parsed_bedline.chr});
+            }
         }
 
         CpG cpg = CpG{chr_map[parsed_bedline.chr], parsed_bedline.start};
 
         ids.push_back(cpg);
 
-        khint_t insert_b;
-        int absent;
-        insert_b = khmap_put(cpg_map, cpg, &absent);
-        if (absent) {
-            n_cpgs++;
-            kh_val(cpg_map, insert_b) = n_cpgs;
+        #pragma omp critical
+        {
+            khint_t insert_b;
+            int absent;
+            insert_b = khmap_put(cpg_map, cpg, &absent);
+            if (absent) {
+                n_cpgs++;
+                kh_val(cpg_map, insert_b) = n_cpgs;
+            }
         }
     }
 
-    int mapsize = kh_size(cpg_map);
-    if (cov_mat.n_rows < mapsize) {
-        int extra_rows = (mapsize - cov_mat.n_rows) * 1000;
-        cov_mat.resize(cov_mat.n_rows + extra_rows, cov_mat.n_cols);
-        m_mat.resize(m_mat.n_rows + extra_rows, cov_mat.n_cols);
+    #pragma omp critical
+    {
+        int mapsize = kh_size(cpg_map);
+        if (cov_mat.n_rows < mapsize) {
+            int extra_rows = (mapsize - cov_mat.n_rows) * 1000;
+            cov_mat.resize(cov_mat.n_rows + extra_rows, cov_mat.n_cols);
+            m_mat.resize(m_mat.n_rows + extra_rows, cov_mat.n_cols);
+        }
     }
 
     khint_t retrieve_b;

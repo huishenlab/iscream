@@ -13,14 +13,15 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // make_bsseq
-Rcpp::S4 make_bsseq(std::vector<std::string>& bedfiles, std::vector<std::string>& regions);
-RcppExport SEXP _iscream_make_bsseq(SEXP bedfilesSEXP, SEXP regionsSEXP) {
+Rcpp::S4 make_bsseq(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, const int nthreads);
+RcppExport SEXP _iscream_make_bsseq(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP nthreadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::vector<std::string>& >::type bedfiles(bedfilesSEXP);
     Rcpp::traits::input_parameter< std::vector<std::string>& >::type regions(regionsSEXP);
-    rcpp_result_gen = Rcpp::wrap(make_bsseq(bedfiles, regions));
+    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
+    rcpp_result_gen = Rcpp::wrap(make_bsseq(bedfiles, regions, nthreads));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -122,7 +123,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_iscream_make_bsseq", (DL_FUNC) &_iscream_make_bsseq, 2},
+    {"_iscream_make_bsseq", (DL_FUNC) &_iscream_make_bsseq, 3},
     {"_iscream_decode_beta", (DL_FUNC) &_iscream_decode_beta, 1},
     {"_iscream_decode_cov", (DL_FUNC) &_iscream_decode_cov, 1},
     {"_iscream_decode_m", (DL_FUNC) &_iscream_decode_m, 1},
