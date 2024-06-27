@@ -30,8 +30,9 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
         for (RegionQuery cpgs_in_interval : cpgs_in_file) {
             populate_matrix(cpgs_in_interval, bedfile_n);
         }
-         bar.increment(); 
+        bar.increment();
     }
+    bar.cleanup();
 
     Rcpp::CharacterVector c(kh_size(cpg_map));
     Rcpp::IntegerVector s(kh_size(cpg_map));
