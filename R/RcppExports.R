@@ -73,31 +73,6 @@ get_omp_threads <- function(verbose) {
     .Call(`_iscream_get_omp_threads`, verbose)
 }
 
-#' Query a genomic interval from a opened htsFile and return the reads in it
-#' @param region Genomic region string in the form "chr:start-end"
-#' @param bedFile The opened htslib bed file stream
-#' @param tbx The bed file's tab-index
-#' @returns A vector of strings from the matching region of the bed file
-NULL
-
-#' Get reads from multiple genomic regions from a tabixed bed file
-#' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
-#' @param regions A vector of regions strings of the form "chr:start-end"
-NULL
-
-#' Get reads from a single genomic region from one tabixed bed file.
-#' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
-#' @param regions A vector of regions strings of the form "chr:start-end"
-NULL
-
-#' Get reads from single genomic regions from multiple tabixed bed file.
-#' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
-#' @param regions A vector of regions strings of the form "chr:start-end"
-#' @export
-query_interval <- function(bedfiles, region) {
-    .Call(`_iscream_query_interval`, bedfiles, region)
-}
-
 #' Apply a function over CpGs within features
 #' This function should be called from `region_map()` since there are few
 #' sanity checks on the C++ side.

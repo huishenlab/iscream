@@ -52,8 +52,6 @@ std::vector<RegionQuery> query_intervals(
 }
 
 //' Get reads from single genomic regions from multiple tabixed bed file.
-//' @export
-// [[Rcpp::export]]
 //' @param bedfiles A vector of bedfile names - must have corresponding tabix
 //files with the same name and .tbi extension
 //' @param region A vector regions string in the form "chr:start-end"

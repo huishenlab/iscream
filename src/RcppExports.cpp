@@ -104,18 +104,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// query_interval
-std::vector<std::vector<std::string>> query_interval(const std::vector<std::string>& bedfiles, const std::string& region);
-RcppExport SEXP _iscream_query_interval(SEXP bedfilesSEXP, SEXP regionSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type bedfiles(bedfilesSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type region(regionSEXP);
-    rcpp_result_gen = Rcpp::wrap(query_interval(bedfiles, region));
-    return rcpp_result_gen;
-END_RCPP
-}
 // Cpp_region_map
 Rcpp::DataFrame Cpp_region_map(const std::vector<std::string>& bedfiles, const Rcpp::CharacterVector& regions, const std::string& fun, const bool mval, const bool region_rownames, const int& nthreads);
 RcppExport SEXP _iscream_Cpp_region_map(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP funSEXP, SEXP mvalSEXP, SEXP region_rownamesSEXP, SEXP nthreadsSEXP) {
@@ -142,7 +130,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_vdouble_decoder", (DL_FUNC) &_iscream_vdouble_decoder, 2},
     {"_iscream_vencoder", (DL_FUNC) &_iscream_vencoder, 2},
     {"_iscream_get_omp_threads", (DL_FUNC) &_iscream_get_omp_threads, 1},
-    {"_iscream_query_interval", (DL_FUNC) &_iscream_query_interval, 2},
     {"_iscream_Cpp_region_map", (DL_FUNC) &_iscream_Cpp_region_map, 6},
     {NULL, NULL, 0}
 };
