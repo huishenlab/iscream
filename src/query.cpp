@@ -28,15 +28,16 @@ std::vector<std::string> tabix_query(
 }
 
 //' Get reads from multiple genomic regions from a tabixed bed file
-//' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
-//' @param regions A vector of regions strings of the form "chr:start-end"
+//' @param bedfile The name of the bed file - must have a corresponding tabix
+//file with the same name and .tbi extension
+//' @param regions A vector of region strings in the form "chr:start-end"
 std::vector<RegionQuery> query_intervals(
-    const char* fname,
+    const char* bedfile,
     const std::vector<std::string>& regions
 ) {
 
-    htsFile* bedFile = hts_open(fname, "r");
-    tbx_t* tbx = tbx_index_load3(fname, NULL, 0);
+    htsFile* bedFile = hts_open(bedfile, "r");
+    tbx_t* tbx = tbx_index_load3(bedfile, NULL, 0);
 
     std::vector<RegionQuery> all_reads(regions.size());
 
@@ -51,10 +52,11 @@ std::vector<RegionQuery> query_intervals(
 }
 
 //' Get reads from single genomic regions from multiple tabixed bed file.
-//' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
-//' @param regions A vector of regions strings of the form "chr:start-end"
 //' @export
 // [[Rcpp::export]]
+//' @param bedfiles A vector of bedfile names - must have corresponding tabix
+//files with the same name and .tbi extension
+//' @param region A vector regions string in the form "chr:start-end"
 std::vector<std::vector<std::string>> query_interval(
     const std::vector<std::string>& bedfiles,
     const std::string& region
@@ -77,8 +79,9 @@ std::vector<std::vector<std::string>> query_interval(
 }
 
 //' Get reads from a single genomic region from one tabixed bed file.
-//' @param fname The name of the bed file - must have a tabix file with the same name and .tbi extension
-//' @param regions A vector of regions strings of the form "chr:start-end"
+//' @param bedfile The name of the bed file - must have a corresponding tabix
+//file with the same name and .tbi extension
+//' @param region The region string in the form "chr:start-end"
 std::vector<std::string> query_interval(
     const std::string& bedfile,
     const std::string& region
