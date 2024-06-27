@@ -4,7 +4,6 @@
 #' `iscream.threads` option is not set. To set the number of threads use
 #' setDTthreads or set the `iscream.threads` option in your `~/.Rprofile`. See
 #' `?set_threads` for more information.
-#' @param verbose Whether to be verbose on available omp threads
 #' @importFrom parallelly availableCores
 #' @return A named vector: `use_threads` = `iscream.threads` option, whether the option
 #' was set by the user, and the available threads on the system

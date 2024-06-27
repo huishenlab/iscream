@@ -6,9 +6,6 @@
 \usage{
 get_threads()
 }
-\arguments{
-\item{verbose}{Whether to be verbose on available omp threads}
-}
 \value{
 A named vector: \code{use_threads} = \code{iscream.threads} option, whether the option
 was set by the user, and the available threads on the system
