@@ -4,10 +4,9 @@
 #' Make a Bsseq object
 #' @param bedfiles A vector of bedfiles
 #' @param regions A vector of regions
-#' @param print Whether to print the Cov and M matrices
 #' @export
-make_bsseq <- function(bedfiles, regions, print) {
-    .Call(`_iscream_make_bsseq`, bedfiles, regions, print)
+make_bsseq <- function(bedfiles, regions) {
+    .Call(`_iscream_make_bsseq`, bedfiles, regions)
 }
 
 #' Beta value decoder

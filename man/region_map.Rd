@@ -7,6 +7,8 @@
 region_map(bedfiles, regions, fun = "aggregate", mval = TRUE, nthreads = NULL)
 }
 \arguments{
+\item{bedfiles}{A vector of bedfile paths}
+
 \item{regions}{A vector of genomic regions strings}
 
 \item{fun}{Function to apply over the region. See details.}
@@ -14,8 +16,6 @@ region_map(bedfiles, regions, fun = "aggregate", mval = TRUE, nthreads = NULL)
 \item{mval}{Whether to calculate the M value (coverage \eqn{\times \beta})
 or use the beta value
 when applying the function.}
-
-\item{befiles}{A vector of bedfile paths}
 }
 \value{
 A data.frame

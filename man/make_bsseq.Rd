@@ -4,14 +4,12 @@
 \alias{make_bsseq}
 \title{Make a Bsseq object}
 \usage{
-make_bsseq(bedfiles, regions, print)
+make_bsseq(bedfiles, regions)
 }
 \arguments{
 \item{bedfiles}{A vector of bedfiles}
 
 \item{regions}{A vector of regions}
-
-\item{print}{Whether to print the Cov and M matrices}
 }
 \description{
 Make a Bsseq object
