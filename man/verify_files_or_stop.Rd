@@ -4,10 +4,12 @@
 \alias{verify_files_or_stop}
 \title{Verify that bedfiles are tabixed}
 \usage{
-verify_files_or_stop(bedfiles, verify_tabix = T)
+verify_files_or_stop(bedfiles, verify_tabix = TRUE)
 }
 \arguments{
 \item{bedfiles}{A vector of bedfile paths}
+
+\item{verify_tabix}{Whether to verify the presence of tabix files}
 }
 \value{
 TRUE if all input bedfiles have an associated tabix index file.

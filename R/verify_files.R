@@ -16,10 +16,11 @@ check_files_exist <- function(files_vec, error_file_prefix = "Bedfile") {
 #' Verify that bedfiles are tabixed
 #'
 #' @param bedfiles A vector of bedfile paths
+#' @param verify_tabix Whether to verify the presence of tabix files
 #' @importFrom fs file_exists
 #' @return TRUE if all input bedfiles have an associated tabix index file.
 #' FALSE if not
-verify_files_or_stop <- function(bedfiles, verify_tabix = T) {
+verify_files_or_stop <- function(bedfiles, verify_tabix = TRUE) {
   check_files_exist(bedfiles)
   if (verify_tabix) {
     tbi_files <- paste0(bedfiles, ".tbi")
