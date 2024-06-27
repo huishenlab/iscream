@@ -7,7 +7,7 @@
 //' @keywords internal
 //' @export
 // [[Rcpp::export]]
-Rcpp::S4 make_bsseq(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, const int nthreads) {
+Rcpp::S4 Cpp_query_all(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, const int nthreads) {
 
     BS bsseq = BS(bedfiles, regions, nthreads);
     return bsseq.wrap();

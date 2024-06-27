@@ -7,8 +7,8 @@
 #'
 #' @keywords internal
 #' @export
-make_bsseq <- function(bedfiles, regions, nthreads) {
-    .Call(`_iscream_make_bsseq`, bedfiles, regions, nthreads)
+Cpp_query_all <- function(bedfiles, regions, nthreads) {
+    .Call(`_iscream_Cpp_query_all`, bedfiles, regions, nthreads)
 }
 
 #' Beta value decoder

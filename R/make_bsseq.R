@@ -111,4 +111,3 @@ make_bsseq_lm <- function(
     sampleNames = sample_list
   )
 }
-
