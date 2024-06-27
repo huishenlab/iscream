@@ -8,6 +8,8 @@
 #' @param mval Whether to calculate the M value (coverage \eqn{\times \beta})
 #' or use the beta value
 #' when applying the function.
+#' @param nthreads Set number of threads to use. Should not be necessary as this
+#' is set by `option('iscream.threads')`
 #' @details
 #' Available functions:
 #' - `"aggregate"` sums the values in the region with aggregated beta values if

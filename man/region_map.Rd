@@ -16,6 +16,9 @@ region_map(bedfiles, regions, fun = "aggregate", mval = TRUE, nthreads = NULL)
 \item{mval}{Whether to calculate the M value (coverage \eqn{\times \beta})
 or use the beta value
 when applying the function.}
+
+\item{nthreads}{Set number of threads to use. Should not be necessary as this
+is set by \code{option('iscream.threads')}}
 }
 \value{
 A data.frame
