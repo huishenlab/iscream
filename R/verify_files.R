@@ -25,3 +25,15 @@ verify_files_or_stop <- function(bedfiles, verify_tabix = T) {
     check_files_exist(tbi_files, "Tabix file")
   }
 }
+
+#' Verify that regions are valid
+#'
+#' @param regions A vector of genomic regions
+#' @return TRUE if all input regions start with 'chr' FALSE if not
+verify_regions_or_stop <- function(regions) {
+  valid_regions <- sapply(regions, function(i) grepl("^chr", i))
+  invalid_regions <- regions[!valid_regions]
+  if (length(invalid_regions != 0)) {
+    stop(paste0(invalid_regions, " are invalid regions\n"))
+  }
+}

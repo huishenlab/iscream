@@ -2,7 +2,7 @@
 #'
 #' Run a function on the CpGs in bedfiles across genomic regions. Currently
 #' supported functions are aggregate, average, and ...
-#' @param befiles A vector of bedfile paths
+#' @param bedfiles A vector of bedfile paths
 #' @param regions A vector of genomic regions strings
 #' @param fun Function to apply over the region. See details.
 #' @param mval Whether to calculate the M value (coverage \eqn{\times \beta})
@@ -24,12 +24,7 @@ region_map <- function(bedfiles, regions, fun = "aggregate", mval = TRUE, nthrea
   stopifnot("Selected function not supported" = fun %in% supported_funcs)
 
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
-
-  valid_regions <- sapply(regions, function(i) grepl("^chr", i))
-  invalid_regions <- regions[!valid_regions]
-  if (length(invalid_regions != 0)) {
-    stop(paste0(invalid_regions, " are invalid regions\n"))
-  }
+  verify_regions_or_stop(regions)
 
   stopifnot("'mval' must be TRUE or FALSE" = mval %in% c(TRUE, FALSE))
 
