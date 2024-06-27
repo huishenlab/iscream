@@ -4,10 +4,12 @@
 \alias{check_files_exist}
 \title{Check that files exist}
 \usage{
-check_files_exist(files_vec, error_file_prefix = "File")
+check_files_exist(files_vec, error_file_prefix = "Bedfile")
 }
 \arguments{
 \item{files_vec}{A vector of file paths}
+
+\item{error_file_prefix}{Error message prefix for 'Bedfile' vs 'Tabix file'}
 }
 \value{
 TRUE if all input bedfiles have an associated tabix index file.
