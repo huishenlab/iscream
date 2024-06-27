@@ -6,26 +6,20 @@
 #' `?set_threads` for more information.
 #' @param verbose Whether to be verbose on available omp threads
 #' @importFrom parallelly availableCores
+#' @return A named vector: `use_threads` = `iscream.threads` option, whether the option
+#' was set by the user, and the available threads on the system
 #'
 #' @export
 #' @examples
 #' get_threads()
 get_threads <- function() {
-  opt_set = TRUE
   opt_threads <- getOption("iscream.threads")
   avail_threads <- unname(availableCores())
   if (is.null(opt_threads)) {
     return(c("use_threads" = 1, "opt_set" = FALSE, "avail_threads" = avail_threads))
   }
-
-  if (avail_threads < opt_threads) {
-    stop(
-      "The `iscream.threads` option is set to ", opt_threads,
-      " but your system has only ", avail_threads,
-      " threads. See parallelly::availableCores(which = 'all') for more information on available resources."
-    )
-  }
-  c("use_threads" = opt_threads, "opt_set" = opt_set, "avail_threads" = avail_threads)
+  check_thread_count(opt_threads, avail_threads, TRUE)
+  c("use_threads" = opt_threads, "opt_set" = TRUE, "avail_threads" = avail_threads)
 }
 
 #' Set the number of available threads
@@ -34,6 +28,8 @@ get_threads <- function() {
 #' see how many threads you have available see `parallelly::availableCores`.
 #' @param n_threads The number of threads to use
 #' @importFrom parallelly availableCores
+#' @returns NULL. Sets the `iscream.threads` option to the requested number of
+#' threads if available
 #'
 #' @details iscream uses OpenMP to parallelize certain functions. You can use
 #' as many threads as are available to you on your system to varying degrees of
@@ -71,14 +67,35 @@ get_threads <- function() {
 #' set_threads(ncores)
 #' }
 set_threads <- function(n_threads) {
-  avail_threads <- availableCores()
-  if (avail_threads < n_threads) {
-    stop(paste0(
-      "Cannot use ", n_threads,
-      " threads. Your system has only ", avail_threads,
-      " threads. See parallelly::availableCores(which = 'all') for more informaion on available resources"
-    ))
-  }
+  check_thread_count(n_threads)
   options(iscream.threads = n_threads)
   message(paste0("iscream now using ", n_threads, " of ", avail_threads, " available threads."))
+}
+
+#' Check that the required threads are available
+#'
+#' @param n_threads The number of threads to check availability for
+#' @param avail_threads The number of threads that are available on the system.
+#' Defaults to `parallelly::availableCores()`
+#' @param opt_set Whether the `iscream.threads` options is set
+#'
+#' @importFrom parallelly availableCores
+#' @returns `n_threads` if the requested number of threads are available and
+#' stops if not
+check_thread_count <- function(
+  n_threads,
+  avail_threads = availableCores(),
+  opt_set = FALSE
+) {
+  if (n_threads <= avail_threads) return(n_threads)
+  if (opt_set) {
+    msg <- paste0("The `iscream.threads` option is set to ", n_threads, " threads but your")
+  } else {
+    msg <- paste0("Cannot use ", n_threads, " threads. Your")
+  }
+  stop(paste0(
+    msg,
+    "  system has only ", avail_threads,
+    " threads. See parallelly::availableCores(which = 'all') for more informaion on available resources"
+  ))
 }

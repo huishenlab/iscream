@@ -9,6 +9,10 @@ get_threads()
 \arguments{
 \item{verbose}{Whether to be verbose on available omp threads}
 }
+\value{
+A named vector: \code{use_threads} = \code{iscream.threads} option, whether the option
+was set by the user, and the available threads on the system
+}
 \description{
 This function sets the number of threads iscream uses to 1 if the
 \code{iscream.threads} option is not set. To set the number of threads use
