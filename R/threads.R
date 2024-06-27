@@ -69,7 +69,7 @@ get_threads <- function() {
 set_threads <- function(n_threads) {
   check_thread_count(n_threads)
   options(iscream.threads = n_threads)
-  message(paste0("iscream now using ", n_threads, " of ", avail_threads, " available threads."))
+  message(paste0("iscream now using ", n_threads, " of ", availableCores(), " available threads."))
 }
 
 #' Check that the required threads are available
