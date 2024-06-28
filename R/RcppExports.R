@@ -64,7 +64,12 @@ vencoder <- function(beta_col, cov_col) {
     .Call(`_iscream_vencoder`, beta_col, cov_col)
 }
 
-#' Get the numebr of available threads
+#' Get the number of available threads from OpenMP.
+#'
+#' This queries the number of available threads usign OpenMP, but will not
+#' reliably provide an accurate available thread count. To get a more reliable
+#' count that accounts for environment variables and HPC schedulers, use
+#' get_threads()`.
 #' @param verbose Whether to be verbose on available omp threads
 #' @export
 #' @examples

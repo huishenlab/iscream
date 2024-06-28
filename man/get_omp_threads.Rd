@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{get_omp_threads}
 \alias{get_omp_threads}
-\title{Get the numebr of available threads}
+\title{Get the number of available threads from OpenMP.}
 \usage{
 get_omp_threads(verbose)
 }
@@ -10,7 +10,10 @@ get_omp_threads(verbose)
 \item{verbose}{Whether to be verbose on available omp threads}
 }
 \description{
-Get the numebr of available threads
+This queries the number of available threads usign OpenMP, but will not
+reliably provide an accurate available thread count. To get a more reliable
+count that accounts for environment variables and HPC schedulers, use
+get_threads()`.
 }
 \examples{
 get_omp_threads(verbose = TRUE)
