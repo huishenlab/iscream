@@ -38,6 +38,7 @@ let
     ccls # Cpp LSP
     htslib
     pkg-config
+    texlive.combined.scheme-full
   ];
 
   in mkShell {
