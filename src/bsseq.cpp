@@ -22,7 +22,7 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
     cov_mat.resize(5, bedfile_vec.size());
     m_mat.resize(5, bedfile_vec.size());
 
-    printf("Querying %zu regions from %zu bedfiles\n", regions.size(), bedfile_vec.size());
+    Rprintf("Querying %zu regions from %zu bedfiles\n", regions.size(), bedfile_vec.size());
     Progress bar(bedfile_vec.size(), true); 
 
     for (int bedfile_n = 0; bedfile_n < bedfile_vec.size(); bedfile_n++) {
@@ -54,7 +54,7 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions)
 
     int mapsize = kh_size(cpg_map);
     if (cov_mat.n_rows > mapsize) {
-        printf("Correcting matrix size\n");
+        Rprintf("Correcting matrix size\n");
         int diff_rows = cov_mat.n_rows - mapsize;
         cov_mat.resize(mapsize, bedfile_vec.size());
         m_mat.resize(mapsize, bedfile_vec.size());
@@ -124,19 +124,19 @@ void BS::populate_matrix(RegionQuery& query, int& col_n) {
 }
 
 void BS::print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name) {
-    printf("%s\n", matrix_name.c_str());
+    Rprintf("%s\n", matrix_name.c_str());
     for (int j = 0; j < matrix[0].size(); j++) {
-        printf("[%d, ] ", j);
+        Rprintf("[%d, ] ", j);
         for (int i = 0; i < matrix.size(); i++) {
-            printf(" %d", matrix[i][j]);
+            Rprintf(" %d", matrix[i][j]);
         }
-        printf("\n");
+        Rprintf("\n");
     }
 }
 
 void BS::print_BS() {
-    printf("Cov\n");
+    Rprintf("Cov\n");
     cov_mat.print();
-    printf("M\n");
+    Rprintf("M\n");
     m_mat.print();
 }

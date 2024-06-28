@@ -78,7 +78,7 @@ Rcpp::DataFrame Cpp_region_map(
     const int& nthreads = 1
 ) {
 
-    printf("Aggregating %zu regions from %zu bedfiles\n", regions.size(), bedfiles.size());
+    Rprintf("Aggregating %zu regions from %zu bedfiles\n", regions.size(), bedfiles.size());
     ssize_t rowsize = bedfiles.size() * regions.size();
     Rcpp::CharacterVector feature_col(rowsize);
     Rcpp::CharacterVector cell(rowsize);
