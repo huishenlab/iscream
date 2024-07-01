@@ -2,9 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{vdouble_decoder}
 \alias{vdouble_decoder}
-\title{Double Vector Decoder
-This function unpacks the encoded \eqn{\beta} and coverage values from the
-encoded column of a methylation matrix. Same as \code{vdecoder}, but accepts double columns}
+\title{Double Vector Decoder}
 \usage{
 vdouble_decoder(encoded, measure)
 }
@@ -17,7 +15,6 @@ vdouble_decoder(encoded, measure)
 A DoubleVector of unpacked beta, coverage or M values
 }
 \description{
-Double Vector Decoder
 This function unpacks the encoded \eqn{\beta} and coverage values from the
 encoded column of a methylation matrix. Same as \code{vdecoder}, but accepts double columns
 }

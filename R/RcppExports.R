@@ -10,6 +10,7 @@ make_bsseq <- function(bedfiles, regions) {
 }
 
 #' Beta value decoder
+#'
 #' @param encoded The bit-packed beta and cov Int
 #' @return The beta value
 #' @export
@@ -18,6 +19,7 @@ decode_beta <- function(encoded) {
 }
 
 #' Coverage value decoder
+#'
 #' @param encoded The bit-packed beta and cov Int
 #' @return The coverage value
 #' @export
@@ -26,6 +28,7 @@ decode_cov <- function(encoded) {
 }
 
 #' M value decoder
+#'
 #' @param encoded The bit-packed beta and cov Int
 #' @return The M value
 #' @export
@@ -34,6 +37,7 @@ decode_m <- function(encoded) {
 }
 
 #' Vector Decoder
+#'
 #' This function unpacks the encoded \eqn{\beta} and coverage values from the
 #' encoded column of a methylation matrix.
 #' @param encoded An encoded sample column from a data.table methylation matrix of CpG loci by samples
@@ -45,6 +49,7 @@ vdecoder <- function(encoded, measure) {
 }
 
 #' Double Vector Decoder
+#'
 #' This function unpacks the encoded \eqn{\beta} and coverage values from the
 #' encoded column of a methylation matrix. Same as `vdecoder`, but accepts double columns
 #' @param encoded An encoded sample column from a data.table methylation matrix of CpG loci by samples
@@ -56,6 +61,7 @@ vdouble_decoder <- function(encoded, measure) {
 }
 
 #' Vector Encoder
+#'
 #' Bit-packs a vector of beta and coverage values
 #' @param beta_col Name of column containing beta values
 #' @param cov_col Name of column containing coverage values
@@ -79,6 +85,7 @@ get_omp_threads <- function(verbose) {
 }
 
 #' Apply a function over CpGs within features
+#'
 #' This function should be called from `region_map()` since there are few
 #' sanity checks on the C++ side.
 #' @param bedfiles A vector of bedfile paths

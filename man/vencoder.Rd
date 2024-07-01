@@ -2,8 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{vencoder}
 \alias{vencoder}
-\title{Vector Encoder
-Bit-packs a vector of beta and coverage values}
+\title{Vector Encoder}
 \usage{
 vencoder(beta_col, cov_col)
 }
@@ -13,6 +12,5 @@ vencoder(beta_col, cov_col)
 \item{cov_col}{Name of column containing coverage values}
 }
 \description{
-Vector Encoder
 Bit-packs a vector of beta and coverage values
 }

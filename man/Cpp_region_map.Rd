@@ -2,9 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{Cpp_region_map}
 \alias{Cpp_region_map}
-\title{Apply a function over CpGs within features
-This function should be called from \code{region_map()} since there are few
-sanity checks on the C++ side.}
+\title{Apply a function over CpGs within features}
 \usage{
 Cpp_region_map(
   bedfiles,
@@ -30,7 +28,6 @@ regions: \code{"aggregate"}, \code{"average"}.}
 \item{nthreads}{Number of cores to use. See details.}
 }
 \description{
-Apply a function over CpGs within features
 This function should be called from \code{region_map()} since there are few
 sanity checks on the C++ side.
 }

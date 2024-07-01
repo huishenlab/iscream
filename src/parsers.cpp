@@ -1,6 +1,7 @@
 #include "parsers.hpp"
 
 //' Parse a bed record into chr, start, and compressed beta and cov
+//'
 //' @param A line from a bed file
 BedLine parseBEDRecord(const std::string& bedString) {
     std::istringstream ss(bedString);

@@ -52,6 +52,7 @@ ComputedCpG mean(
 }
 
 //' Apply a function over CpGs within features
+//'
 //' This function should be called from `region_map()` since there are few
 //' sanity checks on the C++ side.
 //' @param bedfiles A vector of bedfile paths

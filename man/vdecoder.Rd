@@ -2,9 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{vdecoder}
 \alias{vdecoder}
-\title{Vector Decoder
-This function unpacks the encoded \eqn{\beta} and coverage values from the
-encoded column of a methylation matrix.}
+\title{Vector Decoder}
 \usage{
 vdecoder(encoded, measure)
 }
@@ -17,7 +15,6 @@ vdecoder(encoded, measure)
 An IntegerVector of unpacked beta, coverage or M values
 }
 \description{
-Vector Decoder
 This function unpacks the encoded \eqn{\beta} and coverage values from the
 encoded column of a methylation matrix.
 }
