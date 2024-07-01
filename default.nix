@@ -32,13 +32,22 @@ let
     styler
     usethis
     testthat
+
+    # RCMD check
+    V8
+    rhub
   ];
 
   _libs = with pkgs; [
-    ccls # Cpp LSP
+  # pkg deps
     htslib
-    pkg-config
+  # R CMD check
+    html-tidy
     texlive.combined.scheme-full
+    checkbashisms
+  # dev
+    ccls
+    pkg-config
   ];
 
   in mkShell {
