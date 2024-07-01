@@ -4,6 +4,8 @@
 #' Make a Bsseq object
 #' @param bedfiles A vector of bedfiles
 #' @param regions A vector of regions
+#'
+#' @keywords internal
 #' @export
 make_bsseq <- function(bedfiles, regions) {
     .Call(`_iscream_make_bsseq`, bedfiles, regions)
@@ -101,6 +103,7 @@ get_omp_threads <- function(verbose) {
 #' to half the available OpenMP cores. See `?get_threads` for more details. It
 #' can be manaully set with `set_threads()`.
 #'
+#' @keywords internal
 #' @export
 Cpp_region_map <- function(bedfiles, regions, fun, mval, region_rownames = FALSE, nthreads = 1L) {
     .Call(`_iscream_Cpp_region_map`, bedfiles, regions, fun, mval, region_rownames, nthreads)

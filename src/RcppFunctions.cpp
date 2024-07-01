@@ -3,6 +3,8 @@
 //' Make a Bsseq object
 //' @param bedfiles A vector of bedfiles
 //' @param regions A vector of regions
+//'
+//' @keywords internal
 //' @export
 // [[Rcpp::export]]
 Rcpp::S4 make_bsseq(std::vector<std::string>& bedfiles, std::vector<std::string>& regions) {

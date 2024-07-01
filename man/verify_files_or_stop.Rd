@@ -18,3 +18,4 @@ FALSE if not
 \description{
 Verify that bedfiles are tabixed
 }
+\keyword{internal}

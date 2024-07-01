@@ -26,3 +26,4 @@ row_num  col_num value
 This function requires \code{row_count} and \code{col_count} because the number of
 entries can be calculated from the input data.table.
 }
+\keyword{internal}

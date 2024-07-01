@@ -25,3 +25,4 @@ stops if not
 \description{
 Check that the required threads are available
 }
+\keyword{internal}

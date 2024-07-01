@@ -68,6 +68,7 @@ ComputedCpG mean(
 //' to half the available OpenMP cores. See `?get_threads` for more details. It
 //' can be manaully set with `set_threads()`.
 //'
+//' @keywords internal
 //' @export
 // [[Rcpp::export]]
 Rcpp::DataFrame Cpp_region_map(

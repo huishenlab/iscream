@@ -14,6 +14,7 @@
 #' @param compress Whether to write a gzip compressed file or not
 #' @importFrom data.table fwrite
 #'
+#' @keywords internal
 #' @export
 #'
 mm_writer <- function(

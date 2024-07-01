@@ -18,3 +18,4 @@ FALSE if not
 \description{
 Check that files exist
 }
+\keyword{internal}

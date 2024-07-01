@@ -5,6 +5,8 @@
 #' @importFrom fs file_exists
 #' @return TRUE if all input bedfiles have an associated tabix index file.
 #' FALSE if not
+#'
+#' @keywords internal
 check_files_exist <- function(files_vec, error_file_prefix = "Bedfile") {
   valid_files <- file_exists(files_vec)
   missing_files <- files_vec[!valid_files]
@@ -20,6 +22,8 @@ check_files_exist <- function(files_vec, error_file_prefix = "Bedfile") {
 #' @importFrom fs file_exists
 #' @return TRUE if all input bedfiles have an associated tabix index file.
 #' FALSE if not
+#'
+#' @keywords internal
 verify_files_or_stop <- function(bedfiles, verify_tabix = TRUE) {
   check_files_exist(bedfiles)
   if (verify_tabix) {
@@ -32,6 +36,8 @@ verify_files_or_stop <- function(bedfiles, verify_tabix = TRUE) {
 #'
 #' @param regions A vector of genomic regions
 #' @return TRUE if all input regions start with 'chr' FALSE if not
+#'
+#' @keywords internal
 verify_regions_or_stop <- function(regions) {
   valid_regions <- sapply(regions, function(i) grepl("^chr", i))
   invalid_regions <- regions[!valid_regions]

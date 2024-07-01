@@ -36,3 +36,4 @@ The optimal number of threads depends on the number of bedfiles, but is set
 to half the available OpenMP cores. See \code{?get_threads} for more details. It
 can be manaully set with \code{set_threads()}.
 }
+\keyword{internal}

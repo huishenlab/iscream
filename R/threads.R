@@ -9,6 +9,7 @@
 #' was set by the user, and the available threads on the system
 #'
 #' @export
+#'
 #' @examples
 #' get_threads()
 get_threads <- function() {
@@ -59,7 +60,9 @@ get_threads <- function() {
 #'
 #' Functions currently using OpenMP:
 #' - `region_map()`
+#'
 #' @export
+#'
 #' @examples
 #' (ncores <- parallelly::availableCores())
 #' \dontrun{
@@ -81,6 +84,8 @@ set_threads <- function(n_threads) {
 #' @importFrom parallelly availableCores
 #' @returns `n_threads` if the requested number of threads are available and
 #' stops if not
+#'
+#' @keywords internal
 check_thread_count <- function(
   n_threads,
   avail_threads = availableCores(),

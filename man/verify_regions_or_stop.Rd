@@ -15,3 +15,4 @@ TRUE if all input regions start with 'chr' FALSE if not
 \description{
 Verify that regions are valid
 }
+\keyword{internal}
