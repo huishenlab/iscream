@@ -12,6 +12,8 @@
 #' @param file_ext The file extension of the sample files
 #'
 #' @importFrom data.table := setcolorder rbindlist fwrite
+#'
+#' @keywords experimental
 #' @export
 #'
 #' @examples
@@ -76,6 +78,8 @@ make_cpg_index <- function(cpg_bed_file) {
 #' @param file_ext The file extension of the sample files
 #'
 #' @importFrom data.table rbindlist
+#'
+#' @keywords experimental
 #' @export
 #'
 #' @examples

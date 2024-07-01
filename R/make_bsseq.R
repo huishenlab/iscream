@@ -9,6 +9,7 @@
 #'
 #' @return A BSSeq object
 #'
+#' @keywords experimental
 #' @export
 #'
 # TODO: write working examples
@@ -71,6 +72,7 @@ make_bsseq_hm <- function(sp, sample_list) {
 #'
 #' @return A BSSeq object
 #'
+#' @keywords experimental
 #' @export
 #'
 # TODO: write working examples

@@ -15,3 +15,4 @@ A data.table of coverage values for each sample
 \description{
 Make a cov matrix with methylation matrix. Wrapper for \code{decoder}.
 }
+\keyword{experimental}

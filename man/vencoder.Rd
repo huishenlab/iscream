@@ -14,3 +14,4 @@ vencoder(beta_col, cov_col)
 \description{
 Bit-packs a vector of beta and coverage values
 }
+\keyword{experimental}

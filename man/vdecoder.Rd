@@ -18,3 +18,4 @@ An IntegerVector of unpacked beta, coverage or M values
 This function unpacks the encoded \eqn{\beta} and coverage values from the
 encoded column of a methylation matrix.
 }
+\keyword{experimental}

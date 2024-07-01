@@ -7,6 +7,8 @@
 #'
 #' @importFrom data.table fread := .SD
 #' @importFrom fs path
+#'
+#' @keywords experimental
 #' @export
 #'
 #' @examples
@@ -37,6 +39,7 @@ read_sample <- function(sample_name, merged) {
 #' @param sample_name name of the sample getting joined
 #' @return The cpg_table with the sample_table tacked on
 #'
+#' @keywords experimental
 #' @importFrom data.table :=
 #'
 joiner <- function(cpg_table, sample_dt, sample_name) {
@@ -61,6 +64,8 @@ joiner <- function(cpg_table, sample_dt, sample_name) {
 #' @importFrom data.table :=
 #' @importFrom data.table .SD
 #' @importFrom data.table as.data.table
+#'
+#' @keywords experimental
 #' @export
 #'
 #' @examples

@@ -29,3 +29,4 @@ uses less memory than \code{make_bsseq_hm} since it uses sparse coverage and
 methylation matrices when creating the BSseq object. It is however slower in
 the BSseq object creation.
 }
+\keyword{experimental}

@@ -26,3 +26,4 @@ make_meth_mat(
 \description{
 Make a methylation matrix with given scWGBS sample bed files
 }
+\keyword{experimental}

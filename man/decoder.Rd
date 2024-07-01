@@ -19,3 +19,4 @@ A data.table of the beta, coverage or M value by sample
 \description{
 Get the decoded values from an encoded data.table methylation matrix
 }
+\keyword{experimental}

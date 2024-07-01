@@ -15,3 +15,4 @@ The beta value
 \description{
 Beta value decoder
 }
+\keyword{experimental}

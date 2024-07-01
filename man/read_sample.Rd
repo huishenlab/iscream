@@ -17,3 +17,4 @@ The sample as a data.table
 \description{
 Reads scWGBS data from a sample bed file and generates a data.table
 }
+\keyword{experimental}

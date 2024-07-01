@@ -15,6 +15,8 @@ make_bsseq <- function(bedfiles, regions) {
 #'
 #' @param encoded The bit-packed beta and cov Int
 #' @return The beta value
+#'
+#' @keywords experimental
 #' @export
 decode_beta <- function(encoded) {
     .Call(`_iscream_decode_beta`, encoded)
@@ -24,6 +26,8 @@ decode_beta <- function(encoded) {
 #'
 #' @param encoded The bit-packed beta and cov Int
 #' @return The coverage value
+#'
+#' @keywords experimental
 #' @export
 decode_cov <- function(encoded) {
     .Call(`_iscream_decode_cov`, encoded)
@@ -33,6 +37,8 @@ decode_cov <- function(encoded) {
 #'
 #' @param encoded The bit-packed beta and cov Int
 #' @return The M value
+#'
+#' @keywords experimental
 #' @export
 decode_m <- function(encoded) {
     .Call(`_iscream_decode_m`, encoded)
@@ -45,6 +51,8 @@ decode_m <- function(encoded) {
 #' @param encoded An encoded sample column from a data.table methylation matrix of CpG loci by samples
 #' @param measure The required decoded value: 1 for beta, 2 for coverage and 3 for M
 #' @return An IntegerVector of unpacked beta, coverage or M values
+#'
+#' @keywords experimental
 #' @export
 vdecoder <- function(encoded, measure) {
     .Call(`_iscream_vdecoder`, encoded, measure)
@@ -57,6 +65,8 @@ vdecoder <- function(encoded, measure) {
 #' @param encoded An encoded sample column from a data.table methylation matrix of CpG loci by samples
 #' @param measure The required decoded value: 1 for beta, 2 for coverage and 3 for M
 #' @return A DoubleVector of unpacked beta, coverage or M values
+#'
+#' @keywords experimental
 #' @export
 vdouble_decoder <- function(encoded, measure) {
     .Call(`_iscream_vdouble_decoder`, encoded, measure)
@@ -67,6 +77,8 @@ vdouble_decoder <- function(encoded, measure) {
 #' Bit-packs a vector of beta and coverage values
 #' @param beta_col Name of column containing beta values
 #' @param cov_col Name of column containing coverage values
+#'
+#' @keywords experimental
 #' @export
 vencoder <- function(beta_col, cov_col) {
     .Call(`_iscream_vencoder`, beta_col, cov_col)

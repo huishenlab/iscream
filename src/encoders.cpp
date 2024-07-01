@@ -7,6 +7,8 @@ using namespace Rcpp;
 //' Bit-packs a vector of beta and coverage values
 //' @param beta_col Name of column containing beta values
 //' @param cov_col Name of column containing coverage values
+//'
+//' @keywords experimental
 //' @export
 // [[Rcpp::export]]
 IntegerVector vencoder(NumericVector beta_col, IntegerVector cov_col) {

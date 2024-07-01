@@ -20,3 +20,4 @@ The cpg_table with the sample_table tacked on
 Takes a sample data.table and joins it to the CpG index table on the
 chromosome and start columns
 }
+\keyword{experimental}

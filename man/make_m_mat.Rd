@@ -15,3 +15,4 @@ A data.table of M values for each sample
 \description{
 Make a beta matrix with methylation matrix. Wrapper for \code{decoder}.
 }
+\keyword{experimental}

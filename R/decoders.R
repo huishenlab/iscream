@@ -4,6 +4,7 @@
 #' @param encoded_matrix A matrix CpG loci and samples with encoded beta values
 #' @return A data.table of coverage values for each sample
 #'
+#' @keywords experimental
 #' @export
 #'
 #' @examples
@@ -20,6 +21,7 @@ make_beta_mat <- function(encoded_matrix) {
 #'
 #' @importFrom data.table copy
 #'
+#' @keywords experimental
 #' @export
 #'
 #' @examples
@@ -34,6 +36,7 @@ make_coverage_mat <- function(encoded_matrix) {
 #' @param encoded_matrix A matrix CpG loci and samples with encoded beta values
 #' @return A data.table of M values for each sample
 #'
+#' @keywords experimental
 #' @export
 #'
 #' @examples
@@ -52,6 +55,7 @@ make_m_mat <- function(encoded_matrix) {
 #' @param sparse Whether the matrix is a sparse matrix object
 #' @return A data.table of the beta, coverage or M value by sample
 #'
+#' @keywords experimental
 #' @export
 #'
 #' @examples

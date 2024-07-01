@@ -15,3 +15,4 @@ The M value
 \description{
 M value decoder
 }
+\keyword{experimental}

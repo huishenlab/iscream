@@ -9,6 +9,8 @@
 #'
 #' @importFrom data.table fread
 #' @importFrom data.table .SD
+#'
+#' @keywords experimental
 #' @export
 #'
 #' @examples

@@ -19,3 +19,4 @@ Create a BSSeq object using a encoded sparse methylation matrix. This method
 uses more memory than \code{make_bsseq_lm} since it uses dense coverage and
 methylation matrices when creating the BSSeq object.
 }
+\keyword{experimental}

@@ -8,6 +8,8 @@ using namespace Rcpp;
 //'
 //' @param encoded The bit-packed beta and cov Int
 //' @return The beta value
+//'
+//' @keywords experimental
 //' @export
 // [[Rcpp::export]]
 int decode_beta(uint32_t encoded) {
@@ -18,6 +20,8 @@ int decode_beta(uint32_t encoded) {
 //'
 //' @param encoded The bit-packed beta and cov Int
 //' @return The coverage value
+//'
+//' @keywords experimental
 //' @export
 // [[Rcpp::export]]
 int decode_cov(uint32_t encoded) {
@@ -28,6 +32,8 @@ int decode_cov(uint32_t encoded) {
 //'
 //' @param encoded The bit-packed beta and cov Int
 //' @return The M value
+//'
+//' @keywords experimental
 //' @export
 // [[Rcpp::export]]
 int decode_m(uint32_t encoded) {
@@ -41,6 +47,8 @@ int decode_m(uint32_t encoded) {
 //' @param encoded An encoded sample column from a data.table methylation matrix of CpG loci by samples
 //' @param measure The required decoded value: 1 for beta, 2 for coverage and 3 for M
 //' @return An IntegerVector of unpacked beta, coverage or M values
+//'
+//' @keywords experimental
 //' @export
 // [[Rcpp::export]]
 IntegerVector vdecoder(IntegerVector& encoded, int measure) {
@@ -66,6 +74,8 @@ IntegerVector vdecoder(IntegerVector& encoded, int measure) {
 //' @param encoded An encoded sample column from a data.table methylation matrix of CpG loci by samples
 //' @param measure The required decoded value: 1 for beta, 2 for coverage and 3 for M
 //' @return A DoubleVector of unpacked beta, coverage or M values
+//'
+//' @keywords experimental
 //' @export
 // [[Rcpp::export]]
 DoubleVector vdouble_decoder(DoubleVector& encoded, int measure) {
