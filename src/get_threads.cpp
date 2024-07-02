@@ -11,7 +11,8 @@
 //' This queries the number of available threads usign OpenMP, but will not
 //' reliably provide an accurate available thread count. To get a more reliable
 //' count that accounts for environment variables and HPC schedulers, use
-//' get_threads()`.
+//' get_threads()`. This function was pulled from
+//' github.com/rdatatable/data.table
 //' @param verbose Whether to be verbose on available omp threads
 //'
 //' @keywords internal
@@ -26,10 +27,11 @@ int get_omp_threads(bool verbose) {
         Rprintf("This installation of data.table has not been compiled with OpenMP support.\n");
       #else
         Rprintf("  OpenMP version (_OPENMP)       %d\n", _OPENMP);
+        Rprintf("  omp_get_num_procs()            %d\n", omp_get_num_procs());
+        Rprintf("  omp_get_thread_limit()         %d\n", omp_get_thread_limit());
+        Rprintf("  omp_get_max_threads()          %d\n", omp_get_max_threads());
+        return omp_get_max_threads();
       #endif
-      Rprintf("  omp_get_num_procs()            %d\n", omp_get_num_procs());
-      Rprintf("  omp_get_thread_limit()         %d\n", omp_get_thread_limit());
-      Rprintf("  omp_get_max_threads()          %d\n", omp_get_max_threads());
     }
-    return omp_get_max_threads();
+    return 1;
 }

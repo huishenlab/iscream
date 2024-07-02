@@ -89,7 +89,8 @@ vencoder <- function(beta_col, cov_col) {
 #' This queries the number of available threads usign OpenMP, but will not
 #' reliably provide an accurate available thread count. To get a more reliable
 #' count that accounts for environment variables and HPC schedulers, use
-#' get_threads()`.
+#' get_threads()`. This function was pulled from
+#' github.com/rdatatable/data.table
 #' @param verbose Whether to be verbose on available omp threads
 #'
 #' @keywords internal
