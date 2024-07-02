@@ -2,7 +2,7 @@
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, dev]
     paths-ignore:
       - '**/README.md'
   pull_request:
@@ -20,9 +20,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
+          - {os: macos-latest,   r: 'release', htslib: 'htslib',     install_cmd: 'brew install'}
+          # - {os: windows-latest, r: 'release'}
+          - {os: ubuntu-latest,  r: 'release', htslib: 'libhts-dev', install_cmd: 'sudo apt-get update && sudo apt-get install -y'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -43,6 +43,13 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
+
+      - name: Install deps
+        run: |
+          ${{ matrix.config.install_cmd }} ${{ matrix.config.htslib }}
+          echo "-------------------HTSLIB-----------------------"
+          pkg-config --cflags --libs htslib
+          echo "------------------------------------------------"
 
       - uses: r-lib/actions/check-r-package@v2
         with:
