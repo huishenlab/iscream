@@ -10,33 +10,15 @@ navbar:
     right: [search, github]
 
 reference:
-  - title: Reading data
-    contents:
-      - starts_with("read")
-      - joiner
-  - title: Writing data
-    contents:
-      - mm_writer
-  - title: Make matrices
-    contents:
-      - starts_with("make")
   - title: Region operations
     contents:
-      - query_interval
       - region_map
-      - Cpp_region_map
-  - title: Bit-packing
-    contents:
-      - starts_with("decode")
-      - starts_with("vd")
-      - vencoder
+      - query_all
   - title: Multithreading
     contents:
       - get_threads
       - set_threads
-      - get_omp_threads
-  - title: Utils
+  - title: Experimental
     contents:
-      - check_files_exist
-      - verify_files_or_stop
+      - has_keyword("experimental")
 
