@@ -24,7 +24,7 @@
 int get_omp_threads(bool verbose) {
     if (verbose) {
       #ifndef _OPENMP
-        Rprintf("This installation of data.table has not been compiled with OpenMP support.\n");
+        Rprintf("This installation of iscream has not been compiled with OpenMP support.\n");
       #else
         Rprintf("  OpenMP version (_OPENMP)       %d\n", _OPENMP);
         Rprintf("  omp_get_num_procs()            %d\n", omp_get_num_procs());
