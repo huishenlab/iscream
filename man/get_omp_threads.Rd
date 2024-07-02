@@ -18,3 +18,4 @@ get_threads()`.
 \examples{
 get_omp_threads(verbose = TRUE)
 }
+\keyword{internal}

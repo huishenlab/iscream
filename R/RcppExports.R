@@ -91,7 +91,10 @@ vencoder <- function(beta_col, cov_col) {
 #' count that accounts for environment variables and HPC schedulers, use
 #' get_threads()`.
 #' @param verbose Whether to be verbose on available omp threads
+#'
+#' @keywords internal
 #' @export
+#'
 #' @examples
 #' get_omp_threads(verbose = TRUE)
 get_omp_threads <- function(verbose) {
