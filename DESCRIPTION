@@ -7,6 +7,8 @@ Authors@R: person("James", "Eapen",
     comment = c(ORCID = "0000-0001-6016-3598"))
 Description: Fast and memory efficient methylation bed file reader and analyzer.
              It can be used with both bulk and scWGBS data.
+URL: https://huishenlab.github.io/iscream/, https://github.com/huishenlab/iscream/
+BugReports: https://github.com/huishenlab/iscream/issues/
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
