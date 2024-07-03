@@ -20,6 +20,27 @@ scMET.
 
 ## Installation
 
+### System dependencies
+
+#### *htslib*
+
+*iscream* depends on the *htslib* header files. These may be installed with
+your package manager:
+
+- ubuntu/debian: `libhts-dev`  
+- fedora/RHEL: `htslib-devel`  
+- brew: `htslib`  
+- nixpkgs: `htslib`
+
+They may also be found among your HPC modules - make sure the `PKG_CONFIG_PATH`
+environment variable includes the `pkgconfig` location for your installation of
+*htslib*. You can verify that the *htslib* development libraries are installed
+with `pkg-config`:
+
+```bash
+pkg-config --cflags --libs htslib
+```
+
 ### GitHub
 
 You can install the development version from Github by cloning the repo and
@@ -42,14 +63,6 @@ or [`pak`](https://pak.r-lib.org/):
 pak::pkg_install("huishenlab/iscream")
 ```
 
-### Dependencies
-
-- htslib: check that you have the htslib dev package installed for your system.
-  You can check this with `pkg-config` by running 
-
-  ```bash
-  pkg-config --exists htslib
-  ```
 ### Usage
 
 A user guide is available on the [package website](https://huishenlab.github.io/isceam/).
