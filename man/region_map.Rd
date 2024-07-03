@@ -25,7 +25,7 @@ A data.frame
 }
 \description{
 Run a function on the CpGs in bedfiles across genomic regions. Currently
-supported functions are aggregate, average, and ...
+supported functions are aggregate and average.
 }
 \details{
 Available functions:
@@ -35,4 +35,17 @@ Available functions:
 \item \code{"average"} averages the values in the region with average beta values if
 \verb{mval =} FALSE and average M values if \verb{mval =} TRUE
 }
+}
+\examples{
+bedfiles <- system.file("extdata", package = "iscream") |>
+  list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
+# examine the bedfiles
+colnames <- c("chr", "start", "end", "beta", "coverage")
+lapply(bedfiles, function(i) knitr::kable(data.table::fread(i, col.names = colnames)))
+
+# make a vector of regions
+regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
+region_map(bedfiles, regions)
+region_map(bedfiles, regions, mval = FALSE)
+region_map(bedfiles, regions, fun = "average")
 }

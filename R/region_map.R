@@ -1,7 +1,7 @@
 #' Run a defined function over genomic regions
 #'
 #' Run a function on the CpGs in bedfiles across genomic regions. Currently
-#' supported functions are aggregate, average, and ...
+#' supported functions are aggregate and average.
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector of genomic regions strings
 #' @param fun Function to apply over the region. See details.
@@ -20,6 +20,19 @@
 #' @return A data.frame
 #'
 #' @export
+#'
+#' @examples
+#' bedfiles <- system.file("extdata", package = "iscream") |>
+#'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
+#' # examine the bedfiles
+#' colnames <- c("chr", "start", "end", "beta", "coverage")
+#' lapply(bedfiles, function(i) knitr::kable(data.table::fread(i, col.names = colnames)))
+#'
+#' # make a vector of regions
+#' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
+#' region_map(bedfiles, regions)
+#' region_map(bedfiles, regions, mval = FALSE)
+#' region_map(bedfiles, regions, fun = "average")
 region_map <- function(bedfiles, regions, fun = "aggregate", mval = TRUE, nthreads = NULL) {
 
   supported_funcs <- c("aggregate", "average")
