@@ -56,10 +56,11 @@ get_threads <- function() {
 #' ```
 #' options(iscream.threads = [n_threads])
 #' ```
-#' in your .Rprofile. See help('Rprofile') for information on startup options.
+#' in your `.Rprofile` See `help('Rprofile')` for information on startup options.
 #'
 #' Functions currently using OpenMP:
 #' - `region_map()`
+#' - `query_all()`
 #'
 #' @export
 #'

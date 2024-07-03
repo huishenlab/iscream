@@ -1,15 +1,16 @@
 #' Run a defined function over genomic regions
 #'
 #' Run a function on the CpGs in bedfiles across genomic regions. Currently
-#' supported functions are aggregate and average.
+#' supported functions are aggregate and average. Parallelized across files
+#' using threads from the `"iscream.threads"` option.
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector of genomic regions strings
 #' @param fun Function to apply over the region. See details.
 #' @param mval Whether to calculate the M value (coverage \eqn{\times \beta})
 #' or use the beta value
 #' when applying the function.
-#' @param nthreads Set number of threads to use. Should not be necessary as this
-#' is set by `option('iscream.threads')`
+#' @param nthreads Set number of threads to use overriding the
+#' `"iscream.threads"` option. See `?set_threads` for more information.
 #' @details
 #' Available functions:
 #' - `"aggregate"` sums the values in the region with aggregated beta values if

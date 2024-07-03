@@ -1,11 +1,12 @@
 #' Make a bsseq object of CpGs from input genomic regions
 #'
 #' Queries the provided regions and produces M and Coverage matrices that are
-#' wrapped in a BSSeq object
+#' wrapped in a BSSeq object. Parallelized across files using threads from the
+#' `"iscream.threads"` option.
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector of genomic regions strings
-#' @param nthreads Set number of threads to use. Should not be necessary as this
-#' is set by `option('iscream.threads')`
+#' @param nthreads Set number of threads to use overriding the
+#' `"iscream.threads"` option. See `?set_threads` for more information.
 #' @importFrom fs file_exists
 #' @return A data.frame
 #'

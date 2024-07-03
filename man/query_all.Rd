@@ -11,15 +11,16 @@ query_all(bedfiles, regions, nthreads = NULL)
 
 \item{regions}{A vector of genomic regions strings}
 
-\item{nthreads}{Set number of threads to use. Should not be necessary as this
-is set by \code{option('iscream.threads')}}
+\item{nthreads}{Set number of threads to use overriding the
+\code{"iscream.threads"} option. See \code{?set_threads} for more information.}
 }
 \value{
 A data.frame
 }
 \description{
 Queries the provided regions and produces M and Coverage matrices that are
-wrapped in a BSSeq object
+wrapped in a BSSeq object. Parallelized across files using threads from the
+\code{"iscream.threads"} option.
 }
 \examples{
 bedfiles <- system.file("extdata", package = "iscream") |>

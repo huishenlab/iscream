@@ -17,15 +17,16 @@ region_map(bedfiles, regions, fun = "aggregate", mval = TRUE, nthreads = NULL)
 or use the beta value
 when applying the function.}
 
-\item{nthreads}{Set number of threads to use. Should not be necessary as this
-is set by \code{option('iscream.threads')}}
+\item{nthreads}{Set number of threads to use overriding the
+\code{"iscream.threads"} option. See \code{?set_threads} for more information.}
 }
 \value{
 A data.frame
 }
 \description{
 Run a function on the CpGs in bedfiles across genomic regions. Currently
-supported functions are aggregate and average.
+supported functions are aggregate and average. Parallelized across files
+using threads from the \code{"iscream.threads"} option.
 }
 \details{
 Available functions:

@@ -43,11 +43,12 @@ available threads but it may not reliably report hyperthreading ('system' or
 \if{html}{\out{<div class="sourceCode">}}\preformatted{options(iscream.threads = [n_threads])
 }\if{html}{\out{</div>}}
 
-in your .Rprofile. See help('Rprofile') for information on startup options.
+in your \code{.Rprofile} See \code{help('Rprofile')} for information on startup options.
 
 Functions currently using OpenMP:
 \itemize{
 \item \code{region_map()}
+\item \code{query_all()}
 }
 }
 \examples{
