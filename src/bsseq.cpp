@@ -140,7 +140,7 @@ void BS::populate_matrix(RegionQuery& query, int& col_n) {
         retrieve_b = khmap_get(cpg_map, ids[i]);
         idx = kh_val(cpg_map, retrieve_b);
         cov_mat(idx - 1, col_n) = lines[i].cov;
-        m_mat(idx - 1, col_n) =  (int) std::round(lines[i].cov * lines[i].beta);
+        m_mat(idx - 1, col_n) =  lines[i].m_count;
     }
 }
 

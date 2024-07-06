@@ -12,6 +12,7 @@ struct BedLine {
     int end;
     float beta;
     int cov;
+    int m_count;
 };
 
 struct EncodedBedLine {
@@ -21,6 +22,7 @@ struct EncodedBedLine {
 };
 
 BedLine parseBEDRecord(const std::string& bedString);
+BedLine parseCovRecord(const std::string& bedString);
 EncodedBedLine encodeBedRecord(const std::string& bedString);
 std::string CpGID(BedLine& parsed_bedline);
 
