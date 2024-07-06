@@ -19,10 +19,7 @@ typedef struct {
 } ComputedCpG;
 
 // Sum CpGs M values and coverage
-ComputedCpG aggregate(
-    const RegionQuery& interval,
-    const bool mval
-) {
+ComputedCpG aggregate(const RegionQuery& interval, const bool mval) {
 
     float total_beta = 0;
     float total_cov = 0;
@@ -36,10 +33,7 @@ ComputedCpG aggregate(
 }
 
 // Get mean of betas and coverage
-ComputedCpG mean(
-    const RegionQuery& interval,
-    const bool mval
-) {
+ComputedCpG mean(const RegionQuery& interval, const bool mval) {
 
     int n_cpg = interval.cpgs_in_interval.size();
 
