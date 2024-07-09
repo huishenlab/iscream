@@ -65,5 +65,5 @@ pak::pkg_install("huishenlab/iscream")
 
 ### Usage
 
-A user guide is available on the [package website](https://huishenlab.github.io/isceam/).
+A user guide is available on the [package website](https://huishenlab.github.io/iscream/).
 Bug reports may be submitted through GitHub issues.
