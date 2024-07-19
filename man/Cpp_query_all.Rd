@@ -10,6 +10,9 @@ Cpp_query_all(bedfiles, regions, nthreads)
 \item{bedfiles}{A vector of bedfiles}
 
 \item{regions}{A vector of regions}
+
+\item{nthreads}{Set number of threads to use overriding the
+\code{"iscream.threads"} option. See \code{?set_threads} for more information.}
 }
 \description{
 Make a Bsseq object

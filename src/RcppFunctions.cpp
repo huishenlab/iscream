@@ -3,6 +3,8 @@
 //' Make a Bsseq object
 //' @param bedfiles A vector of bedfiles
 //' @param regions A vector of regions
+//' @param nthreads Set number of threads to use overriding the
+//' `"iscream.threads"` option. See `?set_threads` for more information.
 //'
 //' @keywords internal
 //' @export
