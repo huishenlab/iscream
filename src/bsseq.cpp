@@ -16,13 +16,14 @@ BS::BS() {
     n_cpgs = 0;
 }
 
-BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const int nthreads) {
+BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const int nthreads) {
     n_cpgs = 0;
     chr_id = 0;
     n_samples = bedfile_vec.size();
     n_intervals = regions.size();
     sample_names = bedfile_vec;
     cpg_map = khmap_init();
+    is_merged = merged;
 
     cov_mat.resize(5, bedfile_vec.size());
     m_mat.resize(5, bedfile_vec.size());

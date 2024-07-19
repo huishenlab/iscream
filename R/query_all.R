@@ -6,6 +6,7 @@
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector of genomic regions strings
 #' @param bismark Whether the input is a bismark coverage file
+#' @param merged Whether the input strands have been merged/collapsed
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #' @importFrom fs file_exists
@@ -22,7 +23,7 @@
 #' # make a vector of regions
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 #' query_all(bedfiles, regions)
-query_all <- function(bedfiles, regions, bismark = FALSE, nthreads = NULL) {
+query_all <- function(bedfiles, regions, bismark = FALSE, merged = TRUE, nthreads = NULL) {
 
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   verify_regions_or_stop(regions)
@@ -32,6 +33,6 @@ query_all <- function(bedfiles, regions, bismark = FALSE, nthreads = NULL) {
     getOption("iscream.threads"),
     check_thread_count(nthreads)
   )
-  Cpp_query_all(bedfiles, regions, bismark, nthreads = n_threads)
+  Cpp_query_all(bedfiles, regions, bismark, merged, nthreads = n_threads)
 }
 

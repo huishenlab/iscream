@@ -4,7 +4,7 @@
 \alias{Cpp_query_all}
 \title{Make a Bsseq object}
 \usage{
-Cpp_query_all(bedfiles, regions, bismark, nthreads)
+Cpp_query_all(bedfiles, regions, bismark, merged, nthreads)
 }
 \arguments{
 \item{bedfiles}{A vector of bedfiles}

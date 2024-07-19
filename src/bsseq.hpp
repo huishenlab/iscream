@@ -49,6 +49,7 @@ private:
     std::unordered_map<int, std::string> chr_rev_map;
     khmap_t *cpg_map;
 
+    bool is_merged;
     int n_intervals;
     int n_cpgs;
     int chr_id;
@@ -60,7 +61,7 @@ private:
 public:
 
     BS();
-    BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const int nthreads);
+    BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const int nthreads);
     void populate_matrix(RegionQuery& query, int& col_n, const bool bismark);
     void print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name);
     void print_BS();
@@ -75,7 +76,7 @@ public:
         return BSseq(
             Rcpp::_("M") = assays["M"],
             Rcpp::_("Cov") = assays["Cov"],
-            Rcpp::_("gr") = GRanges(seqnames, IRanges(start + 1)),
+            Rcpp::_("gr") = GRanges(seqnames, IRanges(start + 1, Rcpp::_("width") = is_merged ? 2 : 1)),
             Rcpp::_("sampleNames") = sample_names
         );
     }
