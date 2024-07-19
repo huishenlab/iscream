@@ -16,7 +16,7 @@ BS::BS() {
     n_cpgs = 0;
 }
 
-BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const int nthreads) {
+BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const int nthreads) {
     n_cpgs = 0;
     chr_id = 0;
     n_samples = bedfile_vec.size();
@@ -36,7 +36,7 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions,
     for (int bedfile_n = 0; bedfile_n < bedfile_vec.size(); bedfile_n++) {
         MultiRegionQuery cpgs_in_file = query_intervals(bedfile_vec[bedfile_n].c_str(), regions);
         for (RegionQuery cpgs_in_interval : cpgs_in_file) {
-            populate_matrix(cpgs_in_interval, bedfile_n);
+            populate_matrix(cpgs_in_interval, bedfile_n, bismark);
         }
         bar.increment();
     }
@@ -87,7 +87,7 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions,
     );
 }
 
-void BS::populate_matrix(RegionQuery& query, int& col_n) {
+void BS::populate_matrix(RegionQuery& query, int& col_n, const bool bismark) {
 
     std::vector<BedLine> lines;
     std::vector<CpG> ids;
@@ -97,7 +97,7 @@ void BS::populate_matrix(RegionQuery& query, int& col_n) {
     }
     for (std::string cpg_string : query.cpgs_in_interval) {
 
-        BedLine parsed_bedline = parseBEDRecord(cpg_string);
+        BedLine parsed_bedline = bismark ? parseCovRecord(cpg_string) : parseBEDRecord(cpg_string);
         lines.push_back(parsed_bedline);
 
         #pragma omp critical

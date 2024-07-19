@@ -60,8 +60,8 @@ private:
 public:
 
     BS();
-    BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const int nthreads);
-    void populate_matrix(RegionQuery& query, int& col_n);
+    BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const int nthreads);
+    void populate_matrix(RegionQuery& query, int& col_n, const bool bismark);
     void print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name);
     void print_BS();
 

@@ -4,12 +4,14 @@
 \alias{query_all}
 \title{Make a bsseq object of CpGs from input genomic regions}
 \usage{
-query_all(bedfiles, regions, nthreads = NULL)
+query_all(bedfiles, regions, bismark = FALSE, nthreads = NULL)
 }
 \arguments{
 \item{bedfiles}{A vector of bedfile paths}
 
 \item{regions}{A vector of genomic regions strings}
+
+\item{bismark}{Whether the input is a bismark coverage file}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}

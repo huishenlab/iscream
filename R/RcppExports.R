@@ -4,13 +4,14 @@
 #' Make a Bsseq object
 #' @param bedfiles A vector of bedfiles
 #' @param regions A vector of regions
+#' @param bismark Whether the input is a bismark coverage file
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
 #' @keywords internal
 #' @export
-Cpp_query_all <- function(bedfiles, regions, nthreads) {
-    .Call(`_iscream_Cpp_query_all`, bedfiles, regions, nthreads)
+Cpp_query_all <- function(bedfiles, regions, bismark, nthreads) {
+    .Call(`_iscream_Cpp_query_all`, bedfiles, regions, bismark, nthreads)
 }
 
 #' Beta value decoder
