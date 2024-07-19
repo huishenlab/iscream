@@ -24,6 +24,7 @@ let
 
   # dev dependencies
     bench
+    devtools
     lobstr
     pkgbuild
     pkgdown
