@@ -9,6 +9,7 @@ Cpp_region_map(
   regions,
   fun,
   mval,
+  bismark,
   region_rownames = FALSE,
   nthreads = 1L
 )

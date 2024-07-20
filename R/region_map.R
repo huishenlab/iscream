@@ -5,6 +5,7 @@
 #' using threads from the `"iscream.threads"` option.
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector of genomic regions strings
+#' @param bismark Whether the input is a bismark coverage file
 #' @param fun Function to apply over the region. See details.
 #' @param mval Whether to calculate the M value (coverage \eqn{\times \beta})
 #' or use the beta value
@@ -34,7 +35,7 @@
 #' region_map(bedfiles, regions)
 #' region_map(bedfiles, regions, mval = FALSE)
 #' region_map(bedfiles, regions, fun = "average")
-region_map <- function(bedfiles, regions, fun = "aggregate", mval = TRUE, nthreads = NULL) {
+region_map <- function(bedfiles, regions, fun = "aggregate", bismark = FALSE, mval = TRUE, nthreads = NULL) {
 
   supported_funcs <- c("aggregate", "average")
   stopifnot("Selected function not supported" = fun %in% supported_funcs)
@@ -49,5 +50,5 @@ region_map <- function(bedfiles, regions, fun = "aggregate", mval = TRUE, nthrea
     getOption("iscream.threads"),
     check_thread_count(nthreads)
   )
-  Cpp_region_map(bedfiles, regions, fun, mval, nthreads = n_threads)
+  Cpp_region_map(bedfiles, regions, fun, mval, bismark, nthreads = n_threads)
 }

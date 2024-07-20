@@ -124,7 +124,7 @@ get_omp_threads <- function(verbose) {
 #'
 #' @keywords internal
 #' @export
-Cpp_region_map <- function(bedfiles, regions, fun, mval, region_rownames = FALSE, nthreads = 1L) {
-    .Call(`_iscream_Cpp_region_map`, bedfiles, regions, fun, mval, region_rownames, nthreads)
+Cpp_region_map <- function(bedfiles, regions, fun, mval, bismark, region_rownames = FALSE, nthreads = 1L) {
+    .Call(`_iscream_Cpp_region_map`, bedfiles, regions, fun, mval, bismark, region_rownames, nthreads)
 }
 

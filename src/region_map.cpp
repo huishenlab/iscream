@@ -19,13 +19,13 @@ typedef struct {
 } ComputedCpG;
 
 // Sum CpGs M values and coverage
-ComputedCpG aggregate(const RegionQuery& interval, const bool mval) {
+ComputedCpG aggregate(const RegionQuery& interval, const bool mval, const bool bismark) {
 
     float total_beta = 0;
     float total_cov = 0;
     for (const std::string& each_cpg : interval.cpgs_in_interval) {
-        BedLine parsed_cpg = parseBEDRecord(each_cpg);
-        total_beta += mval ? (int) std::round(parsed_cpg.cov * parsed_cpg.beta) : parsed_cpg.beta;
+        BedLine parsed_cpg = bismark ? parseCovRecord(each_cpg) : parseBEDRecord(each_cpg);
+        total_beta += mval ? parsed_cpg.m_count : parsed_cpg.beta;
         total_cov += parsed_cpg.cov;
     }
 
@@ -33,11 +33,11 @@ ComputedCpG aggregate(const RegionQuery& interval, const bool mval) {
 }
 
 // Get mean of betas and coverage
-ComputedCpG mean(const RegionQuery& interval, const bool mval) {
+ComputedCpG mean(const RegionQuery& interval, const bool mval, const bool bismark) {
 
     int n_cpg = interval.cpgs_in_interval.size();
 
-    ComputedCpG cpg = aggregate(interval, mval);
+    ComputedCpG cpg = aggregate(interval, mval, bismark);
 
     cpg.computed_beta_me = n_cpg == 0 ? 0.0 : cpg.computed_beta_me / n_cpg;
     cpg.computed_cov = n_cpg == 0 ? 0 : cpg.computed_cov / n_cpg;
@@ -70,6 +70,7 @@ Rcpp::DataFrame Cpp_region_map(
     const Rcpp::CharacterVector& regions,
     const std::string& fun,
     const bool mval,
+    const bool bismark,
     const bool region_rownames = false,
     const int& nthreads = 1
 ) {
@@ -103,7 +104,7 @@ Rcpp::DataFrame Cpp_region_map(
         int row_count = bedfile_n * regions_vec.size();
         std::string bedfile_prefix = bed_path.stem().stem();
         for (RegionQuery interval : cpgs_in_file) {
-            ComputedCpG agg_cpg = f(interval, mval);
+            ComputedCpG agg_cpg = f(interval, mval, bismark);
 
             feature_col[row_count] = interval.interval_str;
             cell[row_count] = bedfile_prefix.c_str();

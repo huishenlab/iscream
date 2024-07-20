@@ -4,7 +4,14 @@
 \alias{region_map}
 \title{Run a defined function over genomic regions}
 \usage{
-region_map(bedfiles, regions, fun = "aggregate", mval = TRUE, nthreads = NULL)
+region_map(
+  bedfiles,
+  regions,
+  fun = "aggregate",
+  bismark = FALSE,
+  mval = TRUE,
+  nthreads = NULL
+)
 }
 \arguments{
 \item{bedfiles}{A vector of bedfile paths}
@@ -12,6 +19,8 @@ region_map(bedfiles, regions, fun = "aggregate", mval = TRUE, nthreads = NULL)
 \item{regions}{A vector of genomic regions strings}
 
 \item{fun}{Function to apply over the region. See details.}
+
+\item{bismark}{Whether the input is a bismark coverage file}
 
 \item{mval}{Whether to calculate the M value (coverage \eqn{\times \beta})
 or use the beta value
