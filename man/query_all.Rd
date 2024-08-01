@@ -2,7 +2,7 @@
 % Please edit documentation in R/query_all.R
 \name{query_all}
 \alias{query_all}
-\title{Make a bsseq object of CpGs from input genomic regions}
+\title{Query all CpGs from input genomic regions}
 \usage{
 query_all(bedfiles, regions, bismark = FALSE, merged = TRUE, nthreads = NULL)
 }
@@ -19,12 +19,19 @@ query_all(bedfiles, regions, bismark = FALSE, merged = TRUE, nthreads = NULL)
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
 }
 \value{
-A data.frame
+A named list of
+\itemize{
+\item M and coverage matrices
+\item a character vector of chromosomes and numeric vector of corresponding CpG
+base positions
+\item a character vector of the input sample names
+}
 }
 \description{
-Queries the provided regions and produces M and Coverage matrices that are
-wrapped in a BSSeq object. Parallelized across files using threads from the
-\code{"iscream.threads"} option.
+Queries the provided regions and produces M and Coverage matrices and their
+genomic positions. Parallelized across files using threads from the
+\code{"iscream.threads"} option. The output of \code{query_all} may be used to create
+a BSseq object: \code{do.call(BSseq, query_all(...))}.
 }
 \examples{
 bedfiles <- system.file("extdata", package = "iscream") |>
@@ -36,4 +43,9 @@ lapply(bedfiles, function(i) knitr::kable(data.table::fread(i, col.names = colna
 # make a vector of regions
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 query_all(bedfiles, regions)
+# for BSseq object run
+\dontrun{
+library(bsseq)
+do.call(BSseq, query_all(bedfiles, regions))
+}
 }

@@ -10,7 +10,7 @@
 //' @keywords internal
 //' @export
 // [[Rcpp::export]]
-Rcpp::S4 Cpp_query_all(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, const bool bismark, const bool merged, const int nthreads) {
+Rcpp::List Cpp_query_all(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, const bool bismark, const bool merged, const int nthreads) {
 
     BS bsseq = BS(bedfiles, regions, bismark, merged, nthreads);
     return bsseq.wrap();
