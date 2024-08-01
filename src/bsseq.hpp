@@ -64,14 +64,12 @@ public:
 
     arma::umat cov_mat, m_mat;
     Rcpp::List assays;
-    Rcpp::S4 wrap() {
-        Rcpp::Function BSseq("BSseq", Rcpp::Environment::namespace_env("bsseq"));
-        Rcpp::Function GRanges("GRanges", Rcpp::Environment::namespace_env("GenomicRanges"));
-        Rcpp::Function IRanges("IRanges", Rcpp::Environment::namespace_env("IRanges"));
-        return BSseq(
+    Rcpp::List wrap() {
+        return Rcpp::List::create(
             Rcpp::_("M") = assays["M"],
             Rcpp::_("Cov") = assays["Cov"],
-            Rcpp::_("gr") = GRanges(seqnames, IRanges(start + 1, Rcpp::_("width") = is_merged ? 2 : 1)),
+            Rcpp::_("pos") = start,
+            Rcpp::_("chr") = seqnames,
             Rcpp::_("sampleNames") = sample_names
         );
     }
