@@ -15,8 +15,7 @@
 #include "../inst/include/iscream_types.h"
 
 typedef struct CpG {
-    int chr;
-    int start;
+    int chr, start;
 } CpG;
 
 static kh_inline khint_t kh_eq_cpg(CpG a, CpG b) {
@@ -50,10 +49,7 @@ private:
     khmap_t *cpg_map;
 
     bool is_merged;
-    int n_intervals;
-    int n_cpgs;
-    int chr_id;
-    int n_samples;
+    int n_intervals, n_cpgs, chr_id, n_samples;
     Rcpp::CharacterVector seqnames;
     Rcpp::IntegerVector start;
     std::vector<std::string> sample_names;
@@ -66,8 +62,7 @@ public:
     void print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name);
     void print_BS();
 
-    arma::umat cov_mat;
-    arma::umat m_mat;
+    arma::umat cov_mat, m_mat;
     Rcpp::List assays;
     Rcpp::S4 wrap() {
         Rcpp::Function BSseq("BSseq", Rcpp::Environment::namespace_env("bsseq"));
