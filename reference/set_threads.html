@@ -20,6 +20,7 @@ see how many threads you have available see parallelly::availableCores."><meta p
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/huishenlab/iscream/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -28,7 +29,7 @@ see how many threads you have available see parallelly::availableCores."><meta p
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Set the number of available threads</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/huishenlab/iscream/blob/main/R/threads.R" class="external-link"><code>R/threads.R</code></a></small>
       <div class="d-none name"><code>set_threads.Rd</code></div>
     </div>
 
@@ -79,8 +80,9 @@ available threads but it may not reliably report hyperthreading ('system' or
 'nproc'). To set the number of threads without having to call
 <code>set_threads()</code> in every session, put</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">iscream.threads =</span> [n_threads])</span></code></pre><p></p></div>
-<p>in your .Rprofile. See help('Rprofile') for information on startup options.</p>
+<p>in your <code>.Rprofile</code> See <code><a href="https://rdrr.io/r/base/Startup.html" class="external-link">help('Rprofile')</a></code> for information on startup options.</p>
 <p>Functions currently using OpenMP:</p><ul><li><p><code><a href="region_map.html">region_map()</a></code></p></li>
+<li><p><code><a href="query_all.html">query_all()</a></code></p></li>
 </ul></div>
 
     <div class="section level2">
