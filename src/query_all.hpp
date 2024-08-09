@@ -1,6 +1,10 @@
-#include <cstdio>
-#include "bsseq.hpp"
-#include <filesystem>
+#ifndef QUERY_ALL_H
+#define QUERY_ALL_H
+
+#if defined __cplusplus
+
+#include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::depends(RcppProgress)]]
 #include <progress.hpp>
@@ -11,17 +15,87 @@
 #include <omp.h>
 #endif
 
-BS::BS() {
+#include <cmath>
+#include <cstdio>
+#include <filesystem>
+#include "query.hpp"
+#include "parsers.hpp"
+#include "decoders.hpp"
+#include <unordered_map>
+#include "../inst/include/khashl.h"
+#include "../inst/include/iscream_types.h"
+
+typedef struct CpG {
+    int chr, start;
+} CpG;
+
+static kh_inline khint_t kh_eq_cpg(CpG a, CpG b) {
+    return (a.chr == b.chr) & (a.start == b.start);
+}
+
+static kh_inline khint_t kh_hash_cpg(CpG cpg) {
+    khint_t to_hash; 
+
+    // Create input value for hashing function
+    // Pull off last 16 bits of chr
+    uint16_t chr = cpg.chr & 0xffff;
+    // Pull off last 16 bits of start
+    khint_t start = cpg.start & 0xffff;
+    to_hash = (chr <<16) + start;
+
+    return kh_hash_uint32(to_hash);
+}
+
+#ifndef __MAP_INIT
+#define __MAP_INIT
+KHASHL_MAP_INIT(static, khmap_t, khmap, CpG, int, kh_hash_cpg, kh_eq_cpg);
+#endif /* ifndef __MAP_INIT */
+
+class QueryAll {
+
+private:
+
+    std::unordered_map<std::string, int> chr_map;
+    std::unordered_map<int, std::string> chr_rev_map;
+    khmap_t *cpg_map;
+
+    bool is_merged;
+    int n_intervals, n_cpgs, chr_id, n_samples;
+    Rcpp::CharacterVector seqnames, sample_names;
+    Rcpp::IntegerVector start;
+
+public:
+
+    QueryAll();
+    QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const int nthreads);
+    void populate_matrix(RegionQuery& query, int& col_n, const bool bismark);
+    void print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name);
+    void print_QueryAll();
+
+    arma::umat cov_mat, m_mat;
+    Rcpp::List assays;
+    Rcpp::List wrap() {
+        return Rcpp::List::create(
+            Rcpp::_("M") = assays["M"],
+            Rcpp::_("Cov") = assays["Cov"],
+            Rcpp::_("pos") = start,
+            Rcpp::_("chr") = seqnames,
+            Rcpp::_("sampleNames") = sample_names
+        );
+    }
+};
+
+QueryAll::QueryAll() {
     n_intervals = 0;
     n_cpgs = 0;
 }
 
-BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const int nthreads) {
+QueryAll::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const int nthreads) {
     n_cpgs = 0;
     chr_id = 0;
     n_samples = bedfile_vec.size();
     n_intervals = regions.size();
-    sample_names = bedfile_vec;
+    sample_names = Rcpp::wrap(bedfile_vec);
     cpg_map = khmap_init();
     is_merged = merged;
 
@@ -70,25 +144,25 @@ BS::BS(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions,
         m_mat.resize(mapsize, bedfile_vec.size());
     }
 
-    Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
-    Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
-    Rcpp::rownames(cov_rmat) = rownames;
-    Rcpp::rownames(M_rmat) = rownames;
-
     for (int i = 0; i < sample_names.size(); i++) {
-        std::filesystem::path sample_path = sample_names[i];
+        std::filesystem::path sample_path = bedfile_vec[i];
         sample_names[i] = sample_path.extension() == ".gz" ? sample_path.stem().stem().string() : sample_path.stem().string();
     }
 
+    Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
+    Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
+
     Rcpp::colnames(cov_rmat) = Rcpp::wrap(sample_names);
     Rcpp::colnames(M_rmat) = Rcpp::wrap(sample_names);
+    Rcpp::rownames(cov_rmat) = rownames;
+    Rcpp::rownames(M_rmat) = rownames;
     assays = Rcpp::List::create(
         Rcpp::_["Cov"] = cov_rmat,
         Rcpp::_["M"] = M_rmat
     );
 }
 
-void BS::populate_matrix(RegionQuery& query, int& col_n, const bool bismark) {
+void QueryAll::populate_matrix(RegionQuery& query, int& col_n, const bool bismark) {
 
     std::vector<BedLine> lines;
     std::vector<CpG> ids;
@@ -145,7 +219,7 @@ void BS::populate_matrix(RegionQuery& query, int& col_n, const bool bismark) {
     }
 }
 
-void BS::print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name) {
+void QueryAll::print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name) {
     Rprintf("%s\n", matrix_name.c_str());
     for (int j = 0; j < matrix[0].size(); j++) {
         Rprintf("[%d, ] ", j);
@@ -156,9 +230,6 @@ void BS::print_mat(std::vector<std::vector<int>>& matrix, const std::string& mat
     }
 }
 
-void BS::print_BS() {
-    Rprintf("Cov\n");
-    cov_mat.print();
-    Rprintf("M\n");
-    m_mat.print();
-}
+#endif /* __cplusplus */
+
+#endif /* ifndef QUERY_ALL_H */

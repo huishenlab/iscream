@@ -1,4 +1,4 @@
-#include "bsseq.hpp"
+#include "query_all.hpp"
 
 //' Make a Bsseq object
 //' @param bedfiles A vector of bedfiles
@@ -12,6 +12,6 @@
 // [[Rcpp::export]]
 Rcpp::List Cpp_query_all(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, const bool bismark, const bool merged, const int nthreads) {
 
-    BS bsseq = BS(bedfiles, regions, bismark, merged, nthreads);
+    QueryAll bsseq = QueryAll(bedfiles, regions, bismark, merged, nthreads);
     return bsseq.wrap();
 }
