@@ -12,6 +12,6 @@
 // [[Rcpp::export]]
 Rcpp::List Cpp_query_all(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, const bool bismark, const bool merged, const int nthreads) {
 
-    QueryAll bsseq = QueryAll(bedfiles, regions, bismark, merged, nthreads);
+    QueryAll bsseq = QueryAll<arma::umat>(bedfiles, regions, bismark, merged, nthreads);
     return bsseq.wrap();
 }

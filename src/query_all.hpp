@@ -51,6 +51,7 @@ static kh_inline khint_t kh_hash_cpg(CpG cpg) {
 KHASHL_MAP_INIT(static, khmap_t, khmap, CpG, int, kh_hash_cpg, kh_eq_cpg);
 #endif /* ifndef __MAP_INIT */
 
+template <class Mat>
 class QueryAll {
 
 private:
@@ -85,12 +86,14 @@ public:
     }
 };
 
-QueryAll::QueryAll() {
+template <class Mat>
+QueryAll<Mat>::QueryAll() {
     n_intervals = 0;
     n_cpgs = 0;
 }
 
-QueryAll::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const int nthreads) {
+template <class Mat>
+QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const int nthreads) {
     n_cpgs = 0;
     chr_id = 0;
     n_samples = bedfile_vec.size();
@@ -162,7 +165,8 @@ QueryAll::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::strin
     );
 }
 
-void QueryAll::populate_matrix(RegionQuery& query, int& col_n, const bool bismark) {
+template <class Mat>
+void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool bismark) {
 
     std::vector<BedLine> lines;
     std::vector<CpG> ids;
@@ -219,7 +223,8 @@ void QueryAll::populate_matrix(RegionQuery& query, int& col_n, const bool bismar
     }
 }
 
-void QueryAll::print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name) {
+template <class Mat>
+void QueryAll<Mat>::print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name) {
     Rprintf("%s\n", matrix_name.c_str());
     for (int j = 0; j < matrix[0].size(); j++) {
         Rprintf("[%d, ] ", j);
