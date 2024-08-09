@@ -68,12 +68,12 @@ private:
 public:
 
     QueryAll();
-    QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const int nthreads);
+    QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const bool sparse, const int nthreads);
     void populate_matrix(RegionQuery& query, int& col_n, const bool bismark);
     void print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name);
     void print_QueryAll();
 
-    arma::umat cov_mat, m_mat;
+    Mat cov_mat, m_mat;
     Rcpp::List assays;
     Rcpp::List wrap() {
         return Rcpp::List::create(
@@ -93,7 +93,7 @@ QueryAll<Mat>::QueryAll() {
 }
 
 template <class Mat>
-QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const int nthreads) {
+QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const bool sparse, const int nthreads) {
     n_cpgs = 0;
     chr_id = 0;
     n_samples = bedfile_vec.size();
@@ -152,17 +152,29 @@ QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::
         sample_names[i] = sample_path.extension() == ".gz" ? sample_path.stem().stem().string() : sample_path.stem().string();
     }
 
-    Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
-    Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
+    if (sparse) {
+        Rcpp::S4 cov_rmat = Rcpp::wrap(cov_mat);
+        Rcpp::S4 M_rmat = Rcpp::wrap(m_mat);
+        cov_rmat.slot("Dimnames") = Rcpp::List::create(rownames, sample_names);
+        M_rmat.slot("Dimnames") = Rcpp::List::create(rownames, sample_names);
+        assays = Rcpp::List::create(
+            Rcpp::_["Cov"] = cov_rmat,
+            Rcpp::_["M"] = M_rmat
+        );
+    } else {
+        Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
+        Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
+        Rcpp::colnames(cov_rmat) = sample_names;
+        Rcpp::colnames(M_rmat) = sample_names;
+        Rcpp::rownames(cov_rmat) = rownames;
+        Rcpp::rownames(M_rmat) = rownames;
 
-    Rcpp::colnames(cov_rmat) = Rcpp::wrap(sample_names);
-    Rcpp::colnames(M_rmat) = Rcpp::wrap(sample_names);
-    Rcpp::rownames(cov_rmat) = rownames;
-    Rcpp::rownames(M_rmat) = rownames;
-    assays = Rcpp::List::create(
-        Rcpp::_["Cov"] = cov_rmat,
-        Rcpp::_["M"] = M_rmat
-    );
+        assays = Rcpp::List::create(
+            Rcpp::_["Cov"] = cov_rmat,
+            Rcpp::_["M"] = M_rmat
+        );
+    }
+
 }
 
 template <class Mat>

@@ -10,8 +10,8 @@
 #'
 #' @keywords internal
 #' @export
-Cpp_query_all <- function(bedfiles, regions, bismark, merged, nthreads) {
-    .Call(`_iscream_Cpp_query_all`, bedfiles, regions, bismark, merged, nthreads)
+Cpp_query_all <- function(bedfiles, regions, bismark, merged, sparse, nthreads) {
+    .Call(`_iscream_Cpp_query_all`, bedfiles, regions, bismark, merged, sparse, nthreads)
 }
 
 #' Beta value decoder

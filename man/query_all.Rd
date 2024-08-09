@@ -4,7 +4,14 @@
 \alias{query_all}
 \title{Query all CpGs from input genomic regions}
 \usage{
-query_all(bedfiles, regions, bismark = FALSE, merged = TRUE, nthreads = NULL)
+query_all(
+  bedfiles,
+  regions,
+  bismark = FALSE,
+  merged = TRUE,
+  sparse = FALSE,
+  nthreads = NULL
+)
 }
 \arguments{
 \item{bedfiles}{A vector of bedfile paths}
@@ -14,6 +21,9 @@ query_all(bedfiles, regions, bismark = FALSE, merged = TRUE, nthreads = NULL)
 \item{bismark}{Whether the input is a bismark coverage file}
 
 \item{merged}{Whether the input strands have been merged/collapsed}
+
+\item{sparse}{Whether to return M and coverage matrices as sparse matrices
+("dgCMatrix"). Set this \code{TRUE} only for scWGBS data}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
