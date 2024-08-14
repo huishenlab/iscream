@@ -21,6 +21,7 @@ struct EncodedBedLine {
     int encoded;
 };
 
+std::vector<std::string_view> split_bedstring(std::string_view bedString);
 BedLine parseBEDRecord(const std::string& bedString);
 BedLine parseCovRecord(const std::string& bedString);
 EncodedBedLine encodeBedRecord(const std::string& bedString);
