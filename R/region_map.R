@@ -63,5 +63,8 @@ region_map <- function(
     getOption("iscream.threads"),
     check_thread_count(nthreads)
   )
+
+  validate_log_level(n_threads = n_threads)
+
   Cpp_region_map(bedfiles, regions, fun, mval, bismark, set_region_rownames, nthreads = n_threads)
 }

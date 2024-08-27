@@ -3,6 +3,7 @@
 #include <cmath>
 #include <filesystem>
 #include "query.hpp"
+#include "log.hpp"
 
 // [[Rcpp::depends(RcppProgress)]]
 #include <progress.hpp>
@@ -75,14 +76,17 @@ Rcpp::DataFrame Cpp_region_map(
     const int& nthreads = 1
 ) {
 
+    // LOGGER
+    setup_logger("iscream::region_map");
+
     std::string fun_label = fun == "aggregate" ? "Aggregating" : "Averaging";
-    Rprintf("%s %zu regions from %zu bedfiles\n", fun_label.c_str(), regions.size(), bedfiles.size());
+    spdlog::info("{} {} regions from {} bedfiles\n", fun_label.c_str(), regions.size(), bedfiles.size());
     ssize_t rowsize = bedfiles.size() * regions.size();
     Rcpp::CharacterVector feature_col(rowsize);
     Rcpp::CharacterVector cell(rowsize);
     Rcpp::NumericVector total_reads(rowsize);
     Rcpp::NumericVector beta_me_reads(rowsize);
-
+    spdlog::debug("Created vectors for DataFrame with {} rows", rowsize);
     auto f = aggregate;
     if (fun == "average") {
         f = mean;
@@ -100,28 +104,29 @@ Rcpp::DataFrame Cpp_region_map(
             std::string bedfile_name = bedfiles[bedfile_n];
             std::filesystem::path bed_path = bedfile_name;
             cpgs_in_file = query_intervals(bedfile_name.c_str(), regions_vec);
+            spdlog::debug("Got {} CpGs from {}", cpgs_in_file.size(), bedfile_name);
             int empty_cpg_count = 0;
 
             int row_count = bedfile_n * regions_vec.size();
             std::string bedfile_prefix = bed_path.stem().stem();
+            spdlog::debug("Got {} as sample name from {}", bedfile_prefix, bedfile_name);
             for (RegionQuery interval : cpgs_in_file) {
                 ComputedCpG agg_cpg = f(interval, mval, bismark);
-
                 feature_col[row_count] = interval.interval_str;
                 cell[row_count] = bedfile_prefix.c_str();
                 total_reads[row_count] = agg_cpg.computed_cov;
                 beta_me_reads[row_count] = agg_cpg.computed_beta_me;
-
                 row_count++;
                 empty_cpg_count += interval.cpgs_in_interval.size();
             }
             // TODO: thread-safe way to warn when no cpgs are found in interval.
             // Lots of warnings from multiple threads cause stack overflow
-            bar.increment();
+            if (spdlog::get_level() == spdlog::level::info) bar.increment();
         }
     }
 
     Rcpp::String m_beta_colname = mval ? "M" : "beta";
+    spdlog::debug("Using {} as the methylation value name", m_beta_colname.get_cstring());
     Rcpp::DataFrame result = Rcpp::DataFrame::create(
         Rcpp::Named("Feature") = (regions.hasAttribute("names") ? (Rcpp::CharacterVector) regions.names() : feature_col),
         Rcpp::Named("Cell") = cell,
@@ -131,6 +136,7 @@ Rcpp::DataFrame Cpp_region_map(
 
     if (region_rownames) {
         result.attr("row.names") = feature_col;
+        spdlog::debug("Rownames set");
     }
 
     return result;
