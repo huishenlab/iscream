@@ -3,7 +3,7 @@
   use_threads <- threads["use_threads"]
   opt_set <- threads["opt_set"]
   avail_threads <- threads["avail_threads"]
-  options("iscream.threads" = use_threads)
+  options("iscream.threads" = unname(use_threads))
   msg <- "iscream using "
   help_msg <- " See `?set_threads` for information on multithreading"
 
