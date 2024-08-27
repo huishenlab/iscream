@@ -10,13 +10,16 @@ region_map(
   fun = "aggregate",
   bismark = FALSE,
   mval = TRUE,
+  set_region_rownames = FALSE,
   nthreads = NULL
 )
 }
 \arguments{
 \item{bedfiles}{A vector of bedfile paths}
 
-\item{regions}{A vector of genomic regions strings}
+\item{regions}{A vector of genomic regions strings. If a named vector is
+provided, the names will be used in the feature column instead of the
+genomic regions string}
 
 \item{fun}{Function to apply over the region. See details.}
 
@@ -25,6 +28,10 @@ region_map(
 \item{mval}{Whether to calculate the M value (coverage \eqn{\times \beta})
 or use the beta value
 when applying the function.}
+
+\item{set_region_rownames}{Use the region strings as the returned data
+frame's rownames. Can be useful if you have a named vector of regions and
+want both the rownames and the feature names.}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}

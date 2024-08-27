@@ -4,12 +4,17 @@
 #' supported functions are aggregate and average. Parallelized across files
 #' using threads from the `"iscream.threads"` option.
 #' @param bedfiles A vector of bedfile paths
-#' @param regions A vector of genomic regions strings
+#' @param regions A vector of genomic regions strings. If a named vector is
+#' provided, the names will be used in the feature column instead of the
+#' genomic regions string
 #' @param bismark Whether the input is a bismark coverage file
 #' @param fun Function to apply over the region. See details.
 #' @param mval Whether to calculate the M value (coverage \eqn{\times \beta})
 #' or use the beta value
 #' when applying the function.
+#' @param set_region_rownames Use the region strings as the returned data
+#' frame's rownames. Can be useful if you have a named vector of regions and
+#' want both the rownames and the feature names.
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #' @details
@@ -35,7 +40,15 @@
 #' region_map(bedfiles, regions)
 #' region_map(bedfiles, regions, mval = FALSE)
 #' region_map(bedfiles, regions, fun = "average")
-region_map <- function(bedfiles, regions, fun = "aggregate", bismark = FALSE, mval = TRUE, nthreads = NULL) {
+region_map <- function(
+  bedfiles,
+  regions,
+  fun = "aggregate",
+  bismark = FALSE,
+  mval = TRUE,
+  set_region_rownames = FALSE,
+  nthreads = NULL
+) {
 
   supported_funcs <- c("aggregate", "average")
   stopifnot("Selected function not supported" = fun %in% supported_funcs)
@@ -50,5 +63,5 @@ region_map <- function(bedfiles, regions, fun = "aggregate", bismark = FALSE, mv
     getOption("iscream.threads"),
     check_thread_count(nthreads)
   )
-  Cpp_region_map(bedfiles, regions, fun, mval, bismark, nthreads = n_threads)
+  Cpp_region_map(bedfiles, regions, fun, mval, bismark, set_region_rownames, nthreads = n_threads)
 }
