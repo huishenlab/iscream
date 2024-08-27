@@ -21,6 +21,7 @@
 #include "query.hpp"
 #include "parsers.hpp"
 #include "decoders.hpp"
+#include "log.hpp"
 #include <unordered_map>
 #include "../inst/include/khashl.h"
 #include "../inst/include/iscream_types.h"
@@ -105,7 +106,9 @@ QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::
     cov_mat.resize(5, bedfile_vec.size());
     m_mat.resize(5, bedfile_vec.size());
 
-    Rprintf("Querying %zu regions from %zu bedfiles\n", regions.size(), bedfile_vec.size());
+    setup_logger("iscream::query_all");
+
+    spdlog::info("Querying {0} regions from {1} bedfiles\n", regions.size(), bedfile_vec.size());
     Progress bar(bedfile_vec.size(), true); 
 
 #if defined(_OPENMP)
@@ -113,6 +116,7 @@ QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::
 #endif
     for (int bedfile_n = 0; bedfile_n < bedfile_vec.size(); bedfile_n++) {
         if ( !Progress::check_abort() ) {
+            spdlog::debug("Querying {}", bedfile_vec[bedfile_n]);
             MultiRegionQuery cpgs_in_file = query_intervals(bedfile_vec[bedfile_n].c_str(), regions);
             for (RegionQuery cpgs_in_interval : cpgs_in_file) {
                 populate_matrix(cpgs_in_interval, bedfile_n, bismark);
@@ -122,9 +126,11 @@ QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::
     }
     bar.cleanup();
 
-    Rcpp::CharacterVector c(kh_size(cpg_map));
-    Rcpp::IntegerVector s(kh_size(cpg_map));
-    Rcpp::CharacterVector rownames(kh_size(cpg_map));
+    int mapsize = kh_size(cpg_map);
+    Rcpp::CharacterVector c(mapsize);
+    Rcpp::IntegerVector s(mapsize);
+    Rcpp::CharacterVector rownames(mapsize);
+    spdlog::debug("Created temporary seqnames, samplenames and rownames vectors of size {}", kh_size(cpg_map));
 
     khint_t iter;
     for (iter = 0; iter < kh_end(cpg_map); ++iter) {
@@ -140,21 +146,25 @@ QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::
     }
     seqnames = c;
     start = s;
+    spdlog::debug("Populated seqnames, samplenames and rownames vectors");
 
-    int mapsize = kh_size(cpg_map);
     if (cov_mat.n_rows > mapsize) {
-        Rprintf("Correcting matrix size\n");
         int diff_rows = cov_mat.n_rows - mapsize;
+        spdlog::debug("{} extra rows allocated", diff_rows);
         cov_mat.resize(mapsize, bedfile_vec.size());
         m_mat.resize(mapsize, bedfile_vec.size());
+        spdlog::debug("Corrected matrix size");
     }
 
+    spdlog::debug("Setting sample names");
     for (int i = 0; i < sample_names.size(); i++) {
         std::filesystem::path sample_path = bedfile_vec[i];
         sample_names[i] = sample_path.extension() == ".gz" ? sample_path.stem().stem().string() : sample_path.stem().string();
+        // spdlog::debug("Got {} as sample name from {}", sample_names[i], bedfile_vec[i]);
     }
 
     if (sparse) {
+        spdlog::debug("Creating sparse matrix");
         Rcpp::S4 cov_rmat = Rcpp::wrap(cov_mat);
         Rcpp::S4 M_rmat = Rcpp::wrap(m_mat);
         cov_rmat.slot("Dimnames") = Rcpp::List::create(rownames, sample_names);
@@ -164,6 +174,7 @@ QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::
             Rcpp::_["M"] = M_rmat
         );
     } else {
+        spdlog::debug("Creating dense matrix");
         Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
         Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
         Rcpp::colnames(cov_rmat) = sample_names;
@@ -182,17 +193,26 @@ QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::
 template <class Mat>
 void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool bismark) {
 
+    int cpg_count = query.cpgs_in_interval.size();
     std::vector<BedLine> lines;
     std::vector<CpG> ids;
     #pragma omp critical
     {
-        khmap_m_resize(cpg_map, query.cpgs_in_interval.size());
+        khmap_m_resize(cpg_map, cpg_count);
     }
     for (std::string cpg_string : query.cpgs_in_interval) {
 
         BedLine parsed_bedline = bismark ? parseCovRecord(cpg_string) : parseBEDRecord(cpg_string);
         lines.push_back(parsed_bedline);
-
+        spdlog::trace(
+            "Parsed {} into chr: {}, start: {}, end: {}",
+            cpg_string,
+            parsed_bedline.chr,
+            parsed_bedline.start,
+            parsed_bedline.end,
+            parsed_bedline.cov,
+            parsed_bedline.m_count
+        );
         #pragma omp critical
         {
             if (!chr_map.count(parsed_bedline.chr)) {
@@ -229,6 +249,7 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
 
     khint_t retrieve_b;
     int idx;
+    spdlog::debug("Inserting {} CpGs into matrix", cpg_count);
     for (size_t i = 0; i < lines.size(); i++) {
         retrieve_b = khmap_get(cpg_map, ids[i]);
         idx = kh_val(cpg_map, retrieve_b);

@@ -52,6 +52,9 @@ query_all <- function(
     getOption("iscream.threads"),
     check_thread_count(nthreads)
   )
+
+  validate_log_level(n_threads = n_threads)
+
   Cpp_query_all(bedfiles, regions, bismark, merged, sparse, nthreads = n_threads)
 }
 
