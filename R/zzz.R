@@ -23,5 +23,6 @@
   }
 
   packageStartupMessage(msg)
+  setup_logger()
   invisible()
 }

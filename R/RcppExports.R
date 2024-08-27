@@ -105,6 +105,35 @@ get_omp_threads <- function(verbose) {
     .Call(`_iscream_get_omp_threads`, verbose)
 }
 
+setup_logger <- function(logname = "iscream") {
+    invisible(.Call(`_iscream_setup_logger`, logname))
+}
+
+#' spdlog Logging Lever Setter
+#'
+#' A helper function to turn a logging level given as string
+#' into the current logging level
+#'
+#' @param name A string with the logging level. Value understood are,
+#' in decreasing verbosity \sQuote{trace}, \sQuote{debug}, \sQuote{info},
+#' \sQuote{warning}, \sQuote{error}, \sQuote{critical}, and \sQuote{off}.
+#' Unrecognised names are equivalent to \sQuote{off}.
+#' @return Nothing is returned.
+#' @keywords internal
+Cpp_set_log_level <- function(name) {
+    invisible(.Call(`_iscream_Cpp_set_log_level`, name))
+}
+
+#' Get the current log level
+#'
+#' Can handle all of spdlogs levels, but iscream functions only supports
+#' "info" and "debug"
+#' @return The current logging level as a string
+#' @export
+get_log_level <- function() {
+    .Call(`_iscream_get_log_level`)
+}
+
 #' Apply a function over CpGs within features
 #'
 #' This function should be called from `region_map()` since there are few

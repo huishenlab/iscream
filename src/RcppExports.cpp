@@ -108,6 +108,36 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// setup_logger
+void setup_logger(std::string logname);
+RcppExport SEXP _iscream_setup_logger(SEXP lognameSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type logname(lognameSEXP);
+    setup_logger(logname);
+    return R_NilValue;
+END_RCPP
+}
+// Cpp_set_log_level
+void Cpp_set_log_level(const std::string& name);
+RcppExport SEXP _iscream_Cpp_set_log_level(SEXP nameSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type name(nameSEXP);
+    Cpp_set_log_level(name);
+    return R_NilValue;
+END_RCPP
+}
+// get_log_level
+std::string get_log_level();
+RcppExport SEXP _iscream_get_log_level() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(get_log_level());
+    return rcpp_result_gen;
+END_RCPP
+}
 // Cpp_region_map
 Rcpp::DataFrame Cpp_region_map(const std::vector<std::string>& bedfiles, const Rcpp::CharacterVector& regions, const std::string& fun, const bool mval, const bool bismark, const bool region_rownames, const int& nthreads);
 RcppExport SEXP _iscream_Cpp_region_map(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP funSEXP, SEXP mvalSEXP, SEXP bismarkSEXP, SEXP region_rownamesSEXP, SEXP nthreadsSEXP) {
@@ -135,6 +165,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_vdouble_decoder", (DL_FUNC) &_iscream_vdouble_decoder, 2},
     {"_iscream_vencoder", (DL_FUNC) &_iscream_vencoder, 2},
     {"_iscream_get_omp_threads", (DL_FUNC) &_iscream_get_omp_threads, 1},
+    {"_iscream_setup_logger", (DL_FUNC) &_iscream_setup_logger, 1},
+    {"_iscream_Cpp_set_log_level", (DL_FUNC) &_iscream_Cpp_set_log_level, 1},
+    {"_iscream_get_log_level", (DL_FUNC) &_iscream_get_log_level, 0},
     {"_iscream_Cpp_region_map", (DL_FUNC) &_iscream_Cpp_region_map, 7},
     {NULL, NULL, 0}
 };

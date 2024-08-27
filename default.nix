@@ -15,6 +15,7 @@ let
     Rcpp
     RcppArmadillo
     RcppProgress
+    RcppSpdlog
 
   # Suggests
     biscuiteer
@@ -62,6 +63,7 @@ let
       export I_ARMA=${rPackages.RcppArmadillo}/library/RcppArmadillo/include/
       export I_CLOCK=${rPackages.RcppClock}/library/RcppClock/include/
       export I_PROGRESS=${rPackages.RcppProgress}/library/RcppProgress/include/
+      export I_LOG=${rPackages.RcppSpdlog}/library/RcppSpdlog/include/
 
       export I_HTSLIB=${pkgs.htslib}/include/
       export L_HTSLIB=${pkgs.htslib}/lib/libhts.a
@@ -80,6 +82,7 @@ let
       -I$I_HTSLIB
       -I$I_CLOCK
       -I$I_PROGRESS
+      -I$I_LOG
       EOF
       '';
   }
