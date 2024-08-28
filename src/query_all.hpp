@@ -20,7 +20,6 @@
 #include <filesystem>
 #include "query.hpp"
 #include "parsers.hpp"
-#include "decoders.hpp"
 #include "log.hpp"
 #include <unordered_map>
 #include "../inst/include/khashl.h"

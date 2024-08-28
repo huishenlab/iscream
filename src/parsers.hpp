@@ -4,7 +4,7 @@
 # if defined __cplusplus
 
 #include <string>
-#include "encoders.hpp"
+#include <Rcpp.h>
 
 struct BedLine {
     std::string chr;
@@ -15,16 +15,9 @@ struct BedLine {
     int m_count;
 };
 
-struct EncodedBedLine {
-    std::string chr;
-    int start;
-    int encoded;
-};
-
 std::vector<std::string_view> split_bedstring(std::string_view bedString);
 BedLine parseBEDRecord(const std::string& bedString);
 BedLine parseCovRecord(const std::string& bedString);
-EncodedBedLine encodeBedRecord(const std::string& bedString);
 std::string CpGID(BedLine& parsed_bedline);
 
 #endif /* __cplusplus */

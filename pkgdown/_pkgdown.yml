@@ -25,7 +25,3 @@ reference:
     contents:
       - get_log_level
       - set_log_level
-  - title: Experimental
-    contents:
-      - has_keyword("experimental")
-
