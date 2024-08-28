@@ -112,11 +112,13 @@ QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::
     #pragma omp parallel for num_threads(nthreads)
 #endif
     for (int bedfile_n = 0; bedfile_n < bedfile_vec.size(); bedfile_n++) {
-        MultiRegionQuery cpgs_in_file = query_intervals(bedfile_vec[bedfile_n].c_str(), regions);
-        for (RegionQuery cpgs_in_interval : cpgs_in_file) {
-            populate_matrix(cpgs_in_interval, bedfile_n, bismark);
+        if ( !Progress::check_abort() ) {
+            MultiRegionQuery cpgs_in_file = query_intervals(bedfile_vec[bedfile_n].c_str(), regions);
+            for (RegionQuery cpgs_in_interval : cpgs_in_file) {
+                populate_matrix(cpgs_in_interval, bedfile_n, bismark);
+            }
+            bar.increment();
         }
-        bar.increment();
     }
     bar.cleanup();
 

@@ -95,28 +95,30 @@ Rcpp::DataFrame Cpp_region_map(
     #pragma omp parallel for num_threads(nthreads)
 #endif
     for (int bedfile_n = 0; bedfile_n < bedfiles.size(); bedfile_n++) {
-        std::vector<RegionQuery> cpgs_in_file(0);
-        std::string bedfile_name = bedfiles[bedfile_n];
-        std::filesystem::path bed_path = bedfile_name;
-        cpgs_in_file = query_intervals(bedfile_name.c_str(), regions_vec);
-        int empty_cpg_count = 0;
+        if ( !Progress::check_abort() ) {
+            std::vector<RegionQuery> cpgs_in_file(0);
+            std::string bedfile_name = bedfiles[bedfile_n];
+            std::filesystem::path bed_path = bedfile_name;
+            cpgs_in_file = query_intervals(bedfile_name.c_str(), regions_vec);
+            int empty_cpg_count = 0;
 
-        int row_count = bedfile_n * regions_vec.size();
-        std::string bedfile_prefix = bed_path.stem().stem();
-        for (RegionQuery interval : cpgs_in_file) {
-            ComputedCpG agg_cpg = f(interval, mval, bismark);
+            int row_count = bedfile_n * regions_vec.size();
+            std::string bedfile_prefix = bed_path.stem().stem();
+            for (RegionQuery interval : cpgs_in_file) {
+                ComputedCpG agg_cpg = f(interval, mval, bismark);
 
-            feature_col[row_count] = interval.interval_str;
-            cell[row_count] = bedfile_prefix.c_str();
-            total_reads[row_count] = agg_cpg.computed_cov;
-            beta_me_reads[row_count] = agg_cpg.computed_beta_me;
+                feature_col[row_count] = interval.interval_str;
+                cell[row_count] = bedfile_prefix.c_str();
+                total_reads[row_count] = agg_cpg.computed_cov;
+                beta_me_reads[row_count] = agg_cpg.computed_beta_me;
 
-            row_count++;
-            empty_cpg_count += interval.cpgs_in_interval.size();
+                row_count++;
+                empty_cpg_count += interval.cpgs_in_interval.size();
+            }
+            // TODO: thread-safe way to warn when no cpgs are found in interval.
+            // Lots of warnings from multiple threads cause stack overflow
+            bar.increment();
         }
-        // TODO: thread-safe way to warn when no cpgs are found in interval.
-        // Lots of warnings from multiple threads cause stack overflow
-        bar.increment();
     }
 
     Rcpp::String m_beta_colname = mval ? "M" : "beta";
