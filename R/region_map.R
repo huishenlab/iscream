@@ -23,7 +23,6 @@
 #' `mval =` FALSE and aggregated M values if `mval =` TRUE
 #' - `"average"` averages the values in the region with average beta values if
 #' `mval =` FALSE and average M values if `mval =` TRUE
-#' @importFrom fs file_exists
 #' @return A data.frame
 #'
 #' @export

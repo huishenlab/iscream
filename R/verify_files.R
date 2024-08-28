@@ -2,13 +2,12 @@
 #'
 #' @param files_vec A vector of file paths
 #' @param error_file_prefix Error message prefix for 'Bedfile' vs 'Tabix file'
-#' @importFrom fs file_exists
 #' @return TRUE if all input bedfiles have an associated tabix index file.
 #' FALSE if not
 #'
 #' @keywords internal
 check_files_exist <- function(files_vec, error_file_prefix = "Bedfile") {
-  valid_files <- file_exists(files_vec)
+  valid_files <- file.exists(files_vec)
   missing_files <- files_vec[!valid_files]
   if (length(missing_files != 0)) {
     stop(paste0(error_file_prefix, ": ", missing_files, " could not be found\n"))
@@ -19,7 +18,6 @@ check_files_exist <- function(files_vec, error_file_prefix = "Bedfile") {
 #'
 #' @param bedfiles A vector of bedfile paths
 #' @param verify_tabix Whether to verify the presence of tabix files
-#' @importFrom fs file_exists
 #' @return TRUE if all input bedfiles have an associated tabix index file.
 #' FALSE if not
 #'

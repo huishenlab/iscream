@@ -1,12 +1,11 @@
-library(fs)
 extdata <- system.file("extdata", package = "iscream")
 bedfiles <- list.files(extdata, pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 
-m_agg <- read.csv(path(extdata, "region_map_m_agg.test"))
-m_ave <- read.csv(path(extdata, "region_map_m_ave.test"))
-beta_ave <- read.csv(path(extdata, "region_map_beta_ave.test"))
-beta_agg <- read.csv(path(extdata, "region_map_beta_agg.test"))
+m_agg <- read.csv(file.path(extdata, "region_map_m_agg.test"))
+m_ave <- read.csv(file.path(extdata, "region_map_m_ave.test"))
+beta_ave <- read.csv(file.path(extdata, "region_map_beta_ave.test"))
+beta_agg <- read.csv(file.path(extdata, "region_map_beta_agg.test"))
 
 test_that("region_map 1 thread", {
   expect_equal(

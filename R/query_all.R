@@ -12,7 +12,6 @@
 #' ("dgCMatrix"). Set this `TRUE` only for scWGBS data
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
-#' @importFrom fs file_exists
 #' @return A named list of
 #' - M and coverage matrices
 #' - a character vector of chromosomes and numeric vector of corresponding CpG
