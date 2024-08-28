@@ -10,14 +10,21 @@ navbar:
     right: [search, github]
 
 reference:
-  - title: Region operations
+  - title: Reading
+    desc: Read data from aligned WGBS bedfiles
+  - subtitle: By region
     contents:
       - region_map
       - query_all
-  - title: Multithreading
+  - title: Settings
+  - subtitle: Multithreading
     contents:
       - get_threads
       - set_threads
+  - subtitle: Logging
+    contents:
+      - get_log_level
+      - set_log_level
   - title: Experimental
     contents:
       - has_keyword("experimental")
