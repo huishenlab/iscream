@@ -1,4 +1,4 @@
-#' Run a defined function over genomic regions
+#' Run a defined function over CpGs from genomic regions
 #'
 #' Run a function on the CpGs in bedfiles across genomic regions. Currently
 #' supported functions are aggregate and average. Parallelized across files
