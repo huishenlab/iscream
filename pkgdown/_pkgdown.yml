@@ -12,6 +12,9 @@ navbar:
 reference:
   - title: Reading
     desc: Read data from aligned WGBS bedfiles
+  - subtitle: Full files
+    contents:
+      - read_full
   - subtitle: By region
     contents:
       - region_map
