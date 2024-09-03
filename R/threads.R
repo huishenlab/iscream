@@ -1,12 +1,16 @@
 #' Get the number of available threads
 #'
-#' This function sets the number of threads iscream uses to 1 if the
-#' `iscream.threads` option is not set. To set the number of threads use
-#' setDTthreads or set the `iscream.threads` option in your `~/.Rprofile`. See
-#' `?set_threads` for more information.
+#' Gets the number of threads iscream is currently set to use, whether the
+#' `"iscream.threads"` option is set and how many threads are available for
+#' use. To set the number of threads use `set_threads()` or set the
+#' `iscream.threads` option in your `~/.Rprofile`. See `?set_threads` for more
+#' information.
 #' @importFrom parallelly availableCores
-#' @return A named vector: `use_threads` = `iscream.threads` option, whether the option
-#' was set by the user, and the available threads on the system
+#' @return A named vector:
+#' - `use_threads` = the number of threads iscream will use
+#' - `opt_set` = whether the option was set by the user
+#' - `avail_threads` = The number of available threads as reported by
+#' `parallelly::availableCores`
 #'
 #' @export
 #'
@@ -24,8 +28,9 @@ get_threads <- function() {
 
 #' Set the number of available threads
 #'
-#' This function sets the 'iscream.threads' option to `n_threads`. To
-#' see how many threads you have available see `parallelly::availableCores`.
+#' Sets the `"iscream.threads"` option to `n_threads`. To see how many threads
+#' you have available see `?get_threads()`.
+
 #' @param n_threads The number of threads to use
 #' @importFrom parallelly availableCores
 #' @returns NULL. Sets the `iscream.threads` option to the requested number of
@@ -33,21 +38,21 @@ get_threads <- function() {
 #'
 #' @details iscream uses OpenMP to parallelize certain functions. You can use
 #' as many threads as are available to you on your system to varying degrees of
-#' performance improvements. The `parallelly::availableCores()` function will
-#' report the number of available threads. To get more information about OpenMP
-#' threads, run `get_omp_threads(verbose = TRUE)`. However, on high preformance
-#' computers (HPCs) with resource allocating job schedulers like SLURM, OpenMP
-#' may detect all available threads across the HPC and not limit itself to the
-#' cores that were allocated to you by the scheduler. If your system
-#' administrator has not set up any limits, this may result in your job taking
-#' resources from other jobs. If there are limits, trying to use more threads
-#' that those available will reduce iscream's performance. Job schedulers will
-#' typically have an environment variable (e.g. SLURM_CPUS_ON_NODE with SLURM)
-#' that gives you the actual number of available cores. Further, on
-#' hyperthreaded systems, this count may be double that of the available
-#' processors. Using hyperthreading does not guarantee any performance
-#' improvement - it may be better to set the number of threads to half the
-#' reported number. `parallelly::availableCores()` takes HPC
+#' performance improvements. The `get_threads()` function uses
+#' `parallelly::availableCores()` to report the number of available threads.
+#' Although OpenMP can detect the number of available cores, on high
+#' preformance computers (HPCs) with resource allocating job schedulers like
+#' SLURM, OpenMP may detect all available threads across the HPC and not limit
+#' itself to the cores that were allocated to you by the scheduler. If your
+#' system administrator has not set up any limits, this may result in your job
+#' taking resources from other jobs. If there are limits, trying to use more
+#' threads that those available will reduce iscream's performance. Job
+#' schedulers will typically have an environment variable (e.g.
+#' SLURM_CPUS_ON_NODE with SLURM) that gives you the actual number of available
+#' cores. Further, on hyperthreaded systems, this count may be double that of
+#' the available processors. Using hyperthreading does not guarantee any
+#' performance improvement - it may be better to set the number of threads to
+#' half the reported number. `parallelly::availableCores()` takes HPC
 #' scheduler/CRAN/Bioconductor limits into account when reporting the number of
 #' available threads but it may not reliably report hyperthreading ('system' or
 #' 'nproc'). To set the number of threads without having to call

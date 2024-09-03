@@ -7,14 +7,20 @@
 get_threads()
 }
 \value{
-A named vector: \code{use_threads} = \code{iscream.threads} option, whether the option
-was set by the user, and the available threads on the system
+A named vector:
+\itemize{
+\item \code{use_threads} = the number of threads iscream will use
+\item \code{opt_set} = whether the option was set by the user
+\item \code{avail_threads} = The number of available threads as reported by
+\code{parallelly::availableCores}
+}
 }
 \description{
-This function sets the number of threads iscream uses to 1 if the
-\code{iscream.threads} option is not set. To set the number of threads use
-setDTthreads or set the \code{iscream.threads} option in your \verb{~/.Rprofile}. See
-\code{?set_threads} for more information.
+Gets the number of threads iscream is currently set to use, whether the
+\code{"iscream.threads"} option is set and how many threads are available for
+use. To set the number of threads use \code{set_threads()} or set the
+\code{iscream.threads} option in your \verb{~/.Rprofile}. See \code{?set_threads} for more
+information.
 }
 \examples{
 get_threads()
