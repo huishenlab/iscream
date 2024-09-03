@@ -2,7 +2,7 @@ pandoc: 3.1.11
 pkgdown: 2.1.0
 pkgdown_sha: ~
 articles: {}
-last_built: 2024-09-03T14:10Z
+last_built: 2024-09-03T15:16Z
 urls:
   reference: https://huishenlab.github.io/iscream/reference
   article: https://huishenlab.github.io/iscream/articles
