@@ -68,9 +68,15 @@ private:
 public:
 
     QueryAll();
-    QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const bool sparse, const int nthreads);
+    QueryAll(
+        std::vector<std::string>& bedfile_vec,
+        std::vector<std::string>& regions,
+        const bool bismark,
+        const bool merged,
+        const bool sparse,
+        const int nthreads
+    );
     void populate_matrix(RegionQuery& query, int& col_n, const bool bismark);
-    void print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name);
     void print_QueryAll();
 
     Mat cov_mat, m_mat;
@@ -93,7 +99,15 @@ QueryAll<Mat>::QueryAll() {
 }
 
 template <class Mat>
-QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const bool sparse, const int nthreads) {
+QueryAll<Mat>::QueryAll(
+    std::vector<std::string>& bedfile_vec,
+    std::vector<std::string>& regions,
+    const bool bismark,
+    const bool merged,
+    const bool sparse,
+    const int nthreads
+) {
+
     n_cpgs = 0;
     chr_id = 0;
     resize_count = 0;
