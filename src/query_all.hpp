@@ -118,7 +118,10 @@ QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::
             spdlog::debug("Querying {}", bedfile_vec[bedfile_n]);
             MultiRegionQuery cpgs_in_file = query_intervals(bedfile_vec[bedfile_n].c_str(), regions);
             for (RegionQuery cpgs_in_interval : cpgs_in_file) {
-                populate_matrix(cpgs_in_interval, bedfile_n, bismark);
+                #pragma omp critical
+                {
+                    populate_matrix(cpgs_in_interval, bedfile_n, bismark);
+                }
             }
             if (spdlog::get_level() == spdlog::level::info) bar.increment();
         }
@@ -196,10 +199,7 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
     int cpg_count = query.cpgs_in_interval.size();
     std::vector<BedLine> lines;
     std::vector<CpG> ids;
-    #pragma omp critical
-    {
-        khmap_m_resize(cpg_map, cpg_count);
-    }
+    khmap_m_resize(cpg_map, cpg_count);
     for (std::string cpg_string : query.cpgs_in_interval) {
 
         BedLine parsed_bedline = bismark ? parseCovRecord(cpg_string) : parseBEDRecord(cpg_string);
@@ -213,47 +213,40 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
             parsed_bedline.cov,
             parsed_bedline.m_count
         );
-        #pragma omp critical
-        {
-            if (!chr_map.count(parsed_bedline.chr)) {
-                chr_map.insert({parsed_bedline.chr, ++chr_id});
-                chr_rev_map.insert({chr_id, parsed_bedline.chr});
-            }
+        if (!chr_map.count(parsed_bedline.chr)) {
+            chr_map.insert({parsed_bedline.chr, ++chr_id});
+            chr_rev_map.insert({chr_id, parsed_bedline.chr});
         }
 
         CpG cpg = CpG{chr_map[parsed_bedline.chr], parsed_bedline.start};
 
         ids.push_back(cpg);
 
-        #pragma omp critical
-        {
-            khint_t insert_b;
-            int absent;
-            insert_b = khmap_put(cpg_map, cpg, &absent);
-            if (absent) {
-                n_cpgs++;
-                kh_val(cpg_map, insert_b) = n_cpgs;
-            }
+        khint_t insert_b;
+        int absent;
+        insert_b = khmap_put(cpg_map, cpg, &absent);
+        if (absent) {
+            n_cpgs++;
+            kh_val(cpg_map, insert_b) = n_cpgs;
         }
     }
 
-    #pragma omp critical
-    {
-        int mapsize = kh_size(cpg_map);
-        if (cov_mat.n_rows < mapsize) {
-            int extra_rows = (mapsize - cov_mat.n_rows) * 1000;
-            cov_mat.resize(cov_mat.n_rows + extra_rows, cov_mat.n_cols);
-            m_mat.resize(m_mat.n_rows + extra_rows, cov_mat.n_cols);
-            spdlog::debug("Added {} rows to existing {}", extra_rows, cov_mat.n_rows);
-        }
+    int mapsize = kh_size(cpg_map);
+    int cur_nrow = cov_mat.n_rows;
+    if (cur_nrow < mapsize) {
+        int diff = mapsize - cov_mat.n_rows;
+        spdlog::debug("Need {} more rows", diff);
+        int extra_rows = diff * 1000;
+        cov_mat.resize(cur_nrow + extra_rows, cov_mat.n_cols);
+        m_mat.resize(m_mat.n_rows + extra_rows, cov_mat.n_cols);
+        resize_count++;
+        spdlog::debug("Added {} rows to existing {}", extra_rows, cur_nrow);
     }
 
-    khint_t retrieve_b;
-    int idx;
     spdlog::debug("Inserting {} CpGs into matrix", cpg_count);
     for (size_t i = 0; i < lines.size(); i++) {
-        retrieve_b = khmap_get(cpg_map, ids[i]);
-        idx = kh_val(cpg_map, retrieve_b);
+        khint_t retrieve_b = khmap_get(cpg_map, ids[i]);
+        int idx = kh_val(cpg_map, retrieve_b);
         cov_mat(idx - 1, col_n) = lines[i].cov;
         m_mat(idx - 1, col_n) =  lines[i].m_count;
     }
