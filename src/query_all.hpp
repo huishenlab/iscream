@@ -61,7 +61,7 @@ private:
     khmap_t *cpg_map;
 
     bool is_merged;
-    int n_intervals, n_cpgs, chr_id, n_samples;
+    int n_intervals, n_cpgs, chr_id, n_samples, resize_count;
     Rcpp::CharacterVector seqnames, sample_names;
     Rcpp::IntegerVector start;
 
@@ -96,6 +96,7 @@ template <class Mat>
 QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::string>& regions, const bool bismark, const bool merged, const bool sparse, const int nthreads) {
     n_cpgs = 0;
     chr_id = 0;
+    resize_count = 0;
     n_samples = bedfile_vec.size();
     n_intervals = regions.size();
     sample_names = Rcpp::wrap(bedfile_vec);
@@ -153,13 +154,13 @@ QueryAll<Mat>::QueryAll(std::vector<std::string>& bedfile_vec, std::vector<std::
     int n_rows = cov_mat.n_rows;
     if (cov_mat.n_rows > mapsize) {
         int diff_rows = cov_mat.n_rows - mapsize;
-        spdlog::debug("nrows {} - {} extra rows allocated", n_rows, diff_rows);
+        spdlog::debug("nrows {} - {} extra rows allocated with {} resizes", n_rows, diff_rows, resize_count);
         cov_mat.resize(mapsize, bedfile_vec.size());
         m_mat.resize(mapsize, bedfile_vec.size());
         spdlog::debug("Corrected matrix size");
     }
 
-    spdlog::debug("Setting sample names");
+    spdlog::info("Setting sample names");
     for (int i = 0; i < sample_names.size(); i++) {
         std::filesystem::path sample_path = bedfile_vec[i];
         sample_names[i] = sample_path.extension() == ".gz" ? sample_path.stem().stem().string() : sample_path.stem().string();
