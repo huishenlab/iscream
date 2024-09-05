@@ -251,18 +251,7 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
         cov_mat(idx - 1, col_n) = lines[i].cov;
         m_mat(idx - 1, col_n) =  lines[i].m_count;
     }
-}
 
-template <class Mat>
-void QueryAll<Mat>::print_mat(std::vector<std::vector<int>>& matrix, const std::string& matrix_name) {
-    Rprintf("%s\n", matrix_name.c_str());
-    for (int j = 0; j < matrix[0].size(); j++) {
-        Rprintf("[%d, ] ", j);
-        for (int i = 0; i < matrix.size(); i++) {
-            Rprintf(" %d", matrix[i][j]);
-        }
-        Rprintf("\n");
-    }
 }
 
 #endif /* __cplusplus */
