@@ -113,7 +113,7 @@ QueryAll<Mat>::QueryAll(
     resize_count = 0;
     n_samples = bedfile_vec.size();
     n_intervals = regions.size();
-    sample_names = Rcpp::wrap(bedfile_vec);
+    sample_names = Rcpp::CharacterVector(bedfile_vec.size());
     cpg_map = khmap_init();
     is_merged = merged;
 
@@ -175,10 +175,12 @@ QueryAll<Mat>::QueryAll(
     }
 
     spdlog::info("Setting sample names");
+    std::string sample_name;
     for (int i = 0; i < sample_names.size(); i++) {
         std::filesystem::path sample_path = bedfile_vec[i];
-        sample_names[i] = sample_path.extension() == ".gz" ? sample_path.stem().stem().string() : sample_path.stem().string();
-        // spdlog::debug("Got {} as sample name from {}", sample_names[i], bedfile_vec[i]);
+        sample_name = sample_path.extension() == ".gz" ? sample_path.stem().stem().string() : sample_path.stem().string();
+        sample_names[i] = sample_name;
+         spdlog::debug("Got {} as sample name from {}", sample_name, bedfile_vec[i]);
     }
 
     if (sparse) {
