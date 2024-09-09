@@ -17,12 +17,14 @@ LinkingTo:
     Rcpp,
     RcppArmadillo,
     RcppProgress,
-    RcppSpdlog
+    RcppSpdlog,
+    stringfish
 Imports:
     Rcpp,
     Matrix,
     data.table,
-    parallelly
+    parallelly,
+    stringfish
 Suggests:
     knitr,
     bsseq,

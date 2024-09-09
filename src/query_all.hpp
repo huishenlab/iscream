@@ -10,6 +10,9 @@
 #include <progress.hpp>
 #include <progress_bar.hpp>
 
+// [[Rcpp::depends(stringfish)]]
+#include <sf_external.h>
+
 // Protect against compilers without OpenMP
 #ifdef _OPENMP
 #include <omp.h>
@@ -62,7 +65,8 @@ private:
 
     bool is_merged;
     int n_intervals, n_cpgs, chr_id, n_samples, resize_count;
-    Rcpp::CharacterVector seqnames, sample_names;
+    Rcpp::CharacterVector sample_names;
+    SEXP seqnames;
     Rcpp::IntegerVector start;
 
 public:
@@ -82,6 +86,7 @@ public:
     Mat cov_mat, m_mat;
     Rcpp::List assays;
     Rcpp::List wrap() {
+        UNPROTECT(1); // seqnames
         return Rcpp::List::create(
             Rcpp::_("M") = assays["M"],
             Rcpp::_("Cov") = assays["Cov"],
@@ -125,6 +130,7 @@ QueryAll<Mat>::QueryAll(
     spdlog::info("Querying {0} regions from {1} bedfiles\n", regions.size(), bedfile_vec.size());
     Progress bar(bedfile_vec.size(), true); 
 
+    spdlog::stopwatch sw;
 #if defined(_OPENMP)
     #pragma omp parallel for num_threads(nthreads)
 #endif
@@ -141,40 +147,40 @@ QueryAll<Mat>::QueryAll(
             if (spdlog::get_level() == spdlog::level::info) bar.increment();
         }
     }
+    spdlog::debug("Made matrix in {} s", sw);
     bar.cleanup();
 
     int mapsize = kh_size(cpg_map);
-    Rcpp::CharacterVector c(mapsize);
-    Rcpp::IntegerVector s(mapsize);
-    Rcpp::CharacterVector rownames(mapsize);
+
+    std::vector<int> starts_vec(mapsize);
+
+    SEXP rownames = PROTECT(sf_vector(mapsize));
+    sf_vec_data& row_data = sf_vec_data_ref(rownames);
+    seqnames = PROTECT(sf_vector(mapsize));
+    sf_vec_data& seq_data = sf_vec_data_ref(seqnames);
+
     spdlog::debug("Created temporary seqnames, samplenames and rownames vectors of size {}", kh_size(cpg_map));
 
+    spdlog::info("Creating metadata vectors");
+    sw.reset();
     khint_t iter;
+    #if defined(_OPENMP)
+        #pragma omp parallel for num_threads(nthreads)
+    #endif
     for (iter = 0; iter < kh_end(cpg_map); ++iter) {
         if (kh_exist(cpg_map, iter)) {
             CpG cpg = kh_key(cpg_map, iter);
             int row_idx = kh_val(cpg_map, iter) - 1;
-            s[row_idx] = cpg.start;
-            c[row_idx] = chr_rev_map[cpg.chr];
+            starts_vec[row_idx] = cpg.start;
+            seq_data[row_idx] = sfstring(chr_rev_map[cpg.chr], CE_UTF8);
             std::stringstream cpgid_stream;
             cpgid_stream << chr_rev_map[cpg.chr] << ":" << cpg.start + 1;
-            rownames[row_idx] = cpgid_stream.str();
+            row_data[row_idx] = sfstring(cpgid_stream.str(), CE_UTF8);
         }
     }
-    seqnames = c;
-    start = s;
-    spdlog::debug("Populated seqnames, samplenames and rownames vectors");
+    start = Rcpp::wrap(starts_vec);
 
-    int n_rows = cov_mat.n_rows;
-    if (cov_mat.n_rows > mapsize) {
-        int diff_rows = cov_mat.n_rows - mapsize;
-        spdlog::debug("nrows {} - {} extra rows allocated with {} resizes", n_rows, diff_rows, resize_count);
-        cov_mat.resize(mapsize, bedfile_vec.size());
-        m_mat.resize(mapsize, bedfile_vec.size());
-        spdlog::debug("Corrected matrix size");
-    }
-
-    spdlog::info("Setting sample names");
+    spdlog::debug("Setting sample names");
     std::string sample_name;
     for (int i = 0; i < sample_names.size(); i++) {
         std::filesystem::path sample_path = bedfile_vec[i];
@@ -182,9 +188,21 @@ QueryAll<Mat>::QueryAll(
         sample_names[i] = sample_name;
          spdlog::debug("Got {} as sample name from {}", sample_name, bedfile_vec[i]);
     }
+    spdlog::debug("Populated seqnames, samplenames and rownames vectors in {} s", sw);
 
+    sw.reset();
+    int n_rows = cov_mat.n_rows;
+    if (cov_mat.n_rows > mapsize) {
+        int diff_rows = cov_mat.n_rows - mapsize;
+        spdlog::info("nrows {} - {} extra rows allocated with {} resizes", n_rows, diff_rows, resize_count);
+        cov_mat.resize(mapsize, bedfile_vec.size());
+        m_mat.resize(mapsize, bedfile_vec.size());
+        spdlog::debug("Corrected matrix size in {} s", sw);
+    }
+
+    sw.reset();
     if (sparse) {
-        spdlog::debug("Creating sparse matrix");
+        spdlog::info("Creating sparse matrix");
         Rcpp::S4 cov_rmat = Rcpp::wrap(cov_mat);
         Rcpp::S4 M_rmat = Rcpp::wrap(m_mat);
         cov_rmat.slot("Dimnames") = Rcpp::List::create(rownames, sample_names);
@@ -193,8 +211,9 @@ QueryAll<Mat>::QueryAll(
             Rcpp::_["Cov"] = cov_rmat,
             Rcpp::_["M"] = M_rmat
         );
+        spdlog::debug("Took {}", sw);
     } else {
-        spdlog::debug("Creating dense matrix");
+        spdlog::info("Creating dense matrix");
         Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
         Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
         Rcpp::colnames(cov_rmat) = sample_names;
@@ -206,7 +225,9 @@ QueryAll<Mat>::QueryAll(
             Rcpp::_["Cov"] = cov_rmat,
             Rcpp::_["M"] = M_rmat
         );
+        spdlog::debug("Took {}", sw);
     }
+    UNPROTECT(1); // rownames
 
 }
 

@@ -10,6 +10,7 @@ let
     fs
     Matrix
     parallelly
+    stringfish
 
     # Rcpp
     Rcpp

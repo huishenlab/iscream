@@ -4,5 +4,6 @@
 #' @useDynLib iscream, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @import Matrix
+#' @import stringfish
 ## usethis namespace: end
 NULL
