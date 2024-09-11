@@ -94,7 +94,6 @@ Rcpp::DataFrame Cpp_region_map(
 
     std::vector<std::string> regions_vec = Rcpp::as<std::vector<std::string>>(regions);
     Progress bar(bedfiles.size(), true);
-    int completed_beds = 0;
 #if defined(_OPENMP)
     #pragma omp parallel for num_threads(nthreads)
 #endif
