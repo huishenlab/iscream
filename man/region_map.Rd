@@ -2,7 +2,7 @@
 % Please edit documentation in R/region_map.R
 \name{region_map}
 \alias{region_map}
-\title{Run a defined function over genomic regions}
+\title{Run a defined function over CpGs from genomic regions}
 \usage{
 region_map(
   bedfiles,
