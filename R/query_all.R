@@ -24,7 +24,7 @@
 #'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 #' # examine the bedfiles
 #' colnames <- c("chr", "start", "end", "beta", "coverage")
-#' lapply(bedfiles, function(i) knitr::kable(data.table::fread(i, col.names = colnames)))
+#' lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 #'
 #' # make a vector of regions
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
