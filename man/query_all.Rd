@@ -18,7 +18,7 @@ query_all(
 
 \item{regions}{A vector of genomic regions strings}
 
-\item{bismark}{Whether the input is a bismark coverage file}
+\item{bismark}{hether the input is a bismark coverage (or BSbolt Bedgraph) file}
 
 \item{merged}{Whether the input strands have been merged/collapsed}
 

@@ -7,7 +7,7 @@
 #' @param regions A vector of genomic regions strings. If a named vector is
 #' provided, the names will be used in the feature column instead of the
 #' genomic regions string
-#' @param bismark Whether the input is a bismark coverage file
+#' @param bismark hether the input is a bismark coverage (or BSbolt Bedgraph) file
 #' @param fun Function to apply over the region. See details.
 #' @param mval Whether to calculate the M value (coverage \eqn{\times \beta})
 #' or use the beta value

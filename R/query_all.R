@@ -6,7 +6,7 @@
 #' a BSseq object: `do.call(BSseq, query_all(...))`.
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector of genomic regions strings
-#' @param bismark Whether the input is a bismark coverage file
+#' @param bismark hether the input is a bismark coverage (or BSbolt Bedgraph) file
 #' @param merged Whether the input strands have been merged/collapsed
 #' @param sparse Whether to return M and coverage matrices as sparse matrices
 #' ("dgCMatrix"). Set this `TRUE` only for scWGBS data

@@ -23,7 +23,7 @@ genomic regions string}
 
 \item{fun}{Function to apply over the region. See details.}
 
-\item{bismark}{Whether the input is a bismark coverage file}
+\item{bismark}{hether the input is a bismark coverage (or BSbolt Bedgraph) file}
 
 \item{mval}{Whether to calculate the M value (coverage \eqn{\times \beta})
 or use the beta value
