@@ -21,6 +21,7 @@ std::vector<std::string> tabix_query(const std::string& region, htsFile* bedFile
 std::vector<RegionQuery> query_intervals(const char* fname, const std::vector<std::string>& regions);
 std::vector<std::vector<std::string>> query_interval(const std::vector<std::string>& bedfiles, const std::string& region);
 std::vector<std::string> query_interval(const std::string& bedfile, const std::string& region);
+std::vector<std::string> query_chroms(const std::string& fname);
 
 #endif /* __cplusplus */
 

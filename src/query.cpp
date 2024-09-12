@@ -1,4 +1,5 @@
 #include "query.hpp"
+#include "log.hpp"
 
 //' Query a genomic interval from a opened htsFile and return the reads in it
 //'
@@ -98,3 +99,22 @@ std::vector<std::string> query_interval(
 
     return regional_cpgs;
 }
+
+//' Query the chromosomes or seqnames from a file
+//' @param fname The bedfile name
+//' @return A vector of seqnames
+//' @export
+// [[Rcpp::export]]
+std::vector<std::string> query_chroms(const std::string& fname) {
+    std::vector<std::string> seqnames;
+    tbx_t* tbx = tbx_index_load3(fname.c_str(), NULL, 0);
+    if (!tbx) spdlog::error("Could not load .tbi index of {}", fname);
+    int i, nseq = 1<<1;
+    const char **seq = tbx_seqnames(tbx, &nseq);
+    if (!seq) spdlog::error("Could not get list of chromosome names");
+    for (int i = 0; i < nseq; i++) {
+        seqnames.push_back(seq[i]);
+    }
+    return seqnames;
+}
+

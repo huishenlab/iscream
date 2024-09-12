@@ -61,6 +61,14 @@ get_log_level <- function() {
     .Call(`_iscream_get_log_level`)
 }
 
+#' Query the chromosomes or seqnames from a file
+#' @param fname The bedfile name
+#' @return A vector of seqnames
+#' @export
+query_chroms <- function(fname) {
+    .Call(`_iscream_query_chroms`, fname)
+}
+
 #' Apply a function over CpGs within features
 #'
 #' This function should be called from `region_map()` since there are few
