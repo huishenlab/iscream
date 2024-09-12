@@ -16,6 +16,9 @@ reference:
     contents:
       - region_map
       - query_all
+  - title: Utilities
+    contents:
+      - query_chroms
   - title: Settings
   - subtitle: Multithreading
     contents:
