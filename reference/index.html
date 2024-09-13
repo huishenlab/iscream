@@ -30,8 +30,14 @@
     </div>
 
     <div class="section level2">
-      <h2 id="region-operations">Region operations<a class="anchor" aria-label="anchor" href="#region-operations"></a></h2>
+      <h2 id="reading">Reading<a class="anchor" aria-label="anchor" href="#reading"></a></h2>
 
+      <div class="section-desc"><p>Read data from aligned WGBS bedfiles</p></div>
+
+
+    </div><div class="section level2">
+
+      <h3 id="by-region">By region<a class="anchor" aria-label="anchor" href="#by-region"></a></h3>
 
 
 
@@ -45,16 +51,39 @@
           <code><a href="region_map.html">region_map()</a></code>
 
         </dt>
-        <dd>Run a defined function over genomic regions</dd>
+        <dd>Run a defined function over CpGs from genomic regions</dd>
       </dl><dl><dt>
 
           <code><a href="query_all.html">query_all()</a></code>
 
         </dt>
-        <dd>Make a bsseq object of CpGs from input genomic regions</dd>
+        <dd>Query all CpGs from input genomic regions</dd>
       </dl></div><div class="section level2">
-      <h2 id="multithreading">Multithreading<a class="anchor" aria-label="anchor" href="#multithreading"></a></h2>
+      <h2 id="utilities">Utilities<a class="anchor" aria-label="anchor" href="#utilities"></a></h2>
 
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="query_chroms.html">query_chroms()</a></code>
+
+        </dt>
+        <dd>Query the chromosomes or seqnames from a file</dd>
+      </dl></div><div class="section level2">
+      <h2 id="settings">Settings<a class="anchor" aria-label="anchor" href="#settings"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+      <h3 id="multithreading">Multithreading<a class="anchor" aria-label="anchor" href="#multithreading"></a></h3>
 
 
 
@@ -76,8 +105,8 @@
         </dt>
         <dd>Set the number of available threads</dd>
       </dl></div><div class="section level2">
-      <h2 id="experimental">Experimental<a class="anchor" aria-label="anchor" href="#experimental"></a></h2>
 
+      <h3 id="logging">Logging<a class="anchor" aria-label="anchor" href="#logging"></a></h3>
 
 
 
@@ -88,112 +117,16 @@
 
       <dl><dt>
 
-          <code><a href="decode_beta.html">decode_beta()</a></code>
+          <code><a href="get_log_level.html">get_log_level()</a></code>
 
         </dt>
-        <dd>Beta value decoder</dd>
+        <dd>Get the current log level</dd>
       </dl><dl><dt>
 
-          <code><a href="decode_cov.html">decode_cov()</a></code>
+          <code><a href="set_log_level.html">set_log_level()</a></code>
 
         </dt>
-        <dd>Coverage value decoder</dd>
-      </dl><dl><dt>
-
-          <code><a href="decode_m.html">decode_m()</a></code>
-
-        </dt>
-        <dd>M value decoder</dd>
-      </dl><dl><dt>
-
-          <code><a href="decoder.html">decoder()</a></code>
-
-        </dt>
-        <dd>Get decoded values</dd>
-      </dl><dl><dt>
-
-          <code><a href="joiner.html">joiner()</a></code>
-
-        </dt>
-        <dd>Cpg and sample joiner</dd>
-      </dl><dl><dt>
-
-          <code><a href="make_beta_mat.html">make_beta_mat()</a></code>
-
-        </dt>
-        <dd>Beta matrix</dd>
-      </dl><dl><dt>
-
-          <code><a href="make_bsseq_hm.html">make_bsseq_hm()</a></code>
-
-        </dt>
-        <dd>Make a BSSeq object</dd>
-      </dl><dl><dt>
-
-          <code><a href="make_bsseq_lm.html">make_bsseq_lm()</a></code>
-
-        </dt>
-        <dd>Make a BSSeq object using less memory</dd>
-      </dl><dl><dt>
-
-          <code><a href="make_coverage_mat.html">make_coverage_mat()</a></code>
-
-        </dt>
-        <dd>Cov matrix</dd>
-      </dl><dl><dt>
-
-          <code><a href="make_m_mat.html">make_m_mat()</a></code>
-
-        </dt>
-        <dd>M value matrix</dd>
-      </dl><dl><dt>
-
-          <code><a href="make_meth_mat.html">make_meth_mat()</a></code>
-
-        </dt>
-        <dd>Methylation matrix</dd>
-      </dl><dl><dt>
-
-          <code><a href="make_sparse_mat.html">make_sparse_mat()</a></code>
-
-        </dt>
-        <dd>Sparse Methylation matrix</dd>
-      </dl><dl><dt>
-
-          <code><a href="make_sparse_mat_bs.html">make_sparse_mat_bs()</a></code>
-
-        </dt>
-        <dd>BSSeq Sparse Methylation matrix</dd>
-      </dl><dl><dt>
-
-          <code><a href="read_sample.html">read_sample()</a></code>
-
-        </dt>
-        <dd>Sample reader</dd>
-      </dl><dl><dt>
-
-          <code><a href="read_sample_bs.html">read_sample_bs()</a></code>
-
-        </dt>
-        <dd>BSSeq Sample reader</dd>
-      </dl><dl><dt>
-
-          <code><a href="vdecoder.html">vdecoder()</a></code>
-
-        </dt>
-        <dd>Vector Decoder</dd>
-      </dl><dl><dt>
-
-          <code><a href="vdouble_decoder.html">vdouble_decoder()</a></code>
-
-        </dt>
-        <dd>Double Vector Decoder</dd>
-      </dl><dl><dt>
-
-          <code><a href="vencoder.html">vencoder()</a></code>
-
-        </dt>
-        <dd>Vector Encoder</dd>
+        <dd>Set logging level</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
