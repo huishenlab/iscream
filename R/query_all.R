@@ -6,7 +6,8 @@
 #' a BSseq object: `do.call(BSseq, query_all(...))`.
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector of genomic regions strings
-#' @param bismark hether the input is a bismark coverage (or BSbolt Bedgraph) file
+#' @param aligner The aligner used to produce the BED files - one of "biscuit",
+#' "bismark", "bsbolt".
 #' @param merged Whether the input strands have been merged/collapsed
 #' @param sparse Whether to return M and coverage matrices as sparse matrices
 #' ("dgCMatrix"). Set this `TRUE` only for scWGBS data
@@ -37,12 +38,13 @@
 query_all <- function(
   bedfiles,
   regions,
-  bismark = FALSE,
+  aligner = "biscuit",
   merged = TRUE,
   sparse = FALSE,
   nthreads = NULL
 ) {
 
+  verify_aligner_or_stop(aligner)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   verify_regions_or_stop(regions)
 
@@ -54,6 +56,13 @@ query_all <- function(
 
   validate_log_level(n_threads = n_threads)
 
-  Cpp_query_all(bedfiles, regions, bismark, merged, sparse, nthreads = n_threads)
+  Cpp_query_all(
+    bedfiles = bedfiles,
+    regions = regions,
+    bismark = aligner != "biscuit",
+    merged = merged,
+    sparse = sparse,
+    nthreads = n_threads
+  )
 }
 

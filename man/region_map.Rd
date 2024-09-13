@@ -8,7 +8,7 @@ region_map(
   bedfiles,
   regions,
   fun = "aggregate",
-  bismark = FALSE,
+  aligner = "biscuit",
   mval = TRUE,
   set_region_rownames = FALSE,
   nthreads = NULL
@@ -23,7 +23,8 @@ genomic regions string}
 
 \item{fun}{Function to apply over the region. See details.}
 
-\item{bismark}{hether the input is a bismark coverage (or BSbolt Bedgraph) file}
+\item{aligner}{The aligner used to produce the BED files - one of "biscuit",
+"bismark", "bsbolt".}
 
 \item{mval}{Whether to calculate the M value (coverage \eqn{\times \beta})
 or use the beta value

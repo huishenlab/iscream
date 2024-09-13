@@ -7,7 +7,8 @@
 #' @param regions A vector of genomic regions strings. If a named vector is
 #' provided, the names will be used in the feature column instead of the
 #' genomic regions string
-#' @param bismark hether the input is a bismark coverage (or BSbolt Bedgraph) file
+#' @param aligner The aligner used to produce the BED files - one of "biscuit",
+#' "bismark", "bsbolt".
 #' @param fun Function to apply over the region. See details.
 #' @param mval Whether to calculate the M value (coverage \eqn{\times \beta})
 #' or use the beta value
@@ -43,7 +44,7 @@ region_map <- function(
   bedfiles,
   regions,
   fun = "aggregate",
-  bismark = FALSE,
+  aligner = "biscuit",
   mval = TRUE,
   set_region_rownames = FALSE,
   nthreads = NULL
@@ -52,6 +53,7 @@ region_map <- function(
   supported_funcs <- c("aggregate", "average")
   stopifnot("Selected function not supported" = fun %in% supported_funcs)
 
+  verify_aligner_or_stop(aligner)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   verify_regions_or_stop(regions)
 
@@ -65,5 +67,13 @@ region_map <- function(
 
   validate_log_level(n_threads = n_threads)
 
-  Cpp_region_map(bedfiles, regions, fun, mval, bismark, set_region_rownames, nthreads = n_threads)
+  Cpp_region_map(
+    bedfiles = bedfiles,
+    regions = regions,
+    fun = fun,
+    bismark = aligner != "biscuit",
+    mval = mval,
+    region_rownames = set_region_rownames,
+    nthreads = n_threads
+  )
 }

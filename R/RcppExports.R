@@ -107,6 +107,7 @@ query_chroms <- function(fname) {
 #' @param fun One of the supported functions to apply over the CpGs in the
 #' regions: `"aggregate"`, `"average"`.
 #' @param mval Calculates M values when TRUE, use beta values when FALSE
+#' @param bismark If the input is in the bismark column format instead of BISCUIT
 #' @param region_rownames Whether to set rownames to the regions strings
 #' @param nthreads Number of cores to use. See details.
 #'

@@ -24,6 +24,8 @@ regions: \code{"aggregate"}, \code{"average"}.}
 
 \item{mval}{Calculates M values when TRUE, use beta values when FALSE}
 
+\item{bismark}{If the input is in the bismark column format instead of BISCUIT}
+
 \item{region_rownames}{Whether to set rownames to the regions strings}
 
 \item{nthreads}{Number of cores to use. See details.}

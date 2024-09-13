@@ -7,7 +7,7 @@
 query_all(
   bedfiles,
   regions,
-  bismark = FALSE,
+  aligner = "biscuit",
   merged = TRUE,
   sparse = FALSE,
   nthreads = NULL
@@ -18,7 +18,8 @@ query_all(
 
 \item{regions}{A vector of genomic regions strings}
 
-\item{bismark}{hether the input is a bismark coverage (or BSbolt Bedgraph) file}
+\item{aligner}{The aligner used to produce the BED files - one of "biscuit",
+"bismark", "bsbolt".}
 
 \item{merged}{Whether the input strands have been merged/collapsed}
 
