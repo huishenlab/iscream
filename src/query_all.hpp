@@ -66,12 +66,13 @@ private:
     bool is_merged;
     int n_intervals, n_cpgs, chr_id, n_samples, resize_count;
     Rcpp::CharacterVector sample_names;
-    SEXP seqnames;
+    SEXP rownames, seqnames;
     Rcpp::IntegerVector start;
 
 public:
-
     QueryAll();
+
+    // dense and sparse
     QueryAll(
         std::vector<std::string>& bedfile_vec,
         std::vector<std::string>& regions,
@@ -80,13 +81,27 @@ public:
         const bool sparse,
         const int nthreads
     );
+
+    QueryAll(
+        std::vector<std::string>& bedfile_vec,
+        std::vector<std::string>& regions,
+        Rcpp::NumericMatrix& cmat,
+        Rcpp::NumericMatrix& mmat,
+        const bool bismark,
+        const bool merged,
+        const bool sparse,
+        const int nthreads
+    );
+
+    void runner(const std::vector<std::string>& bedfile_vec, const std::vector<std::string>& regions, const bool bismark, const bool sparse, const int nthreads);
     void populate_matrix(RegionQuery& query, int& col_n, const bool bismark);
     void print_QueryAll();
+
 
     Mat cov_mat, m_mat;
     Rcpp::List assays;
     Rcpp::List wrap() {
-        UNPROTECT(1); // seqnames
+        UNPROTECT(2); // seqnames
         return Rcpp::List::create(
             Rcpp::_("M") = assays["M"],
             Rcpp::_("Cov") = assays["Cov"],
@@ -127,6 +142,74 @@ QueryAll<Mat>::QueryAll(
 
     setup_logger("iscream::query_all");
 
+    runner(bedfile_vec, regions, bismark, sparse, nthreads);
+
+    /*sw.reset();*/
+    if (sparse) {
+        spdlog::info("Creating sparse matrix");
+        Rcpp::S4 cov_rmat = Rcpp::wrap(cov_mat);
+        Rcpp::S4 M_rmat = Rcpp::wrap(m_mat);
+        cov_rmat.slot("Dimnames") = Rcpp::List::create(rownames, sample_names);
+        M_rmat.slot("Dimnames") = Rcpp::List::create(rownames, sample_names);
+        assays = Rcpp::List::create(
+            Rcpp::_["Cov"] = cov_rmat,
+            Rcpp::_["M"] = M_rmat
+        );
+        /*spdlog::debug("Took {}", sw);*/
+    } else {
+        spdlog::info("Creating dense matrix");
+        Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
+        Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
+        Rcpp::colnames(cov_rmat) = sample_names;
+        Rcpp::colnames(M_rmat) = sample_names;
+        Rcpp::rownames(cov_rmat) = rownames;
+        Rcpp::rownames(M_rmat) = rownames;
+
+        assays = Rcpp::List::create(
+            Rcpp::_["Cov"] = cov_rmat,
+            Rcpp::_["M"] = M_rmat
+        );
+        /*spdlog::debug("Took {}", sw);*/
+    }
+
+}
+
+template <class Mat>
+QueryAll<Mat>::QueryAll(
+    std::vector<std::string>& bedfile_vec,
+    std::vector<std::string>& regions,
+    Rcpp::NumericMatrix& cmat,
+    Rcpp::NumericMatrix& mmat,
+    const bool bismark,
+    const bool merged,
+    const bool sparse,
+    const int nthreads
+) {
+
+    n_cpgs = 0;
+    chr_id = 0;
+    resize_count = 0;
+    n_samples = bedfile_vec.size();
+    n_intervals = regions.size();
+    sample_names = Rcpp::CharacterVector(bedfile_vec.size());
+    cpg_map = khmap_init();
+    is_merged = merged;
+
+    cov_mat = arma::mat(cmat.begin(), cmat.nrow(), cmat.ncol(), false);
+    m_mat = arma::mat(mmat.begin(), mmat.nrow(), mmat.ncol(), false);
+
+    setup_logger("iscream::query_all");
+
+    runner(bedfile_vec, regions, bismark, sparse, nthreads);
+
+    Rcpp::rownames(cmat) = rownames;
+    Rcpp::rownames(mmat) = rownames;
+    UNPROTECT(2);
+}
+
+template <class Mat>
+void QueryAll<Mat>::runner(const std::vector<std::string>& bedfile_vec, const std::vector<std::string>& regions, const bool bismark, const bool sparse, const int nthreads) {
+
     spdlog::info("Querying {0} regions from {1} bedfiles\n", regions.size(), bedfile_vec.size());
     Progress bar(bedfile_vec.size(), true); 
 
@@ -154,7 +237,7 @@ QueryAll<Mat>::QueryAll(
 
     std::vector<int> starts_vec(mapsize);
 
-    SEXP rownames = PROTECT(sf_vector(mapsize));
+    rownames = PROTECT(sf_vector(mapsize));
     sf_vec_data& row_data = sf_vec_data_ref(rownames);
     seqnames = PROTECT(sf_vector(mapsize));
     sf_vec_data& seq_data = sf_vec_data_ref(seqnames);
@@ -199,36 +282,6 @@ QueryAll<Mat>::QueryAll(
         m_mat.resize(mapsize, bedfile_vec.size());
         spdlog::debug("Corrected matrix size in {} s", sw);
     }
-
-    sw.reset();
-    if (sparse) {
-        spdlog::info("Creating sparse matrix");
-        Rcpp::S4 cov_rmat = Rcpp::wrap(cov_mat);
-        Rcpp::S4 M_rmat = Rcpp::wrap(m_mat);
-        cov_rmat.slot("Dimnames") = Rcpp::List::create(rownames, sample_names);
-        M_rmat.slot("Dimnames") = Rcpp::List::create(rownames, sample_names);
-        assays = Rcpp::List::create(
-            Rcpp::_["Cov"] = cov_rmat,
-            Rcpp::_["M"] = M_rmat
-        );
-        spdlog::debug("Took {}", sw);
-    } else {
-        spdlog::info("Creating dense matrix");
-        Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
-        Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
-        Rcpp::colnames(cov_rmat) = sample_names;
-        Rcpp::colnames(M_rmat) = sample_names;
-        Rcpp::rownames(cov_rmat) = rownames;
-        Rcpp::rownames(M_rmat) = rownames;
-
-        assays = Rcpp::List::create(
-            Rcpp::_["Cov"] = cov_rmat,
-            Rcpp::_["M"] = M_rmat
-        );
-        spdlog::debug("Took {}", sw);
-    }
-    UNPROTECT(1); // rownames
-
 }
 
 template <class Mat>
