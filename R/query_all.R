@@ -60,14 +60,25 @@ query_all <- function(
 
   validate_log_level(n_threads = n_threads)
 
-  Cpp_query_all(
-    bedfiles = bedfiles,
-    regions = regions,
-    bismark = aligner != "biscuit",
-    merged = merged,
-    sparse = sparse,
-    prealloc = prealloc,
-    nthreads = n_threads
-  )
+  if (sparse) {
+    Cpp_query_all_sparse(
+      bedfiles = bedfiles,
+      regions = regions,
+      bismark = aligner != "biscuit",
+      merged = merged,
+      sparse = sparse,
+      prealloc = prealloc,
+      nthreads = n_threads
+    )
+  } else {
+    Cpp_query_all_dense(
+      bedfiles = bedfiles,
+      regions = regions,
+      bismark = aligner != "biscuit",
+      merged = merged,
+      sparse = sparse,
+      nthreads = n_threads
+    )
+  }
 }
 
