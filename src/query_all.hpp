@@ -78,6 +78,7 @@ public:
         const bool bismark,
         const bool merged,
         const bool sparse,
+        const int prealloc,
         const int nthreads
     );
     void populate_matrix(RegionQuery& query, int& col_n, const bool bismark);
@@ -110,6 +111,7 @@ QueryAll<Mat>::QueryAll(
     const bool bismark,
     const bool merged,
     const bool sparse,
+    const int prealloc,
     const int nthreads
 ) {
 
@@ -122,8 +124,8 @@ QueryAll<Mat>::QueryAll(
     cpg_map = khmap_init();
     is_merged = merged;
 
-    cov_mat.resize(5, bedfile_vec.size());
-    m_mat.resize(5, bedfile_vec.size());
+    cov_mat.resize(prealloc, bedfile_vec.size());
+    m_mat.resize(prealloc, bedfile_vec.size());
 
     setup_logger("iscream::query_all");
 

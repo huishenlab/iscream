@@ -13,8 +13,8 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // Cpp_query_all
-Rcpp::List Cpp_query_all(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, const bool bismark, const bool merged, const bool sparse, const int nthreads);
-RcppExport SEXP _iscream_Cpp_query_all(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP bismarkSEXP, SEXP mergedSEXP, SEXP sparseSEXP, SEXP nthreadsSEXP) {
+Rcpp::List Cpp_query_all(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, const bool bismark, const bool merged, const bool sparse, const int prealloc, const int nthreads);
+RcppExport SEXP _iscream_Cpp_query_all(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP bismarkSEXP, SEXP mergedSEXP, SEXP sparseSEXP, SEXP preallocSEXP, SEXP nthreadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,8 +23,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool >::type bismark(bismarkSEXP);
     Rcpp::traits::input_parameter< const bool >::type merged(mergedSEXP);
     Rcpp::traits::input_parameter< const bool >::type sparse(sparseSEXP);
+    Rcpp::traits::input_parameter< const int >::type prealloc(preallocSEXP);
     Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Cpp_query_all(bedfiles, regions, bismark, merged, sparse, nthreads));
+    rcpp_result_gen = Rcpp::wrap(Cpp_query_all(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -99,7 +100,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_iscream_Cpp_query_all", (DL_FUNC) &_iscream_Cpp_query_all, 6},
+    {"_iscream_Cpp_query_all", (DL_FUNC) &_iscream_Cpp_query_all, 7},
     {"_iscream_get_omp_threads", (DL_FUNC) &_iscream_get_omp_threads, 1},
     {"_iscream_setup_logger", (DL_FUNC) &_iscream_setup_logger, 1},
     {"_iscream_Cpp_set_log_level", (DL_FUNC) &_iscream_Cpp_set_log_level, 1},

@@ -4,7 +4,7 @@
 \alias{Cpp_query_all}
 \title{Make a Bsseq object}
 \usage{
-Cpp_query_all(bedfiles, regions, bismark, merged, sparse, nthreads)
+Cpp_query_all(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads)
 }
 \arguments{
 \item{bedfiles}{A vector of bedfiles}
@@ -12,6 +12,8 @@ Cpp_query_all(bedfiles, regions, bismark, merged, sparse, nthreads)
 \item{regions}{A vector of regions}
 
 \item{bismark}{Whether the input is a bismark coverage file}
+
+\item{prealloc}{The number of rows to initialize the matrices with}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}

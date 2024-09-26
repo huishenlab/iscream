@@ -11,6 +11,9 @@
 #' @param merged Whether the input strands have been merged/collapsed
 #' @param sparse Whether to return M and coverage matrices as sparse matrices
 #' ("dgCMatrix"). Set this `TRUE` only for scWGBS data
+#' @param prealloc The number of rows to initialize the matrices with. If the
+#' number of methyltion loci are approximately known, this can reduce runtime
+#' as fewer resizes need to be made.
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #' @return A named list of
@@ -41,6 +44,7 @@ query_all <- function(
   aligner = "biscuit",
   merged = TRUE,
   sparse = FALSE,
+  prealloc = 10000,
   nthreads = NULL
 ) {
 
@@ -62,6 +66,7 @@ query_all <- function(
     bismark = aligner != "biscuit",
     merged = merged,
     sparse = sparse,
+    prealloc = prealloc,
     nthreads = n_threads
   )
 }

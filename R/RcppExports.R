@@ -5,13 +5,14 @@
 #' @param bedfiles A vector of bedfiles
 #' @param regions A vector of regions
 #' @param bismark Whether the input is a bismark coverage file
+#' @param prealloc The number of rows to initialize the matrices with
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
 #' @keywords internal
 #' @export
-Cpp_query_all <- function(bedfiles, regions, bismark, merged, sparse, nthreads) {
-    .Call(`_iscream_Cpp_query_all`, bedfiles, regions, bismark, merged, sparse, nthreads)
+Cpp_query_all <- function(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads) {
+    .Call(`_iscream_Cpp_query_all`, bedfiles, regions, bismark, merged, sparse, prealloc, nthreads)
 }
 
 #' Get the number of available threads from OpenMP.

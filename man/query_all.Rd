@@ -10,6 +10,7 @@ query_all(
   aligner = "biscuit",
   merged = TRUE,
   sparse = FALSE,
+  prealloc = 10000,
   nthreads = NULL
 )
 }
@@ -25,6 +26,10 @@ query_all(
 
 \item{sparse}{Whether to return M and coverage matrices as sparse matrices
 ("dgCMatrix"). Set this \code{TRUE} only for scWGBS data}
+
+\item{prealloc}{The number of rows to initialize the matrices with. If the
+number of methyltion loci are approximately known, this can reduce runtime
+as fewer resizes need to be made.}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
