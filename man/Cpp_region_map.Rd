@@ -7,7 +7,7 @@
 Cpp_region_map(
   bedfiles,
   regions,
-  fun,
+  funcs,
   mval,
   bismark,
   region_rownames = FALSE,
@@ -19,16 +19,19 @@ Cpp_region_map(
 
 \item{regions}{A vector of genomic regions}
 
-\item{fun}{One of the supported functions to apply over the CpGs in the
-regions: \code{"aggregate"}, \code{"average"}.}
-
 \item{mval}{Calculates M values when TRUE, use beta values when FALSE}
 
 \item{bismark}{If the input is in the bismark column format instead of BISCUIT}
 
-\item{region_rownames}{Whether to set rownames to the regions strings}
+\item{region_rownames}{Whether to set rownames to the regions strings. Not
+necessary if your regions vector is unnamed. If its names, then the "Feature"
+column is set to the names and the rownames are set to the regions string}
 
 \item{nthreads}{Number of cores to use. See details.}
+
+\item{fun}{One of the armadillo-supported stats functions to apply over the
+CpGs in the ' regions: \code{"sum"}, \code{"mean"}, \code{"median"}, \code{"stddev"},
+\code{"variance"}, \code{"range"}.}
 }
 \description{
 This function should be called from \code{region_map()} since there are few

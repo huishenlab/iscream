@@ -107,11 +107,14 @@ Cpp_query_chroms <- function(bedfile_vec, nthreads) {
 #' sanity checks on the C++ side.
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector of genomic regions
-#' @param fun One of the supported functions to apply over the CpGs in the
-#' regions: `"aggregate"`, `"average"`.
+#' @param fun One of the armadillo-supported stats functions to apply over the
+#' CpGs in the ' regions: `"sum"`, `"mean"`, `"median"`, `"stddev"`,
+#' `"variance"`, `"range"`.
 #' @param mval Calculates M values when TRUE, use beta values when FALSE
 #' @param bismark If the input is in the bismark column format instead of BISCUIT
-#' @param region_rownames Whether to set rownames to the regions strings
+#' @param region_rownames Whether to set rownames to the regions strings. Not
+#' necessary if your regions vector is unnamed. If its names, then the "Feature"
+#' column is set to the names and the rownames are set to the regions string
 #' @param nthreads Number of cores to use. See details.
 #'
 #' @details
@@ -121,7 +124,7 @@ Cpp_query_chroms <- function(bedfile_vec, nthreads) {
 #'
 #' @keywords internal
 #' @export
-Cpp_region_map <- function(bedfiles, regions, fun, mval, bismark, region_rownames = FALSE, nthreads = 1L) {
-    .Call(`_iscream_Cpp_region_map`, bedfiles, regions, fun, mval, bismark, region_rownames, nthreads)
+Cpp_region_map <- function(bedfiles, regions, funcs, mval, bismark, region_rownames = FALSE, nthreads = 1L) {
+    .Call(`_iscream_Cpp_region_map`, bedfiles, regions, funcs, mval, bismark, region_rownames, nthreads)
 }
 

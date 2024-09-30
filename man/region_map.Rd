@@ -7,7 +7,7 @@
 region_map(
   bedfiles,
   regions,
-  fun = "aggregate",
+  fun = "all",
   aligner = "biscuit",
   mval = TRUE,
   set_region_rownames = FALSE,
@@ -27,8 +27,7 @@ genomic regions string}
 "bismark", "bsbolt".}
 
 \item{mval}{Whether to calculate the M value (coverage \eqn{\times \beta})
-or use the beta value
-when applying the function.}
+or use the beta value when applying the function.}
 
 \item{set_region_rownames}{Use the region strings as the returned data
 frame's rownames. Can be useful if you have a named vector of regions and
@@ -46,12 +45,17 @@ supported functions are aggregate and average. Parallelized across files
 using threads from the \code{"iscream.threads"} option.
 }
 \details{
-Available functions:
+Supported \code{fun} arguments are given below. For each of these functions,
+setting \code{mval = FALSE} will use the beta values instead of the M value:
 \itemize{
-\item \code{"aggregate"} sums the values in the region with aggregated beta values if
-\verb{mval =} FALSE and aggregated M values if \verb{mval =} TRUE
-\item \code{"average"} averages the values in the region with average beta values if
-\verb{mval =} FALSE and average M values if \verb{mval =} TRUE
+\item Sum: \code{"sum"}
+\item Mean: \code{"mean"}
+\item Median: \code{"median"}
+\item Standard deviation: \code{"stddev"}
+\item Variance: \code{"variance"}
+\item Range: \code{"range"}
+See https://arma.sourceforge.net/docs.html#stats_fns for details on the
+supported functions
 }
 }
 \examples{
@@ -65,5 +69,5 @@ lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 region_map(bedfiles, regions)
 region_map(bedfiles, regions, mval = FALSE)
-region_map(bedfiles, regions, fun = "average")
+region_map(bedfiles, regions, fun = "sum")
 }

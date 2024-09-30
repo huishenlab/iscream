@@ -11,19 +11,25 @@
 #' "bismark", "bsbolt".
 #' @param fun Function to apply over the region. See details.
 #' @param mval Whether to calculate the M value (coverage \eqn{\times \beta})
-#' or use the beta value
-#' when applying the function.
+#' or use the beta value when applying the function.
 #' @param set_region_rownames Use the region strings as the returned data
 #' frame's rownames. Can be useful if you have a named vector of regions and
 #' want both the rownames and the feature names.
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
+#'
 #' @details
-#' Available functions:
-#' - `"aggregate"` sums the values in the region with aggregated beta values if
-#' `mval =` FALSE and aggregated M values if `mval =` TRUE
-#' - `"average"` averages the values in the region with average beta values if
-#' `mval =` FALSE and average M values if `mval =` TRUE
+#' Supported `fun` arguments are given below. For each of these functions,
+#' setting `mval = FALSE` will use the beta values instead of the M value:
+#' - Sum: `"sum"`
+#' - Mean: `"mean"`
+#' - Median: `"median"`
+#' - Standard deviation: `"stddev"`
+#' - Variance: `"variance"`
+#' - Range: `"range"`
+#' See https://arma.sourceforge.net/docs.html#stats_fns for details on the
+#' supported functions
+#'
 #' @return A data.frame
 #'
 #' @export
@@ -39,19 +45,29 @@
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 #' region_map(bedfiles, regions)
 #' region_map(bedfiles, regions, mval = FALSE)
-#' region_map(bedfiles, regions, fun = "average")
+#' region_map(bedfiles, regions, fun = "sum")
 region_map <- function(
   bedfiles,
   regions,
-  fun = "aggregate",
+  fun = "all",
   aligner = "biscuit",
   mval = TRUE,
   set_region_rownames = FALSE,
   nthreads = NULL
 ) {
 
-  supported_funcs <- c("aggregate", "average")
-  stopifnot("Selected function not supported" = fun %in% supported_funcs)
+  supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "range")
+
+  if (length(fun) > 1) {
+    stopifnot("Selected function not supported" = all(fun %in% supported_funcs))
+    fun_to_use <- fun
+  } else {
+    stopifnot("Selected function not supported" = fun %in% c(supported_funcs, "all"))
+    fun_to_use <- supported_funcs
+    if (fun != "all") {
+      fun_to_use <- fun
+    }
+  }
 
   verify_aligner_or_stop(aligner)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
@@ -67,13 +83,15 @@ region_map <- function(
 
   validate_log_level(n_threads = n_threads)
 
-  Cpp_region_map(
+  df <- Cpp_region_map(
     bedfiles = bedfiles,
     regions = regions,
-    fun = fun,
+    fun = fun_to_use,
     bismark = aligner != "biscuit",
     mval = mval,
     region_rownames = set_region_rownames,
     nthreads = n_threads
   )
+  df[df == -99] <- NA
+  df
 }

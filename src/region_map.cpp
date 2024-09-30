@@ -1,4 +1,6 @@
-#include <Rcpp.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+#include <RcppArmadillo.h>
+
 #include <cstdio>
 #include <cmath>
 #include <filesystem>
@@ -14,36 +16,78 @@
 #include <omp.h>
 #endif
 
+enum Function {
+    SUM,
+    MEAN,
+    MEDIAN,
+    STDDEV,
+    VARIANCE,
+    RANGE
+};
+
+// get Function enum from input 'fun' argument
+std::unordered_map<std::string, Function> str_to_enum {
+    {"sum", SUM},
+    {"mean", MEAN},
+    {"median", MEDIAN},
+    {"stddev", STDDEV},
+    {"variance", VARIANCE},
+    {"range", RANGE},
+};
+
+// colnames for the output DataFrame
 typedef struct {
-    float computed_beta_me;
-    float computed_cov;
-} ComputedCpG;
+    std::string cov_name;
+    std::string mval_name;
+} Colnames;
 
-// Sum CpGs M values and coverage
-ComputedCpG aggregate(const RegionQuery& interval, const bool mval, const bool bismark) {
+// Container for computed summary value vectors
+typedef struct {
+    Function func;
+    std::vector<double> coverage;
+    std::vector<double> meth;
+    Colnames colnames;
+} ComputedVec;
 
-    float total_beta = 0;
-    float total_cov = 0;
-    for (const std::string& each_cpg : interval.cpgs_in_interval) {
-        BedLine parsed_cpg = bismark ? parseCovRecord(each_cpg) : parseBEDRecord(each_cpg);
-        total_beta += mval ? parsed_cpg.m_count : parsed_cpg.beta;
-        total_cov += parsed_cpg.cov;
+// Input data vectors
+typedef struct {
+    arma::vec covs;
+    arma::vec mvals;
+} DataVec;
+
+
+// Produce vectors of the input coverage and beta/M values
+DataVec makevec(const std::vector<std::string> cpgs, const bool mval, const bool bismark) {
+
+    arma::vec covs(cpgs.size());
+    arma::vec mvals(cpgs.size());
+
+    for (int i = 0; i < cpgs.size(); i++) {
+        BedLine parsed_cpg = bismark ? parseCovRecord(cpgs[i]) : parseBEDRecord(cpgs[i]);
+        covs[i] = parsed_cpg.cov;
+        mvals[i] = mval ? parsed_cpg.m_count : parsed_cpg.beta;
     }
-
-    return ComputedCpG{total_beta, total_cov};
+    return DataVec{covs, mvals};
 }
 
-// Get mean of betas and coverage
-ComputedCpG mean(const RegionQuery& interval, const bool mval, const bool bismark) {
+// Produce vectors pairs and colnames of computed summaries that will go into the result DataFrame
+ComputedVec get_vec(const int rowsize, const std::string fun, const bool mval) {
+    std::string prefix = mval ? "M." : "beta.";
+    return ComputedVec {
+        str_to_enum[fun],
+        std::vector<double>(rowsize, -99),
+        std::vector<double>(rowsize, -99),
+        Colnames {"coverage." + fun, prefix + fun}
+    };
+}
 
-    int n_cpg = interval.cpgs_in_interval.size();
-
-    ComputedCpG cpg = aggregate(interval, mval, bismark);
-
-    cpg.computed_beta_me = n_cpg == 0 ? 0.0 : cpg.computed_beta_me / n_cpg;
-    cpg.computed_cov = n_cpg == 0 ? 0 : cpg.computed_cov / n_cpg;
-
-    return cpg;
+// Create the necessary vector pairs for requested summary functions
+std::vector<ComputedVec> get_vectors(const int rowsize, const std::vector<std::string> funcs, const bool mval) {
+    std::vector<ComputedVec> vecs(funcs.size());
+    for (int i = 0; i < funcs.size(); i++) {
+        vecs[i] = get_vec(rowsize, funcs[i], mval);
+    }
+    return vecs;
 }
 
 //' Apply a function over CpGs within features
@@ -52,11 +96,14 @@ ComputedCpG mean(const RegionQuery& interval, const bool mval, const bool bismar
 //' sanity checks on the C++ side.
 //' @param bedfiles A vector of bedfile paths
 //' @param regions A vector of genomic regions
-//' @param fun One of the supported functions to apply over the CpGs in the
-//' regions: `"aggregate"`, `"average"`.
+//' @param fun One of the armadillo-supported stats functions to apply over the
+//' CpGs in the ' regions: `"sum"`, `"mean"`, `"median"`, `"stddev"`,
+//' `"variance"`, `"range"`.
 //' @param mval Calculates M values when TRUE, use beta values when FALSE
 //' @param bismark If the input is in the bismark column format instead of BISCUIT
-//' @param region_rownames Whether to set rownames to the regions strings
+//' @param region_rownames Whether to set rownames to the regions strings. Not
+//' necessary if your regions vector is unnamed. If its names, then the "Feature"
+//' column is set to the names and the rownames are set to the regions string
 //' @param nthreads Number of cores to use. See details.
 //'
 //' @details
@@ -70,7 +117,7 @@ ComputedCpG mean(const RegionQuery& interval, const bool mval, const bool bismar
 Rcpp::DataFrame Cpp_region_map(
     const std::vector<std::string>& bedfiles,
     const Rcpp::CharacterVector& regions,
-    const std::string& fun,
+    const std::vector<std::string>& funcs,
     const bool mval,
     const bool bismark,
     const bool region_rownames = false,
@@ -80,18 +127,16 @@ Rcpp::DataFrame Cpp_region_map(
     // LOGGER
     setup_logger("iscream::region_map");
 
-    std::string fun_label = fun == "aggregate" ? "Aggregating" : "Averaging";
-    spdlog::info("{} {} regions from {} bedfiles\n", fun_label.c_str(), regions.size(), bedfiles.size());
+    std::string func_label;
+    for (const std::string& fun : funcs) func_label += fun + " ";
+
+    spdlog::info("{} {} regions from {} bedfiles\n", func_label.c_str(), regions.size(), bedfiles.size());
     ssize_t rowsize = bedfiles.size() * regions.size();
-    Rcpp::CharacterVector feature_col(rowsize);
-    Rcpp::CharacterVector cell(rowsize);
-    Rcpp::NumericVector total_reads(rowsize);
-    Rcpp::NumericVector beta_me_reads(rowsize);
-    spdlog::debug("Created vectors for DataFrame with {} rows", rowsize);
-    auto f = aggregate;
-    if (fun == "average") {
-        f = mean;
-    }
+
+    Rcpp::CharacterVector feature_col(rowsize, Rcpp::CharacterVector::get_na());
+    Rcpp::CharacterVector cell(rowsize, Rcpp::CharacterVector::get_na());
+    std::vector<ComputedVec> computed_vecs = get_vectors(rowsize, funcs, mval);
+    spdlog::debug("Created vectors for DataFrame with {} rows in {} s", rowsize, sw);
 
     std::vector<std::string> regions_vec = Rcpp::as<std::vector<std::string>>(regions);
     Progress bar(bedfiles.size(), true);
@@ -109,13 +154,46 @@ Rcpp::DataFrame Cpp_region_map(
             int row_count = bedfile_n * regions_vec.size();
             std::string bedfile_prefix = bed_path.stem().stem();
             spdlog::debug("Got {} as sample name from {}", bedfile_prefix, bedfile_name);
+
             for (RegionQuery interval : cpgs_in_file) {
-                ComputedCpG agg_cpg = f(interval, mval, bismark);
                 spdlog::debug("Got {} CpGs from {}", interval.cpgs_in_interval.size(), bedfile_name);
                 feature_col[row_count] = interval.interval_str;
                 cell[row_count] = bedfile_prefix.c_str();
-                total_reads[row_count] = agg_cpg.computed_cov;
-                beta_me_reads[row_count] = agg_cpg.computed_beta_me;
+
+                if (interval.cpgs_in_interval.size() == 0) {
+                    row_count++;
+                    continue;
+                }
+                DataVec data_vec = makevec(interval.cpgs_in_interval, mval, bismark);
+
+                for (ComputedVec& vec : computed_vecs) {
+                    switch (vec.func) {
+                        case SUM:
+                            vec.coverage[row_count] = arma::sum(data_vec.covs);
+                            vec.meth[row_count] = arma::sum(data_vec.mvals);
+                            break;
+                        case MEAN:
+                            vec.coverage[row_count] = arma::mean(data_vec.covs);
+                            vec.meth[row_count] = arma::mean(data_vec.mvals);
+                            break;
+                        case MEDIAN:
+                            vec.coverage[row_count] = arma::median(data_vec.covs);
+                            vec.meth[row_count] = arma::median(data_vec.mvals);
+                            break;
+                        case STDDEV:
+                            vec.coverage[row_count] = arma::stddev(data_vec.covs);
+                            vec.meth[row_count] = arma::stddev(data_vec.mvals);
+                            break;
+                        case VARIANCE:
+                            vec.coverage[row_count] = arma::var(data_vec.covs);
+                            vec.meth[row_count] = arma::var(data_vec.mvals);
+                            break;
+                        case RANGE:
+                            vec.coverage[row_count] = arma::range(data_vec.covs);
+                            vec.meth[row_count] = arma::range(data_vec.mvals);
+                            break;
+                    }
+                }
                 row_count++;
                 empty_cpg_count += interval.cpgs_in_interval.size();
             }
@@ -125,14 +203,17 @@ Rcpp::DataFrame Cpp_region_map(
         }
     }
 
-    Rcpp::String m_beta_colname = mval ? "M" : "beta";
-    spdlog::debug("Using {} as the methylation value name", m_beta_colname.get_cstring());
+    std::string m_beta_colname = mval ? "M" : "beta";
+    spdlog::debug("Using {} as the methylation value name", m_beta_colname);
     Rcpp::DataFrame result = Rcpp::DataFrame::create(
         Rcpp::Named("Feature") = (regions.hasAttribute("names") ? (Rcpp::CharacterVector) regions.names() : feature_col),
-        Rcpp::Named("Cell") = cell,
-        Rcpp::Named("coverage") = total_reads,
-        Rcpp::Named(m_beta_colname) = beta_me_reads
+        Rcpp::Named("Cell") = cell
     );
+
+    for (ComputedVec vec : computed_vecs) {
+        result.push_back(vec.coverage, vec.colnames.cov_name);
+        result.push_back(vec.meth, vec.colnames.mval_name);
+    }
 
     if (region_rownames) {
         result.attr("row.names") = feature_col;
@@ -141,3 +222,4 @@ Rcpp::DataFrame Cpp_region_map(
 
     return result;
 }
+
