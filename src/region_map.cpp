@@ -135,10 +135,13 @@ Rcpp::DataFrame Cpp_region_map(
 
     Rcpp::CharacterVector feature_col(rowsize, Rcpp::CharacterVector::get_na());
     Rcpp::CharacterVector cell(rowsize, Rcpp::CharacterVector::get_na());
+    spdlog::stopwatch sw;
     std::vector<ComputedVec> computed_vecs = get_vectors(rowsize, funcs, mval);
     spdlog::debug("Created vectors for DataFrame with {} rows in {} s", rowsize, sw);
 
     std::vector<std::string> regions_vec = Rcpp::as<std::vector<std::string>>(regions);
+
+    sw.reset();
     Progress bar(bedfiles.size(), true);
 #if defined(_OPENMP)
     #pragma omp parallel for num_threads(nthreads)
@@ -202,7 +205,9 @@ Rcpp::DataFrame Cpp_region_map(
             if (spdlog::get_level() == spdlog::level::info) bar.increment();
         }
     }
+    spdlog::debug("Populated columns in {} s", sw);
 
+    sw.reset();
     std::string m_beta_colname = mval ? "M" : "beta";
     spdlog::debug("Using {} as the methylation value name", m_beta_colname);
     Rcpp::DataFrame result = Rcpp::DataFrame::create(
@@ -214,6 +219,7 @@ Rcpp::DataFrame Cpp_region_map(
         result.push_back(vec.coverage, vec.colnames.cov_name);
         result.push_back(vec.meth, vec.colnames.mval_name);
     }
+    spdlog::debug("Created DataFrame in {} s", sw);
 
     if (region_rownames) {
         result.attr("row.names") = feature_col;
