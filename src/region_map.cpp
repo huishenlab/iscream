@@ -104,7 +104,6 @@ Rcpp::DataFrame Cpp_region_map(
             std::string bedfile_name = bedfiles[bedfile_n];
             std::filesystem::path bed_path = bedfile_name;
             cpgs_in_file = query_intervals(bedfile_name.c_str(), regions_vec);
-            spdlog::debug("Got {} CpGs from {}", cpgs_in_file.size(), bedfile_name);
             int empty_cpg_count = 0;
 
             int row_count = bedfile_n * regions_vec.size();
@@ -112,6 +111,7 @@ Rcpp::DataFrame Cpp_region_map(
             spdlog::debug("Got {} as sample name from {}", bedfile_prefix, bedfile_name);
             for (RegionQuery interval : cpgs_in_file) {
                 ComputedCpG agg_cpg = f(interval, mval, bismark);
+                spdlog::debug("Got {} CpGs from {}", interval.cpgs_in_interval.size(), bedfile_name);
                 feature_col[row_count] = interval.interval_str;
                 cell[row_count] = bedfile_prefix.c_str();
                 total_reads[row_count] = agg_cpg.computed_cov;
