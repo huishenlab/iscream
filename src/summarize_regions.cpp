@@ -17,7 +17,7 @@
 #include <omp.h>
 #endif
 
-enum Function {
+enum StatFunction {
     SUM,
     MEAN,
     MEDIAN,
@@ -27,7 +27,7 @@ enum Function {
 };
 
 // get Function enum from input 'fun' argument
-std::unordered_map<std::string, Function> str_to_enum {
+std::unordered_map<std::string, StatFunction> str_to_enum {
     {"sum", SUM},
     {"mean", MEAN},
     {"median", MEDIAN},
@@ -44,7 +44,7 @@ typedef struct {
 
 // Container for computed summary value vectors
 typedef struct {
-    Function func;
+    StatFunction func;
     std::vector<double> coverage;
     std::vector<double> meth;
     Colnames colnames;
@@ -58,7 +58,7 @@ typedef struct {
 
 
 // Produce vectors of the input coverage and beta/M values
-DataVec makevec(const std::vector<std::string> cpgs, const bool mval, const bool bismark) {
+DataVec make_data_vec(const std::vector<std::string> cpgs, const bool mval, const bool bismark) {
 
     arma::vec covs(cpgs.size());
     arma::vec mvals(cpgs.size());
@@ -72,7 +72,7 @@ DataVec makevec(const std::vector<std::string> cpgs, const bool mval, const bool
 }
 
 // Produce vectors pairs and colnames of computed summaries that will go into the result DataFrame
-ComputedVec get_vec(const int rowsize, const std::string fun, const bool mval) {
+ComputedVec init_computed_vec(const int rowsize, const std::string fun, const bool mval) {
     std::string prefix = mval ? "M." : "beta.";
     return ComputedVec {
         str_to_enum[fun],
@@ -83,13 +83,34 @@ ComputedVec get_vec(const int rowsize, const std::string fun, const bool mval) {
 }
 
 // Create the necessary vector pairs for requested summary functions
-std::vector<ComputedVec> get_vectors(const int rowsize, const std::vector<std::string> funcs, const bool mval) {
+std::vector<ComputedVec> init_result_cols(const int rowsize, const std::vector<std::string> funcs, const bool mval) {
     std::vector<ComputedVec> vecs(funcs.size());
     for (int i = 0; i < funcs.size(); i++) {
-        vecs[i] = get_vec(rowsize, funcs[i], mval);
+        vecs[i] = init_computed_vec(rowsize, funcs[i], mval);
     }
     return vecs;
 }
+
+// Return {computed coverage, computed_mval}
+std::tuple<double, double> compute_vecs(const StatFunction func, const DataVec& data_vec) {
+    switch (func) {
+        case SUM:
+            return {arma::sum(data_vec.covs), arma::sum(data_vec.mvals)};
+        case MEAN:
+            return {arma::mean(data_vec.covs), arma::mean(data_vec.mvals)};
+        case MEDIAN:
+            return {arma::median(data_vec.covs), arma::median(data_vec.mvals)};
+        case STDDEV:
+            return {arma::stddev(data_vec.covs), arma::stddev(data_vec.mvals)};
+        case VARIANCE:
+            return {arma::var(data_vec.covs), arma::var(data_vec.mvals)};
+        case RANGE:
+            return {arma::range(data_vec.covs), arma::range(data_vec.mvals)};
+        default:
+            return {-1, -1};
+    }
+}
+
 
 //' Apply a function over CpGs within features
 //'
@@ -139,7 +160,7 @@ Rcpp::DataFrame Cpp_summarize_regions(
 
     Rcpp::CharacterVector feature_col(rowsize, Rcpp::CharacterVector::get_na());
     Rcpp::CharacterVector sample(rowsize, Rcpp::CharacterVector::get_na());
-    std::vector<ComputedVec> computed_vecs = get_vectors(rowsize, funcs, mval);
+    std::vector<ComputedVec> computed_vecs = init_result_cols(rowsize, funcs, mval);
     spdlog::debug("Created vectors for DataFrame with {} rows in {} s", rowsize, sw);
 
     sw.reset();
@@ -169,35 +190,10 @@ Rcpp::DataFrame Cpp_summarize_regions(
                     row_count++;
                     continue;
                 }
-                DataVec data_vec = makevec(interval.cpgs_in_interval, mval, bismark);
+                DataVec data_vec = make_data_vec(interval.cpgs_in_interval, mval, bismark);
 
                 for (ComputedVec& vec : computed_vecs) {
-                    switch (vec.func) {
-                        case SUM:
-                            vec.coverage[row_count] = arma::sum(data_vec.covs);
-                            vec.meth[row_count] = arma::sum(data_vec.mvals);
-                            break;
-                        case MEAN:
-                            vec.coverage[row_count] = arma::mean(data_vec.covs);
-                            vec.meth[row_count] = arma::mean(data_vec.mvals);
-                            break;
-                        case MEDIAN:
-                            vec.coverage[row_count] = arma::median(data_vec.covs);
-                            vec.meth[row_count] = arma::median(data_vec.mvals);
-                            break;
-                        case STDDEV:
-                            vec.coverage[row_count] = arma::stddev(data_vec.covs);
-                            vec.meth[row_count] = arma::stddev(data_vec.mvals);
-                            break;
-                        case VARIANCE:
-                            vec.coverage[row_count] = arma::var(data_vec.covs);
-                            vec.meth[row_count] = arma::var(data_vec.mvals);
-                            break;
-                        case RANGE:
-                            vec.coverage[row_count] = arma::range(data_vec.covs);
-                            vec.meth[row_count] = arma::range(data_vec.mvals);
-                            break;
-                    }
+                    std::tie(vec.coverage[row_count], vec.meth[row_count]) = compute_vecs(vec.func, data_vec);
                 }
                 row_count++;
                 empty_cpg_count += interval.cpgs_in_interval.size();
