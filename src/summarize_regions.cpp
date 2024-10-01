@@ -138,7 +138,7 @@ Rcpp::DataFrame Cpp_summarize_regions(
     spdlog::stopwatch sw;
 
     Rcpp::CharacterVector feature_col(rowsize, Rcpp::CharacterVector::get_na());
-    Rcpp::CharacterVector cell(rowsize, Rcpp::CharacterVector::get_na());
+    Rcpp::CharacterVector sample(rowsize, Rcpp::CharacterVector::get_na());
     std::vector<ComputedVec> computed_vecs = get_vectors(rowsize, funcs, mval);
     spdlog::debug("Created vectors for DataFrame with {} rows in {} s", rowsize, sw);
 
@@ -163,7 +163,7 @@ Rcpp::DataFrame Cpp_summarize_regions(
             for (RegionQuery interval : cpgs_in_file) {
                 spdlog::debug("Got {} CpGs from {}", interval.cpgs_in_interval.size(), bedfile_name);
                 feature_col[row_count] = interval.interval_str;
-                cell[row_count] = bedfile_prefix.c_str();
+                sample[row_count] = bedfile_prefix.c_str();
 
                 if (interval.cpgs_in_interval.size() == 0) {
                     row_count++;
@@ -213,7 +213,7 @@ Rcpp::DataFrame Cpp_summarize_regions(
 
     Rcpp::DataFrame result = Rcpp::DataFrame::create(
         Rcpp::Named("Feature") = (regions.hasAttribute("names") ? (Rcpp::CharacterVector) regions.names() : feature_col),
-        Rcpp::Named("Cell") = cell
+        Rcpp::Named("Sample") = sample
     );
 
     for (ComputedVec vec : computed_vecs) {
