@@ -93,7 +93,7 @@ std::vector<ComputedVec> get_vectors(const int rowsize, const std::vector<std::s
 
 //' Apply a function over CpGs within features
 //'
-//' This function should be called from `region_map()` since there are few
+//' This function should be called from `summarize_regions()` since there are few
 //' sanity checks on the C++ side.
 //' @param bedfiles A vector of bedfile paths
 //' @param regions A vector of genomic regions
@@ -115,7 +115,7 @@ std::vector<ComputedVec> get_vectors(const int rowsize, const std::vector<std::s
 //' @keywords internal
 //' @export
 // [[Rcpp::export]]
-Rcpp::DataFrame Cpp_region_map(
+Rcpp::DataFrame Cpp_summarize_regions(
     const std::vector<std::string>& bedfiles,
     const Rcpp::CharacterVector& regions,
     const std::vector<std::string>& funcs,
@@ -126,7 +126,7 @@ Rcpp::DataFrame Cpp_region_map(
 ) {
 
     // LOGGER
-    setup_logger("iscream::region_map");
+    setup_logger("iscream::summarize_regions");
 
     std::string func_label = fmt::format("{}", fmt::join(funcs, ", "));
     spdlog::info("Summarizing {} regions from {} bedfiles", regions.size(), bedfiles.size());

@@ -82,9 +82,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// Cpp_region_map
-Rcpp::DataFrame Cpp_region_map(const std::vector<std::string>& bedfiles, const Rcpp::CharacterVector& regions, const std::vector<std::string>& funcs, const bool mval, const bool bismark, const bool region_rownames, const int& nthreads);
-RcppExport SEXP _iscream_Cpp_region_map(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP funcsSEXP, SEXP mvalSEXP, SEXP bismarkSEXP, SEXP region_rownamesSEXP, SEXP nthreadsSEXP) {
+// Cpp_summarize_regions
+Rcpp::DataFrame Cpp_summarize_regions(const std::vector<std::string>& bedfiles, const Rcpp::CharacterVector& regions, const std::vector<std::string>& funcs, const bool mval, const bool bismark, const bool region_rownames, const int& nthreads);
+RcppExport SEXP _iscream_Cpp_summarize_regions(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP funcsSEXP, SEXP mvalSEXP, SEXP bismarkSEXP, SEXP region_rownamesSEXP, SEXP nthreadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -95,7 +95,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool >::type bismark(bismarkSEXP);
     Rcpp::traits::input_parameter< const bool >::type region_rownames(region_rownamesSEXP);
     Rcpp::traits::input_parameter< const int& >::type nthreads(nthreadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Cpp_region_map(bedfiles, regions, funcs, mval, bismark, region_rownames, nthreads));
+    rcpp_result_gen = Rcpp::wrap(Cpp_summarize_regions(bedfiles, regions, funcs, mval, bismark, region_rownames, nthreads));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -107,7 +107,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_Cpp_set_log_level", (DL_FUNC) &_iscream_Cpp_set_log_level, 1},
     {"_iscream_get_log_level", (DL_FUNC) &_iscream_get_log_level, 0},
     {"_iscream_Cpp_query_chroms", (DL_FUNC) &_iscream_Cpp_query_chroms, 2},
-    {"_iscream_Cpp_region_map", (DL_FUNC) &_iscream_Cpp_region_map, 7},
+    {"_iscream_Cpp_summarize_regions", (DL_FUNC) &_iscream_Cpp_summarize_regions, 7},
     {NULL, NULL, 0}
 };
 

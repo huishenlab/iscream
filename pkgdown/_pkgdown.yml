@@ -14,7 +14,7 @@ reference:
     desc: Read data from aligned WGBS bedfiles
   - subtitle: By region
     contents:
-      - region_map
+      - summarize_regions
       - query_all
   - title: Utilities
     contents:

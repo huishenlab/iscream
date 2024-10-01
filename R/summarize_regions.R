@@ -1,8 +1,7 @@
-#' Run a defined function over CpGs from genomic regions
+#' Summarize CpGs  methylation infomration over genomic regions
 #'
-#' Run a function on the CpGs in bedfiles across genomic regions. Currently
-#' supported functions are aggregate and average. Parallelized across files
-#' using threads from the `"iscream.threads"` option.
+#' Run summarizing functions on the CpGs in bedfiles across genomic regions.
+#' Parallelized across files using threads from the `"iscream.threads"` option.
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector of genomic regions strings. If a named vector is
 #' provided, the names will be used in the feature column instead of the
@@ -27,7 +26,9 @@
 #' - Standard deviation: `"stddev"`
 #' - Variance: `"variance"`
 #' - Range: `"range"`
-#' See https://arma.sourceforge.net/docs.html#stats_fns for details on the
+#'
+#' The summarizing computations are backed by the Armadillo library. See
+#' <https://arma.sourceforge.net/docs.html#stats_fns> for futher details on the
 #' supported functions
 #'
 #' @return A data.frame
@@ -43,10 +44,10 @@
 #'
 #' # make a vector of regions
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
-#' region_map(bedfiles, regions)
-#' region_map(bedfiles, regions, mval = FALSE)
-#' region_map(bedfiles, regions, fun = "sum")
-region_map <- function(
+#' summarize_regions(bedfiles, regions)
+#' summarize_regions(bedfiles, regions, mval = FALSE)
+#' summarize_regions(bedfiles, regions, fun = "sum")
+summarize_regions <- function(
   bedfiles,
   regions,
   fun = "all",
@@ -83,7 +84,7 @@ region_map <- function(
 
   validate_log_level(n_threads = n_threads)
 
-  df <- Cpp_region_map(
+  df <- Cpp_summarize_regions(
     bedfiles = bedfiles,
     regions = regions,
     fun = fun_to_use,

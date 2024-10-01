@@ -103,7 +103,7 @@ Cpp_query_chroms <- function(bedfile_vec, nthreads) {
 
 #' Apply a function over CpGs within features
 #'
-#' This function should be called from `region_map()` since there are few
+#' This function should be called from `summarize_regions()` since there are few
 #' sanity checks on the C++ side.
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector of genomic regions
@@ -124,7 +124,7 @@ Cpp_query_chroms <- function(bedfile_vec, nthreads) {
 #'
 #' @keywords internal
 #' @export
-Cpp_region_map <- function(bedfiles, regions, funcs, mval, bismark, region_rownames = FALSE, nthreads = 1L) {
-    .Call(`_iscream_Cpp_region_map`, bedfiles, regions, funcs, mval, bismark, region_rownames, nthreads)
+Cpp_summarize_regions <- function(bedfiles, regions, funcs, mval, bismark, region_rownames = FALSE, nthreads = 1L) {
+    .Call(`_iscream_Cpp_summarize_regions`, bedfiles, regions, funcs, mval, bismark, region_rownames, nthreads)
 }
 
