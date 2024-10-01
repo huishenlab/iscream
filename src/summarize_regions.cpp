@@ -211,8 +211,6 @@ Rcpp::DataFrame Cpp_summarize_regions(
     spdlog::debug("Populated columns in {} s", sw);
     sw.reset();
 
-    std::string m_beta_colname = mval ? "M" : "beta";
-    spdlog::debug("Using {} as the methylation value name", m_beta_colname);
     Rcpp::DataFrame result = Rcpp::DataFrame::create(
         Rcpp::Named("Feature") = (regions.hasAttribute("names") ? (Rcpp::CharacterVector) regions.names() : feature_col),
         Rcpp::Named("Cell") = cell
