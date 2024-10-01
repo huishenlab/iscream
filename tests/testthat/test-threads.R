@@ -1,6 +1,6 @@
 options("iscream.threads" = 2)
 library("parallelly")
-max_threads <- availableCores()
+max_threads <- 2
 
 set_get_threads <- function(nthreads) {
   set_threads(nthreads)
@@ -15,5 +15,5 @@ test_that("set_threads within limit", {
 
 test_that("set_threads over limit", {
   expect_error(set_threads(999))
-  expect_error(set_threads(max_threads + 1))
+  expect_error(set_threads(parallelly::availableCores() + 1))
 })
