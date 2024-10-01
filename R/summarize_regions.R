@@ -60,6 +60,9 @@ summarize_regions <- function(
   supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "range")
 
   if (length(fun) > 1) {
+    if ("all" %in% fun) {
+      stop("'all' can't be used with other summary funcions")
+    }
     stopifnot("Selected function not supported" = all(fun %in% supported_funcs))
     fun_to_use <- fun
   } else {
