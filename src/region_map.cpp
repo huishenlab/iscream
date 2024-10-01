@@ -10,6 +10,7 @@
 // [[Rcpp::depends(RcppProgress)]]
 #include <progress.hpp>
 #include <progress_bar.hpp>
+#include <spdlog/fmt/bundled/format.h>
 
 // Protect against compilers without OpenMP
 #ifdef _OPENMP
@@ -127,12 +128,11 @@ Rcpp::DataFrame Cpp_region_map(
     // LOGGER
     setup_logger("iscream::region_map");
 
-    std::string func_label;
-    for (const std::string& fun : funcs) func_label += fun + " ";
+    std::string func_label = fmt::format("{}", fmt::join(funcs, ", "));
+    spdlog::info("Summarizing {} regions from {} bedfiles", regions.size(), bedfiles.size());
+    spdlog::info("using {}", func_label.c_str());
 
     std::vector<std::string> regions_vec = Rcpp::as<std::vector<std::string>>(regions);
-
-    spdlog::info("{} {} regions from {} bedfiles\n", func_label.c_str(), regions.size(), bedfiles.size());
     ssize_t rowsize = bedfiles.size() * regions.size();
 
     spdlog::stopwatch sw;
