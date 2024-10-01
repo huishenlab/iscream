@@ -31,4 +31,4 @@ Suggests:
     GenomicRanges,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-SystemRequirements: GNU make
+SystemRequirements: htslib: htslib-devel (rpm) or libhts-dev (deb)
