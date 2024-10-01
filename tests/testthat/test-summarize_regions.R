@@ -3,7 +3,7 @@ library("stringfish")
 # inputs
 extdata <- system.file("extdata", package = "iscream")
 bedfiles <- list.files(extdata, pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
-regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
+regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "range")
 
 # utils
@@ -135,5 +135,81 @@ test_that("bad fun", {
   )
   expect_error(
     summarize_regions(bedfiles, regions, fun = c("none", "mean"))
+  )
+})
+
+m_sum <- read.csv(file.path(extdata, "summarize_regions_m_sum.test"))
+beta_sum <- read.csv(file.path(extdata, "summarize_regions_beta_sum.test"))
+
+m_mean <- read.csv(file.path(extdata, "summarize_regions_m_mean.test"))
+beta_mean <- read.csv(file.path(extdata, "summarize_regions_beta_mean.test"))
+
+beta_all <- read.csv(file.path(extdata, "summarize_regions_beta_all.test"))
+m_all <- read.csv(file.path(extdata, "summarize_regions_m_all.test"))
+
+test_that("summarize_regions 1 thread sum", {
+  expect_equal(
+    m_sum,
+    summarize_regions(bedfiles, regions, fun = "sum", mval = TRUE, nthreads = 1)
+  )
+  expect_equal(
+    beta_sum,
+    summarize_regions(bedfiles, regions, fun = "sum", mval = FALSE, nthreads = 1)
+  )
+})
+
+test_that("summarize_regions 2 thread sum", {
+  expect_equal(
+    m_sum,
+    summarize_regions(bedfiles, regions, fun = "sum", mval = TRUE, nthreads = 2)
+  )
+  expect_equal(
+    beta_sum,
+    summarize_regions(bedfiles, regions, fun = "sum", mval = FALSE, nthreads = 2)
+  )
+})
+
+test_that("summarize_regions 1 thread sum", {
+  expect_equal(
+    m_sum,
+    summarize_regions(bedfiles, regions, fun = "sum", mval = TRUE, nthreads = 1)
+  )
+  expect_equal(
+    beta_sum,
+    summarize_regions(bedfiles, regions, fun = "sum", mval = FALSE, nthreads = 1)
+  )
+})
+
+test_that("summarize_regions 2 thread sum", {
+  expect_equal(
+    m_sum,
+    summarize_regions(bedfiles, regions, fun = "sum", mval = TRUE, nthreads = 2)
+  )
+  expect_equal(
+    beta_sum,
+    summarize_regions(bedfiles, regions, fun = "sum", mval = FALSE, nthreads = 2)
+  )
+})
+
+
+test_that("summarize_regions 1 thread all", {
+  expect_equal(
+    m_all,
+    summarize_regions(bedfiles, regions, fun = "all", mval = TRUE, nthreads = 1)
+  )
+  expect_equal(
+    beta_all,
+    summarize_regions(bedfiles, regions, fun = "all", mval = FALSE, nthreads = 1)
+  )
+})
+
+test_that("summarize_regions 2 thread all", {
+  expect_equal(
+    m_all,
+    summarize_regions(bedfiles, regions, fun = "all", mval = TRUE, nthreads = 2)
+  )
+  expect_equal(
+    beta_all,
+    summarize_regions(bedfiles, regions, fun = "all", mval = FALSE, nthreads = 2)
   )
 })
