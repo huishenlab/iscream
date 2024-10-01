@@ -87,7 +87,7 @@ summarize_regions <- function(
   df <- Cpp_summarize_regions(
     bedfiles = bedfiles,
     regions = regions,
-    fun = fun_to_use,
+    fun_vec = fun_to_use,
     bismark = aligner != "biscuit",
     mval = mval,
     region_rownames = set_region_rownames,

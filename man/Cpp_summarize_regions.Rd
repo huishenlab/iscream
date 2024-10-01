@@ -7,7 +7,7 @@
 Cpp_summarize_regions(
   bedfiles,
   regions,
-  funcs,
+  fun_vec,
   mval,
   bismark,
   region_rownames = FALSE,
@@ -19,6 +19,10 @@ Cpp_summarize_regions(
 
 \item{regions}{A vector of genomic regions}
 
+\item{fun_vec}{Vector of the armadillo-supported stats functions to apply over the
+CpGs in the ' regions: \code{"sum"}, \code{"mean"}, \code{"median"}, \code{"stddev"},
+\code{"variance"}, \code{"range"}.}
+
 \item{mval}{Calculates M values when TRUE, use beta values when FALSE}
 
 \item{bismark}{If the input is in the bismark column format instead of BISCUIT}
@@ -28,10 +32,6 @@ necessary if your regions vector is unnamed. If its names, then the "Feature"
 column is set to the names and the rownames are set to the regions string}
 
 \item{nthreads}{Number of cores to use. See details.}
-
-\item{fun}{One of the armadillo-supported stats functions to apply over the
-CpGs in the ' regions: \code{"sum"}, \code{"mean"}, \code{"median"}, \code{"stddev"},
-\code{"variance"}, \code{"range"}.}
 }
 \description{
 This function should be called from \code{summarize_regions()} since there are few

@@ -44,7 +44,7 @@ typedef struct {
 
 // Container for computed summary value vectors
 typedef struct {
-    StatFunction func;
+    StatFunction fun;
     std::vector<double> coverage;
     std::vector<double> meth;
     Colnames colnames;
@@ -83,10 +83,10 @@ ComputedVec init_computed_vec(const int rowsize, const std::string fun, const bo
 }
 
 // Create the necessary vector pairs for requested summary functions
-std::vector<ComputedVec> init_result_cols(const int rowsize, const std::vector<std::string> funcs, const bool mval) {
-    std::vector<ComputedVec> vecs(funcs.size());
-    for (int i = 0; i < funcs.size(); i++) {
-        vecs[i] = init_computed_vec(rowsize, funcs[i], mval);
+std::vector<ComputedVec> init_result_cols(const int rowsize, const std::vector<std::string> fun_vec, const bool mval) {
+    std::vector<ComputedVec> vecs(fun_vec.size());
+    for (int i = 0; i < fun_vec.size(); i++) {
+        vecs[i] = init_computed_vec(rowsize, fun_vec[i], mval);
     }
     return vecs;
 }
@@ -118,7 +118,7 @@ std::tuple<double, double> compute_vecs(const StatFunction func, const DataVec& 
 //' sanity checks on the C++ side.
 //' @param bedfiles A vector of bedfile paths
 //' @param regions A vector of genomic regions
-//' @param fun One of the armadillo-supported stats functions to apply over the
+//' @param fun_vec Vector of the armadillo-supported stats functions to apply over the
 //' CpGs in the ' regions: `"sum"`, `"mean"`, `"median"`, `"stddev"`,
 //' `"variance"`, `"range"`.
 //' @param mval Calculates M values when TRUE, use beta values when FALSE
@@ -139,7 +139,7 @@ std::tuple<double, double> compute_vecs(const StatFunction func, const DataVec& 
 Rcpp::DataFrame Cpp_summarize_regions(
     const std::vector<std::string>& bedfiles,
     const Rcpp::CharacterVector& regions,
-    const std::vector<std::string>& funcs,
+    const std::vector<std::string>& fun_vec,
     const bool mval,
     const bool bismark,
     const bool region_rownames = false,
@@ -149,9 +149,9 @@ Rcpp::DataFrame Cpp_summarize_regions(
     // LOGGER
     setup_logger("iscream::summarize_regions");
 
-    std::string func_label = fmt::format("{}", fmt::join(funcs, ", "));
+    std::string fun_label = fmt::format("{}", fmt::join(fun_vec, ", "));
     spdlog::info("Summarizing {} regions from {} bedfiles", regions.size(), bedfiles.size());
-    spdlog::info("using {}", func_label.c_str());
+    spdlog::info("using {}", fun_label.c_str());
 
     std::vector<std::string> regions_vec = Rcpp::as<std::vector<std::string>>(regions);
     ssize_t rowsize = bedfiles.size() * regions.size();
@@ -160,7 +160,7 @@ Rcpp::DataFrame Cpp_summarize_regions(
 
     Rcpp::CharacterVector feature_col(rowsize, Rcpp::CharacterVector::get_na());
     Rcpp::CharacterVector sample(rowsize, Rcpp::CharacterVector::get_na());
-    std::vector<ComputedVec> computed_vecs = init_result_cols(rowsize, funcs, mval);
+    std::vector<ComputedVec> computed_vecs = init_result_cols(rowsize, fun_vec, mval);
     spdlog::debug("Created vectors for DataFrame with {} rows in {} s", rowsize, sw);
 
     sw.reset();
@@ -193,7 +193,7 @@ Rcpp::DataFrame Cpp_summarize_regions(
                 DataVec data_vec = make_data_vec(interval.cpgs_in_interval, mval, bismark);
 
                 for (ComputedVec& vec : computed_vecs) {
-                    std::tie(vec.coverage[row_count], vec.meth[row_count]) = compute_vecs(vec.func, data_vec);
+                    std::tie(vec.coverage[row_count], vec.meth[row_count]) = compute_vecs(vec.fun, data_vec);
                 }
                 row_count++;
                 empty_cpg_count += interval.cpgs_in_interval.size();

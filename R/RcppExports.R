@@ -107,7 +107,7 @@ Cpp_query_chroms <- function(bedfile_vec, nthreads) {
 #' sanity checks on the C++ side.
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector of genomic regions
-#' @param fun One of the armadillo-supported stats functions to apply over the
+#' @param fun_vec Vector of the armadillo-supported stats functions to apply over the
 #' CpGs in the ' regions: `"sum"`, `"mean"`, `"median"`, `"stddev"`,
 #' `"variance"`, `"range"`.
 #' @param mval Calculates M values when TRUE, use beta values when FALSE
@@ -124,7 +124,7 @@ Cpp_query_chroms <- function(bedfile_vec, nthreads) {
 #'
 #' @keywords internal
 #' @export
-Cpp_summarize_regions <- function(bedfiles, regions, funcs, mval, bismark, region_rownames = FALSE, nthreads = 1L) {
-    .Call(`_iscream_Cpp_summarize_regions`, bedfiles, regions, funcs, mval, bismark, region_rownames, nthreads)
+Cpp_summarize_regions <- function(bedfiles, regions, fun_vec, mval, bismark, region_rownames = FALSE, nthreads = 1L) {
+    .Call(`_iscream_Cpp_summarize_regions`, bedfiles, regions, fun_vec, mval, bismark, region_rownames, nthreads)
 }
 
