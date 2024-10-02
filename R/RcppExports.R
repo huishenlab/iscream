@@ -91,12 +91,14 @@ NULL
 #' @param region The region string in the form "chr:start-end"
 NULL
 
-#' Query the chromosomes or seqnames from a file
-#' @param fname The bedfile name
+#' Query the chromosomes or seqnames from a vector of files
+#' @param bedfile_vec The vector of bedfile paths
 #' @return A vector of seqnames
+#'
+#' @keywords internal
 #' @export
-query_chroms <- function(fname) {
-    .Call(`_iscream_query_chroms`, fname)
+Cpp_query_chroms <- function(bedfile_vec, nthreads) {
+    .Call(`_iscream_Cpp_query_chroms`, bedfile_vec, nthreads)
 }
 
 #' Apply a function over CpGs within features

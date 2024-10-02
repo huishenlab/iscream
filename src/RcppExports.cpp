@@ -70,14 +70,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// query_chroms
-std::vector<std::string> query_chroms(const std::string& fname);
-RcppExport SEXP _iscream_query_chroms(SEXP fnameSEXP) {
+// Cpp_query_chroms
+std::set<std::string> Cpp_query_chroms(const std::vector<std::string>& bedfile_vec, const int nthreads);
+RcppExport SEXP _iscream_Cpp_query_chroms(SEXP bedfile_vecSEXP, SEXP nthreadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string& >::type fname(fnameSEXP);
-    rcpp_result_gen = Rcpp::wrap(query_chroms(fname));
+    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type bedfile_vec(bedfile_vecSEXP);
+    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
+    rcpp_result_gen = Rcpp::wrap(Cpp_query_chroms(bedfile_vec, nthreads));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -105,7 +106,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_setup_logger", (DL_FUNC) &_iscream_setup_logger, 1},
     {"_iscream_Cpp_set_log_level", (DL_FUNC) &_iscream_Cpp_set_log_level, 1},
     {"_iscream_get_log_level", (DL_FUNC) &_iscream_get_log_level, 0},
-    {"_iscream_query_chroms", (DL_FUNC) &_iscream_query_chroms, 1},
+    {"_iscream_Cpp_query_chroms", (DL_FUNC) &_iscream_Cpp_query_chroms, 2},
     {"_iscream_Cpp_region_map", (DL_FUNC) &_iscream_Cpp_region_map, 7},
     {NULL, NULL, 0}
 };
