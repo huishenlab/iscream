@@ -30,16 +30,52 @@ verify_files_or_stop <- function(bedfiles, verify_tabix = TRUE) {
   }
 }
 
+validate_chrom_field <- function(chrom_no) {
+  alpha_chroms <- c("X", "Y", "M")
+  if (!grepl("^chr", chrom_no) & !chrom_no %in% alpha_chroms) {
+    stopifnot("seqname is not numeric" = !is.na(as.numeric(chrom_no)))
+  } else {
+    chrom_no <- gsub("chr", "", chrom_no)
+    if (! chrom_no %in% c("X", "Y", "M")) {
+      stopifnot("chr is not in the format 'chr[1-22/X/Y]'" = !is.na(as.numeric(chrom_no)))
+    }
+  }
+}
+
+#' Validate a region string
+#'
+#' CAUTION: very basic validation is done here, checking only that there are
+#' one or three elements and that the last two are integers and the first is
+#' a valid integer or among "X", "Y", "M", optionally prefixed with 'chr'
+#'
+#' @param region A vector of genomic regions
+#' @return TRUE if region is valid
+#'
+#' @importFrom stringfish sf_split
+#'
+#' @keywords internal
+validate_region <- function(region) {
+  split_region <- unlist(sf_split(region, ":|-", fixed = FALSE))
+  n_elems <- length(split_region)
+  chr <- split_region[1]
+  validate_chrom_field(chr)
+  if (n_elems == 3) {
+    start <- as.numeric(split_region[2])
+    end <- as.numeric(split_region[3])
+    stopifnot("start is not numeric" = !is.na(start))
+    stopifnot("end is not numeric" = !is.na(end))
+    stopifnot("end is smaller than start" = end >= start)
+  }
+}
+
 #' Verify that regions are valid
 #'
 #' @param regions A vector of genomic regions
 #' @return TRUE if all input regions start with 'chr' FALSE if not
 #'
+#' @importFrom stringfish sf_split
+#'
 #' @keywords internal
 verify_regions_or_stop <- function(regions) {
-  valid_regions <- sapply(regions, function(i) grepl("^chr", i))
-  invalid_regions <- regions[!valid_regions]
-  if (length(invalid_regions != 0)) {
-    stop(paste0(invalid_regions, " are invalid regions\n"))
-  }
+  sapply(regions, validate_region)
 }
