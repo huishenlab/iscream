@@ -37,7 +37,7 @@ let
     testthat
 
     # RCMD check
-    V8
+    # V8
     rhub
   ];
 
