@@ -112,7 +112,7 @@ std::set<std::string> Cpp_query_chroms(const std::vector<std::string>& bedfile_v
     #if defined(_OPENMP)
         #pragma omp parallel for num_threads(nthreads)
     #endif
-    for (const std::string fname : bedfile_vec) {
+    for (const std::string& fname : bedfile_vec) {
         tbx_t* tbx = tbx_index_load3(fname.c_str(), NULL, 0);
         if (!tbx) spdlog::error("Could not load .tbi index of {}", fname);
         int i, nseq = 1<<1;
