@@ -82,6 +82,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Cpp_query_interval
+Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::vector<std::string>& regions);
+RcppExport SEXP _iscream_Cpp_query_interval(SEXP bedfileSEXP, SEXP regionsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type bedfile(bedfileSEXP);
+    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type regions(regionsSEXP);
+    rcpp_result_gen = Rcpp::wrap(Cpp_query_interval(bedfile, regions));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Cpp_summarize_regions
 Rcpp::DataFrame Cpp_summarize_regions(const std::vector<std::string>& bedfiles, const Rcpp::CharacterVector& regions, const std::vector<std::string>& fun_vec, const bool mval, const bool bismark, const bool region_rownames, const int& nthreads);
 RcppExport SEXP _iscream_Cpp_summarize_regions(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP fun_vecSEXP, SEXP mvalSEXP, SEXP bismarkSEXP, SEXP region_rownamesSEXP, SEXP nthreadsSEXP) {
@@ -107,6 +119,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_Cpp_set_log_level", (DL_FUNC) &_iscream_Cpp_set_log_level, 1},
     {"_iscream_get_log_level", (DL_FUNC) &_iscream_get_log_level, 0},
     {"_iscream_Cpp_query_chroms", (DL_FUNC) &_iscream_Cpp_query_chroms, 2},
+    {"_iscream_Cpp_query_interval", (DL_FUNC) &_iscream_Cpp_query_interval, 2},
     {"_iscream_Cpp_summarize_regions", (DL_FUNC) &_iscream_Cpp_summarize_regions, 7},
     {NULL, NULL, 0}
 };

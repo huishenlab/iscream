@@ -129,3 +129,28 @@ std::set<std::string> Cpp_query_chroms(const std::vector<std::string>& bedfile_v
     return seqnames;
 }
 
+//' @export
+// [[Rcpp::export]]
+Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::vector<std::string>& regions) {
+    const char* fname = bedfile.c_str();
+
+    MultiRegionQuery intervals = query_intervals(fname, regions);
+    int total_cpgs = 0;
+    for (RegionQuery interval : intervals) {
+        total_cpgs += interval.cpgs_in_interval.size();
+    }
+    std::vector<std::string> output(total_cpgs);
+    Rcpp::CharacterVector rout(total_cpgs);
+    int output_idx = 0;
+    for (RegionQuery interval : intervals) {
+        std::vector<std::string> cpg_vec = interval.cpgs_in_interval;
+        std::move(
+            std::make_move_iterator(cpg_vec.begin()),
+            std::make_move_iterator(cpg_vec.end()),
+            output.begin() + output_idx
+        );
+        output_idx += cpg_vec.size();
+    }
+    Rcpp::CharacterVector out = Rcpp::wrap(output);
+    return out;
+}

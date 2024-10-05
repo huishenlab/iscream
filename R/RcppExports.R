@@ -101,6 +101,11 @@ Cpp_query_chroms <- function(bedfile_vec, nthreads) {
     .Call(`_iscream_Cpp_query_chroms`, bedfile_vec, nthreads)
 }
 
+#' @export
+Cpp_query_interval <- function(bedfile, regions) {
+    .Call(`_iscream_Cpp_query_interval`, bedfile, regions)
+}
+
 #' Apply a function over CpGs within features
 #'
 #' This function should be called from `summarize_regions()` since there are few
