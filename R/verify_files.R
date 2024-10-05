@@ -30,6 +30,27 @@ verify_files_or_stop <- function(bedfiles, verify_tabix = TRUE) {
   }
 }
 
+#' Verify that the input bedfiles are of the type specified by the input aligner
+#'
+#' @param bedfiles A vector of bedfile paths
+#' @param aligner The aligner chosen
+#'
+#' @importFrom stringfish sf_grepl
+#'
+#' @return TRUE if all input bedfiles have an associated tabix index file.
+#' FALSE if not
+#'
+#' @keywords internal
+verify_filetype <- function(bedfiles, aligner) {
+  check_name_warning <- "- verify aligner and data frame colnames"
+  if (aligner == "biscuit" & any(sf_grepl(bedfiles, pattern = ".cov"))) {
+    warning(paste("'aligner' set to 'biscuit' but files found with '.cov', extension", check_name_warning))
+  }
+  if (aligner != "biscuit" & any(!sf_grepl(bedfiles, pattern = ".cov"))) {
+    warning(paste("'aligner' set to", aligner, "but no files found with '.cov', extension", check_name_warning))
+  }
+}
+
 validate_chrom_field <- function(chrom_no) {
   alpha_chroms <- c("X", "Y", "M")
   if (!grepl("^chr", chrom_no) & !chrom_no %in% alpha_chroms) {
