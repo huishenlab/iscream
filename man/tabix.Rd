@@ -27,3 +27,9 @@ A data.table
 \description{
 Query lines from a tabixed bedfile
 }
+\examples{
+bedfiles <- system.file("extdata", package = "iscream") |>
+  list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
+regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
+tabix(bedfiles, regions)
+}
