@@ -17,4 +17,7 @@ check:
 cclean:
 	rm -rf iscream_0.0.0.9000.tar.gz iscream.Rcheck
 
+site:
+	R -e "pkgdown::build_site()"
+
 .PHONY: all build clean
