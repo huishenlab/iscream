@@ -154,3 +154,20 @@ Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::
     Rcpp::CharacterVector out = Rcpp::wrap(output);
     return out;
 }
+
+//' @export
+// [[Rcpp::export]]
+Rcpp::List scan_tabix(const std::string& bedfile, const std::vector<std::string>& regions) {
+    const char* fname = bedfile.c_str();
+
+    MultiRegionQuery intervals = query_intervals(fname, regions);
+    Rcpp::List out(intervals.size());
+
+    for (int i = 0; i < intervals.size(); i++) {
+        RegionQuery interval = intervals[i];
+        out[i] = interval.cpgs_in_interval;
+    }
+    out.attr("names") = regions;
+
+    return out;
+}

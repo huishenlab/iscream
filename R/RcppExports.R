@@ -106,6 +106,11 @@ Cpp_query_interval <- function(bedfile, regions) {
     .Call(`_iscream_Cpp_query_interval`, bedfile, regions)
 }
 
+#' @export
+scan_tabix <- function(bedfile, regions) {
+    .Call(`_iscream_scan_tabix`, bedfile, regions)
+}
+
 #' Apply a function over CpGs within features
 #'
 #' This function should be called from `summarize_regions()` since there are few

@@ -25,6 +25,8 @@ query_chroms <- function(bedfiles, nthreads = NULL) {
 #' column names based on this argument.
 #' @param colnames A vector of column names for the result data.table. Set if
 #' you your bedfile is not from the supported aligners or is a general bedfile.
+#' @param raw Set true to give a named list of raw strings from the regions in
+#' the style of `Rsamtools::scanTabix` instead of a data.table
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
@@ -37,7 +39,7 @@ query_chroms <- function(bedfiles, nthreads = NULL) {
 #'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 #' tabix(bedfiles, regions)
-tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, nthreads = NULL) {
+tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = FALSE, nthreads = NULL) {
   verify_files_or_stop(bedfile)
   verify_regions_or_stop(regions)
   verify_aligner_or_stop(aligner)
@@ -59,6 +61,8 @@ tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, nthrea
     getOption("iscream.threads"),
     check_thread_count(nthreads)
   )
+
+  if (raw) return(scan_tabix(bedfile, regions))
 
   lines <- Cpp_query_interval(bedfile, regions)
   if (length(lines) == 0) {

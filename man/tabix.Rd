@@ -4,7 +4,14 @@
 \alias{tabix}
 \title{Query lines from a tabixed bedfile}
 \usage{
-tabix(bedfile, regions, aligner = "biscuit", colnames = NULL, nthreads = NULL)
+tabix(
+  bedfile,
+  regions,
+  aligner = "biscuit",
+  colnames = NULL,
+  raw = FALSE,
+  nthreads = NULL
+)
 }
 \arguments{
 \item{bedfile}{The bedfile to be queried}
@@ -17,6 +24,9 @@ column names based on this argument.}
 
 \item{colnames}{A vector of column names for the result data.table. Set if
 you your bedfile is not from the supported aligners or is a general bedfile.}
+
+\item{raw}{Set true to give a named list of raw strings from the regions in
+the style of \code{Rsamtools::scanTabix} instead of a data.table}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
