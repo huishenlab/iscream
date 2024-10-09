@@ -18,9 +18,9 @@ tabix(
 
 \item{regions}{A vector of genomic region strings}
 
-\item{aligner}{@param aligner The aligner used to produce the BED files -
-one of "biscuit", "bismark", "bsbolt". Will set the result data.table's
-column names based on this argument.}
+\item{aligner}{The aligner used to produce the BED files - one of "biscuit",
+"bismark", "bsbolt". Will set the result data.table's column names based on
+this argument.}
 
 \item{colnames}{A vector of column names for the result data.table. Set if
 you your bedfile is not from the supported aligners or is a general bedfile.}
