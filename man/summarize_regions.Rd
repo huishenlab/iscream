@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarize_regions.R
 \name{summarize_regions}
 \alias{summarize_regions}
-\title{Summarize CpGs  methylation infomration over genomic regions}
+\title{Summarize CpGs  methylation information over genomic regions}
 \usage{
 summarize_regions(
   bedfiles,

@@ -1,4 +1,4 @@
-#' Summarize CpGs  methylation infomration over genomic regions
+#' Summarize CpGs  methylation information over genomic regions
 #'
 #' Run summarizing functions on the CpGs in bedfiles across genomic regions.
 #' Parallelized across files using threads from the `"iscream.threads"` option.
