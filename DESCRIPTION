@@ -22,6 +22,7 @@ LinkingTo:
 Imports:
     Rcpp,
     Matrix,
+    data.table,
     parallelly,
     stringfish
 Suggests:
