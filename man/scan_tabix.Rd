@@ -15,3 +15,4 @@ file with the same name and .tbi extension}
 \description{
 Get namde list of reads from a single genomic region from one tabixed bed file
 }
+\keyword{internal}

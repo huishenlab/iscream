@@ -106,6 +106,8 @@ Cpp_query_chroms <- function(bedfile_vec, nthreads) {
 #' @param bedfile The name of the bed file - must have a corresponding tabix
 #' file with the same name and .tbi extension
 #' @param regions A vector of region strings in the form "chr:start-end"
+#'
+#' @keywords internal
 #' @export
 Cpp_query_interval <- function(bedfile, regions) {
     .Call(`_iscream_Cpp_query_interval`, bedfile, regions)
@@ -116,6 +118,8 @@ Cpp_query_interval <- function(bedfile, regions) {
 #' @param bedfile The name of the bed file - must have a corresponding tabix
 #' file with the same name and .tbi extension
 #' @param regions A vector of region strings in the form "chr:start-end"
+#'
+#' @keywords internal
 #' @export
 scan_tabix <- function(bedfile, regions) {
     .Call(`_iscream_scan_tabix`, bedfile, regions)

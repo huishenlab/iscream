@@ -134,6 +134,8 @@ std::set<std::string> Cpp_query_chroms(const std::vector<std::string>& bedfile_v
 //' @param bedfile The name of the bed file - must have a corresponding tabix
 //' file with the same name and .tbi extension
 //' @param regions A vector of region strings in the form "chr:start-end"
+//'
+//' @keywords internal
 //' @export
 // [[Rcpp::export]]
 Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::vector<std::string>& regions) {
@@ -165,6 +167,8 @@ Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::
 //' @param bedfile The name of the bed file - must have a corresponding tabix
 //' file with the same name and .tbi extension
 //' @param regions A vector of region strings in the form "chr:start-end"
+//'
+//' @keywords internal
 //' @export
 // [[Rcpp::export]]
 Rcpp::List scan_tabix(const std::string& bedfile, const std::vector<std::string>& regions) {
