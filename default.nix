@@ -7,7 +7,6 @@ let
   # Imports
     # R
     data_table
-    fs
     Matrix
     parallelly
     stringfish
