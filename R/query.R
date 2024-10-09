@@ -38,7 +38,7 @@ query_chroms <- function(bedfiles, nthreads = NULL) {
 #' bedfiles <- system.file("extdata", package = "iscream") |>
 #'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
-#' tabix(bedfiles, regions)
+#' tabix(bedfiles[1], regions)
 tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = FALSE, nthreads = NULL) {
   verify_files_or_stop(bedfile)
   verify_regions_or_stop(regions)
