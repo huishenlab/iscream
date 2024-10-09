@@ -38,14 +38,17 @@ query_chroms <- function(bedfiles, nthreads = NULL) {
 #' bedfiles <- system.file("extdata", package = "iscream") |>
 #'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
-#' tabix(bedfiles[1], regions)
+#' tabix(bedfiles[1], regions, colnames = c("chr", "start", "end", "beta", "coverage"))
 tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = FALSE, nthreads = NULL) {
   verify_files_or_stop(bedfile)
   verify_regions_or_stop(regions)
   verify_aligner_or_stop(aligner)
   verify_filetype(bedfile, aligner)
   base_colnames <- c("chr", "start", "end")
-  biscuit_colnames <- c("beta", "coverage", "mergecg")
+  biscuit_colnames <- c("beta", "coverage")
+  if (grepl("mergecg", bedfile)) {
+    biscuit_colnames <- c(biscuit_colnames, "mergecg")
+  }
   bismark_colnames <- c("methylation percentge", "count methylated", "count unmethylated")
 
   if (!is.null(colnames)) {
@@ -79,7 +82,9 @@ tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = 
         length(colnames), "names provided for", n_col, "data.table"
       ))
     return(lines_dt)
+  } else if (length(result_colnames) > n_col) {
+    warning("Fewer columns in data than provided colnames")
   }
-  colnames(lines_dt) <- result_colnames
+  colnames(lines_dt) <- result_colnames[1:n_col]
   return(lines_dt)
 }
