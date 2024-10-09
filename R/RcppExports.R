@@ -101,11 +101,21 @@ Cpp_query_chroms <- function(bedfile_vec, nthreads) {
     .Call(`_iscream_Cpp_query_chroms`, bedfile_vec, nthreads)
 }
 
+#' Get reads from a single genomic region from one tabixed bed file to return as CharacterVector
+#'
+#' @param bedfile The name of the bed file - must have a corresponding tabix
+#' file with the same name and .tbi extension
+#' @param regions A vector of region strings in the form "chr:start-end"
 #' @export
 Cpp_query_interval <- function(bedfile, regions) {
     .Call(`_iscream_Cpp_query_interval`, bedfile, regions)
 }
 
+#' Get namde list of reads from a single genomic region from one tabixed bed file
+#'
+#' @param bedfile The name of the bed file - must have a corresponding tabix
+#' file with the same name and .tbi extension
+#' @param regions A vector of region strings in the form "chr:start-end"
 #' @export
 scan_tabix <- function(bedfile, regions) {
     .Call(`_iscream_scan_tabix`, bedfile, regions)

@@ -129,6 +129,11 @@ std::set<std::string> Cpp_query_chroms(const std::vector<std::string>& bedfile_v
     return seqnames;
 }
 
+//' Get reads from a single genomic region from one tabixed bed file to return as CharacterVector
+//'
+//' @param bedfile The name of the bed file - must have a corresponding tabix
+//' file with the same name and .tbi extension
+//' @param regions A vector of region strings in the form "chr:start-end"
 //' @export
 // [[Rcpp::export]]
 Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::vector<std::string>& regions) {
@@ -155,6 +160,11 @@ Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::
     return out;
 }
 
+//' Get namde list of reads from a single genomic region from one tabixed bed file
+//'
+//' @param bedfile The name of the bed file - must have a corresponding tabix
+//' file with the same name and .tbi extension
+//' @param regions A vector of region strings in the form "chr:start-end"
 //' @export
 // [[Rcpp::export]]
 Rcpp::List scan_tabix(const std::string& bedfile, const std::vector<std::string>& regions) {
