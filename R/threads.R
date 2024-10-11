@@ -48,11 +48,11 @@ get_threads <- function() {
 #' taking resources from other jobs. If there are limits, trying to use more
 #' threads that those available will reduce iscream's performance. Job
 #' schedulers will typically have an environment variable (e.g.
-#' SLURM_CPUS_ON_NODE with SLURM) that gives you the actual number of available
-#' cores. Further, on hyperthreaded systems, this count may be double that of
-#' the available processors. Using hyperthreading does not guarantee any
-#' performance improvement - it may be better to set the number of threads to
-#' half the reported number. `parallelly::availableCores()` takes HPC
+#' `SLURM_CPUS_ON_NODE` with SLURM) that gives you the actual number of
+#' available cores. Further, on hyperthreaded systems, this count may be double
+#' that of the available processors. Using hyperthreading does not guarantee
+#' any performance improvement - it may be better to set the number of threads
+#' to half the reported number. `parallelly::availableCores()` takes HPC
 #' scheduler/CRAN/Bioconductor limits into account when reporting the number of
 #' available threads but it may not reliably report hyperthreading ('system' or
 #' 'nproc'). To set the number of threads without having to call
@@ -64,7 +64,7 @@ get_threads <- function() {
 #' in your `.Rprofile` See `help('Rprofile')` for information on startup options.
 #'
 #' Functions currently using OpenMP:
-#' - `region_map()`
+#' - `summarize_regions()`
 #' - `query_all()`
 #'
 #' @export

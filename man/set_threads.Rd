@@ -30,11 +30,11 @@ system administrator has not set up any limits, this may result in your job
 taking resources from other jobs. If there are limits, trying to use more
 threads that those available will reduce iscream's performance. Job
 schedulers will typically have an environment variable (e.g.
-SLURM_CPUS_ON_NODE with SLURM) that gives you the actual number of available
-cores. Further, on hyperthreaded systems, this count may be double that of
-the available processors. Using hyperthreading does not guarantee any
-performance improvement - it may be better to set the number of threads to
-half the reported number. \code{parallelly::availableCores()} takes HPC
+\code{SLURM_CPUS_ON_NODE} with SLURM) that gives you the actual number of
+available cores. Further, on hyperthreaded systems, this count may be double
+that of the available processors. Using hyperthreading does not guarantee
+any performance improvement - it may be better to set the number of threads
+to half the reported number. \code{parallelly::availableCores()} takes HPC
 scheduler/CRAN/Bioconductor limits into account when reporting the number of
 available threads but it may not reliably report hyperthreading ('system' or
 'nproc'). To set the number of threads without having to call
@@ -47,7 +47,7 @@ in your \code{.Rprofile} See \code{help('Rprofile')} for information on startup 
 
 Functions currently using OpenMP:
 \itemize{
-\item \code{region_map()}
+\item \code{summarize_regions()}
 \item \code{query_all()}
 }
 }
