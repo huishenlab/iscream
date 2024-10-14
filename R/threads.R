@@ -26,6 +26,16 @@ get_threads <- function() {
   c("use_threads" = opt_threads, "opt_set" = TRUE, "avail_threads" = avail_threads)
 }
 
+#' Get the number of threads to use in functions from param or option
+#' @keywords internal
+.get_threads <- function(nthreads) {
+  ifelse(
+    is.null(nthreads),
+    getOption("iscream.threads"),
+    check_thread_count(nthreads)
+  )
+}
+
 #' Set the number of available threads
 #'
 #' Sets the `"iscream.threads"` option to `n_threads`. To see how many threads
@@ -109,3 +119,5 @@ check_thread_count <- function(
     " threads. See parallelly::availableCores(which = 'all') for more informaion on available resources"
   ))
 }
+
+

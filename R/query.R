@@ -8,11 +8,7 @@
 query_chroms <- function(bedfiles, nthreads = NULL) {
   verify_files_or_stop(bedfiles)
 
-  n_threads <- ifelse(
-    is.null(nthreads),
-    getOption("iscream.threads"),
-    check_thread_count(nthreads)
-  )
+  n_threads <- .get_threads(nthreads)
 
   Cpp_query_chroms(bedfiles, n_threads)
 }
@@ -59,12 +55,7 @@ tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = 
     result_colnames <- c(base_colnames, bismark_colnames)
   }
 
-  n_threads <- ifelse(
-    is.null(nthreads),
-    getOption("iscream.threads"),
-    check_thread_count(nthreads)
-  )
-
+  n_threads <- .get_threads(nthreads)
   if (raw) return(scan_tabix(bedfile, regions))
 
   lines <- Cpp_query_interval(bedfile, regions)

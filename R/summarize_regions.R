@@ -79,12 +79,7 @@ summarize_regions <- function(
 
   stopifnot("'mval' must be TRUE or FALSE" = mval %in% c(TRUE, FALSE))
 
-  n_threads <- ifelse(
-    is.null(nthreads),
-    getOption("iscream.threads"),
-    check_thread_count(nthreads)
-  )
-
+  n_threads <- .get_threads(nthreads)
   validate_log_level(n_threads = n_threads)
 
   df <- Cpp_summarize_regions(

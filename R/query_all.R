@@ -52,12 +52,7 @@ query_all <- function(
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   verify_regions_or_stop(regions)
 
-  n_threads <- ifelse(
-    is.null(nthreads),
-    getOption("iscream.threads"),
-    check_thread_count(nthreads)
-  )
-
+  n_threads <- .get_threads(nthreads)
   validate_log_level(n_threads = n_threads)
 
   Cpp_query_all(
