@@ -4,6 +4,7 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/huishenlab/iscream/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/huishenlab/iscream/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/huishenlab/iscream/graph/badge.svg)](https://app.codecov.io/gh/huishenlab/iscream)
 <!-- badges: end -->
 
 Analysis and visualization of Whole Genome Bisulfite Sequencing (WGBS) data

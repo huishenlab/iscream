@@ -25,6 +25,7 @@ let
 
   # dev dependencies
     bench
+    covr
     devtools
     lobstr
     pkgbuild
@@ -34,6 +35,9 @@ let
     styler
     usethis
     testthat
+    covr
+    DT
+    htmltools
 
     # RCMD check
     # V8
