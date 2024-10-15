@@ -7,7 +7,7 @@
 #' @keywords internal
 verify_aligner_or_stop <- function(aligner) {
   supported_aligners <- c("biscuit", "bismark", "bsbolt")
-  if (!aligner %in% supported_aligners) {
+  if (!(aligner %in% supported_aligners)) {
     stop(paste("aligner =", aligner, "not supported. Use one of the supported aligners:", paste(supported_aligners, collapse = ", ")))
   }
 }
