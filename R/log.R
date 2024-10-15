@@ -33,10 +33,17 @@ set_log_level <- function(level = "info") {
 #' set_log_level("info")
 validate_log_level <- function(level = get_log_level(), n_threads) {
   quiet_logging <- c("trace", "info", "off")
+  supported <- c(quiet_logging, "debug")
   unsupported <- c("warn", "critical")
-  if (level %in% unsupported) {
-    stop(paste(level, "logging is not supported"))
+
+  if (!(level %in% supported)) {
+    if (level %in% unsupported) {
+      stop(paste(level, "logging is currently not supported"))
+    } else {
+      stop(paste(level, "is not a supported spdlog log level"))
+    }
   }
+
   if (n_threads > 1 && !(level %in% quiet_logging)) {
     stop(paste(
       n_threads, "threads were requested",
