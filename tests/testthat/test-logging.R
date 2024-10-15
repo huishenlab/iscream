@@ -19,3 +19,11 @@ test_that("set_log_level to info on 2 threads", {
 test_that("set_log_level to debug on 2 threads", {
   expect_error(set_log_level("debug"))
 })
+
+test_that("unsupported log level", {
+  expect_error(set_log_level("warn"))
+})
+
+test_that("invalid log level", {
+  expect_error(set_log_level("unsupported"))
+})
