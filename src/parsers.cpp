@@ -56,7 +56,7 @@ BedLine parseCovRecord(const std::string& bedString) {
     int m_count = std::stoi(fields[4]);
     int u_count = std::stoi(fields[5]);
     int cov = m_count + u_count;
-    float beta = m_count / (m_count + u_count);
+    float beta = (double) m_count / cov;
 
     BedLine read = {chrom, start, end, beta, cov, m_count};
     return read;
