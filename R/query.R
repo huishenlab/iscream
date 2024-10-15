@@ -45,7 +45,7 @@ tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = 
   if (grepl("mergecg", bedfile)) {
     biscuit_colnames <- c(biscuit_colnames, "mergecg")
   }
-  bismark_colnames <- c("methylation percentge", "count methylated", "count unmethylated")
+  bismark_colnames <- c("methylation percentage", "count.methylated", "count.unmethylated")
 
   if (!is.null(colnames)) {
     result_colnames <- colnames
