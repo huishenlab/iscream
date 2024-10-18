@@ -22,7 +22,7 @@ jobs:
         config:
           - {os: macos-latest,   r: 'release', htslib: 'htslib',     install_cmd: 'brew install'}
           # - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,  r: 'release', htslib: 'libhts-dev', install_cmd: 'sudo apt-get update && sudo apt-get install -y'}
+          - {os: ubuntu-24.04,  r: 'release', htslib: 'libhts-dev', install_cmd: 'sudo apt-get update && sudo apt-get install -y'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
