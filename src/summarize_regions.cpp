@@ -94,8 +94,6 @@ std::vector<ComputedVec> init_result_cols(const int rowsize, const std::vector<s
 // Return {computed coverage, computed_mval}
 std::tuple<double, double> compute_vecs(const StatFunction func, const DataVec& data_vec) {
     switch (func) {
-        case SUM:
-            return {arma::sum(data_vec.covs), arma::sum(data_vec.mvals)};
         case MEAN:
             return {arma::mean(data_vec.covs), arma::mean(data_vec.mvals)};
         case MEDIAN:
@@ -106,8 +104,8 @@ std::tuple<double, double> compute_vecs(const StatFunction func, const DataVec& 
             return {arma::var(data_vec.covs), arma::var(data_vec.mvals)};
         case RANGE:
             return {arma::range(data_vec.covs), arma::range(data_vec.mvals)};
-        default:
-            return {-1, -1};
+        default: // using sum as default since R CMD check won't allow a switch without default
+            return {arma::sum(data_vec.covs), arma::sum(data_vec.mvals)};
     }
 }
 
