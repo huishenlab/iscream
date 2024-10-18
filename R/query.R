@@ -26,7 +26,7 @@ query_chroms <- function(bedfiles, nthreads = NULL) {
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
-#' @importFrom data.table as.data.table tstrsplit
+#' @importFrom data.table as.data.table tstrsplit set
 #' @return A data.table
 #'
 #' @export
@@ -76,6 +76,9 @@ tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = 
   } else if (length(result_colnames) > n_col) {
     warning("Fewer columns in data than provided colnames")
   }
+
   colnames(lines_dt) <- result_colnames[1:n_col]
+  for (i in 2:ncol(lines_dt)) set(lines_dt, j = i, value = as.numeric(lines_dt[[i]]))
+
   return(lines_dt)
 }
