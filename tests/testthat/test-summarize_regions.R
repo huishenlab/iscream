@@ -2,7 +2,8 @@ library("stringfish")
 
 # inputs
 extdata <- system.file("extdata", package = "iscream")
-bedfiles <- list.files(extdata, pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
+biscuit_bedfiles <- list.files(extdata, pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
+bismark_bedfiles <- list.files(extdata, pattern = "[a|b|c|d].cov.gz$", full.names = TRUE)
 regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "range")
 
@@ -26,7 +27,7 @@ run_test <- function(bedfiles, regions, funcs, mval, nthreads) {
   )
 }
 
-one_file <- lapply(bedfiles, function(i) {
+one_file <- lapply(biscuit_bedfiles, function(i) {
   run_test(
     i,
     regions,
@@ -38,7 +39,7 @@ one_file <- lapply(bedfiles, function(i) {
 
 one_fun <- lapply(supported_funcs, function(i) {
   run_test(
-    bedfiles,
+    biscuit_bedfiles,
     regions,
     funcs = i,
     mval = FALSE,
@@ -48,7 +49,7 @@ one_fun <- lapply(supported_funcs, function(i) {
 
 two_fun <- lapply(asplit(combn(supported_funcs, 2), 2), function(i) {
   run_test(
-    bedfiles,
+    biscuit_bedfiles,
     regions,
     funcs = i,
     mval = FALSE,
@@ -58,7 +59,7 @@ two_fun <- lapply(asplit(combn(supported_funcs, 2), 2), function(i) {
 
 one_reg <- lapply(regions, function(i) {
   run_test(
-    bedfiles,
+    biscuit_bedfiles,
     i,
     funcs = "all",
     mval = FALSE,
@@ -68,7 +69,7 @@ one_reg <- lapply(regions, function(i) {
 
 mbeta <- lapply(c(T, F), function(i) {
   run_test(
-    bedfiles,
+    biscuit_bedfiles,
     regions,
     funcs = "all",
     mval = i,
@@ -78,7 +79,7 @@ mbeta <- lapply(c(T, F), function(i) {
 
 threads <- lapply(c(1, 1), function(i) {
   run_test(
-    bedfiles,
+    biscuit_bedfiles,
     regions,
     funcs = "all",
     mval = F,
@@ -128,66 +129,64 @@ test_that("colnames", {
 # error on bad 'fun' arguments
 test_that("bad fun", {
   expect_error(
-    summarize_regions(bedfiles, regions, fun = "none")
+    summarize_regions(biscuit_bedfiles, regions, fun = "none")
   )
   expect_error(
-    summarize_regions(bedfiles, regions, fun = c("all", "mean"))
+    summarize_regions(biscuit_bedfiles, regions, fun = c("all", "mean"))
   )
   expect_error(
-    summarize_regions(bedfiles, regions, fun = c("none", "mean"))
+    summarize_regions(biscuit_bedfiles, regions, fun = c("none", "mean"))
   )
 })
 
 m_sum <- read.csv(file.path(extdata, "summarize_regions_m_sum.test"))
 beta_sum <- read.csv(file.path(extdata, "summarize_regions_beta_sum.test"))
-
 m_mean <- read.csv(file.path(extdata, "summarize_regions_m_mean.test"))
 beta_mean <- read.csv(file.path(extdata, "summarize_regions_beta_mean.test"))
-
 beta_all <- read.csv(file.path(extdata, "summarize_regions_beta_all.test"))
 m_all <- read.csv(file.path(extdata, "summarize_regions_m_all.test"))
 
 test_that("summarize_regions 1 thread sum", {
   expect_equal(
     m_sum,
-    summarize_regions(bedfiles, regions, fun = "sum", mval = TRUE, nthreads = 1)
+    summarize_regions(biscuit_bedfiles, regions, fun = "sum", mval = TRUE, nthreads = 1)
   )
   expect_equal(
     beta_sum,
-    summarize_regions(bedfiles, regions, fun = "sum", mval = FALSE, nthreads = 1)
+    summarize_regions(biscuit_bedfiles, regions, fun = "sum", mval = FALSE, nthreads = 1)
   )
 })
 
 test_that("summarize_regions 2 thread sum", {
   expect_equal(
     m_sum,
-    summarize_regions(bedfiles, regions, fun = "sum", mval = TRUE, nthreads = 2)
+    summarize_regions(biscuit_bedfiles, regions, fun = "sum", mval = TRUE, nthreads = 2)
   )
   expect_equal(
     beta_sum,
-    summarize_regions(bedfiles, regions, fun = "sum", mval = FALSE, nthreads = 2)
+    summarize_regions(biscuit_bedfiles, regions, fun = "sum", mval = FALSE, nthreads = 2)
   )
 })
 
 test_that("summarize_regions 1 thread sum", {
   expect_equal(
     m_sum,
-    summarize_regions(bedfiles, regions, fun = "sum", mval = TRUE, nthreads = 1)
+    summarize_regions(biscuit_bedfiles, regions, fun = "sum", mval = TRUE, nthreads = 1)
   )
   expect_equal(
     beta_sum,
-    summarize_regions(bedfiles, regions, fun = "sum", mval = FALSE, nthreads = 1)
+    summarize_regions(biscuit_bedfiles, regions, fun = "sum", mval = FALSE, nthreads = 1)
   )
 })
 
 test_that("summarize_regions 2 thread sum", {
   expect_equal(
     m_sum,
-    summarize_regions(bedfiles, regions, fun = "sum", mval = TRUE, nthreads = 2)
+    summarize_regions(biscuit_bedfiles, regions, fun = "sum", mval = TRUE, nthreads = 2)
   )
   expect_equal(
     beta_sum,
-    summarize_regions(bedfiles, regions, fun = "sum", mval = FALSE, nthreads = 2)
+    summarize_regions(biscuit_bedfiles, regions, fun = "sum", mval = FALSE, nthreads = 2)
   )
 })
 
@@ -195,21 +194,40 @@ test_that("summarize_regions 2 thread sum", {
 test_that("summarize_regions 1 thread all", {
   expect_equal(
     m_all,
-    summarize_regions(bedfiles, regions, fun = "all", mval = TRUE, nthreads = 1)
+    summarize_regions(biscuit_bedfiles, regions, fun = "all", mval = TRUE, nthreads = 1)
   )
   expect_equal(
     beta_all,
-    summarize_regions(bedfiles, regions, fun = "all", mval = FALSE, nthreads = 1)
+    summarize_regions(biscuit_bedfiles, regions, fun = "all", mval = FALSE, nthreads = 1)
   )
 })
 
 test_that("summarize_regions 2 thread all", {
   expect_equal(
     m_all,
-    summarize_regions(bedfiles, regions, fun = "all", mval = TRUE, nthreads = 2)
+    summarize_regions(biscuit_bedfiles, regions, fun = "all", mval = TRUE, nthreads = 2)
   )
   expect_equal(
     beta_all,
-    summarize_regions(bedfiles, regions, fun = "all", mval = FALSE, nthreads = 2)
+    summarize_regions(biscuit_bedfiles, regions, fun = "all", mval = FALSE, nthreads = 2)
+  )
+})
+
+
+test_that("summarize_regions 2 thread all bismark", {
+  expect_equal(
+    m_all,
+    summarize_regions(bismark_bedfiles, regions, fun = "all", mval = TRUE, aligner = "bismark", nthreads = 2)
+  )
+  expect_equal(
+    beta_all,
+    summarize_regions(bismark_bedfiles, regions, fun = "all", mval = FALSE, aligner = "bismark", nthreads = 2)
+  )
+})
+
+test_that("summarize_regions rownames", {
+  expect_equal(
+    rownames(summarize_regions(biscuit_bedfiles, regions, set_region_rownames = T)),
+    rep(unname(regions), length(biscuit_bedfiles))
   )
 })
