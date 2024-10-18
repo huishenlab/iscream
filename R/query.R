@@ -47,18 +47,20 @@ tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = 
     stop("Cannot tabix multiple files - only single-file queries are currently supported")
   }
 
-  if (grepl("mergecg", bedfile)) {
-    biscuit_colnames <- c(biscuit_colnames, "mergecg")
-  }
-  bismark_colnames <- c("methylation percentage", "count.methylated", "count.unmethylated")
-
+  mergecg <- FALSE
   if (!is.null(colnames)) {
     result_colnames <- colnames
   } else if (aligner == "biscuit") {
     result_colnames <- c(base_colnames, biscuit_colnames)
+    if (grepl("mergecg", bedfile)) {
+      result_colnames <- c(result_colnames, "mergecg")
+      mergecg <- TRUE
+    }
   } else {
     result_colnames <- c(base_colnames, bismark_colnames)
   }
+
+
 
   n_threads <- .get_threads(nthreads)
   if (raw) return(scan_tabix(bedfile, regions))
@@ -83,7 +85,8 @@ tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = 
   }
 
   colnames(lines_dt) <- result_colnames[1:n_col]
-  for (i in 2:ncol(lines_dt)) set(lines_dt, j = i, value = as.numeric(lines_dt[[i]]))
+  end_col <- ifelse(mergecg, ncol(lines_dt) - 1, ncol(lines_dt))
+  for (i in 2:end_col) set(lines_dt, j = i, value = as.numeric(lines_dt[[i]]))
 
   return(lines_dt)
 }
