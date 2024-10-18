@@ -78,7 +78,7 @@ tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = 
   if (length(result_colnames) < n_col) {
     warning(paste(
         "Did not use input 'colnames' - only",
-        length(colnames), "names provided for", n_col, "data.table"
+        length(colnames), "names provided for", n_col, "column data.table"
       ))
     return(lines_dt)
   } else if (length(result_colnames) > n_col) {
