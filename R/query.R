@@ -42,6 +42,7 @@ tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = 
   verify_filetype(bedfile, aligner)
   base_colnames <- c("chr", "start", "end")
   biscuit_colnames <- c("beta", "coverage")
+  bismark_colnames <- c("methylation.percentage", "count.methylated", "count.unmethylated")
 
   if (length(bedfile) > 1) {
     stop("Cannot tabix multiple files - only single-file queries are currently supported")
