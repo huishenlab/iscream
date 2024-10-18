@@ -43,13 +43,7 @@ std::string get_log_level() {
         case spdlog::level::warn:
             return "warn";
         case spdlog::level::err:
-            return "err";
-        case spdlog::level::critical:
-            return "critical";
-        case spdlog::level::off:
-            return "off";
-        case spdlog::level::n_levels:
-            return "n_levels";
+            return "error";
         default:
             return "off";
     }

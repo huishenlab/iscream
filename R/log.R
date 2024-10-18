@@ -32,9 +32,9 @@ set_log_level <- function(level = "info") {
 #' @examples
 #' set_log_level("info")
 validate_log_level <- function(level = get_log_level(), n_threads) {
-  quiet_logging <- c("trace", "info", "off")
-  supported <- c(quiet_logging, "debug")
-  unsupported <- c("warn", "critical")
+  quiet_logging <- c("error", "info", "off")
+  supported <- c(quiet_logging, "trace", "debug", "warn")
+  unsupported <- c("critical")
 
   if (!(level %in% supported)) {
     if (level %in% unsupported) {
