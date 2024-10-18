@@ -1,0 +1,8 @@
+"chr","start","end","methylation.percentage","count.methylated","count.unmethylated"
+"chr1",1,1,100,1,0
+"chr1",3,3,100,1,0
+"chr1",5,5,0,0,2
+"chr1",7,7,0,0,1
+"chr1",9,9,50,1,1
+"chr1",11,11,100,2,0
+"chr1",13,13,100,3,0
