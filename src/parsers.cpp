@@ -48,8 +48,12 @@ BedLine parseBEDRecord(const std::string& bedString) {
 //' @param A line from a bed file
 BedLine parseCovRecord(const std::string& bedString) {
     std::vector<std::string_view> res = split_bedstring(bedString);
-    // TODO: unmapped memory if there are fewer than 5 detected fields
     std::vector<std::string> fields(res.begin(), res.end());
+
+    if (fields.size() < 6) {
+        Rcpp::stop("Found too few columns in data for bismark output - aligner may not be in bismark format");
+    }
+
     std::string chrom = fields[0];
     int start = std::stoi(fields[1]);
     int end = std::stoi(fields[2]);
