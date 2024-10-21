@@ -41,13 +41,16 @@ verify_files_or_stop <- function(bedfiles, verify_tabix = TRUE) {
 #' FALSE if not
 #'
 #' @keywords internal
-verify_filetype <- function(bedfiles, aligner) {
-  check_name_warning <- "- verify aligner and data frame colnames"
+verify_filetype <- function(bedfiles, aligner, stop_on_error = FALSE) {
+  warn_stop <- ifelse(stop_on_error, stop, warning)
+  check_name_warning <- "- verify aligner"
+  warning_msg <- ifelse(stop_on_error, check_name_warning, paste(check_name_warning, "and data frame colnames"))
+
   if (aligner == "biscuit" & any(sf_grepl(bedfiles, pattern = ".cov"))) {
-    warning(paste("'aligner' set to 'biscuit' but files found with '.cov', extension", check_name_warning))
+    warn_stop(paste("'aligner' set to 'biscuit' but files found with '.cov', extension", warning_msg))
   }
   if (aligner != "biscuit" & any(!sf_grepl(bedfiles, pattern = ".cov"))) {
-    warning(paste("'aligner' set to", aligner, "but no files found with '.cov', extension", check_name_warning))
+    warn_stop(paste("'aligner' set to", aligner, "but no files found with '.cov', extension", warning_msg))
   }
 }
 
