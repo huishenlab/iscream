@@ -4,12 +4,14 @@
 \alias{verify_filetype}
 \title{Verify that the input bedfiles are of the type specified by the input aligner}
 \usage{
-verify_filetype(bedfiles, aligner)
+verify_filetype(bedfiles, aligner, stop_on_error = FALSE)
 }
 \arguments{
 \item{bedfiles}{A vector of bedfile paths}
 
 \item{aligner}{The aligner chosen}
+
+\item{stop_on_error}{Whether to warn or stop on aligner-filename mismatch}
 }
 \value{
 TRUE if all input bedfiles have an associated tabix index file.

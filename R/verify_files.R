@@ -34,6 +34,7 @@ verify_files_or_stop <- function(bedfiles, verify_tabix = TRUE) {
 #'
 #' @param bedfiles A vector of bedfile paths
 #' @param aligner The aligner chosen
+#' @param stop_on_error Whether to warn or stop on aligner-filename mismatch
 #'
 #' @importFrom stringfish sf_grepl
 #'
