@@ -49,6 +49,7 @@ query_all <- function(
 ) {
 
   verify_aligner_or_stop(aligner)
+  verify_filetype(bedfiles, aligner, stop_on_error = TRUE)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   verify_regions_or_stop(regions)
 
