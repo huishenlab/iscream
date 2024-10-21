@@ -33,15 +33,25 @@ test_that("verify_filetype warning", {
   )
 })
 
+test_that("verify_filetype error", {
+  expect_error(
+    iscream:::verify_filetype(biscuit, "bismark", stop_on_error = TRUE),
+    "'aligner' set to bismark but no files found with '.cov', extension - verify aligner"
+  )
+  expect_error(
+    iscream:::verify_filetype(biscuit, "bsbolt", stop_on_error = TRUE),
+    "'aligner' set to bsbolt but no files found with '.cov', extension - verify aligner"
+  )
+  expect_error(
+    iscream:::verify_filetype(bismark, "biscuit", stop_on_error = TRUE),
+    "'aligner' set to 'biscuit' but files found with '.cov', extension - verify aligner"
+  )
+})
 
-test_that("verify_aligner_or_stop valid bismark", {
-  expect_error(iscream:::verify_aligner_or_stop(bismark, "bismark"))
-})
-test_that("verify_aligner_or_stop valid bsbolt", {
-  expect_error(iscream:::verify_aligner_or_stop(bsbolt, "bsbolt"))
-})
-test_that("verify_aligner_or_stop valid biscuit", {
-  expect_error(iscream:::verify_aligner_or_stop(biscuit, "biscuit"))
+test_that("verify_aligner valid", {
+  expect_no_error(iscream:::verify_aligner_or_stop("biscuit"))
+  expect_no_error(iscream:::verify_aligner_or_stop("bismark"))
+  expect_no_error(iscream:::verify_aligner_or_stop("bsbolt"))
 })
 
 test_that("verify_aligner_or_stop invalid", {
