@@ -61,9 +61,6 @@ tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = 
     result_colnames <- c(base_colnames, bismark_colnames)
   }
 
-
-
-  n_threads <- .get_threads(nthreads)
   if (raw) return(scan_tabix(bedfile, regions))
 
   lines <- Cpp_query_interval(bedfile, regions)
