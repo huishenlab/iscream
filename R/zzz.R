@@ -1,4 +1,4 @@
-.onAttach <- function(libname, pkgname) {
+.onLoad <- function(libname, pkgname) {
   threads <- get_threads()
   use_threads <- threads["use_threads"]
   opt_set <- threads["opt_set"]
