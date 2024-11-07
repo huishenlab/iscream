@@ -53,6 +53,7 @@ setting \code{mval = FALSE} will use the beta values instead of the M value:
 \item Standard deviation: \code{"stddev"}
 \item Variance: \code{"variance"}
 \item Range: \code{"range"}
+\item No. of CpGs in the region: \code{"cpg_count"}
 }
 
 The summarizing computations are backed by the Armadillo library. See

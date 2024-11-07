@@ -18,6 +18,7 @@
 #endif
 
 enum StatFunction {
+    CPG_COUNT,
     SUM,
     MEAN,
     MEDIAN,
@@ -28,6 +29,7 @@ enum StatFunction {
 
 // get Function enum from input 'fun' argument
 std::unordered_map<std::string, StatFunction> str_to_enum {
+    {"cpg_count", CPG_COUNT},
     {"sum", SUM},
     {"mean", MEAN},
     {"median", MEDIAN},
@@ -94,6 +96,8 @@ std::vector<ComputedVec> init_result_cols(const int rowsize, const std::vector<s
 // Return {computed coverage, computed_mval}
 std::tuple<double, double> compute_vecs(const StatFunction func, const DataVec& data_vec) {
     switch (func) {
+        case CPG_COUNT:
+            return {data_vec.covs.size(), data_vec.mvals.size()};
         case MEAN:
             return {arma::mean(data_vec.covs), arma::mean(data_vec.mvals)};
         case MEDIAN:
@@ -118,7 +122,7 @@ std::tuple<double, double> compute_vecs(const StatFunction func, const DataVec& 
 //' @param regions A vector of genomic regions
 //' @param fun_vec Vector of the armadillo-supported stats functions to apply over the
 //' CpGs in the ' regions: `"sum"`, `"mean"`, `"median"`, `"stddev"`,
-//' `"variance"`, `"range"`.
+//' `"variance"`, `"range"`, "`cpg_count`".
 //' @param mval Calculates M values when TRUE, use beta values when FALSE
 //' @param bismark If the input is in the bismark column format instead of BISCUIT
 //' @param region_rownames Whether to set rownames to the regions strings. Not

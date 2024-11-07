@@ -133,7 +133,7 @@ scan_tabix <- function(bedfile, regions) {
 #' @param regions A vector of genomic regions
 #' @param fun_vec Vector of the armadillo-supported stats functions to apply over the
 #' CpGs in the ' regions: `"sum"`, `"mean"`, `"median"`, `"stddev"`,
-#' `"variance"`, `"range"`.
+#' `"variance"`, `"range"`, "`cpg_count`".
 #' @param mval Calculates M values when TRUE, use beta values when FALSE
 #' @param bismark If the input is in the bismark column format instead of BISCUIT
 #' @param region_rownames Whether to set rownames to the regions strings. Not

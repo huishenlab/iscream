@@ -26,6 +26,7 @@
 #' - Standard deviation: `"stddev"`
 #' - Variance: `"variance"`
 #' - Range: `"range"`
+#' - No. of CpGs in the region: `"cpg_count"`
 #'
 #' The summarizing computations are backed by the Armadillo library. See
 #' <https://arma.sourceforge.net/docs.html#stats_fns> for futher details on the
@@ -57,7 +58,7 @@ summarize_regions <- function(
   nthreads = NULL
 ) {
 
-  supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "range")
+  supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "range", "cpg_count")
 
   if (length(fun) > 1) {
     if ("all" %in% fun) {
@@ -92,5 +93,13 @@ summarize_regions <- function(
     nthreads = n_threads
   )
   df[df == -99] <- NA
+  df
+
+  mval_cpg_count <- paste0(ifelse(mval, "M", "beta"), ".cpg_count")
+  if (mval_cpg_count %in% colnames(df)) {
+    df <- df[, !(names(df) %in% "coverage.cpg_count")]
+  }
+
+  colnames(df)[which(colnames(df) == mval_cpg_count)] <- "cpg_count"
   df
 }

@@ -1,4 +1,5 @@
 library("stringfish")
+library("data.table")
 
 # inputs
 extdata <- system.file("extdata", package = "iscream")
@@ -11,11 +12,25 @@ supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "range")
 get_colnames <- function(mval, funcs) {
   base_colnames <- c("Feature", "Sample")
   values <- c("coverage", ifelse(mval, "M", "beta"))
-    function_used <- funcs
   if ("all" %in% funcs) {
-    function_used <- supported_funcs
+    return(c(base_colnames, as.vector(outer(values, supported_funcs, paste, sep = ".")), "cpg_count"))
   }
-  c(base_colnames, as.vector(outer(values, function_used, paste, sep = ".")))
+
+  if ("cpg_count" %in% funcs) {
+    index <- which(funcs == "cpg_count")
+    funcs <- funcs[-index]
+  }
+  function_used <- funcs
+  col_names <- c(
+    base_colnames,
+    as.vector(outer(values, function_used, paste, sep = "."))
+  )
+
+  if ("cpg_count" %in% funcs) {
+  col_names <- c(col_names, "cpg_count")
+  }
+
+  return(col_names)
 }
 
 run_test <- function(bedfiles, regions, funcs, mval, nthreads) {
