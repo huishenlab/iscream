@@ -1,4 +1,4 @@
-.onLoad <- function(libname, pkgname) {
+package_loader <- function() {
   threads <- get_threads()
   use_threads <- threads["use_threads"]
   opt_set <- threads["opt_set"]
@@ -21,7 +21,11 @@
       " possibly available threads.",
       help_msg, " before trying to use more.")
   }
+  return(msg)
+}
 
+.onAttach <- function(libname, pkgname) {
+  msg <- package_loader()
   packageStartupMessage(msg)
   setup_logger()
   invisible()
