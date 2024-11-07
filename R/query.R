@@ -20,7 +20,7 @@ query_chroms <- function(bedfiles, nthreads = NULL) {
 #' "bismark", "bsbolt". Will set the result data.table's column names based on
 #' this argument.
 #' @param colnames A vector of column names for the result data.table. Set if
-#' you your bedfile is not from the supported aligners or is a general bedfile.
+#' your bedfile is not from the supported aligners or is a general bedfile.
 #' @param raw Set true to give a named list of raw strings from the regions in
 #' the style of `Rsamtools::scanTabix` instead of a data.table
 #' @param nthreads Set number of threads to use overriding the

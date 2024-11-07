@@ -23,7 +23,7 @@ tabix(
 this argument.}
 
 \item{colnames}{A vector of column names for the result data.table. Set if
-you your bedfile is not from the supported aligners or is a general bedfile.}
+your bedfile is not from the supported aligners or is a general bedfile.}
 
 \item{raw}{Set true to give a named list of raw strings from the regions in
 the style of \code{Rsamtools::scanTabix} instead of a data.table}
