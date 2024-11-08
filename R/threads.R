@@ -76,6 +76,7 @@ get_threads <- function() {
 #' Functions currently using OpenMP:
 #' - `summarize_regions()`
 #' - `query_all()`
+#' - `query_chroms()`
 #'
 #' @export
 #'

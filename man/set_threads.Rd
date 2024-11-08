@@ -49,6 +49,7 @@ Functions currently using OpenMP:
 \itemize{
 \item \code{summarize_regions()}
 \item \code{query_all()}
+\item \code{query_chroms()}
 }
 }
 \examples{
