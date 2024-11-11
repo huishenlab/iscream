@@ -102,6 +102,8 @@ setting <code>mval = FALSE</code> will use the beta values instead of the M valu
 <li><p>Median: <code>"median"</code></p></li>
 <li><p>Standard deviation: <code>"stddev"</code></p></li>
 <li><p>Variance: <code>"variance"</code></p></li>
+<li><p>Minimum: <code>"min"</code></p></li>
+<li><p>Maximum: <code>"max"</code></p></li>
 <li><p>Range: <code>"range"</code></p></li>
 <li><p>No. of CpGs in the region: <code>"cpg_count"</code></p></li>
 </ul><p>The summarizing computations are backed by the Armadillo library. See
@@ -164,8 +166,8 @@ supported functions</p>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14:36:43.829444] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14:36:43.829459] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, range, cpg_count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:30:05.024982] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:30:05.024999] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Feature Sample coverage.sum M.sum coverage.mean    M.mean coverage.median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6      a            4     2      1.333333 0.6666667             1.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10      a            3     1      1.500000 0.5000000             1.5</span>
@@ -179,35 +181,35 @@ supported functions</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10   chr1:1-6      d            3     3      1.500000 1.5000000             1.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11  chr1:7-10      d            3     1      1.500000 0.5000000             1.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12 chr1:11-14      d            1     1      1.000000 1.0000000             1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    M.median coverage.stddev  M.stddev coverage.variance M.variance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       1.0       0.5773503 0.5773503         0.3333333  0.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       0.5       0.7071068 0.7071068         0.5000000  0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       2.5       0.7071068 0.7071068         0.5000000  0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       1.0       0.0000000 1.4142136         0.0000000  2.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       1.0       0.0000000 0.0000000         0.0000000  0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       0.5       0.7071068 0.7071068         0.5000000  0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7       2.0       0.0000000 0.0000000         0.0000000  0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8       0.5       0.7071068 0.7071068         0.5000000  0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        NA              NA        NA                NA         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10      1.5       0.7071068 0.7071068         0.5000000  0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11      0.5       0.7071068 0.7071068         0.5000000  0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12      1.0       0.0000000 0.0000000         0.0000000  0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    coverage.range M.range cpg_count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1               1       1         3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2               1       1         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3               1       1         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4               0       2         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5               0       0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6               1       1         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7               0       0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8               1       1         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9              NA      NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10              1       1         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11              1       1         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12              0       0         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    M.median coverage.stddev  M.stddev coverage.variance M.variance coverage.min</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       1.0       0.5773503 0.5773503         0.3333333  0.3333333            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       0.5       0.7071068 0.7071068         0.5000000  0.5000000            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       2.5       0.7071068 0.7071068         0.5000000  0.5000000            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       1.0       0.0000000 1.4142136         0.0000000  2.0000000            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       1.0       0.0000000 0.0000000         0.0000000  0.0000000            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       0.5       0.7071068 0.7071068         0.5000000  0.5000000            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       2.0       0.0000000 0.0000000         0.0000000  0.0000000            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       0.5       0.7071068 0.7071068         0.5000000  0.5000000            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        NA              NA        NA                NA         NA           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      1.5       0.7071068 0.7071068         0.5000000  0.5000000            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      0.5       0.7071068 0.7071068         0.5000000  0.5000000            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12      1.0       0.0000000 0.0000000         0.0000000  0.0000000            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    M.min coverage.max M.max coverage.range M.range cpg_count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0            2     1              1       1         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0            2     1              1       1         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      2            3     3              1       1         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      0            2     2              0       2         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      1            1     1              0       0         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0            2     1              1       1         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      2            2     2              0       0         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      0            2     1              1       1         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     NA           NA    NA             NA      NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     1            2     2              1       1         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     0            2     1              1       1         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     1            1     1              0       0         1</span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, mval <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14:36:43.842756] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14:36:43.842770] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, range, cpg_count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:30:05.043709] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:30:05.043726] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Feature Sample coverage.sum beta.sum coverage.mean beta.mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6      a            4      2.0      1.333333 0.6666667</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10      a            3      0.5      1.500000 0.2500000</span>
@@ -234,22 +236,35 @@ supported functions</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10             1.5        1.00       0.7071068   0.0000000         0.5000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11             1.5        0.25       0.7071068   0.3535534         0.5000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12             1.0        1.00       0.0000000   0.0000000         0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    beta.variance coverage.range beta.range cpg_count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0.3333333              1        1.0         3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.1250000              1        0.5         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.0000000              1        0.0         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      0.5000000              0        1.0         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.0000000              0        0.0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.5000000              1        1.0         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      0.0000000              0        0.0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      0.5000000              1        1.0         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9             NA             NA         NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     0.0000000              1        0.0         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11     0.1250000              1        0.5         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12     0.0000000              0        0.0         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    beta.variance coverage.min beta.min coverage.max beta.max coverage.range</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0.3333333            1        0            2      1.0              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.1250000            1        0            2      0.5              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.0000000            2        1            3      1.0              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      0.5000000            2        0            2      1.0              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.0000000            1        1            1      1.0              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.5000000            1        0            2      1.0              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      0.0000000            2        1            2      1.0              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      0.5000000            1        0            2      1.0              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9             NA           NA       NA           NA       NA             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     0.0000000            1        1            2      1.0              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     0.1250000            1        0            2      0.5              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     0.0000000            1        1            1      1.0              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    beta.range cpg_count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         1.0         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         0.5         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         0.0         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         1.0         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5         0.0         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6         1.0         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7         0.0         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8         1.0         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9          NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10        0.0         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11        0.5         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12        0.0         1</span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14:36:43.855339] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14:36:43.855349] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:30:05.061872] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:30:05.061891] [iscream::summarize_regions] [info] using sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Feature Sample coverage.sum M.sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6      a            4     2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10      a            3     1</span>
