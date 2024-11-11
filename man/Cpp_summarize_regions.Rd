@@ -21,7 +21,7 @@ Cpp_summarize_regions(
 
 \item{fun_vec}{Vector of the armadillo-supported stats functions to apply over the
 CpGs in the ' regions: \code{"sum"}, \code{"mean"}, \code{"median"}, \code{"stddev"},
-\code{"variance"}, \code{"range"}, "\code{cpg_count}".}
+\code{"variance"} "\code{cpg_count}", \code{"min"},\code{"max"}, and \code{"range"}.}
 
 \item{mval}{Calculates M values when TRUE, use beta values when FALSE}
 

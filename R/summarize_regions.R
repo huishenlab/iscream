@@ -25,6 +25,8 @@
 #' - Median: `"median"`
 #' - Standard deviation: `"stddev"`
 #' - Variance: `"variance"`
+#' - Minimum: `"min"`
+#' - Maximum: `"max"`
 #' - Range: `"range"`
 #' - No. of CpGs in the region: `"cpg_count"`
 #'
@@ -58,7 +60,7 @@ summarize_regions <- function(
   nthreads = NULL
 ) {
 
-  supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "range", "cpg_count")
+  supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "cpg_count")
 
   if (length(fun) > 1) {
     if ("all" %in% fun) {

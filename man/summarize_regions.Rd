@@ -52,6 +52,8 @@ setting \code{mval = FALSE} will use the beta values instead of the M value:
 \item Median: \code{"median"}
 \item Standard deviation: \code{"stddev"}
 \item Variance: \code{"variance"}
+\item Minimum: \code{"min"}
+\item Maximum: \code{"max"}
 \item Range: \code{"range"}
 \item No. of CpGs in the region: \code{"cpg_count"}
 }

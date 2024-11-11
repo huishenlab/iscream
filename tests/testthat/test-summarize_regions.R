@@ -6,7 +6,7 @@ extdata <- system.file("extdata", package = "iscream")
 biscuit_bedfiles <- list.files(extdata, pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 bismark_bedfiles <- list.files(extdata, pattern = "[a|b|c|d].cov.gz$", full.names = TRUE)
 regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
-supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "range")
+supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range")
 
 # utils
 get_colnames <- function(mval, funcs) {
