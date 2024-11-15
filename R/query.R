@@ -37,6 +37,9 @@ query_chroms <- function(bedfiles, nthreads = NULL) {
 #' tabix(bedfiles[1], regions, colnames = c("chr", "start", "end", "beta", "coverage"))
 tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = FALSE, nthreads = NULL) {
   verify_files_or_stop(bedfile)
+  if (class(regions)[1] == "GRanges"){
+    regions <- get_granges_string(regions)
+  }
   verify_regions_or_stop(regions)
   verify_aligner_or_stop(aligner)
   verify_filetype(bedfile, aligner)

@@ -51,6 +51,9 @@ query_all <- function(
   verify_aligner_or_stop(aligner)
   verify_filetype(bedfiles, aligner, stop_on_error = TRUE)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
+  if (class(regions)[1] == "GRanges"){
+    regions <- get_granges_string(regions)
+  }
   verify_regions_or_stop(regions)
 
   n_threads <- .get_threads(nthreads)

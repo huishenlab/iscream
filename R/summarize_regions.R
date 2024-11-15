@@ -78,6 +78,9 @@ summarize_regions <- function(
 
   verify_aligner_or_stop(aligner)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
+  if (class(regions)[1] == "GRanges"){
+    regions <- get_granges_string(regions)
+  }
   verify_regions_or_stop(regions)
 
   stopifnot("'mval' must be TRUE or FALSE" = mval %in% c(TRUE, FALSE))
