@@ -17,7 +17,8 @@ test_that("check_files_exist", {
 
 valid_regions <- c("1:1-5", "X:1-5", "chr10:6654-76548", "chr1", "22", "X", "Y", "M")
 test_that("verify_regions_or_stop valid", {
-  expect_no_error(iscream:::verify_regions_or_stop(valid_regions))
+  expect_no_error(iscream:::verify_regions_or_stop(valid_regions, nthreads = 1))
+  expect_no_error(iscream:::verify_regions_or_stop(valid_regions, nthreads = 2))
 })
 
 invalid_regions <- c(
@@ -30,6 +31,7 @@ invalid_regions <- c(
   "chr:15",     # no end
   "chr1:6-2"    # end > start
 )
+
 test_that("verify_regions_or_stop invalid", {
-  expect_error(iscream:::verify_regions_or_stop())
+  expect_error(iscream:::verify_regions_or_stop(invalid_regions, 1))
 })

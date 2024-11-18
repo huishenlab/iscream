@@ -40,7 +40,7 @@ tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = 
   if (class(regions)[1] == "GRanges"){
     regions <- get_granges_string(regions)
   }
-  verify_regions_or_stop(regions)
+  verify_regions_or_stop(regions, nthreads)
   verify_aligner_or_stop(aligner)
   verify_filetype(bedfile, aligner)
   base_colnames <- c("chr", "start", "end")

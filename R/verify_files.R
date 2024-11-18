@@ -96,11 +96,13 @@ validate_region <- function(region) {
 #' Verify that regions are valid
 #'
 #' @param regions A vector of genomic regions
+#' @param nthreads Number of threads to use
 #' @return TRUE if all input regions start with 'chr' FALSE if not
 #'
 #' @importFrom stringfish sf_split
+#' @importFrom parallel mclapply
 #'
 #' @keywords internal
-verify_regions_or_stop <- function(regions) {
-  sapply(regions, validate_region)
+verify_regions_or_stop <- function(regions, nthreads) {
+  mclapply(regions, validate_region, mc.cores = .get_threads(nthreads))
 }

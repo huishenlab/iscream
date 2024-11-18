@@ -4,10 +4,12 @@
 \alias{verify_regions_or_stop}
 \title{Verify that regions are valid}
 \usage{
-verify_regions_or_stop(regions)
+verify_regions_or_stop(regions, nthreads)
 }
 \arguments{
 \item{regions}{A vector of genomic regions}
+
+\item{nthreads}{Number of threads to use}
 }
 \value{
 TRUE if all input regions start with 'chr' FALSE if not

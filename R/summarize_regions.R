@@ -81,7 +81,7 @@ summarize_regions <- function(
   if (class(regions)[1] == "GRanges"){
     regions <- get_granges_string(regions)
   }
-  verify_regions_or_stop(regions)
+  verify_regions_or_stop(regions, nthreads)
 
   stopifnot("'mval' must be TRUE or FALSE" = mval %in% c(TRUE, FALSE))
 

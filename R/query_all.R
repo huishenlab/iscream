@@ -54,7 +54,7 @@ query_all <- function(
   if (class(regions)[1] == "GRanges"){
     regions <- get_granges_string(regions)
   }
-  verify_regions_or_stop(regions)
+  verify_regions_or_stop(regions, nthreads)
 
   n_threads <- .get_threads(nthreads)
   validate_log_level(n_threads = n_threads)
