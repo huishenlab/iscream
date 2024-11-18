@@ -15,11 +15,11 @@ reference:
   - subtitle: By region
     contents:
       - tabix
+      - query_chroms
       - summarize_regions
       - query_all
   - title: Utilities
     contents:
-      - query_chroms
       - get_granges_string
   - title: Settings
   - subtitle: Multithreading
