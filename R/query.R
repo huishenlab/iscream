@@ -13,62 +13,10 @@ query_chroms <- function(bedfiles, nthreads = NULL) {
   Cpp_query_chroms(bedfiles, n_threads)
 }
 
-#' Query lines from a tabixed bedfile
-#' @param bedfile The bedfile to be queried
-#' @param regions A vector of genomic region strings
-#' @param aligner The aligner used to produce the BED files - one of "biscuit",
-#' "bismark", "bsbolt". Will set the result data.table's column names based on
-#' this argument.
-#' @param colnames A vector of column names for the result data.table. Set if
-#' your bedfile is not from the supported aligners or is a general bedfile.
-#' @param raw Set true to give a named list of raw strings from the regions in
-#' the style of `Rsamtools::scanTabix` instead of a data.table
-#' @param nthreads Set number of threads to use overriding the
-#' `"iscream.threads"` option. See `?set_threads` for more information.
-#'
-#' @importFrom data.table as.data.table tstrsplit set
-#' @return A data.table
-#'
-#' @export
-#' @examples
-#' bedfiles <- system.file("extdata", package = "iscream") |>
-#'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
-#' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
-#' tabix(bedfiles[1], regions, colnames = c("chr", "start", "end", "beta", "coverage"))
-tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = FALSE, nthreads = NULL) {
-  verify_files_or_stop(bedfile)
-  if (class(regions)[1] == "GRanges"){
-    regions <- get_granges_string(regions)
-  }
-  verify_regions_or_stop(regions, nthreads)
-  verify_aligner_or_stop(aligner)
-  verify_filetype(bedfile, aligner)
-  base_colnames <- c("chr", "start", "end")
-  biscuit_colnames <- c("beta", "coverage")
-  bismark_colnames <- c("methylation.percentage", "count.methylated", "count.unmethylated")
-
-  if (length(bedfile) > 1) {
-    stop("Cannot tabix multiple files - only single-file queries are currently supported")
-  }
-
-  mergecg <- FALSE
-  if (!is.null(colnames)) {
-    result_colnames <- colnames
-  } else if (aligner == "biscuit") {
-    result_colnames <- c(base_colnames, biscuit_colnames)
-    if (grepl("mergecg", bedfile)) {
-      result_colnames <- c(result_colnames, "mergecg")
-      mergecg <- TRUE
-    }
-  } else {
-    result_colnames <- c(base_colnames, bismark_colnames)
-  }
-
-  if (raw) return(scan_tabix(bedfile, regions))
-
+single_tabix <- function(bedfile, regions, result_colnames, mergecg) {
   lines <- Cpp_query_interval(bedfile, regions)
   if (length(lines) == 0) {
-    warning("No records found")
+    warning(paste("No records found in", bedfile))
     return(NULL)
   }
   lines_dt <- as.data.table(lines)
@@ -78,7 +26,7 @@ tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = 
   if (length(result_colnames) < n_col) {
     warning(paste(
         "Did not use input 'colnames' - only",
-        length(colnames), "names provided for", n_col, "column data.table"
+        length(result_colnames), "names provided for", n_col, "column data.table"
       ))
     return(lines_dt)
   } else if (length(result_colnames) > n_col) {
@@ -91,3 +39,95 @@ tabix <- function(bedfile, regions, aligner = "biscuit", colnames = NULL, raw = 
 
   return(lines_dt)
 }
+
+#' Query lines from a tabixed bedfile
+#' @param bedfiles The bedfiles to be queried
+#' @param regions A vector of genomic region strings
+#' @param aligner The aligner used to produce the BED files - one of "biscuit",
+#' "bismark", "bsbolt". Will set the result data.table's column names based on
+#' this argument.
+#' @param colnames A vector of column names for the result data.table. Set if
+#' your bedfile is not from the supported aligners or is a general bedfile.
+#' @param raw Set true to give a named list of raw strings from the regions in
+#' the style of `Rsamtools::scanTabix` instead of a data.table
+#' @param nthreads Set number of threads to use overriding the
+#' `"iscream.threads"` option. See `?set_threads` for more information.
+#'
+#' @importFrom data.table as.data.table tstrsplit set
+#' @importFrom parallel mclapply
+#' @importFrom tools file_path_sans_ext
+#' @return A data.table
+#'
+#' @export
+#' @examples
+#' bedfiles <- system.file("extdata", package = "iscream") |>
+#'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
+#' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
+#' tabix(bedfiles[1], regions, colnames = c("chr", "start", "end", "beta", "coverage"))
+tabix <- function(bedfiles, regions, aligner = "biscuit", colnames = NULL, raw = FALSE, nthreads = NULL) {
+  verify_files_or_stop(bedfiles)
+  if (class(regions)[1] == "GRanges"){
+    regions <- get_granges_string(regions)
+  }
+  verify_regions_or_stop(regions, nthreads)
+  verify_aligner_or_stop(aligner)
+  verify_filetype(bedfiles, aligner)
+  base_colnames <- c("chr", "start", "end")
+  biscuit_colnames <- c("beta", "coverage")
+  bismark_colnames <- c("methylation.percentage", "count.methylated", "count.unmethylated")
+
+  mergecg <- FALSE
+  if (!is.null(colnames)) {
+    result_colnames <- colnames
+  } else if (aligner == "biscuit") {
+    result_colnames <- c(base_colnames, biscuit_colnames)
+    if (grepl("mergecg", bedfiles[1])) {
+      result_colnames <- c(result_colnames, "mergecg")
+      mergecg <- TRUE
+    }
+  } else {
+    result_colnames <- c(base_colnames, bismark_colnames)
+  }
+
+  if (length(bedfiles) > 1) {
+    if (raw) {
+      bedline_list <- mclapply(bedfiles, function(file) {
+        scan_tabix(file, regions)
+      }, mc.cores = .get_threads(nthreads))
+
+      setNames(
+        nm = file_path_sans_ext(basename(bedfiles), compression = TRUE),
+        object = bedline_list
+      )
+      return(out)
+    }
+
+    dt_list <- mclapply(bedfiles, function(file) {
+      tbx_query <- single_tabix(
+        bedfile = file,
+        regions = regions,
+        result_colnames = result_colnames,
+        mergecg = mergecg
+      )
+      if (!is.null(tbx_query)) {
+        tbx_query[, sample := file_path_sans_ext(basename(file), compression = TRUE)]
+      }
+      return(tbx_query)
+    },
+      mc.cores = .get_threads(nthreads)
+    )
+    rbindlist(dt_list)
+  } else {
+    if (raw) {
+      scan_tabix(bedfiles, regions)
+    } else {
+      single_tabix(
+        bedfile = bedfiles,
+        regions = regions,
+        result_colnames = result_colnames,
+        mergecg = mergecg
+      )
+    }
+  }
+}
+

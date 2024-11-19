@@ -5,7 +5,7 @@
 \title{Query lines from a tabixed bedfile}
 \usage{
 tabix(
-  bedfile,
+  bedfiles,
   regions,
   aligner = "biscuit",
   colnames = NULL,
@@ -14,7 +14,7 @@ tabix(
 )
 }
 \arguments{
-\item{bedfile}{The bedfile to be queried}
+\item{bedfiles}{The bedfiles to be queried}
 
 \item{regions}{A vector of genomic region strings}
 
