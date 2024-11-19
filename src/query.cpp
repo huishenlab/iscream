@@ -146,9 +146,10 @@ Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::
     for (RegionQuery interval : intervals) {
         total_cpgs += interval.cpgs_in_interval.size();
     }
+
     std::vector<std::string> output(total_cpgs);
-    Rcpp::CharacterVector rout(total_cpgs);
     int output_idx = 0;
+
     for (RegionQuery interval : intervals) {
         std::vector<std::string> cpg_vec = interval.cpgs_in_interval;
         std::move(
