@@ -45,11 +45,13 @@ available threads but it may not reliably report hyperthreading ('system' or
 
 in your \code{.Rprofile} See \code{help('Rprofile')} for information on startup options.
 
-Functions currently using OpenMP:
+Functions currently using multithreading:
 \itemize{
-\item \code{summarize_regions()}
-\item \code{query_all()}
+\item \code{tabix()}
 \item \code{query_chroms()}
+\item \code{query_all()}
+\item \code{summarize_regions()}
+\item internal \code{iscream:::verify_regions_or_stop()}
 }
 }
 \examples{

@@ -73,11 +73,12 @@ get_threads <- function() {
 #' ```
 #' in your `.Rprofile` See `help('Rprofile')` for information on startup options.
 #'
-#' Functions currently using OpenMP:
-#' - `summarize_regions()`
-#' - `query_all()`
+#' Functions currently using multithreading:
+#' - `tabix()`
 #' - `query_chroms()`
-#'
+#' - `query_all()`
+#' - `summarize_regions()`
+#' -  internal `iscream:::verify_regions_or_stop()`
 #' @export
 #'
 #' @examples
