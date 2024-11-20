@@ -51,7 +51,6 @@ Functions currently using multithreading:
 \item \code{query_chroms()}
 \item \code{query_all()}
 \item \code{summarize_regions()}
-\item internal \code{iscream:::verify_regions_or_stop()}
 }
 }
 \examples{

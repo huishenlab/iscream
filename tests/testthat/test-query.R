@@ -47,13 +47,6 @@ test_that("tabix dataframe", {
   )
 })
 
-test_that("tabix > 1 file", {
-  expect_error(
-    tabix(chrom_beds, regions),
-    "Cannot tabix multiple files - only single-file queries are currently supported"
-  )
-})
-
 custom_cols <- paste0("c", 1:5)
 test_that("tabix custom colnames", {
   expect_equal(

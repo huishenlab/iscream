@@ -78,7 +78,6 @@ get_threads <- function() {
 #' - `query_chroms()`
 #' - `query_all()`
 #' - `summarize_regions()`
-#' -  internal `iscream:::verify_regions_or_stop()`
 #' @export
 #'
 #' @examples
