@@ -54,15 +54,3 @@ verify_filetype <- function(bedfiles, aligner, stop_on_error = FALSE) {
     warn_stop(paste("'aligner' set to", aligner, "but no files found with '.cov', extension", warning_msg))
   }
 }
-
-validate_chrom_field <- function(chrom_no) {
-  alpha_chroms <- c("X", "Y", "M")
-  if (!grepl("^chr", chrom_no) & !chrom_no %in% alpha_chroms) {
-    stopifnot("seqname is not numeric" = !is.na(as.numeric(chrom_no)))
-  } else {
-    chrom_no <- gsub("chr", "", chrom_no)
-    if (! chrom_no %in% c("X", "Y", "M")) {
-      stopifnot("chr is not in the format 'chr[1-22/X/Y]'" = !is.na(as.numeric(chrom_no)))
-    }
-  }
-}
