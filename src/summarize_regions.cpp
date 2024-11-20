@@ -11,7 +11,6 @@
 #include <progress.hpp>
 #include <progress_bar.hpp>
 #include <spdlog/fmt/bundled/ranges.h>
-// TODO: switch to ranges.h once spdlog 0.0.19 is available for ubuntu
 
 // Protect against compilers without OpenMP
 #ifdef _OPENMP
