@@ -80,6 +80,7 @@ summarize_regions <- function(
 
   verify_aligner_or_stop(aligner)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
+  verify_filetype(bedfiles, aligner, stop_on_error = TRUE)
   if (class(regions)[1] == "GRanges"){
     regions <- get_granges_string(regions)
   } else if ("data.frame" %in% class(regions)) {
