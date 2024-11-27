@@ -41,3 +41,16 @@ get_granges_string <- function(gr, sep = c(":", "-")) {
     stop("The 'GenomicRanges' package must be installed for this functionality")
   }
 }
+
+#' DataFrame to region strings
+#'
+#' Convert DataFrame to a vector of strings
+#'
+#' @param regions_df A data frame with "chr", "start" and "end" columns
+#' @return A character vector
+#'
+#' @export
+get_df_string <- function(regions_df) {
+  chr <- start <- end <- NULL
+  setDT(regions_df)[, paste0(chr, ":", start, "-", end)]
+}

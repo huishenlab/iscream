@@ -53,6 +53,8 @@ query_all <- function(
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   if (class(regions)[1] == "GRanges"){
     regions <- get_granges_string(regions)
+  } else if ("data.frame" %in% class(regions)) {
+    regions <- get_df_string(regions)
   }
 
   n_threads <- .get_threads(nthreads)

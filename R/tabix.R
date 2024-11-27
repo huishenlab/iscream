@@ -27,6 +27,8 @@ tabix <- function(bedfiles, regions, aligner = "biscuit", colnames = NULL, raw =
   verify_files_or_stop(bedfiles)
   if (class(regions)[1] == "GRanges") {
     regions <- get_granges_string(regions)
+  } else if ("data.frame" %in% class(regions)) {
+    regions <- get_df_string(regions)
   }
   verify_aligner_or_stop(aligner)
   verify_filetype(bedfiles, aligner)

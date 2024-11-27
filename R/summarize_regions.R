@@ -76,13 +76,15 @@ summarize_regions <- function(
     }
   }
 
+  stopifnot("'mval' must be TRUE or FALSE" = mval %in% c(TRUE, FALSE))
+
   verify_aligner_or_stop(aligner)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   if (class(regions)[1] == "GRanges"){
     regions <- get_granges_string(regions)
+  } else if ("data.frame" %in% class(regions)) {
+    regions <- get_df_string(regions)
   }
-
-  stopifnot("'mval' must be TRUE or FALSE" = mval %in% c(TRUE, FALSE))
 
   n_threads <- .get_threads(nthreads)
   validate_log_level(n_threads = n_threads)
