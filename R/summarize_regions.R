@@ -116,3 +116,88 @@ summarize_regions <- function(
   colnames(df)[which(colnames(df) == mval_cpg_count)] <- "cpg_count"
   df
 }
+#' Read WGBS BED file and get summary statistics
+#'
+#' @param bedfile Path to the BED file
+#' @param aligner The aligner used to produce the BED files - one of "biscuit",
+#' @param merged Whether the input strands have been merged/collapsed
+#' "bismark", "bsbolt".
+#'
+#' @return A data.table
+#'
+#' @importFrom data.table fread :=
+#' @importFrom parallel mclapply
+#' @importFrom stats var sd median
+#'
+#' @keywords internal
+fsummarize <- function(bedfile, aligner, merged) {
+
+  beta <- coverage <- U <- M <- NULL
+  `.` <- list()
+
+  if (aligner != "biscuit") {
+    col_names <- c("chr", "start", "end", "beta", "U", "M")
+  } else {
+    col_names <- c("chr", "start", "end", "beta", "coverage")
+  }
+
+  if (merged) {
+    dt <- fread(bedfile, col.names = col_names, drop = 6)
+  } else {
+    dt <- fread(bedfile, col.names = col_names)
+  }
+
+  if (aligner != "biscuit") {
+      dt[, coverage := U + M][, beta := beta / 100]
+  }
+
+  dt[, .(
+    Sample = basename(tools::file_path_sans_ext(bedfile, compression = T)),
+    beta.mean = mean(beta),
+    coverage.mean = mean(coverage),
+    beta.median = median(beta),
+    coverage.median = median(coverage),
+    beta.min = min(beta),
+    coverage.min = min(coverage),
+    beta.max = max(beta),
+    coverage.max = max(coverage),
+    beta.range = max(beta) - min(beta),
+    coverage.range = max(coverage) - min(coverage),
+    beta.variance = var(beta),
+    coverage.variance = var(coverage),
+    beta.stddev = sd(beta),
+    coverage.stddev = sd(coverage)
+  )]
+}
+
+#' Summarize CpGs methylation information over full files
+#'
+#' @param bedfiles A `summarize_regions()` table with chromosomes as regions
+#' @param aligner The aligner used to produce the BED files - one of "biscuit",
+#' "bismark", "bsbolt".
+#' @param merged Whether the input strands have been merged/collapsed
+#' @param nthreads Set number of threads to use overriding the
+#' `"iscream.threads"` option. See `?set_threads` for more information.
+#'
+#' @return A data.table
+#'
+#' @importFrom data.table rbindlist
+#' @importFrom parallel mclapply
+#'
+#' @export
+#'
+#' @examples
+#' bedfiles <- system.file("extdata", package = "iscream") |>
+#'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
+#'
+#' summary <- summarize_samples(bedfiles, merged = FALSE, aligner = "biscuit")
+summarize_samples <- function(bedfiles, aligner, merged, nthreads = NULL) {
+  verify_filetype(bedfiles, aligner, stop_on_error = TRUE)
+  mclapply(
+    bedfiles,
+    function(bedfile) {
+      fsummarize(bedfile, aligner, merged)
+    },
+    mc.cores = .get_threads(nthreads)
+  ) |> rbindlist()
+}
