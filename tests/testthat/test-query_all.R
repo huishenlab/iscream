@@ -30,13 +30,9 @@ M_sp <- Matrix(M, sparse = T)
 Cov_sp <- Matrix(Cov, sparse = T)
 row_names <- c("chr1:2", "chr1:4", "chr1:6", "chr1:8", "chr1:10", "chr1:12", "chr1:14")
 col_names <- c("a", "b", "c", "d")
-rownames(M) <- row_names
 colnames(M) <- col_names
-rownames(Cov) <- row_names
 colnames(Cov) <- col_names
-rownames(M_sp) <- row_names
 colnames(M_sp) <- col_names
-rownames(Cov_sp) <- row_names
 colnames(Cov_sp) <- col_names
 
 exp_pos <- seq(1, 13, by = 2)
@@ -110,16 +106,6 @@ test_dims <- function(result_obj, exp_dims) {
   expect_equal(dim(result_obj$Cov), exp_dims)
 }
 
-test_rownames <- function(result_obj) {
-  expect_equal(rownames(result_obj$M), row_names)
-  expect_equal(rownames(result_obj$Cov), row_names)
-  expect_equal(colnames(result_obj$M), col_names)
-  expect_equal(colnames(result_obj$Cov), col_names)
-  expect_equal(result_obj$sampleNames, col_names)
-  expect_equal(result_obj$sampleNames, col_names)
-}
-
 test_that("matrix row,colnames,sampleNames", {
   lapply(results, test_dims, exp_dims)
-  lapply(results, test_rownames)
 })

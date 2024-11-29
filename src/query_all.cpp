@@ -58,12 +58,10 @@ QueryAll<Mat>::QueryAll(
 
     std::vector<int> starts_vec(mapsize);
 
-    SEXP rownames = PROTECT(sf_vector(mapsize));
-    sf_vec_data& row_data = sf_vec_data_ref(rownames);
     seqnames = PROTECT(sf_vector(mapsize));
     sf_vec_data& seq_data = sf_vec_data_ref(seqnames);
 
-    spdlog::debug("Created temporary seqnames, samplenames and rownames vectors of size {}", kh_size(cpg_map));
+    spdlog::debug("Created temporary seqnames, samplenames vectors of size {}", kh_size(cpg_map));
 
     spdlog::info("Creating metadata vectors");
     sw.reset();
@@ -79,7 +77,6 @@ QueryAll<Mat>::QueryAll(
             seq_data[row_idx] = sfstring(chr_rev_map[cpg.chr], CE_UTF8);
             std::stringstream cpgid_stream;
             cpgid_stream << chr_rev_map[cpg.chr] << ":" << cpg.start + 1;
-            row_data[row_idx] = sfstring(cpgid_stream.str(), CE_UTF8);
         }
     }
     start = Rcpp::wrap(starts_vec);
@@ -92,7 +89,7 @@ QueryAll<Mat>::QueryAll(
         sample_names[i] = sample_name;
          spdlog::debug("Got {} as sample name from {}", sample_name, bedfile_vec[i]);
     }
-    spdlog::debug("Populated seqnames, samplenames and rownames vectors in {} s", sw);
+    spdlog::debug("Populated seqnames, samplenames vectors in {} s", sw);
 
     sw.reset();
     int n_rows = cov_mat.n_rows;
@@ -109,8 +106,8 @@ QueryAll<Mat>::QueryAll(
         spdlog::info("Creating sparse matrix");
         Rcpp::S4 cov_rmat = Rcpp::wrap(cov_mat);
         Rcpp::S4 M_rmat = Rcpp::wrap(m_mat);
-        cov_rmat.slot("Dimnames") = Rcpp::List::create(rownames, sample_names);
-        M_rmat.slot("Dimnames") = Rcpp::List::create(rownames, sample_names);
+        cov_rmat.slot("Dimnames") = Rcpp::List::create(R_NilValue, sample_names);
+        M_rmat.slot("Dimnames") = Rcpp::List::create(R_NilValue, sample_names);
         assays = Rcpp::List::create(
             Rcpp::_["Cov"] = cov_rmat,
             Rcpp::_["M"] = M_rmat
@@ -122,8 +119,6 @@ QueryAll<Mat>::QueryAll(
         Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
         Rcpp::colnames(cov_rmat) = sample_names;
         Rcpp::colnames(M_rmat) = sample_names;
-        Rcpp::rownames(cov_rmat) = rownames;
-        Rcpp::rownames(M_rmat) = rownames;
 
         assays = Rcpp::List::create(
             Rcpp::_["Cov"] = cov_rmat,
@@ -131,7 +126,6 @@ QueryAll<Mat>::QueryAll(
         );
         spdlog::debug("Took {}", sw);
     }
-    UNPROTECT(1); // rownames
 
 }
 
