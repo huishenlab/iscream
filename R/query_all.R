@@ -66,7 +66,7 @@ query_all <- function(
   n_threads <- .get_threads(nthreads)
   validate_log_level(n_threads = n_threads)
 
-  Cpp_query_all(
+  b <- Cpp_query_all(
     bedfiles = bedfiles,
     regions = regions,
     bismark = aligner != "biscuit",
@@ -75,5 +75,11 @@ query_all <- function(
     prealloc = prealloc,
     nthreads = n_threads
   )
+
+  b$M <- b$packed
+  get_cov(b$packed, n_threads)
+  get_m(b$M, n_threads)
+  names(b)[which(names(b) == "packed")] <- "Cov"
+  b
 }
 

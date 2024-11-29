@@ -12,6 +12,61 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// decode_beta
+int decode_beta(int encoded);
+RcppExport SEXP _iscream_decode_beta(SEXP encodedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type encoded(encodedSEXP);
+    rcpp_result_gen = Rcpp::wrap(decode_beta(encoded));
+    return rcpp_result_gen;
+END_RCPP
+}
+// decode_cov
+int decode_cov(int encoded);
+RcppExport SEXP _iscream_decode_cov(SEXP encodedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type encoded(encodedSEXP);
+    rcpp_result_gen = Rcpp::wrap(decode_cov(encoded));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_cov
+void get_cov(Rcpp::NumericMatrix& m, const int nthreads);
+RcppExport SEXP _iscream_get_cov(SEXP mSEXP, SEXP nthreadsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix& >::type m(mSEXP);
+    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
+    get_cov(m, nthreads);
+    return R_NilValue;
+END_RCPP
+}
+// get_m
+void get_m(Rcpp::NumericMatrix& m, const int nthreads);
+RcppExport SEXP _iscream_get_m(SEXP mSEXP, SEXP nthreadsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix& >::type m(mSEXP);
+    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
+    get_m(m, nthreads);
+    return R_NilValue;
+END_RCPP
+}
+// get_beta
+void get_beta(Rcpp::NumericMatrix& m, const int nthreads);
+RcppExport SEXP _iscream_get_beta(SEXP mSEXP, SEXP nthreadsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix& >::type m(mSEXP);
+    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
+    get_beta(m, nthreads);
+    return R_NilValue;
+END_RCPP
+}
 // get_omp_threads
 int get_omp_threads(bool verbose);
 RcppExport SEXP _iscream_get_omp_threads(SEXP verboseSEXP) {
@@ -125,6 +180,11 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_iscream_decode_beta", (DL_FUNC) &_iscream_decode_beta, 1},
+    {"_iscream_decode_cov", (DL_FUNC) &_iscream_decode_cov, 1},
+    {"_iscream_get_cov", (DL_FUNC) &_iscream_get_cov, 2},
+    {"_iscream_get_m", (DL_FUNC) &_iscream_get_m, 2},
+    {"_iscream_get_beta", (DL_FUNC) &_iscream_get_beta, 2},
     {"_iscream_get_omp_threads", (DL_FUNC) &_iscream_get_omp_threads, 1},
     {"_iscream_setup_logger", (DL_FUNC) &_iscream_setup_logger, 1},
     {"_iscream_Cpp_set_log_level", (DL_FUNC) &_iscream_Cpp_set_log_level, 1},
