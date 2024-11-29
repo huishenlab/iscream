@@ -85,13 +85,13 @@ public:
     void populate_matrix(RegionQuery& query, int& col_n, const bool bismark);
     void print_QueryAll();
 
-    Mat cov_mat, m_mat;
+    Mat bitmat;
     Rcpp::List assays;
     Rcpp::List wrap() {
         UNPROTECT(1); // seqnames
         return Rcpp::List::create(
             Rcpp::_("M") = assays["M"],
-            Rcpp::_("Cov") = assays["Cov"],
+            Rcpp::_("packed") = assays["packed"],
             Rcpp::_("pos") = start,
             Rcpp::_("chr") = seqnames,
             Rcpp::_("sampleNames") = sample_names

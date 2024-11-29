@@ -26,8 +26,7 @@ QueryAll<Mat>::QueryAll(
     cpg_map = khmap_init();
     is_merged = merged;
 
-    cov_mat.resize(prealloc, bedfile_vec.size());
-    m_mat.resize(prealloc, bedfile_vec.size());
+    bitmat.resize(prealloc, bedfile_vec.size());
 
     setup_logger("iscream::query_all");
 
@@ -92,41 +91,34 @@ QueryAll<Mat>::QueryAll(
     spdlog::debug("Populated seqnames, samplenames vectors in {} s", sw);
 
     sw.reset();
-    int n_rows = cov_mat.n_rows;
-    if (cov_mat.n_rows > mapsize) {
-        int diff_rows = cov_mat.n_rows - mapsize;
+    int n_rows = bitmat.n_rows;
+    if (bitmat.n_rows > mapsize) {
+        int diff_rows = bitmat.n_rows - mapsize;
         spdlog::info("nrows {} - {} extra rows allocated with {} resizes", n_rows, diff_rows, resize_count);
-        cov_mat.resize(mapsize, bedfile_vec.size());
-        m_mat.resize(mapsize, bedfile_vec.size());
+        bitmat.resize(mapsize, bedfile_vec.size());
         spdlog::debug("Corrected matrix size in {} s", sw);
     }
 
     sw.reset();
     if (sparse) {
         spdlog::info("Creating sparse matrix");
-        Rcpp::S4 cov_rmat = Rcpp::wrap(cov_mat);
-        Rcpp::S4 M_rmat = Rcpp::wrap(m_mat);
-        cov_rmat.slot("Dimnames") = Rcpp::List::create(R_NilValue, sample_names);
-        M_rmat.slot("Dimnames") = Rcpp::List::create(R_NilValue, sample_names);
+        Rcpp::S4 bitrmat = Rcpp::wrap(bitmat);
+        Rcpp::colnames(bitrmat) = sample_names;
         assays = Rcpp::List::create(
-            Rcpp::_["Cov"] = cov_rmat,
-            Rcpp::_["M"] = M_rmat
+            Rcpp::_["M"] = NumericMatrix(1),
+            Rcpp::_["packed"] = bitrmat
         );
         spdlog::debug("Took {}", sw);
     } else {
         spdlog::info("Creating dense matrix");
-        Rcpp::NumericMatrix cov_rmat = Rcpp::wrap(cov_mat);
-        Rcpp::NumericMatrix M_rmat = Rcpp::wrap(m_mat);
-        Rcpp::colnames(cov_rmat) = sample_names;
-        Rcpp::colnames(M_rmat) = sample_names;
-
+        Rcpp::NumericMatrix bitrmat = Rcpp::wrap(bitmat);
+        Rcpp::colnames(bitrmat) = sample_names;
         assays = Rcpp::List::create(
-            Rcpp::_["Cov"] = cov_rmat,
-            Rcpp::_["M"] = M_rmat
+            Rcpp::_["M"] = NumericMatrix(1),
+            Rcpp::_["packed"] = bitrmat
         );
         spdlog::debug("Took {}", sw);
     }
-
 }
 
 template <class Mat>
@@ -168,9 +160,9 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
     }
 
     int mapsize = kh_size(cpg_map);
-    int cur_nrow = cov_mat.n_rows;
+    int cur_nrow = bitmat.n_rows;
     if (cur_nrow < mapsize) {
-        int diff = mapsize - cov_mat.n_rows;
+        int diff = mapsize - bitmat.n_rows;
         spdlog::debug("Need {} more rows", diff);
         int extra_rows = diff;
         if (diff < 10) {
@@ -182,8 +174,7 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
         } else {
             extra_rows = diff * 100;
         }
-        cov_mat.resize(cur_nrow + extra_rows, cov_mat.n_cols);
-        m_mat.resize(m_mat.n_rows + extra_rows, cov_mat.n_cols);
+        bitmat.resize(cur_nrow + extra_rows, bitmat.n_cols);
         resize_count++;
         spdlog::debug("Added {} rows to existing {}", extra_rows, cur_nrow);
     }
@@ -192,8 +183,7 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
     for (size_t i = 0; i < lines.size(); i++) {
         khint_t retrieve_b = khmap_get(cpg_map, ids[i]);
         int idx = kh_val(cpg_map, retrieve_b);
-        cov_mat(idx - 1, col_n) = lines[i].cov;
-        m_mat(idx - 1, col_n) =  lines[i].m_count;
+        bitmat(idx - 1, col_n) = std::round(lines[i].beta * 100) + (lines[i].cov << 16);
     }
 
 }
