@@ -28,13 +28,15 @@ verify_aligner_or_stop <- function(aligner) {
 #' @export
 get_granges_string <- function(gr, sep = c(":", "-")) {
    if (requireNamespace("GenomicRanges", quietly = TRUE)) {
-    paste0(
+    region_str <- paste0(
       as.character(x = GenomicRanges::seqnames(x = gr)),
       sep[[1]],
       GenomicRanges::start(x = gr),
       sep[[2]],
       GenomicRanges::end(x = gr)
     )
+    names(region_str) <- names(gr)
+    return(region_str)
   } else {
     stop("The 'GenomicRanges' package must be installed for this functionality")
   }
