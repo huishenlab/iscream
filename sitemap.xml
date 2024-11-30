@@ -12,6 +12,7 @@
 <url><loc>https://huishenlab.github.io/iscream/reference/check_files_exist.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/check_thread_count.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/dot-get_threads.html</loc></url>
+<url><loc>https://huishenlab.github.io/iscream/reference/get_granges_string.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/get_log_level.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/get_omp_threads.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/get_threads.html</loc></url>
@@ -24,10 +25,8 @@
 <url><loc>https://huishenlab.github.io/iscream/reference/summarize_regions.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/tabix.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/validate_log_level.html</loc></url>
-<url><loc>https://huishenlab.github.io/iscream/reference/validate_region.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/verify_aligner_or_stop.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/verify_files_or_stop.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/verify_filetype.html</loc></url>
-<url><loc>https://huishenlab.github.io/iscream/reference/verify_regions_or_stop.html</loc></url>
 </urlset>
 
