@@ -6,6 +6,7 @@ extdata <- system.file("extdata", package = "iscream")
 biscuit_bedfiles <- list.files(extdata, pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 bismark_bedfiles <- list.files(extdata, pattern = "[a|b|c|d].cov.gz$", full.names = TRUE)
 regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
+gr <- GenomicRanges::GRanges(regions)
 supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range")
 
 # utils
@@ -167,6 +168,10 @@ test_that("summarize_regions 1 thread sum", {
     summarize_regions(biscuit_bedfiles, regions, fun = "sum", mval = TRUE, nthreads = 1)
   )
   expect_equal(
+    m_sum,
+    summarize_regions(biscuit_bedfiles, gr, fun = "sum", mval = TRUE, nthreads = 1)
+  )
+  expect_equal(
     beta_sum,
     summarize_regions(biscuit_bedfiles, regions, fun = "sum", mval = FALSE, nthreads = 1)
   )
@@ -233,6 +238,10 @@ test_that("summarize_regions 2 thread all bismark", {
   expect_equal(
     m_all,
     summarize_regions(bismark_bedfiles, regions, fun = "all", mval = TRUE, aligner = "bismark", nthreads = 2)
+  )
+  expect_equal(
+    m_all,
+    summarize_regions(bismark_bedfiles, gr, fun = "all", mval = TRUE, aligner = "bismark", nthreads = 2)
   )
   expect_equal(
     beta_all,

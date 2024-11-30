@@ -4,6 +4,7 @@ extdata <- system.file("extdata", package = "iscream")
 biscuit_bedfiles <- list.files(extdata, pattern = "[a|b|c|d].bed.gz$", full.names = T)
 bismark_bedfiles <- list.files(extdata, pattern = "[a|b|c|d].cov.gz$", full.names = T)
 regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
+gr <- GenomicRanges::GRanges(regions)
 
 M <- matrix(c(1, 0, 0, 1,
               1, 0, 2, 2,
@@ -44,7 +45,14 @@ biscuit_test <- query_all(biscuit_bedfiles, regions, prealloc = 2)
 bismark_test <- query_all(bismark_bedfiles, regions, aligner = "bismark")
 biscuit_sparse_test <- query_all(biscuit_bedfiles, regions, sparse = T)
 bismark_sparse_test <- query_all(bismark_bedfiles, regions, sparse = T, aligner = "bismark")
-results <- list(biscuit_test, bismark_test, biscuit_sparse_test, bismark_sparse_test)
+biscuit_granges_test <- query_all(biscuit_bedfiles, gr, prealloc = 2)
+results <- list(
+  biscuit_test,
+  bismark_test,
+  biscuit_sparse_test,
+  bismark_sparse_test,
+  biscuit_granges_test
+)
 
 dense_class <- "matrix"
 sparse_class <- "dgCMatrix"
@@ -68,6 +76,7 @@ test_that("matrix metadata", {
   test_types(bismark_test, sparse = F)
   test_types(biscuit_sparse_test, sparse = T)
   test_types(bismark_sparse_test, sparse = T)
+  test_types(biscuit_granges_test, sparse = F)
 })
 
 test_content <- function(result_obj, sparse) {
@@ -86,6 +95,7 @@ test_content <- function(result_obj, sparse) {
 }
 test_that("matrix content", {
   lapply(results[1:2], test_content, FALSE)
+  lapply(results[5], test_content, FALSE)
   lapply(results[3:4], test_content, TRUE)
 })
 
