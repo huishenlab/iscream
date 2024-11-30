@@ -18,6 +18,11 @@ test_that("set threads option over limit", {
   expect_error(check_thread_count(999, opt_set = TRUE))
 })
 
+options("iscream.threads" = availableCores())
+test_that("test thread setting onAttach", {
+  expect_no_error(iscream:::package_loader())
+})
+
 options("iscream.threads" = NULL)
 expected_threads <- c(
   'use_threads' = 1,
