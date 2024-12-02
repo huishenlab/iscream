@@ -66,6 +66,9 @@ BedLine parseCovRecord(const std::string& bedString) {
     return read;
 }
 
+/*   Archived   */
+/*   make CpGID from chr and start   */
+/*
 std::string CpGID(BedLine& parsed_bedline) {
 
     std::stringstream cpg_stream;
@@ -73,3 +76,4 @@ std::string CpGID(BedLine& parsed_bedline) {
     cpg_stream << parsed_bedline.chr << ":" << parsed_bedline.start;
     return cpg_stream.str();
 }
+*/

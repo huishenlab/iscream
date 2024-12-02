@@ -54,52 +54,6 @@ std::vector<RegionQuery> query_intervals(
     return all_reads;
 }
 
-//' Get reads from single genomic regions from multiple tabixed bed file.
-//'
-//' @param bedfiles A vector of bedfile names - must have corresponding tabix
-//' files with the same name and .tbi extension
-//' @param region A vector regions string in the form "chr:start-end"
-std::vector<std::vector<std::string>> query_interval(
-    const std::vector<std::string>& bedfiles,
-    const std::string& region
-) {
-
-    std::vector<std::vector<std::string>> all_reads(bedfiles.size());
-
-    for (int i = 0; i < bedfiles.size(); i++) {
-        htsFile* bedFile = hts_open(bedfiles[i].c_str(), "r");
-        tbx_t* tbx = tbx_index_load3(bedfiles[i].c_str(), NULL, 0);
-
-        all_reads.push_back(tabix_query(region, bedFile, tbx));
-
-        tbx_destroy(tbx);
-        hts_close(bedFile);
-    }
-
-    return all_reads;
-
-}
-
-//' Get reads from a single genomic region from one tabixed bed file.
-//'
-//' @param bedfile The name of the bed file - must have a corresponding tabix
-//' file with the same name and .tbi extension
-//' @param region The region string in the form "chr:start-end"
-std::vector<std::string> query_interval(
-    const std::string& bedfile,
-    const std::string& region
-) {
-    htsFile* bedFile = hts_open(bedfile.c_str(), "r");
-    tbx_t* tbx = tbx_index_load3(bedfile.c_str(), NULL, 0);
-
-    std::vector<std::string> regional_cpgs = tabix_query(region, bedFile, tbx);
-
-    tbx_destroy(tbx);
-    hts_close(bedFile);
-
-    return regional_cpgs;
-}
-
 //' Query the chromosomes or seqnames from a vector of files
 //' @param bedfile_vec The vector of bedfile paths
 //' @return A vector of seqnames
@@ -186,3 +140,54 @@ Rcpp::List scan_tabix(const std::string& bedfile, const std::vector<std::string>
 
     return out;
 }
+
+/*   Archived   */
+/*multi-bedfile single-region queries*/
+
+/*
+//' Get reads from single genomic regions from multiple tabixed bed file.
+//'
+//' @param bedfiles A vector of bedfile names - must have corresponding tabix
+//' files with the same name and .tbi extension
+//' @param region A vector regions string in the form "chr:start-end"
+std::vector<std::vector<std::string>> query_interval(
+    const std::vector<std::string>& bedfiles,
+    const std::string& region
+) {
+
+    std::vector<std::vector<std::string>> all_reads(bedfiles.size());
+
+    for (int i = 0; i < bedfiles.size(); i++) {
+        htsFile* bedFile = hts_open(bedfiles[i].c_str(), "r");
+        tbx_t* tbx = tbx_index_load3(bedfiles[i].c_str(), NULL, 0);
+
+        all_reads.push_back(tabix_query(region, bedFile, tbx));
+
+        tbx_destroy(tbx);
+        hts_close(bedFile);
+    }
+
+    return all_reads;
+
+}
+
+//' Get reads from a single genomic region from one tabixed bed file.
+//'
+//' @param bedfile The name of the bed file - must have a corresponding tabix
+//' file with the same name and .tbi extension
+//' @param region The region string in the form "chr:start-end"
+std::vector<std::string> query_interval(
+    const std::string& bedfile,
+    const std::string& region
+) {
+    htsFile* bedFile = hts_open(bedfile.c_str(), "r");
+    tbx_t* tbx = tbx_index_load3(bedfile.c_str(), NULL, 0);
+
+    std::vector<std::string> regional_cpgs = tabix_query(region, bedFile, tbx);
+
+    tbx_destroy(tbx);
+    hts_close(bedFile);
+
+    return regional_cpgs;
+}
+*/

@@ -18,7 +18,7 @@ struct BedLine {
 std::vector<std::string_view> split_bedstring(std::string_view bedString);
 BedLine parseBEDRecord(const std::string& bedString);
 BedLine parseCovRecord(const std::string& bedString);
-std::string CpGID(BedLine& parsed_bedline);
+/*std::string CpGID(BedLine& parsed_bedline);*/
 
 #endif /* __cplusplus */
 
