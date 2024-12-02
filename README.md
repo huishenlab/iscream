@@ -42,6 +42,16 @@ with `pkg-config`:
 pkg-config --cflags --libs htslib
 ```
 
+#### GCC
+
+GNU GCC must be installed for OpenMP support. This is usually installed by
+default on Linux systems, but may need to be manually installed on MacOS to use
+iscream with multiple threads[^1].
+
+[^1]: Using OpenMP is also possible with Clang on MacOS
+(<https://mac.r-project.org/openmp/>) but installing GCC with Homebrew may be
+easier (<https://formulae.brew.sh/formula/gcc>).
+
 ### GitHub
 
 You can install the development version from Github by cloning the repo and
