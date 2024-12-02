@@ -1,13 +1,22 @@
 url: https://huishenlab.github.io/iscream/
 template:
   bootstrap: 5
+  light-switch: true
+  math-rendering: mathjax
+
+authors:
+  footer:
+    roles: [cre]
 
 development:
   mode: unreleased
 
 navbar:
   structure:
-    right: [search, github]
+    right: [search, github, lightswitch]
+
+sidebar:
+  structure: [links, license, community, citation, authors, dev]
 
 reference:
   - title: Reading
