@@ -86,6 +86,11 @@
 <p>They may also be found among your HPC modules - make sure the <code>PKG_CONFIG_PATH</code> environment variable includes the <code>pkgconfig</code> location for your installation of <em>htslib</em>. You can verify that the <em>htslib</em> development libraries are installed with <code>pkg-config</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">pkg-config</span> <span class="at">--cflags</span> <span class="at">--libs</span> htslib</span></code></pre></div>
 </div>
+<div class="section level4">
+<h4 id="gcc">GCC<a class="anchor" aria-label="anchor" href="#gcc"></a>
+</h4>
+<p>GNU GCC must be installed for OpenMP support. This is usually installed by default on Linux systems, but may need to be manually installed on MacOS to use iscream with multiple threads<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Using OpenMP is also possible with Clang on MacOS (&lt;a href="https://mac.r-project.org/openmp/" class="external-link uri"&gt;https://mac.r-project.org/openmp/&lt;/a&gt;) but installing GCC with Homebrew may be easier (&lt;a href="https://formulae.brew.sh/formula/gcc" class="external-link uri"&gt;https://formulae.brew.sh/formula/gcc&lt;/a&gt;).&lt;/p&gt;'><sup>1</sup></a>.</p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="github">GitHub<a class="anchor" aria-label="anchor" href="#github"></a>
@@ -106,6 +111,7 @@
 <p>A user guide is available on the <a href="https://huishenlab.github.io/iscream/">package website</a>. Bug reports may be submitted through GitHub issues.</p>
 </div>
 </div>
+
 
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
@@ -135,6 +141,8 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>James Eapen <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-6016-3598" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Jacob Morrison <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-8592-4744" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Hui Shen <br><small class="roles"> Thesis advisor, funder </small> <a href="https://orcid.org/0000-0001-9767-4084" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
@@ -151,7 +159,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by James Eapen.</p>
+  <p>Developed by James Eapen, Jacob Morrison, Hui Shen.</p>
 </div>
 
 <div class="pkgdown-footer-right">
