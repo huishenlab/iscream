@@ -98,7 +98,6 @@ jobs:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
       - name: Install htslib
-        if: ${{ matrix.config.os == 'macOS'}}
         run: |
           brew install htslib
           echo "-------------------HTSLIB-----------------------"
