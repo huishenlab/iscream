@@ -24,23 +24,24 @@ let
     GenomicRanges
 
   # dev dependencies
+    DT
+    RcppClock
     bench
     covr
+    covr
     devtools
+    htmltools
     lobstr
     pkgbuild
     pkgdown
-    RcppClock
+    rhub
     roxygen2
     styler
-    usethis
     testthat
-    covr
-    DT
-    htmltools
+    usethis
 
     # RCMD check
-    # V8
+    V8
     rhub
   ];
 
