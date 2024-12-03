@@ -41,6 +41,24 @@ get_beta <- function(m, nthreads) {
     invisible(.Call(`_iscream_get_beta`, m, nthreads))
 }
 
+#' @keywords internal
+#' @export
+get_cov_sparse <- function(m, nthreads) {
+    invisible(.Call(`_iscream_get_cov_sparse`, m, nthreads))
+}
+
+#' @keywords internal
+#' @export
+get_m_sparse <- function(m, nthreads) {
+    invisible(.Call(`_iscream_get_m_sparse`, m, nthreads))
+}
+
+#' @keywords internal
+#' @export
+get_beta_sparse <- function(m, nthreads) {
+    invisible(.Call(`_iscream_get_beta_sparse`, m, nthreads))
+}
+
 #' Get the number of available threads from OpenMP.
 #'
 #' This queries the number of available threads usign OpenMP, but will not

@@ -91,7 +91,7 @@ public:
         UNPROTECT(1); // seqnames
         return Rcpp::List::create(
             Rcpp::_("M") = assays["M"],
-            Rcpp::_("packed") = assays["packed"],
+            Rcpp::_("Cov") = assays["Cov"],
             Rcpp::_("pos") = start,
             Rcpp::_("chr") = seqnames,
             Rcpp::_("sampleNames") = sample_names

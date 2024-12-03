@@ -76,10 +76,13 @@ query_all <- function(
     nthreads = n_threads
   )
 
-  b$M <- b$packed
-  get_cov(b$packed, n_threads)
-  get_m(b$M, n_threads)
-  names(b)[which(names(b) == "packed")] <- "Cov"
+  if (sparse) {
+    get_m_sparse(b$M, n_threads)
+    get_cov_sparse(b$Cov, n_threads)
+  } else {
+    get_m(b$M, n_threads)
+    get_cov(b$Cov, n_threads)
+  }
   b
 }
 

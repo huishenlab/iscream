@@ -103,10 +103,10 @@ QueryAll<Mat>::QueryAll(
     if (sparse) {
         spdlog::info("Creating sparse matrix");
         Rcpp::S4 bitrmat = Rcpp::wrap(bitmat);
-        Rcpp::colnames(bitrmat) = sample_names;
+        bitrmat.slot("Dimnames") = Rcpp::List::create(R_NilValue, sample_names);
         assays = Rcpp::List::create(
-            Rcpp::_["M"] = NumericMatrix(1),
-            Rcpp::_["packed"] = bitrmat
+            Rcpp::_["M"] = bitrmat,
+            Rcpp::_["Cov"] = Rcpp::clone(bitrmat)
         );
         spdlog::debug("Took {}", sw);
     } else {
@@ -115,7 +115,7 @@ QueryAll<Mat>::QueryAll(
         Rcpp::colnames(bitrmat) = sample_names;
         assays = Rcpp::List::create(
             Rcpp::_["M"] = NumericMatrix(1),
-            Rcpp::_["packed"] = bitrmat
+            Rcpp::_["Cov"] = bitrmat
         );
         spdlog::debug("Took {}", sw);
     }
