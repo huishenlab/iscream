@@ -77,20 +77,6 @@ NULL
 #' @param regions A vector of region strings in the form "chr:start-end"
 NULL
 
-#' Get reads from single genomic regions from multiple tabixed bed file.
-#'
-#' @param bedfiles A vector of bedfile names - must have corresponding tabix
-#' files with the same name and .tbi extension
-#' @param region A vector regions string in the form "chr:start-end"
-NULL
-
-#' Get reads from a single genomic region from one tabixed bed file.
-#'
-#' @param bedfile The name of the bed file - must have a corresponding tabix
-#' file with the same name and .tbi extension
-#' @param region The region string in the form "chr:start-end"
-NULL
-
 #' Query the chromosomes or seqnames from a vector of files
 #' @param bedfile_vec The vector of bedfile paths
 #' @return A vector of seqnames
