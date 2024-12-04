@@ -30,6 +30,7 @@ reference:
   - title: Utilities
     contents:
       - get_granges_string
+      - get_df_string
   - title: Settings
   - subtitle: Multithreading
     contents:
