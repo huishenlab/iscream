@@ -17,4 +17,16 @@ test_that("Test GRanges to string", {
   expect_equal(get_granges_string(gr), regions)
 })
 
+library(data.table)
 
+regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
+regions.dt <- as.data.table(regions)[, tstrsplit(regions, ":|-")]
+
+test_that("Test GRanges to string", {
+  expect_error(get_df_string(regions.dt))
+})
+
+colnames(regions.dt) <- c("chr", "start", "end")
+test_that("Test GRanges to string", {
+  expect_equal(get_df_string(regions.dt), regions)
+})
