@@ -78,8 +78,8 @@
 <h3 id="system-dependencies">System dependencies<a class="anchor" aria-label="anchor" href="#system-dependencies"></a>
 </h3>
 <div class="section level4">
-<h4 id="htslib">
-<em>htslib</em><a class="anchor" aria-label="anchor" href="#htslib"></a>
+<h4 id="htslib--119">
+<em>htslib</em> &gt;= 1.19<a class="anchor" aria-label="anchor" href="#htslib--119"></a>
 </h4>
 <p><em>iscream</em> depends on the <em>htslib</em> header files. These may be installed with your package manager:</p>
 <ul>
@@ -92,7 +92,8 @@
 <li>nixpkgs: <code>htslib</code>
 </li>
 </ul>
-<p>They may also be found among your HPC modules - make sure the <code>PKG_CONFIG_PATH</code> environment variable includes the <code>pkgconfig</code> location for your installation of <em>htslib</em>. You can verify that the <em>htslib</em> development libraries are installed with <code>pkg-config</code>:</p>
+<p>or built manually: <a href="https://www.htslib.org/download/" class="external-link uri">https://www.htslib.org/download/</a>.</p>
+<p>The header files may also be found among your HPC modules - make sure the <code>PKG_CONFIG_PATH</code> environment variable includes the <code>pkgconfig</code> location for your installation of <em>htslib</em>. You can verify that the <em>htslib</em> development libraries are installed with <code>pkg-config</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">pkg-config</span> <span class="at">--cflags</span> <span class="at">--libs</span> htslib</span></code></pre></div>
 </div>
 <div class="section level4">
