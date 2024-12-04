@@ -51,6 +51,7 @@ get_granges_string <- function(gr, sep = c(":", "-")) {
 #'
 #' @export
 get_df_string <- function(regions_df) {
+  stopifnot("colnames must be 'chr', 'start' and 'end'" = colnames(regions_df)[1:3] == c("chr", "start", "end"))
   chr <- start <- end <- NULL
   setDT(regions_df)[, paste0(chr, ":", start, "-", end)]
 }
