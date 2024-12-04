@@ -47,6 +47,9 @@ get_granges_string <- function(gr, sep = c(":", "-")) {
 #' Convert DataFrame to a vector of strings. Set feature names in a "name" column
 #'
 #' @param regions_df A data frame with "chr", "start" and "end" columns
+#'
+#' @importFrom data.table setDT
+#'
 #' @return A character vector
 #'
 #' @export
