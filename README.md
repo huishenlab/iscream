@@ -23,7 +23,7 @@ scMET.
 
 ### System dependencies
 
-#### *htslib*
+#### *htslib* >= 1.19
 
 *iscream* depends on the *htslib* header files. These may be installed with
 your package manager:
@@ -33,10 +33,12 @@ your package manager:
 - brew: `htslib`  
 - nixpkgs: `htslib`
 
-They may also be found among your HPC modules - make sure the `PKG_CONFIG_PATH`
-environment variable includes the `pkgconfig` location for your installation of
-*htslib*. You can verify that the *htslib* development libraries are installed
-with `pkg-config`:
+or built manually: <https://www.htslib.org/download/>.
+
+The header files may also be found among your HPC modules - make sure the
+`PKG_CONFIG_PATH` environment variable includes the `pkgconfig` location for
+your installation of *htslib*. You can verify that the *htslib* development
+libraries are installed with `pkg-config`:
 
 ```bash
 pkg-config --cflags --libs htslib
