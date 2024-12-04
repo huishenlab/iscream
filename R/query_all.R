@@ -5,7 +5,8 @@
 #' `"iscream.threads"` option. The output of `query_all` may be used to create
 #' a BSseq object: `do.call(BSseq, query_all(...))`.
 #' @param bedfiles A vector of bedfile paths
-#' @param regions A vector of genomic regions strings
+#' @param regions A vector, data frame or GenomicRanges of genomic regions. See
+#' details.
 #' @param aligner The aligner used to produce the BED files - one of "biscuit",
 #' "bismark", "bsbolt".
 #' @param merged Whether the input strands have been merged/collapsed
@@ -21,6 +22,11 @@
 #' - a character vector of chromosomes and numeric vector of corresponding CpG
 #' base positions
 #' - a character vector of the input sample names
+#'
+#' @details
+#' The input regions may be string vector in the form "chr:start-end"
+#' or a GRanges object. If a data frame is provided, they must have "chr",
+#' "start", and "end" columns.
 #'
 #' @export
 #' @examples

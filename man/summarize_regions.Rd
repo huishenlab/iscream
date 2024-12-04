@@ -17,9 +17,8 @@ summarize_regions(
 \arguments{
 \item{bedfiles}{A vector of bedfile paths}
 
-\item{regions}{A vector of genomic regions strings. If a named vector is
-provided, the names will be used in the feature column instead of the
-genomic regions string}
+\item{regions}{A vector, data frame or GenomicRanges of genomic regions. See
+details.}
 
 \item{fun}{Function to apply over the region. See details.}
 
@@ -30,8 +29,8 @@ genomic regions string}
 or use the beta value when applying the function.}
 
 \item{set_region_rownames}{Use the region strings as the returned data
-frame's rownames. Can be useful if you have a named vector of regions and
-want both the rownames and the feature names.}
+frame's rownames. Can be useful if you have a named regions and want both
+the regions strings rownames and the feature names.}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
@@ -44,6 +43,13 @@ Run summarizing functions on the CpGs in bedfiles across genomic regions.
 Parallelized across files using threads from the \code{"iscream.threads"} option.
 }
 \details{
+The input regions may be string vector in the form "chr:start-end"
+or a GRanges object. If a data frame is provided, they must have "chr",
+"start", and "end" columns. If the string vector and GenomicRanges inputs
+are named, the names will be used to describe each feature in the output
+dataframe. If input dataframes have a 'name' column, it will be used to
+populate the output's feature column.
+
 Supported \code{fun} arguments are given below. For each of these functions,
 setting \code{mval = FALSE} will use the beta values instead of the M value:
 \itemize{

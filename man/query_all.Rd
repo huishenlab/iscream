@@ -17,7 +17,8 @@ query_all(
 \arguments{
 \item{bedfiles}{A vector of bedfile paths}
 
-\item{regions}{A vector of genomic regions strings}
+\item{regions}{A vector, data frame or GenomicRanges of genomic regions. See
+details.}
 
 \item{aligner}{The aligner used to produce the BED files - one of "biscuit",
 "bismark", "bsbolt".}
@@ -48,6 +49,11 @@ Queries the provided regions and produces M and Coverage matrices and their
 genomic positions. Parallelized across files using threads from the
 \code{"iscream.threads"} option. The output of \code{query_all} may be used to create
 a BSseq object: \code{do.call(BSseq, query_all(...))}.
+}
+\details{
+The input regions may be string vector in the form "chr:start-end"
+or a GRanges object. If a data frame is provided, they must have "chr",
+"start", and "end" columns.
 }
 \examples{
 bedfiles <- system.file("extdata", package = "iscream") |>

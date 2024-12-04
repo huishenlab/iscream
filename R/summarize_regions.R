@@ -3,21 +3,27 @@
 #' Run summarizing functions on the CpGs in bedfiles across genomic regions.
 #' Parallelized across files using threads from the `"iscream.threads"` option.
 #' @param bedfiles A vector of bedfile paths
-#' @param regions A vector of genomic regions strings. If a named vector is
-#' provided, the names will be used in the feature column instead of the
-#' genomic regions string
+#' @param regions A vector, data frame or GenomicRanges of genomic regions. See
+#' details.
 #' @param aligner The aligner used to produce the BED files - one of "biscuit",
 #' "bismark", "bsbolt".
 #' @param fun Function to apply over the region. See details.
 #' @param mval Whether to calculate the M value (coverage \eqn{\times \beta})
 #' or use the beta value when applying the function.
 #' @param set_region_rownames Use the region strings as the returned data
-#' frame's rownames. Can be useful if you have a named vector of regions and
-#' want both the rownames and the feature names.
+#' frame's rownames. Can be useful if you have a named regions and want both
+#' the regions strings rownames and the feature names.
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
 #' @details
+#' The input regions may be string vector in the form "chr:start-end"
+#' or a GRanges object. If a data frame is provided, they must have "chr",
+#' "start", and "end" columns. If the string vector and GenomicRanges inputs
+#' are named, the names will be used to describe each feature in the output
+#' dataframe. If input dataframes have a 'name' column, it will be used to
+#' populate the output's feature column.
+#'
 #' Supported `fun` arguments are given below. For each of these functions,
 #' setting `mval = FALSE` will use the beta values instead of the M value:
 #' - Sum: `"sum"`
