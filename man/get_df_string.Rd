@@ -13,5 +13,5 @@ get_df_string(regions_df)
 A character vector
 }
 \description{
-Convert DataFrame to a vector of strings
+Convert DataFrame to a vector of strings. Set feature names in a "name" column
 }
