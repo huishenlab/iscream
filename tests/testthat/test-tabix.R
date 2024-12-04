@@ -7,6 +7,8 @@ tabix_df_result <- list.files(extdata, pattern = "tabix_dataframe.test", full.na
 tabix_df_result_bismark <- list.files(extdata, pattern = "tabix_dataframe_bismark.test", full.names = T)
 mergecg_bed <- list.files(extdata, pattern = "*_mergecg.bed.gz$", full.names = T)
 regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
+regions.dt <- as.data.table(regions)[, tstrsplit(regions, ":|-")]
+colnames(regions.dt) <- c("chr", "start", "end")
 gr <- GenomicRanges::GRanges(regions)
 
 tabix_raw_res <- list(
@@ -22,6 +24,10 @@ test_that("tabix dataframe", {
   )
   expect_equal(
     tabix(biscuit_tabix_beds[1], gr),
+    fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))
+  )
+  expect_equal(
+    tabix(biscuit_tabix_beds[1], regions.dt),
     fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))
   )
   expect_equal(
