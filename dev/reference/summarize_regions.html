@@ -71,7 +71,7 @@ details.</p></dd>
 
 
 <dt id="arg-fun">fun<a class="anchor" aria-label="anchor" href="#arg-fun"></a></dt>
-<dd><p>Function to apply over the region. See details.</p></dd>
+<dd><p>Function(s) to apply over the region. See details.</p></dd>
 
 
 <dt id="arg-aligner">aligner<a class="anchor" aria-label="anchor" href="#arg-aligner"></a></dt>
@@ -177,8 +177,8 @@ supported functions</p>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20:00:21.059893] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20:00:21.059909] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:54:06.261831] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:54:06.261846] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Feature Sample coverage.sum M.sum coverage.mean    M.mean coverage.median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6      a            4     2      1.333333 0.6666667             1.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10      a            3     1      1.500000 0.5000000             1.5</span>
@@ -218,64 +218,25 @@ supported functions</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10     1            2     2              1       1         2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11     0            2     1              1       1         2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12     1            1     1              0       0         1</span>
-<span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, mval <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20:00:21.073411] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20:00:21.073421] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Feature Sample coverage.sum beta.sum coverage.mean beta.mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6      a            4      2.0      1.333333 0.6666667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10      a            3      0.5      1.500000 0.2500000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  chr1:11-14      a            5      2.0      2.500000 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    chr1:1-6      b            4      1.0      2.000000 0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   chr1:7-10      b            1      1.0      1.000000 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  chr1:11-14      b            3      1.0      1.500000 0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    chr1:1-6      c            2      1.0      2.000000 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   chr1:7-10      c            3      1.0      1.500000 0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  chr1:11-14      c           NA       NA            NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   chr1:1-6      d            3      2.0      1.500000 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  chr1:7-10      d            3      0.5      1.500000 0.2500000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 chr1:11-14      d            1      1.0      1.000000 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    coverage.median beta.median coverage.stddev beta.stddev coverage.variance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1              1.0        1.00       0.5773503   0.5773503         0.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2              1.5        0.25       0.7071068   0.3535534         0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3              2.5        1.00       0.7071068   0.0000000         0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4              2.0        0.50       0.0000000   0.7071068         0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5              1.0        1.00       0.0000000   0.0000000         0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6              1.5        0.50       0.7071068   0.7071068         0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7              2.0        1.00       0.0000000   0.0000000         0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8              1.5        0.50       0.7071068   0.7071068         0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9               NA          NA              NA          NA                NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10             1.5        1.00       0.7071068   0.0000000         0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11             1.5        0.25       0.7071068   0.3535534         0.5000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12             1.0        1.00       0.0000000   0.0000000         0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    beta.variance coverage.min beta.min coverage.max beta.max coverage.range</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0.3333333            1        0            2      1.0              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.1250000            1        0            2      0.5              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.0000000            2        1            3      1.0              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      0.5000000            2        0            2      1.0              0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.0000000            1        1            1      1.0              0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.5000000            1        0            2      1.0              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      0.0000000            2        1            2      1.0              0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      0.5000000            1        0            2      1.0              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9             NA           NA       NA           NA       NA             NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     0.0000000            1        1            2      1.0              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11     0.1250000            1        0            2      0.5              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12     0.0000000            1        1            1      1.0              0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    beta.range cpg_count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         1.0         3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         0.5         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         0.0         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         1.0         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5         0.0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6         1.0         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7         0.0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8         1.0         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9          NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10        0.0         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11        0.5         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12        0.0         1</span>
+<span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"stddev"</span><span class="op">)</span>, mval <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:54:06.275140] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:54:06.275151] [iscream::summarize_regions] [info] using mean, stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Feature Sample coverage.mean beta.mean coverage.stddev beta.stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6      a      1.333333 0.6666667       0.5773503   0.5773503</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10      a      1.500000 0.2500000       0.7071068   0.3535534</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  chr1:11-14      a      2.500000 1.0000000       0.7071068   0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    chr1:1-6      b      2.000000 0.5000000       0.0000000   0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   chr1:7-10      b      1.000000 1.0000000       0.0000000   0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  chr1:11-14      b      1.500000 0.5000000       0.7071068   0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    chr1:1-6      c      2.000000 1.0000000       0.0000000   0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   chr1:7-10      c      1.500000 0.5000000       0.7071068   0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  chr1:11-14      c            NA        NA              NA          NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   chr1:1-6      d      1.500000 1.0000000       0.7071068   0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  chr1:7-10      d      1.500000 0.2500000       0.7071068   0.3535534</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 chr1:11-14      d      1.000000 1.0000000       0.0000000   0.0000000</span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20:00:21.087559] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20:00:21.087570] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:54:06.278380] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:54:06.278389] [iscream::summarize_regions] [info] using sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Feature Sample coverage.sum M.sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6      a            4     2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10      a            3     1</span>
