@@ -114,8 +114,8 @@ QueryAll<Mat>::QueryAll(
         Rcpp::NumericMatrix bitrmat = Rcpp::wrap(bitmat);
         Rcpp::colnames(bitrmat) = sample_names;
         assays = Rcpp::List::create(
-            Rcpp::_["M"] = NumericMatrix(1),
-            Rcpp::_["Cov"] = bitrmat
+            Rcpp::_["M"] = bitrmat,
+            Rcpp::_["Cov"] = Rcpp::clone(bitrmat)
         );
         spdlog::debug("Took {}", sw);
     }
