@@ -178,7 +178,16 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
     if (cur_nrow < mapsize) {
         int diff = mapsize - cov_mat.n_rows;
         spdlog::debug("Need {} more rows", diff);
-        int extra_rows = diff * 1000;
+        int extra_rows = diff;
+        if (diff < 10) {
+            extra_rows = diff * 10000;
+        } else if (diff < 10000) {
+            extra_rows = diff * 1000;
+        } else if (diff < 50000) {
+            extra_rows = diff * 500;
+        } else {
+            extra_rows = diff * 100;
+        }
         cov_mat.resize(cur_nrow + extra_rows, cov_mat.n_cols);
         m_mat.resize(m_mat.n_rows + extra_rows, cov_mat.n_cols);
         resize_count++;
