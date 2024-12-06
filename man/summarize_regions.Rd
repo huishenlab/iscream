@@ -20,7 +20,7 @@ summarize_regions(
 \item{regions}{A vector, data frame or GenomicRanges of genomic regions. See
 details.}
 
-\item{fun}{Function to apply over the region. See details.}
+\item{fun}{Function(s) to apply over the region. See details.}
 
 \item{aligner}{The aligner used to produce the BED files - one of "biscuit",
 "bismark", "bsbolt".}
@@ -78,6 +78,6 @@ lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 # make a vector of regions
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 summarize_regions(bedfiles, regions)
-summarize_regions(bedfiles, regions, mval = FALSE)
+summarize_regions(bedfiles, regions, fun = c("mean", "stddev"), mval = FALSE)
 summarize_regions(bedfiles, regions, fun = "sum")
 }

@@ -7,7 +7,7 @@
 #' details.
 #' @param aligner The aligner used to produce the BED files - one of "biscuit",
 #' "bismark", "bsbolt".
-#' @param fun Function to apply over the region. See details.
+#' @param fun Function(s) to apply over the region. See details.
 #' @param mval Whether to calculate the M value (coverage \eqn{\times \beta})
 #' or use the beta value when applying the function.
 #' @param set_region_rownames Use the region strings as the returned data
@@ -54,7 +54,7 @@
 #' # make a vector of regions
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 #' summarize_regions(bedfiles, regions)
-#' summarize_regions(bedfiles, regions, mval = FALSE)
+#' summarize_regions(bedfiles, regions, fun = c("mean", "stddev"), mval = FALSE)
 #' summarize_regions(bedfiles, regions, fun = "sum")
 summarize_regions <- function(
   bedfiles,
