@@ -18,3 +18,5 @@ default.nix
 
 .git
 ^codecov\.yml$
+vignettes/TSS*
+vignettes/figure*

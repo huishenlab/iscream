@@ -1,0 +1,226 @@
+---
+title: "Plotting TSS methylation profiles"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Plotting TSS methylation profiles}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+#bibliography: refs.bib
+link-citations: yes
+---
+The workflow here shows how *iscream* can be used to quickly explore methylation
+profiles of given genomic regions. *iscream's* tabix querying functionality can
+be used to plot methylation profiles around transcription start sites (TSS).
+
+*methscan* is a tool used to analyze single-cell bisulfite sequencing data to
+find differentially methylated regions (DMRs) in the genome. The plot created
+here is a reproduction of the TSS methylation profile plot made in the
+[*methscan*
+tutorial](https://anders-biostat.github.io/MethSCAn/tutorial.html#2-filtering-low-quality-cells)
+as part of the filtering done before DMR analysis. The *methscan* workflow to
+produce the plot involves three steps:
+
+- converting the coverage BED files into Numpy sparse matrices on disk
+
+- generating the TSS profiles from these matrices
+
+- summarizing and plotting
+
+The first two steps are run on the command line with *methscan* while the third
+is done in R.
+
+Although *iscream* is not designed to run analyses on full genomes, it can be
+used to explore regions such as TSS flanking regions, gene bodies, or DMRs found
+using tools like *methscan* more efficiently. For example, using iscream,
+producing the plot of TSS methylation profiles can be done in R directly from
+tabixed BED files for both single-cell and bulk data.
+
+
+``` r
+options("iscream.threads" = 8)
+library(iscream)
+library(data.table)
+library(ggplot2)
+```
+
+``` r
+start_time = proc.time()
+```
+
+First, we generate a list of the BED file paths:
+
+
+``` r
+bedfiles <- list.files(
+    "../data/methscan",
+    pattern = "*.cov.gz$",
+    full.names = TRUE
+)
+```
+### Get the Transcription start sites and flanking regions
+
+Then we read the provided TSS BED file and create 2kb flanking regions around
+the start sites.
+
+
+``` r
+tss.regions <- fread(
+    "../data/methscan/Mus_musculus.GRCm38.102_TSS.bed", drop = c(3, 5, 6)
+)
+colnames(tss.regions) <- c("chr", "tss", "geneID")
+head(tss.regions)
+```
+
+```
+##       chr     tss             geneID
+##    <char>   <int>             <char>
+## 1:      1 3671498 ENSMUSG00000051951
+## 2:      1 4409241 ENSMUSG00000025900
+## 3:      1 4496413 ENSMUSG00000025902
+## 4:      1 4785739 ENSMUSG00000033845
+## 5:      1 4807823 ENSMUSG00000025903
+## 6:      1 4857814 ENSMUSG00000033813
+```
+
+``` r
+tss.regions[, `:=`(tss.start = tss - 2000, tss.end = tss + 2000)]
+
+# make a new data frame with chr, start, end as iscream requires these columns
+tss.for_query <- tss.regions[, .(chr, start = tss.start, end = tss.end)]
+```
+
+### Make a tabix query of the TSS flanking regions
+
+The `tabix()` function queries the provided BED files for the TSS flanking
+regions to produce a data frame:
+
+
+``` r
+query_runtime.start <- proc.time()
+tss.query <- tabix(bedfiles, tss.for_query, aligner = "bismark")
+head(tss.query)
+```
+
+```
+##       chr   start     end methylation.percentage count.methylated
+##    <char>   <num>   <num>                  <num>            <num>
+## 1:      1 4785488 4785488                      0                0
+## 2:      1 4785513 4785513                      0                0
+## 3:      1 4785522 4785522                      0                0
+## 4:      1 4785533 4785533                      0                0
+## 5:      1 4786780 4786780                    100                1
+## 6:      1 4786886 4786886                    100                1
+##    count.unmethylated  sample
+##                 <num>  <char>
+## 1:                  2 cell_01
+## 2:                  2 cell_01
+## 3:                  2 cell_01
+## 4:                  2 cell_01
+## 5:                  0 cell_01
+## 6:                  0 cell_01
+```
+
+### Summarize average methylation profile around TSS
+
+Given the CpG level methylation data frame, we now join the queried data based
+on CpGs that fall within the TSS flanking regions to get the CpGs 2kb around the
+TSS. We can also set a new `position` column relative to the TSS (using rounded
+values as in the *methscan* tutorial):
+
+
+``` r
+# join
+tss.profile <- tss.regions[tss.query, .(
+    chr,
+    start,
+    position = round(start - tss, -1L),
+    methylation.percentage,
+    sample
+  ),
+  on = .(chr, tss.start <= start, tss.end >= end)
+] |> unique()
+
+# get mean methylation by relative position and cell
+tss.summary <- tss.profile[,
+  .(meth_frac = mean(methylation.percentage/100)),
+  by = .(position, sample)
+]
+
+query_runtime <- timetaken(query_runtime.start)
+```
+
+Time to make the query and compute the summary: 6.818s elapsed (4.979s cpu).
+
+### Plot average methylation profiles around the TSS
+
+
+``` r
+tss.plot <- ggplot(tss.summary, aes(x = position / 1000, y = meth_frac)) +
+  scale_y_continuous(
+    labels=scales::percent_format(accuracy=1),
+    limits=c(0, 1), breaks=c(0, .5, 1)
+  ) +
+  geom_line(linewidth = .1) +
+  facet_wrap(~sample) +
+  labs(x = "position relative to TSS [kb]", y = "DNA methylation")
+
+total_runtime <- timetaken(start_time)
+
+tss.plot
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure/tss_plot-1.png" alt="TSS profiles"  />
+<p class="caption">TSS profiles</p>
+</div>
+
+
+Total runtime, from getting the bedfiles and regions to making the query,
+calculating the summaries and plotting: 6.859s elapsed (5.020s cpu). With methscan,
+generating the TSS methylation profiles alone took 11 seconds.
+
+## Session info
+
+
+``` r
+sessionInfo()
+```
+
+```
+## R version 4.4.1 (2024-06-14)
+## Platform: x86_64-pc-linux-gnu
+## Running under: Ubuntu 24.04.1 LTS
+## 
+## Matrix products: default
+## BLAS/LAPACK: /nix/store/p2a6x92n2gwljav85zz3hzid1nk7iq0l-blas-3/lib/libblas.so.3;  LAPACK version 3.12.0
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## 
+## time zone: America/Detroit
+## tzcode source: system (glibc)
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] ggplot2_3.5.1      data.table_1.15.4  iscream_0.0.0.9000
+## 
+## loaded via a namespace (and not attached):
+##  [1] vctrs_0.6.5        cli_3.6.3          knitr_1.47         rlang_1.1.4       
+##  [5] xfun_0.45          highr_0.11         generics_0.1.3     labeling_0.4.3    
+##  [9] RcppParallel_5.1.8 glue_1.7.0         colorspace_2.1-1   stringfish_0.16.0 
+## [13] scales_1.3.0       fansi_1.0.6        grid_4.4.1         evaluate_0.24.0   
+## [17] munsell_0.5.1      tibble_3.2.1       lifecycle_1.0.4    compiler_4.4.1    
+## [21] dplyr_1.1.4        pkgconfig_2.0.3    Rcpp_1.0.13        farver_2.1.2      
+## [25] lattice_0.22-6     R6_2.5.1           tidyselect_1.2.1   utf8_1.2.4        
+## [29] pillar_1.9.0       parallelly_1.38.0  parallel_4.4.1     magrittr_2.0.3    
+## [33] Matrix_1.7-0       withr_3.0.0        tools_4.4.1        gtable_0.3.5
+```
+
+<!-- vim: set filetype=rmd: -->

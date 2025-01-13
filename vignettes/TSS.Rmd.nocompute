@@ -1,0 +1,144 @@
+---
+title: "Plotting TSS methylation profiles"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Plotting TSS methylation profiles}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+#bibliography: refs.bib
+link-citations: yes
+---
+The workflow here shows how *iscream* can be used to quickly explore methylation
+profiles of given genomic regions. *iscream's* tabix querying functionality can
+be used to plot methylation profiles around transcription start sites (TSS).
+
+*methscan* is a tool used to analyze single-cell bisulfite sequencing data to
+find differentially methylated regions (DMRs) in the genome. The plot created
+here is a reproduction of the TSS methylation profile plot made in the
+[*methscan*
+tutorial](https://anders-biostat.github.io/MethSCAn/tutorial.html#2-filtering-low-quality-cells)
+as part of the filtering done before DMR analysis. The *methscan* workflow to
+produce the plot involves three steps:
+
+- converting the coverage BED files into Numpy sparse matrices on disk
+
+- generating the TSS profiles from these matrices
+
+- summarizing and plotting
+
+The first two steps are run on the command line with *methscan* while the third
+is done in R.
+
+Although *iscream* is not designed to run analyses on full genomes, it can be
+used to explore regions such as TSS flanking regions, gene bodies, or DMRs found
+using tools like *methscan* more efficiently. For example, using iscream,
+producing the plot of TSS methylation profiles can be done in R directly from
+tabixed BED files for both single-cell and bulk data.
+
+```{r, message = FALSE}
+options("iscream.threads" = 8)
+library(iscream)
+library(data.table)
+library(ggplot2)
+```
+```{r}
+start_time = proc.time()
+```
+
+First, we generate a list of the BED file paths:
+
+```{r}
+bedfiles <- list.files(
+    "../data/methscan",
+    pattern = "*.cov.gz$",
+    full.names = TRUE
+)
+```
+### Get the Transcription start sites and flanking regions
+
+Then we read the provided TSS BED file and create 2kb flanking regions around
+the start sites.
+
+```{r}
+tss.regions <- fread(
+    "../data/methscan/Mus_musculus.GRCm38.102_TSS.bed", drop = c(3, 5, 6)
+)
+colnames(tss.regions) <- c("chr", "tss", "geneID")
+head(tss.regions)
+
+tss.regions[, `:=`(tss.start = tss - 2000, tss.end = tss + 2000)]
+
+# make a new data frame with chr, start, end as iscream requires these columns
+tss.for_query <- tss.regions[, .(chr, start = tss.start, end = tss.end)]
+```
+
+### Make a tabix query of the TSS flanking regions
+
+The `tabix()` function queries the provided BED files for the TSS flanking
+regions to produce a data frame:
+
+```{r}
+query_runtime.start <- proc.time()
+tss.query <- tabix(bedfiles, tss.for_query, aligner = "bismark")
+head(tss.query)
+```
+
+### Summarize average methylation profile around TSS
+
+Given the CpG level methylation data frame, we now join the queried data based
+on CpGs that fall within the TSS flanking regions to get the CpGs 2kb around the
+TSS. We can also set a new `position` column relative to the TSS (using rounded
+values as in the *methscan* tutorial):
+
+```{r}
+# join
+tss.profile <- tss.regions[tss.query, .(
+    chr,
+    start,
+    position = round(start - tss, -1L),
+    methylation.percentage,
+    sample
+  ),
+  on = .(chr, tss.start <= start, tss.end >= end)
+] |> unique()
+
+# get mean methylation by relative position and cell
+tss.summary <- tss.profile[,
+  .(meth_frac = mean(methylation.percentage/100)),
+  by = .(position, sample)
+]
+
+query_runtime <- timetaken(query_runtime.start)
+```
+
+Time to make the query and compute the summary: `r query_runtime`.
+
+### Plot average methylation profiles around the TSS
+
+```{r tss_plot, dpi=300, fig.width=10, fig.height=8, fig.align="center", fig.cap="TSS profiles"}
+tss.plot <- ggplot(tss.summary, aes(x = position / 1000, y = meth_frac)) +
+  scale_y_continuous(
+    labels=scales::percent_format(accuracy=1),
+    limits=c(0, 1), breaks=c(0, .5, 1)
+  ) +
+  geom_line(linewidth = .1) +
+  facet_wrap(~sample) +
+  labs(x = "position relative to TSS [kb]", y = "DNA methylation")
+
+total_runtime <- timetaken(start_time)
+
+tss.plot
+```
+
+
+Total runtime, from getting the bedfiles and regions to making the query,
+calculating the summaries and plotting: `r total_runtime`. With methscan,
+generating the TSS methylation profiles alone took 11 seconds.
+
+## Session info
+
+```{r session}
+sessionInfo()
+```
+
+<!-- vim: set filetype=rmd: -->
