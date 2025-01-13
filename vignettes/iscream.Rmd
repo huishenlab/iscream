@@ -1,0 +1,192 @@
+---
+title: "Getting started with iscream"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with iscream}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+#bibliography: refs.bib
+link-citations: yes
+---
+
+
+
+## Setup
+
+### Loading *iscream*
+
+The number of threads can be set before or after loading the library:
+
+
+``` r
+options("iscream.threads" = 8)
+library(iscream)
+#> iscream using 8 threads based on 'options(iscream.threads)' but parallelly::availableCores() detects 16 possibly available threads. See `?set_threads` for information on multithreading before trying to use more.
+```
+
+### Input bedifiles
+
+I'm using 100 human cell data from the snmc-seq2 dataset in this vignette:
+
+
+``` r
+bedfiles <- list.files(
+    "../data/k562/",
+    pattern = "*_mergecg.bed.gz$",
+    full.names = TRUE
+)
+```
+### Regions
+
+Since *iscream* is a region-based querying tool, we need to load some regions.
+Here we'll be using gene body regions as the input:
+
+
+``` r
+library(data.table)
+regions <- fread("../data/genes.bed", col.names = c("chr", "start", "end", "gene"))
+head(regions)
+#>       chr    start      end   gene
+#>    <char>    <int>    <int> <char>
+#> 1:   chr1  1471764  1497848 ATAD3B
+#> 2:   chr1  3069167  3438621 PRDM16
+#> 3:   chr1  2403963  2413797  PEX10
+#> 4:   chr1 10472287 10630758  PEX14
+#> 5:   chr1  2425979  2505532  PLCH2
+#> 6:   chr1  9292893  9369532  SPSB1
+```
+
+## Running iscream
+
+### Make tabix queries
+
+The `tabix()` function can be used to query regions from BED files much like the
+*tabix* shell command. It returns the queried lines from the BED files, parsed
+into columns, as a `data.table`. `tabix()` is a generic BED files query function
+and is not restricted to methylation BED files. It has built-in support for
+BISCUIT, Bismark, and BSbolt BED file column names, set with the `aligner`
+argument, but can take other column names with the `colnames` argument.
+
+If multiple input files are provided, they are queried in parallel. If `raw =
+TRUE`, `tabix()` will return the same data as `Rsamtools::scanTabix()` does - a
+named list of strings.
+
+
+``` r
+tabix(bedfiles, regions[1:50])
+#>          chr    start      end  beta coverage         mergecg      sample
+#>       <char>    <num>    <num> <num>    <num>          <char>      <char>
+#>    1:   chr1  3147020  3147022 0.000        3 C:0.000:3,G:.:0 A10_mergecg
+#>    2:   chr1  3147050  3147052 0.333        3 C:0.333:3,G:.:0 A10_mergecg
+#>    3:   chr1  3147084  3147086 0.250        4 C:0.250:4,G:.:0 A10_mergecg
+#>    4:   chr1  3147088  3147090 0.250        4 C:0.250:4,G:.:0 A10_mergecg
+#>    5:   chr1  3147106  3147108 0.750        4 C:0.750:4,G:.:0 A10_mergecg
+#>   ---                                                                    
+#> 4276:   chr1 30875221 30875223 1.000        4 C:.:0,G:1.000:4  H9_mergecg
+#> 4277:   chr1 30875294 30875296 0.000        4 C:.:0,G:0.000:4  H9_mergecg
+#> 4278:   chr1 30875303 30875305 0.000        3 C:.:0,G:0.000:3  H9_mergecg
+#> 4279:   chr1  9558942  9558944 1.000        5 C:.:0,G:1.000:5  H9_mergecg
+#> 4280:   chr1 15556745 15556747 0.000        4 C:0.000:4,G:.:0  H9_mergecg
+```
+
+### Get summary data
+
+To get a summary of the methylation information of the gene bodies we use
+`summarize_regions`:
+
+
+``` r
+full_summary <- summarize_regions(bedfiles[1:8], regions)
+#> [10:10:12.814740] [iscream::summarize_regions] [info] Summarizing 20048 regions from 8 bedfiles
+#> [10:10:12.814782] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count
+```
+
+### Build matrices
+
+
+``` r
+meth_mat <- query_all(bedfiles, regions, sparse = TRUE)
+#> [10:10:14.084742] [iscream::query_all] [info] Querying 20048 regions from 94 bedfiles
+#> 
+#> [10:10:21.241229] [iscream::query_all] [info] Creating metadata vectors
+#> [10:10:21.263587] [iscream::query_all] [info] nrows 800000 - 32332 extra rows allocated with 26 resizes
+#> [10:10:21.337022] [iscream::query_all] [info] Creating sparse matrix
+```
+
+``` r
+str(meth_mat)
+#> List of 5
+#>  $ M          :Formal class 'dgCMatrix' [package "Matrix"] with 6 slots
+#>   .. ..@ i       : int [1:354881] 11 16 1204 4595 4596 4752 5522 5523 6105 6106 ...
+#>   .. ..@ p       : int [1:95] 0 12632 14578 14580 23398 28702 33905 38840 48626 49353 ...
+#>   .. ..@ Dim     : int [1:2] 767668 94
+#>   .. ..@ Dimnames:List of 2
+#>   .. .. ..$ : NULL
+#>   .. .. ..$ : chr [1:94] "A10_mergecg" "A11_mergecg" "A12_mergecg" "A2_mergecg" ...
+#>   .. ..@ x       : num [1:354881] 10 326 3 2 3 4 3 3 2 3 ...
+#>   .. ..@ factors : list()
+#>  $ Cov        :Formal class 'dgCMatrix' [package "Matrix"] with 6 slots
+#>   .. ..@ i       : int [1:809902] 10 11 15 16 17 1204 1369 1371 1500 3032 ...
+#>   .. ..@ p       : int [1:95] 0 30350 33083 33088 62181 69341 83514 98102 113013 113984 ...
+#>   .. ..@ Dim     : int [1:2] 767668 94
+#>   .. ..@ Dimnames:List of 2
+#>   .. .. ..$ : NULL
+#>   .. .. ..$ : chr [1:94] "A10_mergecg" "A11_mergecg" "A12_mergecg" "A2_mergecg" ...
+#>   .. ..@ x       : num [1:809902] 56 10 202 326 345 3 3 3 3 3 ...
+#>   .. ..@ factors : list()
+#>  $ pos        : int [1:767668] 162072285 143360905 143360940 54939858 182194770 182194778 182194861 182194913 23391102 123741210 ...
+#>  $ chr        : chr [1:767668] "chr1" "chr3" "chr3" "chr3" ...
+#>  $ sampleNames: chr [1:94] "A10_mergecg" "A11_mergecg" "A12_mergecg" "A2_mergecg" ...
+```
+
+The output of query_all is a named list containing matrices of coverage values
+and M values and vectors of the sample names, chromosome names and positions of
+the loci.
+
+This list can be used to produce a BSseq object. However since BSseq cannot work
+with sparse matrices, the two matrices would need to be converted to dense
+matrices first.
+
+
+
+``` r
+bs <- do.call(BSseq, meth_mat)
+```
+
+## Session info
+
+
+``` r
+sessionInfo()
+#> R version 4.4.1 (2024-06-14)
+#> Platform: x86_64-pc-linux-gnu
+#> Running under: Ubuntu 24.04.1 LTS
+#> 
+#> Matrix products: default
+#> BLAS/LAPACK: /nix/store/p2a6x92n2gwljav85zz3hzid1nk7iq0l-blas-3/lib/libblas.so.3;  LAPACK version 3.12.0
+#> 
+#> locale:
+#>  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+#>  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+#>  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+#>  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+#>  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+#> [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+#> 
+#> time zone: America/Detroit
+#> tzcode source: system (glibc)
+#> 
+#> attached base packages:
+#> [1] stats     graphics  grDevices utils     datasets  methods   base     
+#> 
+#> other attached packages:
+#> [1] data.table_1.15.4  iscream_0.0.0.9000
+#> 
+#> loaded via a namespace (and not attached):
+#>  [1] compiler_4.4.1     parallelly_1.38.0  Matrix_1.7-0       parallel_4.4.1    
+#>  [5] tools_4.4.1        Rcpp_1.0.13        grid_4.4.1         knitr_1.47        
+#>  [9] xfun_0.45          RcppParallel_5.1.8 stringfish_0.16.0  lattice_0.22-6    
+#> [13] evaluate_0.24.0
+```
+
+<!-- vim: set filetype=rmd: -->
