@@ -23,40 +23,55 @@ decode_cov <- function(encoded) {
     .Call(`_iscream_decode_cov`, encoded)
 }
 
+#' Get coverage values from bit-packed dense matrix
+#'
 #' @keywords internal
 #' @export
 get_cov <- function(m, nthreads) {
     invisible(.Call(`_iscream_get_cov`, m, nthreads))
 }
 
+#' Get M values from bit-packed dense matrix
+#'
 #' @keywords internal
 #' @export
 get_m <- function(m, nthreads) {
     invisible(.Call(`_iscream_get_m`, m, nthreads))
 }
 
+#' Get beta values from bit-packed dense matrix
+#'
 #' @keywords internal
 #' @export
 get_beta <- function(m, nthreads) {
     invisible(.Call(`_iscream_get_beta`, m, nthreads))
 }
 
+#' Get coverage values from bit-packed sparse matrix
+#'
 #' @keywords internal
 #' @export
-get_cov_sparse <- function(m, nthreads) {
-    invisible(.Call(`_iscream_get_cov_sparse`, m, nthreads))
+get_cov_sparse <- function(m) {
+    invisible(.Call(`_iscream_get_cov_sparse`, m))
 }
 
+#' Get M values from bit-packed sparse matrix
+#'
 #' @keywords internal
 #' @export
-get_m_sparse <- function(m, nthreads) {
-    invisible(.Call(`_iscream_get_m_sparse`, m, nthreads))
+get_m_sparse <- function(m) {
+    invisible(.Call(`_iscream_get_m_sparse`, m))
 }
 
+#' Get beta values from bit-packed sparse matrix
+#'
+#' @param m The bit-packed dgcMatrix
+#' @return The beta value
+#'
 #' @keywords internal
 #' @export
-get_beta_sparse <- function(m, nthreads) {
-    invisible(.Call(`_iscream_get_beta_sparse`, m, nthreads))
+get_beta_sparse <- function(m) {
+    invisible(.Call(`_iscream_get_beta_sparse`, m))
 }
 
 #' Get the number of available threads from OpenMP.

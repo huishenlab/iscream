@@ -68,35 +68,32 @@ BEGIN_RCPP
 END_RCPP
 }
 // get_cov_sparse
-void get_cov_sparse(Rcpp::S4& m, const int nthreads);
-RcppExport SEXP _iscream_get_cov_sparse(SEXP mSEXP, SEXP nthreadsSEXP) {
+void get_cov_sparse(Rcpp::S4& m);
+RcppExport SEXP _iscream_get_cov_sparse(SEXP mSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::S4& >::type m(mSEXP);
-    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
-    get_cov_sparse(m, nthreads);
+    get_cov_sparse(m);
     return R_NilValue;
 END_RCPP
 }
 // get_m_sparse
-void get_m_sparse(Rcpp::S4& m, const int nthreads);
-RcppExport SEXP _iscream_get_m_sparse(SEXP mSEXP, SEXP nthreadsSEXP) {
+void get_m_sparse(Rcpp::S4& m);
+RcppExport SEXP _iscream_get_m_sparse(SEXP mSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::S4& >::type m(mSEXP);
-    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
-    get_m_sparse(m, nthreads);
+    get_m_sparse(m);
     return R_NilValue;
 END_RCPP
 }
 // get_beta_sparse
-void get_beta_sparse(Rcpp::S4& m, const int nthreads);
-RcppExport SEXP _iscream_get_beta_sparse(SEXP mSEXP, SEXP nthreadsSEXP) {
+void get_beta_sparse(Rcpp::S4& m);
+RcppExport SEXP _iscream_get_beta_sparse(SEXP mSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::S4& >::type m(mSEXP);
-    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
-    get_beta_sparse(m, nthreads);
+    get_beta_sparse(m);
     return R_NilValue;
 END_RCPP
 }
@@ -218,9 +215,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_get_cov", (DL_FUNC) &_iscream_get_cov, 2},
     {"_iscream_get_m", (DL_FUNC) &_iscream_get_m, 2},
     {"_iscream_get_beta", (DL_FUNC) &_iscream_get_beta, 2},
-    {"_iscream_get_cov_sparse", (DL_FUNC) &_iscream_get_cov_sparse, 2},
-    {"_iscream_get_m_sparse", (DL_FUNC) &_iscream_get_m_sparse, 2},
-    {"_iscream_get_beta_sparse", (DL_FUNC) &_iscream_get_beta_sparse, 2},
+    {"_iscream_get_cov_sparse", (DL_FUNC) &_iscream_get_cov_sparse, 1},
+    {"_iscream_get_m_sparse", (DL_FUNC) &_iscream_get_m_sparse, 1},
+    {"_iscream_get_beta_sparse", (DL_FUNC) &_iscream_get_beta_sparse, 1},
     {"_iscream_get_omp_threads", (DL_FUNC) &_iscream_get_omp_threads, 1},
     {"_iscream_setup_logger", (DL_FUNC) &_iscream_setup_logger, 1},
     {"_iscream_Cpp_set_log_level", (DL_FUNC) &_iscream_Cpp_set_log_level, 1},

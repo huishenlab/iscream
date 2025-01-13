@@ -77,8 +77,8 @@ query_all <- function(
   )
 
   if (sparse) {
-    get_m_sparse(b$M, n_threads)
-    get_cov_sparse(b$Cov, n_threads)
+    get_m_sparse(b$M)
+    get_cov_sparse(b$Cov)
   } else {
     get_m(b$M, n_threads)
     get_cov(b$Cov, n_threads)
