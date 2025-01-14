@@ -1,0 +1,102 @@
+---
+title: "Getting other data structures from iscream"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting other data structures from iscream}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+#bibliography: refs.bib
+link-citations: yes
+---
+
+The examples here show how iscream output can be converted into other data
+structures for further analysis.
+
+```{r}
+library(iscream)
+data_dir <- system.file("extdata", package = "iscream")
+bedfiles <- list.files(data_dir, pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
+regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
+```
+
+## Making GRanges
+
+```{r, message=FALSE}
+library(GenomicRanges)
+```
+
+
+
+### From `tabix` queries
+
+```{r}
+tabix(bedfiles[1], regions) |> GRanges()
+```
+
+### From `summarize_regions`
+
+With a named set of regions, you'll need to `set_region_rownames` as the input
+to create the GRanges object:
+
+```{r}
+(summary <- summarize_regions(
+  bedfiles,
+  regions,
+  set_region_rownames = TRUE,
+  fun = c("sum", "mean"))
+)
+GRanges(rownames(summary), summary = summary)
+```
+
+If the regions vector is not named, pass the `Feature` column as the GRanges
+input regions:
+
+```{r}
+(summary <- summarize_regions(
+  bedfiles,
+  unname(regions),
+  fun = c("sum", "mean"))
+)
+GRanges(summary$Feature, summary = summary[, -1])
+```
+
+
+## Making SummarizedExperiment objects
+
+```{r, message=FALSE}
+library("SummarizedExperiment")
+```
+
+### From `query_all` matrices
+
+```{r}
+(mats <- query_all(bedfiles, regions))
+(mats.sparse <- query_all(bedfiles, regions, sparse = TRUE))
+gr <- GRanges(mats$chr, mats$pos)
+
+# dense
+SummarizedExperiment(assays = list(M = mats$M, Cov = mats$Cov), rowRanges = gr)
+
+# sparse
+SummarizedExperiment(
+  assays = list(M = mats.sparse$M, Cov = mats.sparse$Cov),
+  rowRanges = gr
+)
+
+```
+
+## Making `BSseq` objects
+
+A BSseq object is a type of SummarizedExperiment, but it cannot handle sparse
+matrices:
+
+```{r}
+library(bsseq)
+do.call(BSseq, mats)
+```
+
+## Session info
+
+```{r}
+sessionInfo()
+```
