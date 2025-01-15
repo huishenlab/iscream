@@ -19,18 +19,33 @@ bedfiles <- list.files(data_dir, pattern = "[a|b|c|d].bed.gz$", full.names = TRU
 regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 ```
 
-## Making GRanges
+## GRanges
 
 ```{r, message=FALSE}
 library(GenomicRanges)
 ```
 
-
+GRanges can be used as the input to all of iscream's querying functions. The
+output of `tabix()` and `query_all()` can also be turned into GRanges.
 
 ### From `tabix` queries
 
 ```{r}
 tabix(bedfiles[1], regions) |> GRanges()
+```
+
+If the input is already a `GRanges` object, `tabix()` will also return a
+`GRanges` object along with any attached metadata. `tabix()` uses the input
+`findOverlaps()` to join input metadata with the queried data.
+
+```{r}
+gr <- GRanges(regions)
+values(gr) <- DataFrame(
+    gene = c("gene1", "gene2", "gene3"),
+    some_metadata = c("s1", "s2", "s3")
+)
+gr
+tabix(bedfiles, gr)
 ```
 
 ### From `summarize_regions`
