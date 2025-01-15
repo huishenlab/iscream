@@ -27,10 +27,12 @@ Imports:
     stringfish
 Suggests:
     knitr,
+    rmarkdown,
     bsseq,
     DelayedArray,
     GenomicRanges,
     testthat (>= 3.0.0)
+VignetteBuilder: knitr
 Config/testthat/edition: 3
 NeedsCompilation: yes
 OS_type: unix
