@@ -10,6 +10,8 @@ regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 regions.dt <- as.data.table(regions)[, tstrsplit(regions, ":|-")]
 colnames(regions.dt) <- c("chr", "start", "end")
 gr <- GenomicRanges::GRanges(regions)
+gr.meta <- GenomicRanges::GRanges(regions)
+GenomicRanges::values(gr.meta) <- data.frame(meta = c("s1", "s2", "s3"))
 
 tabix_raw_res <- list(
     `chr1:1-6` =  c("chr1\t3\t4\t1.000\t2"),
@@ -24,7 +26,13 @@ test_that("tabix dataframe", {
   )
   expect_equal(
     tabix(biscuit_tabix_beds[1], gr),
-    fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))
+    fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric")) |> GenomicRanges::GRanges()
+  )
+  expect_equal(
+    tabix(biscuit_tabix_beds[1], gr.meta),
+    fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))[,
+      meta := c(rep("s1", 3), rep("s2", 2), rep("s3", 2))
+    ] |> GenomicRanges::GRanges()
   )
   expect_equal(
     tabix(biscuit_tabix_beds[1], regions.dt),
