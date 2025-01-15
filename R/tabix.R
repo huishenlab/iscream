@@ -1,6 +1,7 @@
 #' Query lines from a tabixed bedfile
 #' @param bedfiles The bedfiles to be queried
-#' @param regions A vector of genomic region strings
+#' @param regions A vector, data frame or GenomicRanges of genomic regions. See
+#' details.
 #' @param aligner The aligner used to produce the BED files - one of "biscuit",
 #' "bismark", "bsbolt". Will set the result data.table's column names based on
 #' this argument.
@@ -10,6 +11,13 @@
 #' the style of `Rsamtools::scanTabix` instead of a data.table
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
+#'
+#' @details
+#' The input regions may be string vector in the form "chr:start-end", a
+#' dataframe with "chr", "start" and "end" columns or a GRanges object. If the
+#' input is a GRanges, the output will also be GRanges with any associated
+#' metadata columns (joined onto the result using
+#' `GenomicRanges::findOverlaps()`)
 #'
 #' @importFrom data.table as.data.table tstrsplit set := rbindlist
 #' @importFrom parallel mclapply
@@ -25,20 +33,24 @@
 #' tabix(bedfiles[1], regions, colnames = c("chr", "start", "end", "beta", "coverage"))
 tabix <- function(bedfiles, regions, aligner = "biscuit", colnames = NULL, raw = FALSE, nthreads = NULL) {
   verify_files_or_stop(bedfiles)
+
   if (class(regions)[1] == "GRanges") {
-    regions <- get_granges_string(regions)
+    input_regions <- get_granges_string(regions)
   } else if ("data.frame" %in% class(regions)) {
-    regions <- get_df_string(regions)
+    input_regions <- get_df_string(regions)
+  } else {
+    input_regions <- regions
   }
+
   verify_aligner_or_stop(aligner)
   verify_filetype(bedfiles, aligner)
 
   if (raw) {
     if (length(bedfiles) == 1) {
-      return (scan_tabix(bedfiles, regions))
+      return (scan_tabix(bedfiles, input_regions))
     } else {
       bedline_list <- mclapply(bedfiles, function(file) {
-        scan_tabix(file, regions)
+        scan_tabix(file, input_regions)
       }, mc.cores = .get_threads(nthreads)) |>
       setNames(
         nm = file_path_sans_ext(basename(bedfiles), compression = TRUE),
@@ -66,9 +78,9 @@ tabix <- function(bedfiles, regions, aligner = "biscuit", colnames = NULL, raw =
   }
 
   if (length(bedfiles) == 1) {
-      single_tabix(
+      result <- single_tabix(
         bedfile = bedfiles,
-        regions = regions,
+        regions = input_regions,
         result_colnames = result_colnames,
         mergecg = mergecg
       )
@@ -76,7 +88,7 @@ tabix <- function(bedfiles, regions, aligner = "biscuit", colnames = NULL, raw =
     dt_list <- mclapply(bedfiles, function(file) {
       tbx_query <- single_tabix(
         bedfile = file,
-        regions = regions,
+        regions = input_regions,
         result_colnames = result_colnames,
         mergecg = mergecg
       )
@@ -84,11 +96,25 @@ tabix <- function(bedfiles, regions, aligner = "biscuit", colnames = NULL, raw =
         tbx_query[, sample := file_path_sans_ext(basename(file), compression = TRUE)]
       }
       return(tbx_query)
-    },
-      mc.cores = .get_threads(nthreads)
-    )
-    rbindlist(dt_list)
+    }, mc.cores = .get_threads(nthreads))
+    result <- rbindlist(dt_list)
   }
+
+  if (class(regions)[1] == "GRanges") {
+    result.gr <- GenomicRanges::GRanges(result)
+    overlaps <- GenomicRanges::findOverlaps(result.gr, regions)
+
+    if (dim(GenomicRanges::mcols(regions))[2] > 0) {
+      mcols.colnames <- colnames(GenomicRanges::mcols(regions))
+      mcols.subjectHits <- GenomicRanges::mcols(regions)[S4Vectors::subjectHits(overlaps), mcols.colnames]
+      GenomicRanges::mcols(result.gr)[S4Vectors::queryHits(overlaps), mcols.colnames] <-
+        GenomicRanges::mcols(regions)[S4Vectors::subjectHits(overlaps), mcols.colnames]
+    }
+
+    return(result.gr)
+  }
+
+  return(result)
 }
 
 single_tabix <- function(bedfile, regions, result_colnames, mergecg) {

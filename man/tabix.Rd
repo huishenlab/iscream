@@ -16,7 +16,8 @@ tabix(
 \arguments{
 \item{bedfiles}{The bedfiles to be queried}
 
-\item{regions}{A vector of genomic region strings}
+\item{regions}{A vector, data frame or GenomicRanges of genomic regions. See
+details.}
 
 \item{aligner}{The aligner used to produce the BED files - one of "biscuit",
 "bismark", "bsbolt". Will set the result data.table's column names based on
@@ -36,6 +37,13 @@ A data.table
 }
 \description{
 Query lines from a tabixed bedfile
+}
+\details{
+The input regions may be string vector in the form "chr:start-end", a
+dataframe with "chr", "start" and "end" columns or a GRanges object. If the
+input is a GRanges, the output will also be GRanges with any associated
+metadata columns (joined onto the result using
+\code{GenomicRanges::findOverlaps()})
 }
 \examples{
 bedfiles <- system.file("extdata", package = "iscream") |>
