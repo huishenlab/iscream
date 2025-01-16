@@ -68,7 +68,8 @@
 
 
 <dt id="arg-regions">regions<a class="anchor" aria-label="anchor" href="#arg-regions"></a></dt>
-<dd><p>A vector of genomic region strings</p></dd>
+<dd><p>A vector, data frame or GenomicRanges of genomic regions. See
+details.</p></dd>
 
 
 <dt id="arg-aligner">aligner<a class="anchor" aria-label="anchor" href="#arg-aligner"></a></dt>
@@ -95,6 +96,14 @@ the style of <code><a href="https://rdrr.io/pkg/Rsamtools/man/scanTabix.html" cl
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A data.table</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The input regions may be string vector in the form "chr:start-end", a
+dataframe with "chr", "start" and "end" columns or a GRanges object. If the
+input is a GRanges, the output will also be GRanges with any associated
+metadata columns (joined onto the result using
+<code><a href="https://rdrr.io/pkg/IRanges/man/findOverlaps-methods.html" class="external-link">GenomicRanges::findOverlaps()</a></code>)</p>
     </div>
 
     <div class="section level2">
