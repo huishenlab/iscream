@@ -96,9 +96,37 @@ To get a summary of the methylation information of the gene bodies we use
 
 
 ``` r
-full_summary <- summarize_regions(bedfiles[1:8], regions)
-#> [10:10:12.814740] [iscream::summarize_regions] [info] Summarizing 20048 regions from 8 bedfiles
-#> [10:10:12.814782] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count
+head(summarize_regions(bedfiles[1:8], regions))
+#> [12:27:05.069494] [iscream::summarize_regions] [info] Summarizing 20048 regions from 8 bedfiles
+#> [12:27:05.069543] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count
+#>                  Feature      Sample coverage.sum M.sum coverage.mean    M.mean
+#> 1   chr1:1471764-1497848 A10_mergecg           NA    NA            NA        NA
+#> 2   chr1:3069167-3438621 A10_mergecg          152    31      3.534884 0.7209302
+#> 3   chr1:2403963-2413797 A10_mergecg           NA    NA            NA        NA
+#> 4 chr1:10472287-10630758 A10_mergecg           27    18      3.000000 2.0000000
+#> 5   chr1:2425979-2505532 A10_mergecg           NA    NA            NA        NA
+#> 6   chr1:9292893-9369532 A10_mergecg           12     6      3.000000 1.5000000
+#>   coverage.median M.median coverage.stddev M.stddev coverage.variance
+#> 1              NA       NA              NA       NA                NA
+#> 2               3      0.0       0.6305265 1.333195         0.3975637
+#> 3              NA       NA              NA       NA                NA
+#> 4               3      3.0       0.0000000 1.500000         0.0000000
+#> 5              NA       NA              NA       NA                NA
+#> 6               3      1.5       0.0000000 1.290994         0.0000000
+#>   M.variance coverage.min M.min coverage.max M.max coverage.range M.range
+#> 1         NA           NA    NA           NA    NA             NA      NA
+#> 2   1.777409            3     0            5     4              2       4
+#> 3         NA           NA    NA           NA    NA             NA      NA
+#> 4   2.250000            3     0            3     3              0       3
+#> 5         NA           NA    NA           NA    NA             NA      NA
+#> 6   1.666667            3     0            3     3              0       3
+#>   cpg_count
+#> 1        NA
+#> 2        43
+#> 3        NA
+#> 4         9
+#> 5        NA
+#> 6         4
 ```
 
 ### Build matrices

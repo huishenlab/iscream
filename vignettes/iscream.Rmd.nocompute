@@ -74,7 +74,7 @@ To get a summary of the methylation information of the gene bodies we use
 `summarize_regions`:
 
 ```{r}
-full_summary <- summarize_regions(bedfiles[1:8], regions)
+head(summarize_regions(bedfiles[1:8], regions))
 ```
 
 ### Build matrices
