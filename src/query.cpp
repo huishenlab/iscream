@@ -24,7 +24,7 @@ std::vector<std::string> tabix_query(
     }
 
     free(str.s);
-    hts_itr_destroy(iter);
+    tbx_itr_destroy(iter);
 
     return reads;
 }
