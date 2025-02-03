@@ -40,6 +40,7 @@ std::vector<RegionQuery> query_intervals(
 ) {
 
     htsFile* bedFile = hts_open(bedfile, "r");
+    hts_set_cache_size(bedFile, 10 * 1048576);
     tbx_t* tbx = tbx_index_load3(bedfile, NULL, 0);
 
     std::vector<RegionQuery> all_reads(regions.size());
