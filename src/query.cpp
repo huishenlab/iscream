@@ -80,6 +80,8 @@ std::set<std::string> Cpp_query_chroms(const std::vector<std::string>& bedfile_v
                 seqnames.insert(seq[i]);
             }
         }
+        free(seq);
+        tbx_destroy(tbx);
     }
     return seqnames;
 }
