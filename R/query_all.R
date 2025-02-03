@@ -28,6 +28,8 @@
 #' or a GRanges object. If a data frame is provided, they must have "chr",
 #' "start", and "end" columns.
 #'
+#' @importFrom Matrix drop0
+#'
 #' @export
 #' @examples
 #' bedfiles <- system.file("extdata", package = "iscream") |>
@@ -78,6 +80,7 @@ query_all <- function(
 
   if (sparse) {
     get_m_sparse(b$M)
+    b$M <- drop0(b$M)
     get_cov_sparse(b$Cov)
   } else {
     get_m(b$M, n_threads)
