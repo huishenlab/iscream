@@ -165,9 +165,37 @@ strings.</p>
 <p>To get a summary of the methylation information of the gene bodies we
 use <code>summarize_regions</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">full_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_regions.html">summarize_regions</a></span><span class="op">(</span><span class="va">bedfiles</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span>, <span class="va">regions</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [10:10:12.814740] [iscream::summarize_regions] [info] Summarizing 20048 regions from 8 bedfiles</span></span>
-<span><span class="co">#&gt; [10:10:12.814782] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/summarize_regions.html">summarize_regions</a></span><span class="op">(</span><span class="va">bedfiles</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span>, <span class="va">regions</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [12:27:05.069494] [iscream::summarize_regions] [info] Summarizing 20048 regions from 8 bedfiles</span></span>
+<span><span class="co">#&gt; [12:27:05.069543] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count</span></span>
+<span><span class="co">#&gt;                  Feature      Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
+<span><span class="co">#&gt; 1   chr1:1471764-1497848 A10_mergecg           NA    NA            NA        NA</span></span>
+<span><span class="co">#&gt; 2   chr1:3069167-3438621 A10_mergecg          152    31      3.534884 0.7209302</span></span>
+<span><span class="co">#&gt; 3   chr1:2403963-2413797 A10_mergecg           NA    NA            NA        NA</span></span>
+<span><span class="co">#&gt; 4 chr1:10472287-10630758 A10_mergecg           27    18      3.000000 2.0000000</span></span>
+<span><span class="co">#&gt; 5   chr1:2425979-2505532 A10_mergecg           NA    NA            NA        NA</span></span>
+<span><span class="co">#&gt; 6   chr1:9292893-9369532 A10_mergecg           12     6      3.000000 1.5000000</span></span>
+<span><span class="co">#&gt;   coverage.median M.median coverage.stddev M.stddev coverage.variance</span></span>
+<span><span class="co">#&gt; 1              NA       NA              NA       NA                NA</span></span>
+<span><span class="co">#&gt; 2               3      0.0       0.6305265 1.333195         0.3975637</span></span>
+<span><span class="co">#&gt; 3              NA       NA              NA       NA                NA</span></span>
+<span><span class="co">#&gt; 4               3      3.0       0.0000000 1.500000         0.0000000</span></span>
+<span><span class="co">#&gt; 5              NA       NA              NA       NA                NA</span></span>
+<span><span class="co">#&gt; 6               3      1.5       0.0000000 1.290994         0.0000000</span></span>
+<span><span class="co">#&gt;   M.variance coverage.min M.min coverage.max M.max coverage.range M.range</span></span>
+<span><span class="co">#&gt; 1         NA           NA    NA           NA    NA             NA      NA</span></span>
+<span><span class="co">#&gt; 2   1.777409            3     0            5     4              2       4</span></span>
+<span><span class="co">#&gt; 3         NA           NA    NA           NA    NA             NA      NA</span></span>
+<span><span class="co">#&gt; 4   2.250000            3     0            3     3              0       3</span></span>
+<span><span class="co">#&gt; 5         NA           NA    NA           NA    NA             NA      NA</span></span>
+<span><span class="co">#&gt; 6   1.666667            3     0            3     3              0       3</span></span>
+<span><span class="co">#&gt;   cpg_count</span></span>
+<span><span class="co">#&gt; 1        NA</span></span>
+<span><span class="co">#&gt; 2        43</span></span>
+<span><span class="co">#&gt; 3        NA</span></span>
+<span><span class="co">#&gt; 4         9</span></span>
+<span><span class="co">#&gt; 5        NA</span></span>
+<span><span class="co">#&gt; 6         4</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="build-matrices">Build matrices<a class="anchor" aria-label="anchor" href="#build-matrices"></a>
