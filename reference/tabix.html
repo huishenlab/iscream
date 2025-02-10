@@ -15,7 +15,13 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/iscream.html">Get started</a></li>
+<li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/data_structures.html">Getting other data structures from iscream</a></li>
+    <li><a class="dropdown-item" href="../articles/TSS.html">Plotting TSS methylation profiles</a></li>
+  </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/huishenlab/iscream/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -62,7 +68,8 @@
 
 
 <dt id="arg-regions">regions<a class="anchor" aria-label="anchor" href="#arg-regions"></a></dt>
-<dd><p>A vector of genomic region strings</p></dd>
+<dd><p>A vector, data frame or GenomicRanges of genomic regions. See
+details.</p></dd>
 
 
 <dt id="arg-aligner">aligner<a class="anchor" aria-label="anchor" href="#arg-aligner"></a></dt>
@@ -89,6 +96,14 @@ the style of <code><a href="https://rdrr.io/pkg/Rsamtools/man/scanTabix.html" cl
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A data.table</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The input regions may be string vector in the form "chr:start-end", a
+dataframe with "chr", "start" and "end" columns or a GRanges object. If the
+input is a GRanges, the output will also be GRanges with any associated
+metadata columns (joined onto the result using
+<code><a href="https://rdrr.io/pkg/IRanges/man/findOverlaps-methods.html" class="external-link">GenomicRanges::findOverlaps()</a></code>)</p>
     </div>
 
     <div class="section level2">
