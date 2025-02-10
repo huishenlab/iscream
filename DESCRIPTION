@@ -28,8 +28,6 @@ Imports:
 Suggests:
     knitr,
     rmarkdown,
-    bsseq,
-    DelayedArray,
     GenomicRanges,
     SummarizedExperiment,
     S4Vectors,
