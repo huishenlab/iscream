@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{Cpp_query_all}
 \alias{Cpp_query_all}
-\title{Make a Bsseq object}
+\title{Query all CpG info into M and coverage matrices}
 \usage{
 Cpp_query_all(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads)
 }
@@ -19,6 +19,6 @@ Cpp_query_all(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads)
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
 }
 \description{
-Make a Bsseq object
+Query all CpG info into M and coverage matrices
 }
 \keyword{internal}

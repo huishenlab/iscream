@@ -170,7 +170,7 @@ scan_tabix <- function(bedfile, regions) {
     .Call(`_iscream_scan_tabix`, bedfile, regions)
 }
 
-#' Make a Bsseq object
+#' Query all CpG info into M and coverage matrices
 #' @param bedfiles A vector of bedfiles
 #' @param regions A vector of regions
 #' @param bismark Whether the input is a bismark coverage file

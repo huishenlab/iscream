@@ -188,7 +188,7 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
 
 }
 
-//' Make a Bsseq object
+//' Query all CpG info into M and coverage matrices
 //' @param bedfiles A vector of bedfiles
 //' @param regions A vector of regions
 //' @param bismark Whether the input is a bismark coverage file
@@ -202,10 +202,10 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
 Rcpp::List Cpp_query_all(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, const bool bismark, const bool merged, const bool sparse, const int prealloc, const int nthreads) {
 
     if (sparse) {
-        QueryAll bsseq = QueryAll<arma::sp_umat>(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads);
-        return bsseq.wrap();
+        QueryAll query = QueryAll<arma::sp_umat>(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads);
+        return query.wrap();
     } else {
-        QueryAll bsseq = QueryAll<arma::umat>(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads);
-        return bsseq.wrap();
+        QueryAll query = QueryAll<arma::umat>(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads);
+        return query.wrap();
     }
 }
