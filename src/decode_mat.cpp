@@ -72,7 +72,7 @@ void get_beta(Rcpp::NumericMatrix& m, const int nthreads) {
          #pragma omp parallel for num_threads(nthreads)
     #endif
     for (int coln = 0; coln < M.n_cols; coln++) {
-        M.col(coln).transform( [](double packed_val) { return ( (int) packed_val & 0xffff); } );
+        M.col(coln).transform( [](double packed_val) { return ( (double) ((int) packed_val & 0xffff) / 100); } );
     }
 }
 
@@ -118,6 +118,6 @@ void get_beta_sparse(Rcpp::S4& m) {
     arma::vec x(elements.begin(), elements.size(), false);
 
     for (int i = 0; i < x.size(); i++) {
-        x[i] =  (int) x[i] & 0xffff;
+        x[i] = (double) ((int) x[i] & 0xffff) / 100;
     }
 }
