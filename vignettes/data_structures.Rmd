@@ -105,7 +105,7 @@ SummarizedExperiment(
 A BSseq object is a type of SummarizedExperiment, but it cannot handle sparse
 matrices:
 
-```{r}
+```{r, eval=FALSE}
 library(bsseq)
 do.call(BSseq, mats)
 ```
