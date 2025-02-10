@@ -9,6 +9,8 @@
 #' details.
 #' @param aligner The aligner used to produce the BED files - one of "biscuit",
 #' "bismark", "bsbolt".
+#' @param mval Whether to return M-values or beta-values with the coverage
+#' matrix. Defaults to M-value. Set `mval=FALSE` to get beta value matrix.
 #' @param merged Whether the input strands have been merged/collapsed
 #' @param sparse Whether to return M and coverage matrices as sparse matrices
 #' ("dgCMatrix"). Set this `TRUE` only for scWGBS data
@@ -50,6 +52,7 @@ query_all <- function(
   bedfiles,
   regions,
   aligner = "biscuit",
+  mval = TRUE,
   merged = TRUE,
   sparse = FALSE,
   prealloc = 10000,
@@ -79,12 +82,21 @@ query_all <- function(
   )
 
   if (sparse) {
-    get_m_sparse(b$M)
+    get_beta_m <- ifelse(mval, get_m_sparse, get_beta_sparse)
+  } else {
+    get_beta_m <- ifelse(mval, get_m, get_beta)
+  }
+
+  if (sparse) {
+    get_beta_m(b$M)
     b$M <- drop0(b$M)
     get_cov_sparse(b$Cov)
   } else {
-    get_m(b$M, n_threads)
+    get_beta_m(b$M, n_threads)
     get_cov(b$Cov, n_threads)
+  }
+  if (!mval) {
+    names(b)[which(names(b) == "M")] = "beta"
   }
   b
 }

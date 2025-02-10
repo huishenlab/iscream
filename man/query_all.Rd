@@ -8,6 +8,7 @@ query_all(
   bedfiles,
   regions,
   aligner = "biscuit",
+  mval = TRUE,
   merged = TRUE,
   sparse = FALSE,
   prealloc = 10000,
@@ -22,6 +23,9 @@ details.}
 
 \item{aligner}{The aligner used to produce the BED files - one of "biscuit",
 "bismark", "bsbolt".}
+
+\item{mval}{Whether to return M-values or beta-values with the coverage
+matrix. Defaults to M-value. Set \code{mval=FALSE} to get beta value matrix.}
 
 \item{merged}{Whether the input strands have been merged/collapsed}
 
