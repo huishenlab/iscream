@@ -64,7 +64,7 @@ typedef struct {
 
 
 // Produce vectors of the input coverage and beta/M values
-DataVec make_data_vec(const std::vector<std::string> cpgs, const bool mval, const bool bismark) {
+DataVec make_data_vec(const std::vector<std::string>& cpgs, const bool mval, const bool bismark) {
 
     arma::vec covs(cpgs.size());
     arma::vec mvals(cpgs.size());
