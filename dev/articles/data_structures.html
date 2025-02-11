@@ -179,8 +179,8 @@ object:</p>
 <span>  set_region_rownames <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [18:35:38.834249] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [18:35:38.834311] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
+<pre><code><span><span class="co">## [14:54:19.874697] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [14:54:19.874746] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
 <pre><code><span><span class="co">##            Feature Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
 <span><span class="co">## chr1:1-6         A      a            4     2      1.333333 0.6666667</span></span>
 <span><span class="co">## chr1:7-10        B      a            3     1      1.500000 0.5000000</span></span>
@@ -233,8 +233,8 @@ column as the GRanges input regions:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [18:35:38.955347] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [18:35:38.955377] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
+<pre><code><span><span class="co">## [14:54:19.991620] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [14:54:19.991644] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
 <pre><code><span><span class="co">##       Feature Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
 <span><span class="co">## 1    chr1:1-6      a            4     2      1.333333 0.6666667</span></span>
 <span><span class="co">## 2   chr1:7-10      a            3     1      1.500000 0.5000000</span></span>
@@ -291,11 +291,11 @@ column as the GRanges input regions:</p>
 </h3>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">mats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/query_all.html">query_all</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [18:35:41.207126] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [14:54:22.178074] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [18:35:41.207596] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [18:35:41.207641] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [18:35:41.207647] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
+<span><span class="co">## [14:54:22.178407] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [14:54:22.178442] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [14:54:22.178446] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
 <pre><code><span><span class="co">## $M</span></span>
 <span><span class="co">##      a b c d</span></span>
 <span><span class="co">## [1,] 1 0 0 1</span></span>
@@ -326,11 +326,11 @@ column as the GRanges input regions:</p>
 <span><span class="co">## [1] "a" "b" "c" "d"</span></span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">mats.sparse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/query_all.html">query_all</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [18:35:41.209013] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [14:54:22.179423] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [18:35:41.209450] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [18:35:41.209473] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [18:35:41.209484] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
+<span><span class="co">## [14:54:22.179707] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [14:54:22.179721] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [14:54:22.179728] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
 <pre><code><span><span class="co">## $M</span></span>
 <span><span class="co">## 7 x 4 sparse Matrix of class "dgCMatrix"</span></span>
 <span><span class="co">##      a b c d</span></span>
@@ -398,16 +398,11 @@ handle sparse matrices:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kasperdanielhansen/bsseq" class="external-link">bsseq</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">BSseq</span>, <span class="va">mats</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## An object of type 'BSseq' with</span></span>
-<span><span class="co">##   7 methylation loci</span></span>
-<span><span class="co">##   4 samples</span></span>
-<span><span class="co">## has not been smoothed</span></span>
-<span><span class="co">## All assays are in-memory</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.4.2 (2024-10-31)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
@@ -431,52 +426,28 @@ handle sparse matrices:</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] bsseq_1.42.0                SummarizedExperiment_1.36.0</span></span>
-<span><span class="co">##  [3] Biobase_2.66.0              MatrixGenerics_1.18.1      </span></span>
-<span><span class="co">##  [5] matrixStats_1.5.0           GenomicRanges_1.58.0       </span></span>
-<span><span class="co">##  [7] GenomeInfoDb_1.42.3         IRanges_2.40.1             </span></span>
-<span><span class="co">##  [9] S4Vectors_0.44.0            BiocGenerics_0.52.0        </span></span>
-<span><span class="co">## [11] iscream_0.0.0.9000         </span></span>
+<span><span class="co">##  [1] SummarizedExperiment_1.36.0 Biobase_2.66.0             </span></span>
+<span><span class="co">##  [3] MatrixGenerics_1.18.1       matrixStats_1.5.0          </span></span>
+<span><span class="co">##  [5] GenomicRanges_1.58.0        GenomeInfoDb_1.42.3        </span></span>
+<span><span class="co">##  [7] IRanges_2.40.1              S4Vectors_0.44.0           </span></span>
+<span><span class="co">##  [9] BiocGenerics_0.52.0         iscream_0.0.0.9000         </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] rjson_0.2.23              xfun_0.50                </span></span>
-<span><span class="co">##  [3] bslib_0.9.0               rhdf5_2.50.2             </span></span>
-<span><span class="co">##  [5] lattice_0.22-6            bitops_1.0-9             </span></span>
-<span><span class="co">##  [7] rhdf5filters_1.18.0       tools_4.4.2              </span></span>
-<span><span class="co">##  [9] curl_6.2.0                parallel_4.4.2           </span></span>
-<span><span class="co">## [11] R.oo_1.27.0               Matrix_1.7-1             </span></span>
-<span><span class="co">## [13] BSgenome_1.74.0           data.table_1.16.4        </span></span>
-<span><span class="co">## [15] desc_1.4.3                sparseMatrixStats_1.18.0 </span></span>
-<span><span class="co">## [17] RcppParallel_5.1.10       lifecycle_1.0.4          </span></span>
-<span><span class="co">## [19] GenomeInfoDbData_1.2.13   compiler_4.4.2           </span></span>
-<span><span class="co">## [21] Rsamtools_2.22.0          Biostrings_2.74.1        </span></span>
-<span><span class="co">## [23] textshaping_1.0.0         munsell_0.5.1            </span></span>
-<span><span class="co">## [25] statmod_1.5.0             codetools_0.2-20         </span></span>
-<span><span class="co">## [27] permute_0.9-7             htmltools_0.5.8.1        </span></span>
-<span><span class="co">## [29] sass_0.4.9                RCurl_1.98-1.16          </span></span>
-<span><span class="co">## [31] yaml_2.3.10               pkgdown_2.1.1            </span></span>
-<span><span class="co">## [33] crayon_1.5.3              jquerylib_0.1.4          </span></span>
-<span><span class="co">## [35] R.utils_2.12.3            BiocParallel_1.40.0      </span></span>
-<span><span class="co">## [37] DelayedArray_0.32.0       cachem_1.1.0             </span></span>
-<span><span class="co">## [39] limma_3.62.2              abind_1.4-8              </span></span>
-<span><span class="co">## [41] parallelly_1.42.0         gtools_3.9.5             </span></span>
-<span><span class="co">## [43] locfit_1.5-9.11           digest_0.6.37            </span></span>
-<span><span class="co">## [45] restfulr_0.0.15           fastmap_1.2.0            </span></span>
-<span><span class="co">## [47] grid_4.4.2                colorspace_2.1-1         </span></span>
-<span><span class="co">## [49] cli_3.6.3                 SparseArray_1.6.1        </span></span>
-<span><span class="co">## [51] S4Arrays_1.6.0            XML_3.99-0.18            </span></span>
-<span><span class="co">## [53] DelayedMatrixStats_1.28.1 UCSC.utils_1.2.0         </span></span>
-<span><span class="co">## [55] scales_1.3.0              rmarkdown_2.29           </span></span>
-<span><span class="co">## [57] XVector_0.46.0            httr_1.4.7               </span></span>
-<span><span class="co">## [59] R.methodsS3_1.8.2         ragg_1.3.3               </span></span>
-<span><span class="co">## [61] stringfish_0.16.0         HDF5Array_1.34.0         </span></span>
-<span><span class="co">## [63] evaluate_1.0.3            knitr_1.49               </span></span>
-<span><span class="co">## [65] BiocIO_1.16.0             rtracklayer_1.66.0       </span></span>
-<span><span class="co">## [67] rlang_1.1.5               Rcpp_1.0.14              </span></span>
-<span><span class="co">## [69] glue_1.8.0                jsonlite_1.8.9           </span></span>
-<span><span class="co">## [71] R6_2.5.1                  Rhdf5lib_1.28.0          </span></span>
-<span><span class="co">## [73] GenomicAlignments_1.42.0  systemfonts_1.2.1        </span></span>
-<span><span class="co">## [75] fs_1.6.5                  zlibbioc_1.52.0</span></span></code></pre>
+<span><span class="co">##  [1] sass_0.4.9              SparseArray_1.6.1       lattice_0.22-6         </span></span>
+<span><span class="co">##  [4] digest_0.6.37           evaluate_1.0.3          grid_4.4.2             </span></span>
+<span><span class="co">##  [7] fastmap_1.2.0           jsonlite_1.8.9          Matrix_1.7-1           </span></span>
+<span><span class="co">## [10] httr_1.4.7              UCSC.utils_1.2.0        textshaping_1.0.0      </span></span>
+<span><span class="co">## [13] jquerylib_0.1.4         abind_1.4-8             cli_3.6.3              </span></span>
+<span><span class="co">## [16] rlang_1.1.5             crayon_1.5.3            XVector_0.46.0         </span></span>
+<span><span class="co">## [19] parallelly_1.42.0       cachem_1.1.0            DelayedArray_0.32.0    </span></span>
+<span><span class="co">## [22] yaml_2.3.10             S4Arrays_1.6.0          tools_4.4.2            </span></span>
+<span><span class="co">## [25] parallel_4.4.2          GenomeInfoDbData_1.2.13 R6_2.5.1               </span></span>
+<span><span class="co">## [28] lifecycle_1.0.4         zlibbioc_1.52.0         fs_1.6.5               </span></span>
+<span><span class="co">## [31] stringfish_0.16.0       ragg_1.3.3              desc_1.4.3             </span></span>
+<span><span class="co">## [34] pkgdown_2.1.1           RcppParallel_5.1.10     bslib_0.9.0            </span></span>
+<span><span class="co">## [37] data.table_1.16.4       Rcpp_1.0.14             systemfonts_1.2.1      </span></span>
+<span><span class="co">## [40] xfun_0.50               knitr_1.49              htmltools_0.5.8.1      </span></span>
+<span><span class="co">## [43] rmarkdown_2.29          compiler_4.4.2</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
