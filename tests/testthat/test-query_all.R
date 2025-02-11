@@ -8,24 +8,28 @@ regions.dt <- as.data.table(regions)[, tstrsplit(regions, ":|-")]
 colnames(regions.dt) <- c("chr", "start", "end")
 gr <- GenomicRanges::GRanges(regions)
 
-M <- matrix(c(1, 0, 0, 1,
-              1, 0, 2, 2,
-              0, 2, 0, 0,
-              0, 1, 0, 0,
-              1, 0, 1, 1,
-              2, 0, 0, 0,
-              3, 1, 0, 1),
-            nrow = 7,
-            byrow = TRUE)
-Cov <- matrix(c(1, 2, 0, 1,
-                 1, 0, 2, 2,
-                 2, 2, 0, 0,
-                 1, 1, 2, 1,
-                 2, 0, 1, 2,
-                 2, 2, 0, 0,
-                 3, 1, 0, 1),
-               nrow = 7,
-               byrow = TRUE)
+M <- matrix(
+  c(1, 0, 0, 1,
+    1, 0, 2, 2,
+    0, 2, 0, 0,
+    0, 1, 0, 0,
+    1, 0, 1, 1,
+    2, 0, 0, 0,
+    3, 1, 0, 1),
+  nrow = 7,
+  byrow = TRUE)
+
+Cov <- matrix(
+  c(1, 2, 0, 1,
+    1, 0, 2, 2,
+    2, 2, 0, 0,
+    1, 1, 2, 1,
+    2, 0, 1, 2,
+    2, 2, 0, 0,
+    3, 1, 0, 1),
+  nrow = 7,
+  byrow = TRUE)
+
 beta <- matrix(
   c(1, 0, 0, 1,
     1, 0, 1, 1,
@@ -37,7 +41,6 @@ beta <- matrix(
   nrow = 7,
   byrow = TRUE
 )
-
 
 M_sp <- Matrix(M, sparse = T)
 Cov_sp <- Matrix(Cov, sparse = T)
@@ -58,12 +61,16 @@ exp_seq <- rep("chr1", 7)
 set_threads(1)
 biscuit_test <- query_all(biscuit_bedfiles, regions, prealloc = 2)
 bismark_test <- query_all(bismark_bedfiles, regions, aligner = "bismark")
+
 biscuit_sparse_test <- query_all(biscuit_bedfiles, regions, sparse = T)
 bismark_sparse_test <- query_all(bismark_bedfiles, regions, sparse = T, aligner = "bismark")
+
 biscuit_granges_test <- query_all(biscuit_bedfiles, gr, prealloc = 2)
 biscuit_df_test <- query_all(biscuit_bedfiles, regions.dt, prealloc = 2)
+
 biscuit_beta_test <- query_all(biscuit_bedfiles, regions, sparse = F, mval = F)
 bismark_beta_test <- query_all(bismark_bedfiles, regions, sparse = F, aligner = "bismark", mval = F)
+
 biscuit_sparse_beta_test <- query_all(biscuit_bedfiles, regions, sparse = T, mval = F)
 bismark_sparse_beta_test <- query_all(bismark_bedfiles, regions, sparse = T, aligner = "bismark", mval = F)
 
