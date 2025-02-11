@@ -1,7 +1,7 @@
 #' Query all CpGs from input genomic regions
 #'
-#' Queries the provided regions and produces M and Coverage matrices and their
-#' genomic positions. Parallelized across files using threads from the
+#' Queries the provided regions and produces M/beta and Coverage matrices and
+#' their genomic positions. Parallelized across files using threads from the
 #' `"iscream.threads"` option. The output of `query_all` may be used to create
 #' a BSseq object: `do.call(BSseq, query_all(...))`.
 #' @param bedfiles A vector of bedfile paths
@@ -20,7 +20,7 @@
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #' @return A named list of
-#' - M and coverage matrices
+#' - coverage and either a beta- or M-value matrix
 #' - a character vector of chromosomes and numeric vector of corresponding CpG
 #' base positions
 #' - a character vector of the input sample names

@@ -42,15 +42,15 @@ as fewer resizes need to be made.}
 \value{
 A named list of
 \itemize{
-\item M and coverage matrices
+\item coverage and either a beta- or M-value matrix
 \item a character vector of chromosomes and numeric vector of corresponding CpG
 base positions
 \item a character vector of the input sample names
 }
 }
 \description{
-Queries the provided regions and produces M and Coverage matrices and their
-genomic positions. Parallelized across files using threads from the
+Queries the provided regions and produces M/beta and Coverage matrices and
+their genomic positions. Parallelized across files using threads from the
 \code{"iscream.threads"} option. The output of \code{query_all} may be used to create
 a BSseq object: \code{do.call(BSseq, query_all(...))}.
 }
