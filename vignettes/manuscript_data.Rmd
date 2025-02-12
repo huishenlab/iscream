@@ -1,0 +1,56 @@
+---
+title: "Manuscript data availabiliy"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Manuscript data availabiliy}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: refs.bib
+link-citations: yes
+---
+
+## Datasets
+
+Two datasets were used to produce the figure in the paper:
+
+1. snmC-seq2 scWGBS data [@luo2018a] for single-cell benchmarks.
+2. bulk WGBS from a project in our lab
+
+Both datasets were aligned with BISCUIT [@zhou2024]. To produce Bismark BEDgraph
+files [@krueger2011], we used a python script to convert the beta and coverage
+value columns to percentage methylation, unmethylated reads and methylated read
+columns.
+
+```py
+import sys
+import gzip
+
+bedfile = sys.argv[1]
+
+def bed2cov(line):
+    chr, start, end, beta, cov = line.split('\t')
+    percent, meth, unmeth = convert(float(beta), int(cov))
+    return '\t'.join([chr, start, start, str(percent), str(meth), str(unmeth)])
+
+def convert(beta, cov):
+    percent = round(beta * 100)
+    meth = round(beta * cov)
+    unmeth = cov - meth
+    return [percent, meth, unmeth]
+
+with gzip.open(bedfile, 'rt') as bed:
+    for line in bed:
+        print(bed2cov(line))
+```
+
+Using GNU parallel:
+
+```sh
+parallel python bed2cov.py <biscuit_path>/{} '>' <bismark_path>/{/.} ::: biscuit_path/*.bed.gz
+```
+
+Then using the `iscream.paper` package at
+<https://github.com/huishenlab/iscream.paper> we ran the benchmarks and produced
+the figures.
+
+## References
