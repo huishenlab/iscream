@@ -1,0 +1,65 @@
+---
+title: "Performance considerations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Performance considerations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+#bibliography: refs.bib
+link-citations: yes
+---
+
+Although *iscream* aims to be fast and memory efficient, there are cases where
+it may not be the right tool for the job or may need more than the defaults to
+work well. For the performance issues mentioned below, we are working on making
+iscream faster and more memory efficient wherever possible.
+
+## Tabix queries
+
+Making region queries is the underlying mechanism for all of iscream's functions
+and inefficiencies in querying will propagate into the other functions. Although
+quite fast, *iscream's* `tabix()` queries are always going to be slower than
+running *tabix* in the shell because, unlike iscream, *tabix* streams the output
+without storing it. Storing the data involves allocating memory for each of the
+strings returned from a BED file. If the storage component is removed, iscream's
+query runtime is comparable to *tabix*.
+
+If you're expecting to get millions of lines from BED files, *iscream*'s
+`tabix()` may not be the best tool to use for raw speed and memory efficiency.
+You may be better served by running tabix in the shell and reading the output
+from a file or using `data.table::fread` with the `cmd` flag set to the tabix
+command.
+
+## Summarizing regions
+
+*iscream's* summarizing function queries BED files according to input regions
+and summarizes the records from each region. This means the size of the returned
+regions are going to affect its runtime. If you expect millions of BED records
+per-file (eg. large regions from bulk data), summarizing with iscream can be
+slow compared to using `bedtools`. `bedtools`, when run with GNU `parallel` for
+multiple files, is much faster at providing region-based summary statistics from
+since it streams the data without storing it. *iscream's* advantage is that it
+doesn't require context switching between the shell and R and returns the data
+directly as data frames with named input features. Getting summaries from
+multiple files does not require an extra tool for parallelism. Up to a point,
+the time and effort cost of using `parallel`, context switching, writing and
+reading `bedtools` output gives iscream the advantage. Beyond that, `bedtools`
+may be the better tool.
+
+## Making matrices
+
+The two slowest steps when making matrices with `query_all()` is the query for
+the CpGs in the input regions, and resizing the matrix as new CpGs are found. To
+reduce the time and memory usage of resizes, iscream uses bitpacking to store
+the values for both the M/$\beta$-value matrix and the coverage matrix in one
+matrix so that resizing operations only need to be done on one matrix. Users can
+get further runtime reduction by using the `prealloc` argument to preallocate a
+certain number of rows in the matrix. If you are expecting your input regions to
+return millions or tens of millions of CpGs from your files, you can specify an
+approximate number of rows to start with. You can approximate this based on the
+whether you have bulk and single-cell data, the size of your regions and the
+number of files. Making matrices from 16 scWGBS BED files and 20048 (see
+`vignette("iscream")`) gene body regions took 158 seconds as the regions were
+large and returned many CpGs. When preallocated with the approximately 15
+million rows needed, it took 25 seconds. Allocating half of the needed rows took
+98 seconds.
