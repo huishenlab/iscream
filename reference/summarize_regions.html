@@ -22,6 +22,7 @@ Parallelized across files using threads from the "iscream.threads" option.'><met
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/data_structures.html">Getting other data structures from iscream</a></li>
+    <li><a class="dropdown-item" href="../articles/manuscript_data.html">Manuscript data availabiliy</a></li>
     <li><a class="dropdown-item" href="../articles/TSS.html">Plotting TSS methylation profiles</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -183,8 +184,8 @@ supported functions</p>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:16:05.465327] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:16:05.465344] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15:48:45.089589] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15:48:45.089603] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Feature Sample coverage.sum M.sum coverage.mean    M.mean coverage.median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6      a            4     2      1.333333 0.6666667             1.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10      a            3     1      1.500000 0.5000000             1.5</span>
@@ -225,8 +226,8 @@ supported functions</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11     0            2     1              1       1         2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12     1            1     1              0       0         1</span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"stddev"</span><span class="op">)</span>, mval <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:16:05.479209] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:16:05.479222] [iscream::summarize_regions] [info] using mean, stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15:48:45.103882] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15:48:45.103898] [iscream::summarize_regions] [info] using mean, stddev</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Feature Sample coverage.mean beta.mean coverage.stddev beta.stddev</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6      a      1.333333 0.6666667       0.5773503   0.5773503</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10      a      1.500000 0.2500000       0.7071068   0.3535534</span>
@@ -241,8 +242,8 @@ supported functions</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11  chr1:7-10      d      1.500000 0.2500000       0.7071068   0.3535534</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12 chr1:11-14      d      1.000000 1.0000000       0.0000000   0.0000000</span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:16:05.482614] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:16:05.482623] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15:48:45.107259] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15:48:45.107268] [iscream::summarize_regions] [info] using sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Feature Sample coverage.sum M.sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6      a            4     2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10      a            3     1</span>
