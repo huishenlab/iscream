@@ -103,7 +103,7 @@ head(tss.query)
 
 ```
 ##       chr   start     end methylation.percentage count.methylated
-##    <char>   <num>   <num>                  <num>            <num>
+##    <char>   <int>   <int>                  <num>            <int>
 ## 1:      1 4785488 4785488                      0                0
 ## 2:      1 4785513 4785513                      0                0
 ## 3:      1 4785522 4785522                      0                0
@@ -111,7 +111,7 @@ head(tss.query)
 ## 5:      1 4786780 4786780                    100                1
 ## 6:      1 4786886 4786886                    100                1
 ##    count.unmethylated  sample
-##                 <num>  <char>
+##                 <int>  <char>
 ## 1:                  2 cell_01
 ## 2:                  2 cell_01
 ## 3:                  2 cell_01
@@ -149,7 +149,7 @@ tss.summary <- tss.profile[,
 query_runtime <- timetaken(query_runtime.start)
 ```
 
-Time to make the query and compute the summary: 3.685s elapsed (5.061s cpu).
+Time to make the query and compute the summary: 2.184s elapsed (4.409s cpu).
 
 ### Plot average methylation profiles around the TSS
 
@@ -176,7 +176,7 @@ tss.plot
 
 
 Total runtime, from getting the bedfiles and regions to making the query,
-calculating the summaries and plotting: 3.728s elapsed (5.102s cpu). With methscan,
+calculating the summaries and plotting: 2.225s elapsed (4.447s cpu). With methscan,
 generating the TSS methylation profiles alone took 11 seconds.
 
 ## Session info
