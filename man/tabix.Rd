@@ -8,7 +8,7 @@ tabix(
   bedfiles,
   regions,
   aligner = "biscuit",
-  colnames = NULL,
+  col.names = NULL,
   raw = FALSE,
   nthreads = NULL
 )
@@ -23,7 +23,7 @@ details.}
 "bismark", "bsbolt". Will set the result data.table's column names based on
 this argument.}
 
-\item{colnames}{A vector of column names for the result data.table. Set if
+\item{col.names}{A vector of column names for the result data.table. Set if
 your bedfile is not from the supported aligners or is a general bedfile.}
 
 \item{raw}{Set true to give a named list of raw strings from the regions in
@@ -49,5 +49,5 @@ metadata columns (joined onto the result using
 bedfiles <- system.file("extdata", package = "iscream") |>
   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
-tabix(bedfiles[1], regions, colnames = c("chr", "start", "end", "beta", "coverage"))
+tabix(bedfiles[1], regions, col.names = c("chr", "start", "end", "beta", "coverage"))
 }
