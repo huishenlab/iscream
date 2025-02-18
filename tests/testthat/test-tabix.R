@@ -61,7 +61,7 @@ test_that("tabix dataframe", {
 custom_cols <- paste0("c", 1:5)
 test_that("tabix custom colnames", {
   expect_equal(
-    colnames(tabix(chrom_beds[1], regions, colnames = custom_cols)),
+    colnames(tabix(chrom_beds[1], regions, col.names = custom_cols)),
     custom_cols
   )
 })
@@ -69,7 +69,7 @@ test_that("tabix custom colnames", {
 custom_cols <- paste0("c", 1:6)
 test_that("tabix custom colnames too many", {
   expect_warning(
-    tabix(chrom_beds[1], regions, colnames = custom_cols),
+    tabix(chrom_beds[1], regions, col.names = custom_cols),
     "Fewer columns in data than provided colnames"
   )
 })
@@ -77,7 +77,7 @@ test_that("tabix custom colnames too many", {
 custom_cols <- paste0("c", 1:4)
 test_that("tabix custom colnames too few", {
   expect_warning(
-    tabix(chrom_beds[1], regions, colnames = custom_cols),
+    tabix(chrom_beds[1], regions, col.names = custom_cols),
     paste("Did not use input 'colnames' - only", length(custom_cols), "names provided for 5 column data.table")
   )
 })
