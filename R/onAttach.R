@@ -21,6 +21,18 @@ package_loader <- function() {
       " possibly available threads.",
       help_msg, " before trying to use more.")
   }
+
+  if (Sys.which("tabix") == "") {
+    options("tabix.method" = "htslib")
+    msg <- paste0(msg,
+      "\n'tabix' executable not found in $PATH.",
+      " tabix() will use htslib to make queries instead which can be slower.",
+      " See ?tabix for details."
+    )
+  } else {
+    options("tabix.method" = "shell")
+  }
+
   return(msg)
 }
 
