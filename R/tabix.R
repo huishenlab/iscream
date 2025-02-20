@@ -91,10 +91,7 @@ tabix.shell.single <- function(bedfile, regions_df, result_colnames) {
   cmd <- paste("tabix", bedfile, "-R", query.tmpfile)
   result <- suppressWarnings(fread(cmd = cmd))
 
-  if (nrow(result) == 0) {
-    warning(paste("No records found in", bedfile, "- if this is unexpected check that your region format matches your bedfiles"))
-    return(NULL)
-  }
+  if (is_empty(result, bedfile)) return(NULL)
 
   n_col <- ncol(result)
 
@@ -139,11 +136,8 @@ tabix.htslib <- function(bedfiles, input_regions, result_colnames, mergecg, nthr
 
 tabix.htslib.single <- function(bedfile, regions, result_colnames, mergecg) {
   lines <- Cpp_query_interval(bedfile, regions)
-  if (length(lines) == 0) {
-    warning(paste("No records found in", bedfile, "- if this is unexpected check that your region format matches your bedfiles"))
-    return(NULL)
-  }
   lines_dt <- as.data.table(lines)
+  if (is_empty(lines_dt, bedfile)) return(NULL)
 
   lines_dt <- lines_dt[, tstrsplit(lines, "\t", fixed = TRUE, type.convert = TRUE)]
   n_col <- ncol(lines_dt)
@@ -219,8 +213,6 @@ get_colnames <- function(aligner, bedfiles) {
 }
 
 
-
-
 write_bed <- function(regions_df, outfile) {
   fwrite(
     regions_df[, 1:3],
@@ -231,3 +223,10 @@ write_bed <- function(regions_df, outfile) {
   )
 }
 
+is_empty <- function(result, bedfile) {
+  if (nrow(result) == 0) {
+    warning(paste("No records found in", bedfile, "- if this is unexpected check that your region format matches your bedfiles"))
+    return(TRUE)
+  }
+  return(FALSE)
+}
