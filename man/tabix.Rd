@@ -39,11 +39,35 @@ A data.table
 Query lines from a tabixed bedfile
 }
 \details{
+\subsection{Query method}{
+
+'\emph{iscream} has two methods to query records from BED files:
+\itemize{
+\item the \emph{tabix} shell executable: fast since its output can be redirected to a
+file (which \code{data.table::fread()} can then read) instead of having to
+allocate memory and store it during the query
+\item \emph{iscream's} tabix implementation, based on the \emph{tabix} executable using
+\emph{htslib}, but slower on large queries since it stores the records as they
+are found instead of writing to a file. However it's able to store each
+regions records independently instead of in a single file and is used in
+\code{query_all()} and \code{summarize_regions()}.
+}
+
+When \emph{iscream} is attached, it checks that the \emph{tabix} executable is
+available with \code{Sys.which()} and, if available, sets \code{options("tabix.method" = "shell")}. \code{tabix()} then uses the \emph{tabix} executable to make
+queries, except if \code{raw = TRUE}. If \emph{tabix} is not found, \emph{iscream} its
+tabix implementation. To use only \emph{iscream's} tabix implementation, set
+\code{options("tabix.method" = "htslib")}.
+}
+
+\subsection{Input region formats}{
+
 The input regions may be string vector in the form "chr:start-end", a
 dataframe with "chr", "start" and "end" columns or a GRanges object. If the
 input is a GRanges, the output will also be GRanges with any associated
 metadata columns (joined onto the result using
 \code{GenomicRanges::findOverlaps()})
+}
 }
 \examples{
 bedfiles <- system.file("extdata", package = "iscream") |>

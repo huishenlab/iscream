@@ -13,6 +13,27 @@
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
 #' @details
+#'
+#' ## Query method
+#' '*iscream* has two methods to query records from BED files:
+#' - the *tabix* shell executable: fast since its output can be redirected to a
+#' file (which `data.table::fread()` can then read) instead of having to
+#' allocate memory and store it during the query
+#'
+#' - *iscream's* tabix implementation, based on the *tabix* executable using
+#' *htslib*, but slower on large queries since it stores the records as they
+#' are found instead of writing to a file. However it's able to store each
+#' regions records independently instead of in a single file and is used in
+#' `query_all()` and `summarize_regions()`.
+#'
+#' When *iscream* is attached, it checks that the *tabix* executable is
+#' available with `Sys.which()` and, if available, sets `options("tabix.method"
+#' = "shell")`. `tabix()` then uses the *tabix* executable to make
+#' queries, except if `raw = TRUE`. If *tabix* is not found, *iscream* its
+#' tabix implementation. To use only *iscream's* tabix implementation, set
+#' `options("tabix.method" = "htslib")`.
+#'
+#' ## Input region formats
 #' The input regions may be string vector in the form "chr:start-end", a
 #' dataframe with "chr", "start" and "end" columns or a GRanges object. If the
 #' input is a GRanges, the output will also be GRanges with any associated
