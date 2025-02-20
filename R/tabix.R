@@ -93,8 +93,11 @@ tabix.shell.single <- function(bedfile, regions_df, result_colnames) {
 
   if (is_empty(result, bedfile)) return(NULL)
 
-  n_col <- ncol(result)
+  return(check_colnames(result, result_colnames))
+}
 
+check_colnames <- function(result, result_colnames) {
+  n_col <- ncol(result)
   if (length(result_colnames) < n_col) {
     warning(paste(
         "Did not use input 'colnames' - only",
@@ -140,19 +143,7 @@ tabix.htslib.single <- function(bedfile, regions, result_colnames, mergecg) {
   if (is_empty(lines_dt, bedfile)) return(NULL)
 
   lines_dt <- lines_dt[, tstrsplit(lines, "\t", fixed = TRUE, type.convert = TRUE)]
-  n_col <- ncol(lines_dt)
-  if (length(result_colnames) < n_col) {
-    warning(paste(
-        "Did not use input 'colnames' - only",
-        length(result_colnames), "names provided for", n_col, "column data.table"
-      ))
-    return(lines_dt)
-  } else if (length(result_colnames) > n_col) {
-    warning("Fewer columns in data than provided colnames")
-  }
-
-  colnames(lines_dt) <- result_colnames[1:n_col]
-  return(lines_dt)
+  return(check_colnames(lines_dt, result_colnames))
 }
 
 run_scan_tabix <- function(bedfiles, input_regions, nthreads) {
