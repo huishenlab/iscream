@@ -145,7 +145,7 @@ tabix.htslib.single <- function(bedfile, regions, result_colnames, mergecg) {
   }
   lines_dt <- as.data.table(lines)
 
-  lines_dt <- lines_dt[, tstrsplit(lines, "\t", fixed = TRUE)]
+  lines_dt <- lines_dt[, tstrsplit(lines, "\t", fixed = TRUE, type.convert = TRUE)]
   n_col <- ncol(lines_dt)
   if (length(result_colnames) < n_col) {
     warning(paste(
