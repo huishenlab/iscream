@@ -179,8 +179,8 @@ object:</p>
 <span>  set_region_rownames <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [19:17:33.451679] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [19:17:33.451737] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
+<pre><code><span><span class="co">## [18:39:33.637460] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [18:39:33.637535] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
 <pre><code><span><span class="co">##            Feature Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
 <span><span class="co">## chr1:1-6         A      a            4     2      1.333333 0.6666667</span></span>
 <span><span class="co">## chr1:7-10        B      a            3     1      1.500000 0.5000000</span></span>
@@ -233,8 +233,8 @@ column as the GRanges input regions:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [19:17:33.564239] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [19:17:33.564275] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
+<pre><code><span><span class="co">## [18:39:33.758934] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [18:39:33.758964] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
 <pre><code><span><span class="co">##       Feature Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
 <span><span class="co">## 1    chr1:1-6      a            4     2      1.333333 0.6666667</span></span>
 <span><span class="co">## 2   chr1:7-10      a            3     1      1.500000 0.5000000</span></span>
@@ -291,11 +291,11 @@ column as the GRanges input regions:</p>
 </h3>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">mats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/query_all.html">query_all</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [19:17:35.933174] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [18:39:36.173591] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [19:17:35.933552] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [19:17:35.933595] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [19:17:35.933598] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
+<span><span class="co">## [18:39:36.174088] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [18:39:36.174137] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [18:39:36.174143] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
 <pre><code><span><span class="co">## $M</span></span>
 <span><span class="co">##      a b c d</span></span>
 <span><span class="co">## [1,] 1 0 0 1</span></span>
@@ -326,11 +326,11 @@ column as the GRanges input regions:</p>
 <span><span class="co">## [1] "a" "b" "c" "d"</span></span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">mats.sparse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/query_all.html">query_all</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [19:17:35.934631] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [18:39:36.175598] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [19:17:35.934918] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [19:17:35.934933] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [19:17:35.934940] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
+<span><span class="co">## [18:39:36.176029] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [18:39:36.176053] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [18:39:36.176064] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
 <pre><code><span><span class="co">## $M</span></span>
 <span><span class="co">## 7 x 4 sparse Matrix of class "dgCMatrix"</span></span>
 <span><span class="co">##      a b c d</span></span>
@@ -435,7 +435,7 @@ handle sparse matrices:</p>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] sass_0.4.9              SparseArray_1.6.1       lattice_0.22-6         </span></span>
 <span><span class="co">##  [4] digest_0.6.37           evaluate_1.0.3          grid_4.4.2             </span></span>
-<span><span class="co">##  [7] fastmap_1.2.0           jsonlite_1.8.9          Matrix_1.7-1           </span></span>
+<span><span class="co">##  [7] fastmap_1.2.0           jsonlite_1.9.0          Matrix_1.7-1           </span></span>
 <span><span class="co">## [10] httr_1.4.7              UCSC.utils_1.2.0        textshaping_1.0.0      </span></span>
 <span><span class="co">## [13] jquerylib_0.1.4         abind_1.4-8             cli_3.6.4              </span></span>
 <span><span class="co">## [16] rlang_1.1.5             crayon_1.5.3            XVector_0.46.0         </span></span>
@@ -446,7 +446,7 @@ handle sparse matrices:</p>
 <span><span class="co">## [31] stringfish_0.16.0       ragg_1.3.3              desc_1.4.3             </span></span>
 <span><span class="co">## [34] pkgdown_2.1.1           RcppParallel_5.1.10     bslib_0.9.0            </span></span>
 <span><span class="co">## [37] data.table_1.16.4       Rcpp_1.0.14             systemfonts_1.2.1      </span></span>
-<span><span class="co">## [40] xfun_0.50               knitr_1.49              htmltools_0.5.8.1      </span></span>
+<span><span class="co">## [40] xfun_0.51               knitr_1.49              htmltools_0.5.8.1      </span></span>
 <span><span class="co">## [43] rmarkdown_2.29          compiler_4.4.2</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
