@@ -44,6 +44,13 @@ libraries are installed with `pkg-config`:
 pkg-config --cflags --libs htslib
 ```
 
+##### *tabix*
+
+Some *htslib* installations do not include the *tabix* executable (on Ubuntu you
+need to install both *libhts-dev* and *tabix*). *iscream* will work without
+*tabix*, but the `tabix()` function will be faster if the executable is
+installed.
+
 #### GCC
 
 GNU GCC must be installed for OpenMP support. This is usually installed by
