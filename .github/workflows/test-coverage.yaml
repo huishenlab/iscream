@@ -30,7 +30,7 @@ jobs:
 
       - name: Install deps
         run: |
-          sudo apt-get install libhts-dev
+          sudo apt-get install libhts-dev tabix
           echo "-------------------HTSLIB-----------------------"
           pkg-config --cflags --libs htslib
           echo "------------------------------------------------"
