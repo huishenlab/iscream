@@ -10,6 +10,14 @@ mergecg_bed <- list.files(extdata, pattern = "*_mergecg.bed.gz$", full.names = T
 regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 regions.dt <- as.data.table(regions)[, tstrsplit(regions, ":|-")]
 colnames(regions.dt) <- c("chr", "start", "end")
+chrs <- sort(paste0("chr", c(seq(1:22), "M", "X", "Y")))
+
+test_that("query_chroms", {
+  expect_equal(
+    chrs,
+    query_chroms(chrom_beds)
+  )
+})
 
 gr <- GenomicRanges::GRanges(regions)
 gr.meta <- GenomicRanges::GRanges(regions)
