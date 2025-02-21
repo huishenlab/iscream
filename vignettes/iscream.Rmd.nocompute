@@ -27,25 +27,28 @@ options("iscream.threads" = 8)
 library(iscream)
 ```
 
-### Input bedifiles
+### Input BED files
 
-I'm using 100 human cell data from the snmc-seq2 dataset in this vignette:
+100 human cell WGBS data from the snmc-seq2 dataset:
 
 ```{r}
 bedfiles <- list.files(
-    "../data/k562/",
-    pattern = "*_mergecg.bed.gz$",
-    full.names = TRUE
-)
+  "../data/snmcseq2",
+  pattern = "*.bed.gz$",
+  full.names = TRUE
+)[1:100]
 ```
 ### Regions
 
 Since *iscream* is a region-based querying tool, we need to load some regions.
-Here we'll be using gene body regions as the input:
+Here we'll be using 5000 gene body regions as the input:
 
 ```{r}
 library(data.table)
-regions <- fread("../data/genes.bed", col.names = c("chr", "start", "end", "gene"))
+regions <- fread(
+  "../data/genes.bed",
+  col.names = c("chr", "start", "end", "gene")
+)[1:5000]
 head(regions)
 ```
 
@@ -65,28 +68,53 @@ TRUE`, `tabix()` will return the same data as `Rsamtools::scanTabix()` does - a
 named list of strings.
 
 ```{r}
-tabix(bedfiles, regions[1:50])
+system.time(tbx_query <- tabix(bedfiles, regions))
+tbx_query
 ```
 
 ### Get summary data
 
-To get a summary of the methylation information of the gene bodies we use
+To get a summary of the methylation information of the gene bodies use
 `summarize_regions`:
 
 ```{r}
-head(summarize_regions(bedfiles[1:8], regions))
+system.time(summary_query <- summarize_regions(bedfiles, regions))
+head(summary_query)
 ```
 
 ### Build matrices
 
+The `query_all()` function queries and stores every CpG in the input regions.
+Unlike `summarize_regions()` the output matrix dimensions are unknown at
+runtime. Although usually quite fast, if the CpG count is very large and there
+are few overlaps in the CpGs between files, this can take a long time. Here,
+gene bodies are large and the final matrix can contain millions of CpGs.
+Further, with single-cell data, chances are new CpGs are found in every file.
+
+Preallocating the number of rows, however, can drastically reduce runtime.
+Since we got 45 million CpGs from all the BED files, we can approximately
+expect between 5 and 10 million unique CpGs as single-cell data has lower
+coverage than bulk. We already have the tabix query so we can get the unique
+CpG count here and use it to preallocate the matrix, reducing the number of
+matrix resizes. Making tabix queries can be a relatively quick way to
+approximate the CpG count of a dataset. If you haven't done a tabix query of
+the full dataset, you can approximate how many CpGs to expect based on CpG
+counts in one file and the coverage of your WGBS method.
+
 ```{r}
-meth_mat <- query_all(bedfiles, regions, sparse = TRUE)
+cpg.count <- tbx_query$start |> unique() |> length()
+system.time(meth_mat <- query_all(
+  bedfiles,
+  regions,
+  sparse = TRUE,
+  prealloc = cpg.count
+))
 str(meth_mat)
 ```
 
-The output of query_all is a named list containing matrices of coverage values
-and M values and vectors of the sample names, chromosome names and positions of
-the loci.
+The output of `query_all()` is a named list containing matrices of coverage
+values and M values and vectors of the sample names, chromosome names and
+positions of the loci.
 
 This list can be used to produce a BSseq object. However since BSseq cannot work
 with sparse matrices, the two matrices would need to be converted to dense
