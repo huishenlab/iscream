@@ -84,7 +84,8 @@
 data structures for further analysis.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://huishenlab.github.io/iscream/">iscream</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## iscream using 1 thread by default but parallelly::availableCores() detects 4 possibly available threads. See `?set_threads` for information on multithreading before trying to use more.</span></span></code></pre>
+<pre><code><span><span class="co">## iscream using 1 thread by default but parallelly::availableCores() detects 4 possibly available threads. See `?set_threads` for information on multithreading before trying to use more.</span></span>
+<span><span class="co">## 'tabix' executable not found in $PATH. tabix() will use htslib to make queries instead which can be slower. See ?tabix for details.</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"iscream"</span><span class="op">)</span></span>
 <span><span class="va">bedfiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">data_dir</span>, pattern <span class="op">=</span> <span class="st">"[a|b|c|d].bed.gz$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -104,7 +105,7 @@ functions. The output of <code><a href="../reference/tabix.html">tabix()</a></co
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">bedfiles</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">regions</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## GRanges object with 7 ranges and 2 metadata columns:</span></span>
 <span><span class="co">##       seqnames    ranges strand |      beta  coverage</span></span>
-<span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;numeric&gt;</span></span>
+<span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;integer&gt;</span></span>
 <span><span class="co">##   [1]     chr1       1-2      * |       1.0         1</span></span>
 <span><span class="co">##   [2]     chr1       3-4      * |       1.0         1</span></span>
 <span><span class="co">##   [3]     chr1       5-6      * |       0.0         2</span></span>
@@ -138,7 +139,7 @@ data.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">gr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## GRanges object with 20 ranges and 5 metadata columns:</span></span>
 <span><span class="co">##        seqnames    ranges strand |      beta  coverage      sample        gene</span></span>
-<span><span class="co">##           &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;numeric&gt; &lt;character&gt; &lt;character&gt;</span></span>
+<span><span class="co">##           &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;integer&gt; &lt;character&gt; &lt;character&gt;</span></span>
 <span><span class="co">##    [1]     chr1       1-2      * |       1.0         1           a       gene1</span></span>
 <span><span class="co">##    [2]     chr1       3-4      * |       1.0         1           a       gene1</span></span>
 <span><span class="co">##    [3]     chr1       5-6      * |       0.0         2           a       gene1</span></span>
@@ -179,8 +180,8 @@ object:</p>
 <span>  set_region_rownames <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [21:30:41.161361] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [21:30:41.161427] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
+<pre><code><span><span class="co">## [14:44:05.194597] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [14:44:05.194650] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
 <pre><code><span><span class="co">##            Feature Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
 <span><span class="co">## chr1:1-6         A      a            4     2      1.333333 0.6666667</span></span>
 <span><span class="co">## chr1:7-10        B      a            3     1      1.500000 0.5000000</span></span>
@@ -233,8 +234,8 @@ column as the GRanges input regions:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [21:30:41.275673] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [21:30:41.275706] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
+<pre><code><span><span class="co">## [14:44:05.306278] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [14:44:05.306302] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
 <pre><code><span><span class="co">##       Feature Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
 <span><span class="co">## 1    chr1:1-6      a            4     2      1.333333 0.6666667</span></span>
 <span><span class="co">## 2   chr1:7-10      a            3     1      1.500000 0.5000000</span></span>
@@ -291,11 +292,11 @@ column as the GRanges input regions:</p>
 </h3>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">mats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/query_all.html">query_all</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [21:30:43.641615] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [14:44:07.566337] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [21:30:43.642114] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [21:30:43.642163] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [21:30:43.642168] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
+<span><span class="co">## [14:44:07.566810] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [14:44:07.566857] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [14:44:07.566862] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
 <pre><code><span><span class="co">## $M</span></span>
 <span><span class="co">##      a b c d</span></span>
 <span><span class="co">## [1,] 1 0 0 1</span></span>
@@ -326,11 +327,11 @@ column as the GRanges input regions:</p>
 <span><span class="co">## [1] "a" "b" "c" "d"</span></span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">mats.sparse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/query_all.html">query_all</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [21:30:43.643348] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [14:44:07.568246] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [21:30:43.643800] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [21:30:43.643826] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [21:30:43.643837] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
+<span><span class="co">## [14:44:07.568680] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [14:44:07.568704] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [14:44:07.568715] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
 <pre><code><span><span class="co">## $M</span></span>
 <span><span class="co">## 7 x 4 sparse Matrix of class "dgCMatrix"</span></span>
 <span><span class="co">##      a b c d</span></span>

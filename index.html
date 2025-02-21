@@ -103,6 +103,12 @@
 <p>or built manually: <a href="https://www.htslib.org/download/" class="external-link uri">https://www.htslib.org/download/</a>.</p>
 <p>The header files may also be found among your HPC modules - make sure the <code>PKG_CONFIG_PATH</code> environment variable includes the <code>pkgconfig</code> location for your installation of <em>htslib</em>. You can verify that the <em>htslib</em> development libraries are installed with <code>pkg-config</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">pkg-config</span> <span class="at">--cflags</span> <span class="at">--libs</span> htslib</span></code></pre></div>
+<div class="section level5">
+<h5 id="tabix">
+<em>tabix</em><a class="anchor" aria-label="anchor" href="#tabix"></a>
+</h5>
+<p>Some <em>htslib</em> installations do not include the <em>tabix</em> executable (on Ubuntu you need to install both <em>libhts-dev</em> and <em>tabix</em>). <em>iscream</em> will work without <em>tabix</em>, but the <code><a href="reference/tabix.html">tabix()</a></code> function will be faster if the executable is installed.</p>
+</div>
 </div>
 <div class="section level4">
 <h4 id="gcc">GCC<a class="anchor" aria-label="anchor" href="#gcc"></a>

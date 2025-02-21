@@ -54,7 +54,7 @@
 <span>  <span class="va">bedfiles</span>,</span>
 <span>  <span class="va">regions</span>,</span>
 <span>  aligner <span class="op">=</span> <span class="st">"biscuit"</span>,</span>
-<span>  colnames <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  col.names <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  raw <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  nthreads <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -79,7 +79,7 @@ details.</p></dd>
 this argument.</p></dd>
 
 
-<dt id="arg-colnames">colnames<a class="anchor" aria-label="anchor" href="#arg-colnames"></a></dt>
+<dt id="arg-col-names">col.names<a class="anchor" aria-label="anchor" href="#arg-col-names"></a></dt>
 <dd><p>A vector of column names for the result data.table. Set if
 your bedfile is not from the supported aligners or is a general bedfile.</p></dd>
 
@@ -100,11 +100,37 @@ the style of <code><a href="https://rdrr.io/pkg/Rsamtools/man/scanTabix.html" cl
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The input regions may be string vector in the form "chr:start-end", a
+
+<div class="section">
+<h3 id="query-method">Query method<a class="anchor" aria-label="anchor" href="#query-method"></a></h3>
+
+
+<p>'<em>iscream</em> has two methods to query records from BED files:</p><ul><li><p>the <em>tabix</em> shell executable: fast since its output can be redirected to a
+file (which <code><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">data.table::fread()</a></code> can then read) instead of having to
+allocate memory and store it during the query</p></li>
+<li><p><em>iscream's</em> tabix implementation, based on the <em>tabix</em> executable using
+<em>htslib</em>, but slower on large queries since it stores the records as they
+are found instead of writing to a file. However it's able to store each
+regions records independently instead of in a single file and is used in
+<code><a href="query_all.html">query_all()</a></code> and <code><a href="summarize_regions.html">summarize_regions()</a></code>.</p></li>
+</ul><p>When <em>iscream</em> is attached, it checks that the <em>tabix</em> executable is
+available with <code><a href="https://rdrr.io/r/base/Sys.which.html" class="external-link">Sys.which()</a></code> and, if available, sets <code>options("tabix.method" = "shell")</code>. <code>tabix()</code> then uses the <em>tabix</em> executable to make
+queries, except if <code>raw = TRUE</code>. If <em>tabix</em> is not found, <em>iscream</em> its
+tabix implementation. To use only <em>iscream's</em> tabix implementation, set
+<code>options("tabix.method" = "htslib")</code>.</p>
+</div>
+
+<div class="section">
+<h3 id="input-region-formats">Input region formats<a class="anchor" aria-label="anchor" href="#input-region-formats"></a></h3>
+
+
+<p>The input regions may be string vector in the form "chr:start-end", a
 dataframe with "chr", "start" and "end" columns or a GRanges object. If the
 input is a GRanges, the output will also be GRanges with any associated
 metadata columns (joined onto the result using
 <code><a href="https://rdrr.io/pkg/IRanges/man/findOverlaps-methods.html" class="external-link">GenomicRanges::findOverlaps()</a></code>)</p>
+</div>
+
     </div>
 
     <div class="section level2">
@@ -112,9 +138,9 @@ metadata columns (joined onto the result using
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">bedfiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"iscream"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"[a|b|c|d].bed.gz$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">tabix</span><span class="op">(</span><span class="va">bedfiles</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">regions</span>, colnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"beta"</span>, <span class="st">"coverage"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tabix</span><span class="op">(</span><span class="va">bedfiles</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">regions</span>, col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"beta"</span>, <span class="st">"coverage"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       chr start   end  beta coverage</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;char&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;    &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;num&gt;    &lt;int&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:   chr1     1     2   1.0        1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:   chr1     3     4   1.0        1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3:   chr1     5     6   0.0        2</span>
