@@ -29,7 +29,7 @@
 #' When *iscream* is attached, it checks that the *tabix* executable is
 #' available with `Sys.which()` and, if available, sets `options("tabix.method"
 #' = "shell")`. `tabix()` then uses the *tabix* executable to make
-#' queries, except if `raw = TRUE`. If *tabix* is not found, *iscream* its
+#' queries, except if `raw = TRUE`. If *tabix* is not found, *iscream* uses its
 #' tabix implementation. To use only *iscream's* tabix implementation, set
 #' `options("tabix.method" = "htslib")`.
 #'

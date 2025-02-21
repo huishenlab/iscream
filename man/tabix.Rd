@@ -55,7 +55,7 @@ regions records independently instead of in a single file and is used in
 
 When \emph{iscream} is attached, it checks that the \emph{tabix} executable is
 available with \code{Sys.which()} and, if available, sets \code{options("tabix.method" = "shell")}. \code{tabix()} then uses the \emph{tabix} executable to make
-queries, except if \code{raw = TRUE}. If \emph{tabix} is not found, \emph{iscream} its
+queries, except if \code{raw = TRUE}. If \emph{tabix} is not found, \emph{iscream} uses its
 tabix implementation. To use only \emph{iscream's} tabix implementation, set
 \code{options("tabix.method" = "htslib")}.
 }
