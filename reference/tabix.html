@@ -115,7 +115,7 @@ regions records independently instead of in a single file and is used in
 <code><a href="query_all.html">query_all()</a></code> and <code><a href="summarize_regions.html">summarize_regions()</a></code>.</p></li>
 </ul><p>When <em>iscream</em> is attached, it checks that the <em>tabix</em> executable is
 available with <code><a href="https://rdrr.io/r/base/Sys.which.html" class="external-link">Sys.which()</a></code> and, if available, sets <code>options("tabix.method" = "shell")</code>. <code>tabix()</code> then uses the <em>tabix</em> executable to make
-queries, except if <code>raw = TRUE</code>. If <em>tabix</em> is not found, <em>iscream</em> its
+queries, except if <code>raw = TRUE</code>. If <em>tabix</em> is not found, <em>iscream</em> uses its
 tabix implementation. To use only <em>iscream's</em> tabix implementation, set
 <code>options("tabix.method" = "htslib")</code>.</p>
 </div>
