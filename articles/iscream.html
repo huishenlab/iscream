@@ -91,29 +91,31 @@ library:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"iscream.threads"</span> <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://huishenlab.github.io/iscream/">iscream</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; iscream using 8 threads based on 'options(iscream.threads)' but parallelly::availableCores() detects 16 possibly available threads. See `?set_threads` for information on multithreading before trying to use more.</span></span></code></pre></div>
+<span><span class="co">#&gt; iscream using 8 threads of detected 8 threads. See `?set_threads` for information on multithreading.</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="input-bedifiles">Input bedifiles<a class="anchor" aria-label="anchor" href="#input-bedifiles"></a>
+<h3 id="input-bed-files">Input BED files<a class="anchor" aria-label="anchor" href="#input-bed-files"></a>
 </h3>
-<p>I’m using 100 human cell data from the snmc-seq2 dataset in this
-vignette:</p>
+<p>100 human cell WGBS data from the snmc-seq2 dataset:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bedfiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span></span>
-<span>    <span class="st">"../data/k562/"</span>,</span>
-<span>    pattern <span class="op">=</span> <span class="st">"*_mergecg.bed.gz$"</span>,</span>
-<span>    full.names <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="st">"../data/snmcseq2"</span>,</span>
+<span>  pattern <span class="op">=</span> <span class="st">"*.bed.gz$"</span>,</span>
+<span>  full.names <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">]</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="regions">Regions<a class="anchor" aria-label="anchor" href="#regions"></a>
 </h3>
 <p>Since <em>iscream</em> is a region-based querying tool, we need to
-load some regions. Here we’ll be using gene body regions as the
+load some regions. Here we’ll be using 5000 gene body regions as the
 input:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
-<span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">"../data/genes.bed"</span>, col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"gene"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span></span>
+<span>  <span class="st">"../data/genes.bed"</span>,</span>
+<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"gene"</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5000</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       chr    start      end   gene</span></span>
 <span><span class="co">#&gt;    &lt;char&gt;    &lt;int&gt;    &lt;int&gt; &lt;char&gt;</span></span>
@@ -144,137 +146,166 @@ If <code>raw = TRUE</code>, <code><a href="../reference/tabix.html">tabix()</a><
 data as <code><a href="https://rdrr.io/pkg/Rsamtools/man/scanTabix.html" class="external-link">Rsamtools::scanTabix()</a></code> does - a named list of
 strings.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          chr    start      end  beta coverage         mergecg      sample</span></span>
-<span><span class="co">#&gt;       &lt;char&gt;    &lt;num&gt;    &lt;num&gt; &lt;num&gt;    &lt;num&gt;          &lt;char&gt;      &lt;char&gt;</span></span>
-<span><span class="co">#&gt;    1:   chr1  3147020  3147022 0.000        3 C:0.000:3,G:.:0 A10_mergecg</span></span>
-<span><span class="co">#&gt;    2:   chr1  3147050  3147052 0.333        3 C:0.333:3,G:.:0 A10_mergecg</span></span>
-<span><span class="co">#&gt;    3:   chr1  3147084  3147086 0.250        4 C:0.250:4,G:.:0 A10_mergecg</span></span>
-<span><span class="co">#&gt;    4:   chr1  3147088  3147090 0.250        4 C:0.250:4,G:.:0 A10_mergecg</span></span>
-<span><span class="co">#&gt;    5:   chr1  3147106  3147108 0.750        4 C:0.750:4,G:.:0 A10_mergecg</span></span>
-<span><span class="co">#&gt;   ---                                                                    </span></span>
-<span><span class="co">#&gt; 4276:   chr1 30875221 30875223 1.000        4 C:.:0,G:1.000:4  H9_mergecg</span></span>
-<span><span class="co">#&gt; 4277:   chr1 30875294 30875296 0.000        4 C:.:0,G:0.000:4  H9_mergecg</span></span>
-<span><span class="co">#&gt; 4278:   chr1 30875303 30875305 0.000        3 C:.:0,G:0.000:3  H9_mergecg</span></span>
-<span><span class="co">#&gt; 4279:   chr1  9558942  9558944 1.000        5 C:.:0,G:1.000:5  H9_mergecg</span></span>
-<span><span class="co">#&gt; 4280:   chr1 15556745 15556747 0.000        4 C:0.000:4,G:.:0  H9_mergecg</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">tbx_query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    user  system elapsed </span></span>
+<span><span class="co">#&gt;  35.363   4.769  10.853</span></span>
+<span><span class="va">tbx_query</span></span>
+<span><span class="co">#&gt;              chr     start       end  beta coverage          sample</span></span>
+<span><span class="co">#&gt;           &lt;char&gt;     &lt;int&gt;     &lt;int&gt; &lt;num&gt;    &lt;int&gt;          &lt;char&gt;</span></span>
+<span><span class="co">#&gt;        1:   chr1    923949    923950 0.000        1 bisc_SRR6911624</span></span>
+<span><span class="co">#&gt;        2:   chr1    923953    923954 0.000        1 bisc_SRR6911624</span></span>
+<span><span class="co">#&gt;        3:   chr1    923959    923960 0.000        1 bisc_SRR6911624</span></span>
+<span><span class="co">#&gt;        4:   chr1    923971    923972 0.000        1 bisc_SRR6911624</span></span>
+<span><span class="co">#&gt;        5:   chr1    923973    923974 0.000        1 bisc_SRR6911624</span></span>
+<span><span class="co">#&gt;       ---                                                          </span></span>
+<span><span class="co">#&gt; 45729764:   chr4 190179369 190179370 0.000        2 bisc_SRR6911723</span></span>
+<span><span class="co">#&gt; 45729765:   chr4 190179686 190179687 1.000        1 bisc_SRR6911723</span></span>
+<span><span class="co">#&gt; 45729766:   chr4 190179687 190179688 0.500        2 bisc_SRR6911723</span></span>
+<span><span class="co">#&gt; 45729767:   chr4 190179753 190179754 1.000        1 bisc_SRR6911723</span></span>
+<span><span class="co">#&gt; 45729768:   chr4 190179754 190179755 0.333        3 bisc_SRR6911723</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="get-summary-data">Get summary data<a class="anchor" aria-label="anchor" href="#get-summary-data"></a>
 </h3>
-<p>To get a summary of the methylation information of the gene bodies we
+<p>To get a summary of the methylation information of the gene bodies
 use <code>summarize_regions</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/summarize_regions.html">summarize_regions</a></span><span class="op">(</span><span class="va">bedfiles</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span>, <span class="va">regions</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [12:27:05.069494] [iscream::summarize_regions] [info] Summarizing 20048 regions from 8 bedfiles</span></span>
-<span><span class="co">#&gt; [12:27:05.069543] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count</span></span>
-<span><span class="co">#&gt;                  Feature      Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
-<span><span class="co">#&gt; 1   chr1:1471764-1497848 A10_mergecg           NA    NA            NA        NA</span></span>
-<span><span class="co">#&gt; 2   chr1:3069167-3438621 A10_mergecg          152    31      3.534884 0.7209302</span></span>
-<span><span class="co">#&gt; 3   chr1:2403963-2413797 A10_mergecg           NA    NA            NA        NA</span></span>
-<span><span class="co">#&gt; 4 chr1:10472287-10630758 A10_mergecg           27    18      3.000000 2.0000000</span></span>
-<span><span class="co">#&gt; 5   chr1:2425979-2505532 A10_mergecg           NA    NA            NA        NA</span></span>
-<span><span class="co">#&gt; 6   chr1:9292893-9369532 A10_mergecg           12     6      3.000000 1.5000000</span></span>
-<span><span class="co">#&gt;   coverage.median M.median coverage.stddev M.stddev coverage.variance</span></span>
-<span><span class="co">#&gt; 1              NA       NA              NA       NA                NA</span></span>
-<span><span class="co">#&gt; 2               3      0.0       0.6305265 1.333195         0.3975637</span></span>
-<span><span class="co">#&gt; 3              NA       NA              NA       NA                NA</span></span>
-<span><span class="co">#&gt; 4               3      3.0       0.0000000 1.500000         0.0000000</span></span>
-<span><span class="co">#&gt; 5              NA       NA              NA       NA                NA</span></span>
-<span><span class="co">#&gt; 6               3      1.5       0.0000000 1.290994         0.0000000</span></span>
-<span><span class="co">#&gt;   M.variance coverage.min M.min coverage.max M.max coverage.range M.range</span></span>
-<span><span class="co">#&gt; 1         NA           NA    NA           NA    NA             NA      NA</span></span>
-<span><span class="co">#&gt; 2   1.777409            3     0            5     4              2       4</span></span>
-<span><span class="co">#&gt; 3         NA           NA    NA           NA    NA             NA      NA</span></span>
-<span><span class="co">#&gt; 4   2.250000            3     0            3     3              0       3</span></span>
-<span><span class="co">#&gt; 5         NA           NA    NA           NA    NA             NA      NA</span></span>
-<span><span class="co">#&gt; 6   1.666667            3     0            3     3              0       3</span></span>
-<span><span class="co">#&gt;   cpg_count</span></span>
-<span><span class="co">#&gt; 1        NA</span></span>
-<span><span class="co">#&gt; 2        43</span></span>
-<span><span class="co">#&gt; 3        NA</span></span>
-<span><span class="co">#&gt; 4         9</span></span>
-<span><span class="co">#&gt; 5        NA</span></span>
-<span><span class="co">#&gt; 6         4</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">summary_query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_regions.html">summarize_regions</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [12:13:24.310639] [iscream::summarize_regions] [info] Summarizing 5000 regions from 100 bedfiles</span></span>
+<span><span class="co">#&gt; [12:13:24.310748] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count</span></span>
+<span><span class="co">#&gt;    user  system elapsed </span></span>
+<span><span class="co">#&gt;  27.350   0.609   5.563</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">summary_query</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                  Feature          Sample coverage.sum M.sum coverage.mean</span></span>
+<span><span class="co">#&gt; 1   chr1:1471764-1497848 bisc_SRR6911624          109    95      1.101010</span></span>
+<span><span class="co">#&gt; 2   chr1:3069167-3438621 bisc_SRR6911624         1470   789      1.074561</span></span>
+<span><span class="co">#&gt; 3   chr1:2403963-2413797 bisc_SRR6911624           62    15      1.000000</span></span>
+<span><span class="co">#&gt; 4 chr1:10472287-10630758 bisc_SRR6911624          258   200      1.011765</span></span>
+<span><span class="co">#&gt; 5   chr1:2425979-2505532 bisc_SRR6911624          272   195      1.066667</span></span>
+<span><span class="co">#&gt; 6   chr1:9292893-9369532 bisc_SRR6911624           74    64      1.000000</span></span>
+<span><span class="co">#&gt;      M.mean coverage.median M.median coverage.stddev  M.stddev</span></span>
+<span><span class="co">#&gt; 1 0.9595960               1        1       0.3028757 0.4932026</span></span>
+<span><span class="co">#&gt; 2 0.5767544               1        1       0.2892802 0.5888135</span></span>
+<span><span class="co">#&gt; 3 0.2419355               1        0       0.0000000 0.4317514</span></span>
+<span><span class="co">#&gt; 4 0.7843137               1        1       0.1080374 0.4307897</span></span>
+<span><span class="co">#&gt; 5 0.7647059               1        1       0.2796698 0.5169655</span></span>
+<span><span class="co">#&gt; 6 0.8648649               1        1       0.0000000 0.3442015</span></span>
+<span><span class="co">#&gt;   coverage.variance M.variance coverage.min M.min coverage.max M.max</span></span>
+<span><span class="co">#&gt; 1        0.09173366  0.2432488            1     0            2     2</span></span>
+<span><span class="co">#&gt; 2        0.08368306  0.3467014            1     0            3     3</span></span>
+<span><span class="co">#&gt; 3        0.00000000  0.1864093            1     0            1     1</span></span>
+<span><span class="co">#&gt; 4        0.01167207  0.1855797            1     0            2     2</span></span>
+<span><span class="co">#&gt; 5        0.07821522  0.2672534            1     0            3     3</span></span>
+<span><span class="co">#&gt; 6        0.00000000  0.1184746            1     0            1     1</span></span>
+<span><span class="co">#&gt;   coverage.range M.range cpg_count</span></span>
+<span><span class="co">#&gt; 1              1       2        99</span></span>
+<span><span class="co">#&gt; 2              2       3      1368</span></span>
+<span><span class="co">#&gt; 3              0       1        62</span></span>
+<span><span class="co">#&gt; 4              1       2       255</span></span>
+<span><span class="co">#&gt; 5              2       3       255</span></span>
+<span><span class="co">#&gt; 6              0       1        74</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="build-matrices">Build matrices<a class="anchor" aria-label="anchor" href="#build-matrices"></a>
 </h3>
+<p>The <code><a href="../reference/query_all.html">query_all()</a></code> function queries and stores every CpG in
+the input regions. Unlike <code><a href="../reference/summarize_regions.html">summarize_regions()</a></code> the output
+matrix dimensions are unknown at runtime. Although usually quite fast,
+if the CpG count is very large and there are few overlaps in the CpGs
+between files, this can take a long time. Here, gene bodies are large
+and the final matrix can contain millions of CpGs. Further, with
+single-cell data, chances are new CpGs are found in every file.</p>
+<p>Preallocating the number of rows, however, can drastically reduce
+runtime. Since we got 45 million CpGs from all the BED files, we can
+approximately expect between 5 and 10 million unique CpGs as single-cell
+data has lower coverage than bulk. We already have the tabix query so we
+can get the unique CpG count here and use it to preallocate the matrix,
+reducing the number of matrix resizes. Making tabix queries can be a
+relatively quick way to approximate the CpG count of a dataset. If you
+haven’t done a tabix query of the full dataset, you can approximate how
+many CpGs to expect based on CpG counts in one file and the coverage of
+your WGBS method.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">meth_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/query_all.html">query_all</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [10:10:14.084742] [iscream::query_all] [info] Querying 20048 regions from 94 bedfiles</span></span>
+<code class="sourceCode R"><span><span class="va">cpg.count</span> <span class="op">&lt;-</span> <span class="va">tbx_query</span><span class="op">$</span><span class="va">start</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">meth_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/query_all.html">query_all</a></span><span class="op">(</span></span>
+<span>  <span class="va">bedfiles</span>,</span>
+<span>  <span class="va">regions</span>,</span>
+<span>  sparse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  prealloc <span class="op">=</span> <span class="va">cpg.count</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [12:13:31.961976] [iscream::query_all] [info] Querying 5000 regions from 100 bedfiles</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [10:10:21.241229] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">#&gt; [10:10:21.263587] [iscream::query_all] [info] nrows 800000 - 32332 extra rows allocated with 26 resizes</span></span>
-<span><span class="co">#&gt; [10:10:21.337022] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">meth_mat</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [12:14:22.904618] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">#&gt; [12:14:23.381735] [iscream::query_all] [info] nrows 7281989 - 5882 extra rows allocated with 3 resizes</span></span>
+<span><span class="co">#&gt; [12:14:27.962580] [iscream::query_all] [info] Creating sparse matrix</span></span>
+<span><span class="co">#&gt;    user  system elapsed </span></span>
+<span><span class="co">#&gt; 208.880   3.086  56.854</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">meth_mat</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 5</span></span>
 <span><span class="co">#&gt;  $ M          :Formal class 'dgCMatrix' [package "Matrix"] with 6 slots</span></span>
-<span><span class="co">#&gt;   .. ..@ i       : int [1:354881] 11 16 1204 4595 4596 4752 5522 5523 6105 6106 ...</span></span>
-<span><span class="co">#&gt;   .. ..@ p       : int [1:95] 0 12632 14578 14580 23398 28702 33905 38840 48626 49353 ...</span></span>
-<span><span class="co">#&gt;   .. ..@ Dim     : int [1:2] 767668 94</span></span>
+<span><span class="co">#&gt;   .. ..@ i       : int [1:32627134] 9 11 12 13 14 15 16 17 18 19 ...</span></span>
+<span><span class="co">#&gt;   .. ..@ p       : int [1:101] 0 157256 362760 626888 904511 1158005 1437240 1729046 2014168 2231683 ...</span></span>
+<span><span class="co">#&gt;   .. ..@ Dim     : int [1:2] 7276107 100</span></span>
 <span><span class="co">#&gt;   .. ..@ Dimnames:List of 2</span></span>
 <span><span class="co">#&gt;   .. .. ..$ : NULL</span></span>
-<span><span class="co">#&gt;   .. .. ..$ : chr [1:94] "A10_mergecg" "A11_mergecg" "A12_mergecg" "A2_mergecg" ...</span></span>
-<span><span class="co">#&gt;   .. ..@ x       : num [1:354881] 10 326 3 2 3 4 3 3 2 3 ...</span></span>
+<span><span class="co">#&gt;   .. .. ..$ : chr [1:100] "bisc_SRR6911624" "bisc_SRR6911625" "bisc_SRR6911626" "bisc_SRR6911627" ...</span></span>
+<span><span class="co">#&gt;   .. ..@ x       : num [1:32627134] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
 <span><span class="co">#&gt;   .. ..@ factors : list()</span></span>
 <span><span class="co">#&gt;  $ Cov        :Formal class 'dgCMatrix' [package "Matrix"] with 6 slots</span></span>
-<span><span class="co">#&gt;   .. ..@ i       : int [1:809902] 10 11 15 16 17 1204 1369 1371 1500 3032 ...</span></span>
-<span><span class="co">#&gt;   .. ..@ p       : int [1:95] 0 30350 33083 33088 62181 69341 83514 98102 113013 113984 ...</span></span>
-<span><span class="co">#&gt;   .. ..@ Dim     : int [1:2] 767668 94</span></span>
+<span><span class="co">#&gt;   .. ..@ i       : int [1:43227794] 0 1 2 3 4 5 6 7 8 9 ...</span></span>
+<span><span class="co">#&gt;   .. ..@ p       : int [1:101] 0 217582 488919 850016 1220035 1545163 1920047 2322291 2713873 3020522 ...</span></span>
+<span><span class="co">#&gt;   .. ..@ Dim     : int [1:2] 7276107 100</span></span>
 <span><span class="co">#&gt;   .. ..@ Dimnames:List of 2</span></span>
 <span><span class="co">#&gt;   .. .. ..$ : NULL</span></span>
-<span><span class="co">#&gt;   .. .. ..$ : chr [1:94] "A10_mergecg" "A11_mergecg" "A12_mergecg" "A2_mergecg" ...</span></span>
-<span><span class="co">#&gt;   .. ..@ x       : num [1:809902] 56 10 202 326 345 3 3 3 3 3 ...</span></span>
+<span><span class="co">#&gt;   .. .. ..$ : chr [1:100] "bisc_SRR6911624" "bisc_SRR6911625" "bisc_SRR6911626" "bisc_SRR6911627" ...</span></span>
+<span><span class="co">#&gt;   .. ..@ x       : num [1:43227794] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
 <span><span class="co">#&gt;   .. ..@ factors : list()</span></span>
-<span><span class="co">#&gt;  $ pos        : int [1:767668] 162072285 143360905 143360940 54939858 182194770 182194778 182194861 182194913 23391102 123741210 ...</span></span>
-<span><span class="co">#&gt;  $ chr        : chr [1:767668] "chr1" "chr3" "chr3" "chr3" ...</span></span>
-<span><span class="co">#&gt;  $ sampleNames: chr [1:94] "A10_mergecg" "A11_mergecg" "A12_mergecg" "A2_mergecg" ...</span></span></code></pre></div>
-<p>The output of query_all is a named list containing matrices of
-coverage values and M values and vectors of the sample names, chromosome
-names and positions of the loci.</p>
+<span><span class="co">#&gt;  $ pos        : int [1:7276107] 1472309 1472386 1472390 1472394 1472407 1472414 1472439 1472489 1472503 1473922 ...</span></span>
+<span><span class="co">#&gt;  $ chr        : chr [1:7276107] "chr1" "chr1" "chr1" "chr1" ...</span></span>
+<span><span class="co">#&gt;  $ sampleNames: chr [1:100] "bisc_SRR6911624" "bisc_SRR6911625" "bisc_SRR6911626" "bisc_SRR6911627" ...</span></span></code></pre></div>
+<p>The output of <code><a href="../reference/query_all.html">query_all()</a></code> is a named list containing
+matrices of coverage values and M values and vectors of the sample
+names, chromosome names and positions of the loci.</p>
 <p>This list can be used to produce a BSseq object. However since BSseq
 cannot work with sparse matrices, the two matrices would need to be
 converted to dense matrices first.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">BSseq</span>, <span class="va">meth_mat</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
+<span><span class="co">#&gt; R version 4.4.2 (2024-10-31)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
-<span><span class="co">#&gt; Running under: Ubuntu 24.04.1 LTS</span></span>
+<span><span class="co">#&gt; Running under: AlmaLinux 9.5 (Teal Serval)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
-<span><span class="co">#&gt; BLAS/LAPACK: /nix/store/p2a6x92n2gwljav85zz3hzid1nk7iq0l-blas-3/lib/libblas.so.3;  LAPACK version 3.12.0</span></span>
+<span><span class="co">#&gt; BLAS/LAPACK: /usr/lib64/libopenblas-r0.3.26.so;  LAPACK version 3.12.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; locale:</span></span>
-<span><span class="co">#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
-<span><span class="co">#&gt;  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></span>
-<span><span class="co">#&gt;  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
-<span><span class="co">#&gt;  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
-<span><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
-<span><span class="co">#&gt; [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
+<span><span class="co">#&gt;  [1] LC_CTYPE=C.utf8        LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
+<span><span class="co">#&gt;  [4] LC_COLLATE=C.utf8      LC_MONETARY=C.UTF-8    LC_MESSAGES=C.utf8    </span></span>
+<span><span class="co">#&gt;  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
+<span><span class="co">#&gt; [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; time zone: America/Detroit</span></span>
-<span><span class="co">#&gt; tzcode source: system (glibc)</span></span>
+<span><span class="co">#&gt; time zone: UTC</span></span>
+<span><span class="co">#&gt; tzcode source: internal</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; attached base packages:</span></span>
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] data.table_1.15.4  iscream_0.0.0.9000</span></span>
+<span><span class="co">#&gt; [1] data.table_1.16.4  iscream_0.0.0.9000</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;  [1] compiler_4.4.1     parallelly_1.38.0  Matrix_1.7-0       parallel_4.4.1    </span></span>
-<span><span class="co">#&gt;  [5] tools_4.4.1        Rcpp_1.0.13        grid_4.4.1         knitr_1.47        </span></span>
-<span><span class="co">#&gt;  [9] xfun_0.45          RcppParallel_5.1.8 stringfish_0.16.0  lattice_0.22-6    </span></span>
-<span><span class="co">#&gt; [13] evaluate_0.24.0</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] compiler_4.4.2      parallelly_1.42.0   Matrix_1.7-2       </span></span>
+<span><span class="co">#&gt;  [4] parallel_4.4.2      tools_4.4.2         Rcpp_1.0.14        </span></span>
+<span><span class="co">#&gt;  [7] grid_4.4.2          knitr_1.49          xfun_0.50          </span></span>
+<span><span class="co">#&gt; [10] RcppParallel_5.1.10 stringfish_0.16.0   lattice_0.22-6     </span></span>
+<span><span class="co">#&gt; [13] evaluate_1.0.3</span></span></code></pre></div>
 <!-- vim: set filetype=rmd: -->
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
