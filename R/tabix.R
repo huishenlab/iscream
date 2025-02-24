@@ -77,7 +77,7 @@ tabix <- function(bedfiles, regions, aligner = "biscuit", col.names = NULL, raw 
 
   # get GRanges
   if (class(regions)[1] == "GRanges") {
-    result.gr <- GenomicRanges::GRanges(result)
+    result.gr <- GenomicRanges::makeGRangesFromDataFrame(result, starts.in.df.are.0based = TRUE, keep.extra.columns = TRUE)
     overlaps <- GenomicRanges::findOverlaps(result.gr, regions)
 
     if (dim(GenomicRanges::mcols(regions))[2] > 0) {
