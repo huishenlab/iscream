@@ -99,9 +99,10 @@ tabix.shell <- function(bedfiles, regions_df, result_colnames, nthreads) {
   }
 
   mclapply(bedfiles, function(bedfile) {
-    tbx_query <- tabix.shell.single(bedfile, regions_df, result_colnames)[,
-      sample := file_path_sans_ext(basename(bedfile), compression = TRUE)
-    ]
+    tbx_query <- tabix.shell.single(bedfile, regions_df, result_colnames)
+    if (!is.null(tbx_query)) {
+      tbx_query[, sample := file_path_sans_ext(basename(bedfile), compression = TRUE) ]
+    }
   }, mc.cores = .get_threads(nthreads)) |> rbindlist()
 }
 

@@ -8,6 +8,7 @@ bismark_tabix_beds <- list.files(extdata, pattern = "[a|b|c|d].cov.gz$", full.na
 mergecg_bed <- list.files(extdata, pattern = "*_mergecg.bed.gz$", full.names = T)
 
 regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
+regions.missing_in_3 <- c("chr1:13-14")
 regions.dt <- as.data.table(regions)[, tstrsplit(regions, ":|-")]
 colnames(regions.dt) <- c("chr", "start", "end")
 chrs <- sort(paste0("chr", c(seq(1:22), "M", "X", "Y")))
@@ -81,6 +82,10 @@ test_multi_tabix_dataframe <- function(htslib = FALSE) {
     expect_equal(
       tabix(biscuit_tabix_beds, regions),
       multi_tabix
+    )
+    expect_equal(
+      suppressWarnings(tabix(biscuit_tabix_beds, regions.missing_in_3)),
+      tabix(biscuit_tabix_beds[-3], regions.missing_in_3)
     )
   })
   options("tabix.method" = "shell")
