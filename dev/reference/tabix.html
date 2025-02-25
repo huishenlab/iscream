@@ -125,10 +125,14 @@ tabix implementation. To use only <em>iscream's</em> tabix implementation, set
 
 
 <p>The input regions may be string vector in the form "chr:start-end", a
-dataframe with "chr", "start" and "end" columns or a GRanges object. If the
-input is a GRanges, the output will also be GRanges with any associated
-metadata columns (joined onto the result using
-<code><a href="https://rdrr.io/pkg/IRanges/man/findOverlaps-methods.html" class="external-link">GenomicRanges::findOverlaps()</a></code>)</p>
+dataframe with "chr", "start" and "end" columns or a GRanges object. Input
+regions must be 1-based.  If the input is a GRanges, the output will also be
+GRanges with any associated metadata columns (joined onto the result using
+<code><a href="https://rdrr.io/pkg/IRanges/man/findOverlaps-methods.html" class="external-link">GenomicRanges::findOverlaps()</a></code>). When making <code>GRanges</code>, the 0-based records
+from BED-files will be converted to 1-based with
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesFromDataFrame.html" class="external-link">GenomicRanges::makeGRangesFromDataFrame()</a></code>. Bismark's coverage files will
+not be converted as they are already 1-based and the <code>ranges</code> slot will be
+only one position.</p>
 </div>
 
     </div>
