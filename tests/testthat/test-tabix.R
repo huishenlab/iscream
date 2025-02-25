@@ -133,8 +133,8 @@ test_that("tabix mergecg colnames", {
 
 # test raw output
 tabix_raw_res <- list(
-    `chr1:1-6` =  c("chr1\t3\t4\t1.000\t2"),
-    `chr1:7-10` = c("chr1\t7\t8\t0.000\t2", "chr1\t9\t10\t1.000\t1"),
+    `chr1:1-6` =  c("chr1\t2\t4\t1.000\t2"),
+    `chr1:7-10` = c("chr1\t6\t8\t0.000\t2", "chr1\t8\t10\t1.000\t1"),
     `chr1:11-14` = character(0)
 )
 
