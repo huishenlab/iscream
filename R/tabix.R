@@ -62,6 +62,7 @@ tabix <- function(bedfiles, regions, aligner = "biscuit", col.names = NULL, raw 
     return(run_scan_tabix(bedfiles, input_regions, nthreads))
   }
 
+  is.biscuit <- aligner == "biscuit"
   result_colnames <- col.names %||% get_colnames(aligner, bedfiles)
   mergecg <- "mergecg" %in% result_colnames
 
@@ -77,7 +78,11 @@ tabix <- function(bedfiles, regions, aligner = "biscuit", col.names = NULL, raw 
 
   # get GRanges
   if (class(regions)[1] == "GRanges") {
-    result.gr <- GenomicRanges::makeGRangesFromDataFrame(result, starts.in.df.are.0based = TRUE, keep.extra.columns = TRUE)
+    result.gr <- GenomicRanges::makeGRangesFromDataFrame(
+      result,
+      starts.in.df.are.0based = is.biscuit,
+      keep.extra.columns = TRUE
+    )
     overlaps <- GenomicRanges::findOverlaps(result.gr, regions)
 
     if (dim(GenomicRanges::mcols(regions))[2] > 0) {
