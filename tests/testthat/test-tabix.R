@@ -57,6 +57,12 @@ test_tabix_dataframe <- function(htslib = FALSE) {
       tabix(bismark_tabix_beds[1], regions, aligner = 'bismark'),
       fread(tabix_df_result_bismark, colClasses = c("character", "numeric", "numeric", "numeric", "numeric", "numeric"))
     )
+    expect_equal(
+      tabix(bismark_tabix_beds[1], gr.meta, aligner = 'bismark'),
+      fread(tabix_df_result_bismark, colClasses = c("character", "numeric", "numeric", "numeric", "numeric", "numeric"))[,
+        meta := c(rep("s1", 3), rep("s2", 2), rep("s3", 2))
+        ] |> GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = FALSE, keep.extra.columns = TRUE)
+    )
     # empty
     expect_warning(
       tabix(chrom_beds[2], regions),
