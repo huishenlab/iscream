@@ -141,17 +141,17 @@ data.</p>
 <pre><code><span><span class="co">## GRanges object with 20 ranges and 5 metadata columns:</span></span>
 <span><span class="co">##        seqnames    ranges strand |      beta  coverage      sample        gene</span></span>
 <span><span class="co">##           &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;integer&gt; &lt;character&gt; &lt;character&gt;</span></span>
-<span><span class="co">##    [1]     chr1       0-2      * |       1.0         1           a       gene1</span></span>
-<span><span class="co">##    [2]     chr1       2-4      * |       1.0         1           a       gene1</span></span>
-<span><span class="co">##    [3]     chr1       4-6      * |       0.0         2           a       gene1</span></span>
-<span><span class="co">##    [4]     chr1       6-8      * |       0.0         1           a       gene2</span></span>
-<span><span class="co">##    [5]     chr1      8-10      * |       0.5         2           a       gene2</span></span>
+<span><span class="co">##    [1]     chr1       1-2      * |       1.0         1           a       gene1</span></span>
+<span><span class="co">##    [2]     chr1       3-4      * |       1.0         1           a       gene1</span></span>
+<span><span class="co">##    [3]     chr1       5-6      * |       0.0         2           a       gene1</span></span>
+<span><span class="co">##    [4]     chr1       7-8      * |       0.0         1           a       gene2</span></span>
+<span><span class="co">##    [5]     chr1      9-10      * |       0.5         2           a       gene2</span></span>
 <span><span class="co">##    ...      ...       ...    ... .       ...       ...         ...         ...</span></span>
-<span><span class="co">##   [16]     chr1       0-2      * |       1.0         1           d       gene1</span></span>
-<span><span class="co">##   [17]     chr1       2-4      * |       1.0         2           d       gene1</span></span>
-<span><span class="co">##   [18]     chr1       6-8      * |       0.0         1           d       gene2</span></span>
-<span><span class="co">##   [19]     chr1      8-10      * |       0.5         2           d       gene2</span></span>
-<span><span class="co">##   [20]     chr1     12-14      * |       1.0         1           d       gene3</span></span>
+<span><span class="co">##   [16]     chr1       1-2      * |       1.0         1           d       gene1</span></span>
+<span><span class="co">##   [17]     chr1       3-4      * |       1.0         2           d       gene1</span></span>
+<span><span class="co">##   [18]     chr1       7-8      * |       0.0         1           d       gene2</span></span>
+<span><span class="co">##   [19]     chr1      9-10      * |       0.5         2           d       gene2</span></span>
+<span><span class="co">##   [20]     chr1     13-14      * |       1.0         1           d       gene3</span></span>
 <span><span class="co">##        some_metadata</span></span>
 <span><span class="co">##          &lt;character&gt;</span></span>
 <span><span class="co">##    [1]            s1</span></span>
@@ -181,8 +181,8 @@ object:</p>
 <span>  set_region_rownames <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [16:19:20.130881] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [16:19:20.130949] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
+<pre><code><span><span class="co">## [16:46:25.242616] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [16:46:25.242668] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
 <pre><code><span><span class="co">##            Feature Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
 <span><span class="co">## chr1:1-6         A      a            4     2      1.333333 0.6666667</span></span>
 <span><span class="co">## chr1:7-10        B      a            3     1      1.500000 0.5000000</span></span>
@@ -235,8 +235,8 @@ column as the GRanges input regions:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [16:19:20.239691] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [16:19:20.239713] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
+<pre><code><span><span class="co">## [16:46:25.352796] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [16:46:25.352819] [iscream::summarize_regions] [info] using sum, mean</span></span></code></pre>
 <pre><code><span><span class="co">##       Feature Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
 <span><span class="co">## 1    chr1:1-6      a            4     2      1.333333 0.6666667</span></span>
 <span><span class="co">## 2   chr1:7-10      a            3     1      1.500000 0.5000000</span></span>
@@ -293,11 +293,11 @@ column as the GRanges input regions:</p>
 </h3>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">mats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/query_all.html">query_all</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [16:19:22.449825] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [16:46:27.634026] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [16:19:22.450305] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [16:19:22.450354] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [16:19:22.450359] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
+<span><span class="co">## [16:46:27.634382] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [16:46:27.634421] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [16:46:27.634425] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
 <pre><code><span><span class="co">## $M</span></span>
 <span><span class="co">##      a b c d</span></span>
 <span><span class="co">## [1,] 1 0 0 1</span></span>
@@ -328,11 +328,11 @@ column as the GRanges input regions:</p>
 <span><span class="co">## [1] "a" "b" "c" "d"</span></span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">mats.sparse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/query_all.html">query_all</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [16:19:22.451489] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [16:46:27.635393] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [16:19:22.451919] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [16:19:22.451962] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [16:19:22.451977] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
+<span><span class="co">## [16:46:27.635685] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [16:46:27.635700] [iscream::query_all] [info] nrows 10000 - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [16:46:27.635707] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
 <pre><code><span><span class="co">## $M</span></span>
 <span><span class="co">## 7 x 4 sparse Matrix of class "dgCMatrix"</span></span>
 <span><span class="co">##      a b c d</span></span>
