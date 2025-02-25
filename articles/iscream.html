@@ -143,7 +143,7 @@ set with the <code>aligner</code> argument, but can take other column
 names with the <code>colnames</code> argument.</p>
 <p>If multiple input files are provided, they are queried in parallel.
 If <code>raw = TRUE</code>, <code><a href="../reference/tabix.html">tabix()</a></code> will return the same
-data as <code><a href="https://rdrr.io/pkg/Rsamtools/man/scanTabix.html" class="external-link">Rsamtools::scanTabix()</a></code> does - a named list of
+data as <code>Rsamtools::scanTabix()</code> does - a named list of
 strings.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">tbx_query</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span><span class="op">)</span></span>
