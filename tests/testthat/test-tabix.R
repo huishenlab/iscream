@@ -40,13 +40,14 @@ test_tabix_dataframe <- function(htslib = FALSE) {
     )
     expect_equal(
       tabix(biscuit_tabix_beds[1], gr),
-      fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric")) |> GenomicRanges::GRanges()
+      fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric")) |>
+        GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = TRUE, keep.extra.columns = TRUE)
     )
     expect_equal(
       tabix(biscuit_tabix_beds[1], gr.meta),
       fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))[,
         meta := c(rep("s1", 3), rep("s2", 2), rep("s3", 2))
-        ] |> GenomicRanges::GRanges()
+        ] |> GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = TRUE, keep.extra.columns = TRUE)
     )
     expect_equal(
       tabix(biscuit_tabix_beds[1], regions.dt),
