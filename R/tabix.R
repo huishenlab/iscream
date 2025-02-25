@@ -107,7 +107,7 @@ tabix.shell <- function(bedfiles, regions_df, result_colnames, nthreads) {
 }
 
 tabix.shell.single <- function(bedfile, regions_df, result_colnames) {
-  query.tmpfile <- tempfile(pattern = "regions", fileext = ".bed")
+  query.tmpfile <- tempfile(pattern = "regions", fileext = ".tsv")
   if (!is.null(regions_df)) write_bed(regions_df, query.tmpfile)
 
   cmd <- paste("tabix", bedfile, "-R", query.tmpfile)
