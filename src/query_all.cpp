@@ -183,9 +183,15 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
     for (size_t i = 0; i < lines.size(); i++) {
         khint_t retrieve_b = khmap_get(cpg_map, ids[i]);
         int idx = kh_val(cpg_map, retrieve_b);
-        bitmat(idx - 1, col_n) = std::round(lines[i].beta * 100) + (lines[i].cov << 16);
+        bitmat(idx - 1, col_n) = bitpack(lines[i].beta, lines[i].cov);
     }
+}
 
+template <class Mat>
+int QueryAll<Mat>::bitpack(const float beta_val, const int cov_val) {
+    int cov = cov_val > UINT16_MAX ? UINT16_MAX : cov_val;
+    float beta = beta_val > UINT16_MAX ? UINT16_MAX : beta_val;
+    return(std::round(beta * 100) + (cov << 16));
 }
 
 //' Query all CpG info into M and coverage matrices

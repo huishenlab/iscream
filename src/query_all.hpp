@@ -21,6 +21,7 @@
 
 #include <cmath>
 #include <cstdio>
+#include <cstdint>
 #include <filesystem>
 #include "query.hpp"
 #include "parsers.hpp"
@@ -84,6 +85,7 @@ public:
     );
     void populate_matrix(RegionQuery& query, int& col_n, const bool bismark);
     void print_QueryAll();
+    int bitpack(const float beta, const int coverage);
 
     Mat bitmat;
     Rcpp::List assays;
