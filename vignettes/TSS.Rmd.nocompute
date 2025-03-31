@@ -35,6 +35,20 @@ using tools like *methscan* more efficiently. For example, using iscream,
 producing the plot of TSS methylation profiles can be done in R directly from
 tabixed BED files for both single-cell and bulk data.
 
+### Download the data
+
+```{r download_data, eval = FALSE}
+methscan_zip_path <- tempfile("methscan")
+methscan_dir <- tempdir()
+download.file(
+    "https://zenodo.org/records/14733834/files/methscan_data.zip",
+    destfile = methscan_zip_path
+)
+unzip(methscan_zip_path, exdir = methscan_dir)
+```
+
+### Setup
+
 ```{r, message = FALSE}
 options("iscream.threads" = 8)
 library(iscream)
@@ -49,7 +63,7 @@ First, we generate a list of the BED file paths:
 
 ```{r}
 bedfiles <- list.files(
-    "../data/methscan",
+    "/tmp/scbs_tutorial_data",
     pattern = "*.cov.gz$",
     full.names = TRUE
 )
@@ -61,7 +75,7 @@ the start sites.
 
 ```{r}
 tss.regions <- fread(
-    "../data/methscan/Mus_musculus.GRCm38.102_TSS.bed", drop = c(3, 5, 6)
+    "/tmp/scbs_tutorial_data/Mus_musculus.GRCm38.102_TSS.bed", drop = c(3, 5, 6)
 )
 colnames(tss.regions) <- c("chr", "tss", "geneID")
 head(tss.regions)
