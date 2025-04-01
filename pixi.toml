@@ -1,0 +1,12 @@
+[project]
+channels = ["conda-forge", "bioconda"]
+name = "iscream"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[activation.env]
+LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
+
+[dependencies]
+htslib = "1.21.*"
+pkg-config = ">=0.29.2,<0.30"

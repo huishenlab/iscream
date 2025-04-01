@@ -1,0 +1,7 @@
+name: iscream
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - htslib=1.21
+  - pkg-config=0.29.2

@@ -32,6 +32,7 @@ your package manager:
 - fedora/RHEL: `htslib-devel`  
 - brew: `htslib`  
 - nixpkgs: `htslib`
+- conda: `bioconda::htslib`
 
 or built manually: <https://www.htslib.org/download/>.
 
@@ -43,6 +44,8 @@ libraries are installed with `pkg-config`:
 ```bash
 pkg-config --cflags --libs htslib
 ```
+
+For more information on htslib installation see [htslib.md](htslib.md).
 
 ##### *tabix*
 
