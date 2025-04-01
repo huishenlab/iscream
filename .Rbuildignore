@@ -18,6 +18,4 @@ default.nix
 
 .git
 ^codecov\.yml$
-vignettes/iscream*
-vignettes/TSS*
-vignettes/figure*
+vignettes/*.nocompute
