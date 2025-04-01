@@ -48,8 +48,8 @@ download.file(
 unzip(methscan_zip_path, exdir = methscan_dir)
 ```
 
-
 ### Setup
+
 
 ``` r
 options("iscream.threads" = 8)
@@ -164,7 +164,7 @@ tss.summary <- tss.profile[,
 query_runtime <- timetaken(query_runtime.start)
 ```
 
-Time to make the query and compute the summary: 2.426s elapsed (5.055s cpu).
+Time to make the query and compute the summary: 2.385s elapsed (5.020s cpu).
 
 ### Plot average methylation profiles around the TSS
 
@@ -191,8 +191,67 @@ tss.plot
 
 
 Total runtime, from getting the bedfiles and regions to making the query,
-calculating the summaries and plotting: 2.470s elapsed (5.096s cpu). With methscan,
+calculating the summaries and plotting: 2.430s elapsed (5.064s cpu). With methscan,
 generating the TSS methylation profiles alone took 11 seconds.
+
+### Using `summarize_regions`
+
+A similar analysis can be done using the `summarize_regions()` function if you
+only need to see the distribution of beta means by sample, rather than means by
+relative position per sample.
+
+
+``` r
+library("ggridges")
+tss.means <- summarize_regions(
+  bedfiles,
+  tss.for_query,
+  aligner = "bismark",
+  fun = "mean",
+  mval = FALSE
+) |> as.data.table()
+```
+
+```
+## [14:59:58.508299] [iscream::summarize_regions] [info] Summarizing 21622 regions from 30 bedfiles
+## [14:59:58.508335] [iscream::summarize_regions] [info] using mean
+```
+
+``` r
+ggplot(tss.means, aes(x = beta.mean, y = Sample, fill = after_stat(x))) +
+  geom_density_ridges_gradient() +
+  scale_fill_distiller(palette = "BrBG") +
+  theme_classic()
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure/summarize_regions-1.png" alt="TSS distribution by sample"  />
+<p class="caption">TSS distribution by sample</p>
+</div>
+
+For per-sample means you could collapse the means within samples:
+
+
+``` r
+tss.means[, .(beta.mean = mean(beta.mean, na.rm = TRUE)), by = Sample] |>
+  ggplot(
+    aes(
+      x = reorder(Sample, beta.mean),
+      y = beta.mean,
+      fill = beta.mean)
+    ) +
+  geom_bar(stat = 'identity') +
+  scale_fill_viridis_c() +
+  theme_classic() +
+  coord_flip() +
+  labs(x = "Sample")
+```
+
+<div class="figure" style="text-align: center">
+<img src="figure/unnamed-chunk-7-1.png" alt="Mean TSS by sample"  />
+<p class="caption">Mean TSS by sample</p>
+</div>
+
 
 ## Session info
 
@@ -224,7 +283,7 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] ggplot2_3.5.1      data.table_1.16.4  iscream_0.0.0.9000
+## [1] ggridges_0.5.6     ggplot2_3.5.1      data.table_1.16.4  iscream_0.0.0.9000
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] vctrs_0.6.5        cli_3.6.3          knitr_1.47         rlang_1.1.4       
@@ -232,10 +291,10 @@ sessionInfo()
 ##  [9] RcppParallel_5.1.9 glue_1.7.0         colorspace_2.1-1   stringfish_0.16.0 
 ## [13] scales_1.3.0       grid_4.4.2         evaluate_0.24.0    munsell_0.5.1     
 ## [17] tibble_3.2.1       lifecycle_1.0.4    compiler_4.4.2     dplyr_1.1.4       
-## [21] Rcpp_1.0.13-1      pkgconfig_2.0.3    farver_2.1.2       lattice_0.22-6    
-## [25] R6_2.5.1           tidyselect_1.2.1   pillar_1.10.0      parallelly_1.41.0 
-## [29] parallel_4.4.2     magrittr_2.0.3     Matrix_1.7-1       withr_3.0.0       
-## [33] tools_4.4.2        gtable_0.3.5
+## [21] RColorBrewer_1.1-3 Rcpp_1.0.13-1      pkgconfig_2.0.3    farver_2.1.2      
+## [25] lattice_0.22-6     viridisLite_0.4.2  R6_2.5.1           tidyselect_1.2.1  
+## [29] pillar_1.10.0      parallelly_1.41.0  parallel_4.4.2     magrittr_2.0.3    
+## [33] Matrix_1.7-1       withr_3.0.0        tools_4.4.2        gtable_0.3.5
 ```
 
 <!-- vim: set filetype=rmd: -->

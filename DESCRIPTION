@@ -29,6 +29,8 @@ Imports:
     stringfish
 Suggests:
     knitr,
+    ggplot2,
+    ggridges,
     rmarkdown,
     GenomicRanges,
     SummarizedExperiment,

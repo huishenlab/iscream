@@ -149,6 +149,47 @@ Total runtime, from getting the bedfiles and regions to making the query,
 calculating the summaries and plotting: `r total_runtime`. With methscan,
 generating the TSS methylation profiles alone took 11 seconds.
 
+### Using `summarize_regions`
+
+A similar analysis can be done using the `summarize_regions()` function if you
+only need to see the distribution of beta means by sample, rather than means by
+relative position per sample.
+
+```{r summarize_regions, warning=FALSE, message=FALSE, dpi=300, fig.width=10, fig.height=8, fig.align="center", fig.cap="TSS distribution by sample"}
+library("ggridges")
+tss.means <- summarize_regions(
+  bedfiles,
+  tss.for_query,
+  aligner = "bismark",
+  fun = "mean",
+  mval = FALSE
+) |> as.data.table()
+
+ggplot(tss.means, aes(x = beta.mean, y = Sample, fill = after_stat(x))) +
+  geom_density_ridges_gradient() +
+  scale_fill_distiller(palette = "BrBG") +
+  theme_classic()
+```
+
+For per-sample means you could collapse the means within samples:
+
+```{r, dpi=300, fig.width=10, fig.height=8, fig.align="center", fig.cap="Mean TSS by sample"}
+
+tss.means[, .(beta.mean = mean(beta.mean, na.rm = TRUE)), by = Sample] |>
+  ggplot(
+    aes(
+      x = reorder(Sample, beta.mean),
+      y = beta.mean,
+      fill = beta.mean)
+    ) +
+  geom_bar(stat = 'identity') +
+  scale_fill_viridis_c() +
+  theme_classic() +
+  coord_flip() +
+  labs(x = "Sample")
+```
+
+
 ## Session info
 
 ```{r session}

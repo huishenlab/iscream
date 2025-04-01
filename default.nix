@@ -22,6 +22,7 @@ let
     bsseq
     DelayedArray
     GenomicRanges
+    ggridges
 
   # dev dependencies
     DT
