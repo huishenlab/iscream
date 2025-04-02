@@ -1,4 +1,10 @@
 #include "query.hpp"
+#include <Rcpp.h>
+
+// [[Rcpp::export]]
+void htslib_version() {
+    Rprintf("%s\n", hts_version());
+}
 
 //' Query a genomic interval from a opened htsFile and return the reads in it
 //'

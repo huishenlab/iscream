@@ -136,8 +136,8 @@ NULL
 #' @param regions A vector of region strings in the form "chr:start-end"
 NULL
 
-version <- function() {
-    invisible(.Call(`_iscream_version`))
+htslib_version <- function() {
+    invisible(.Call(`_iscream_htslib_version`))
 }
 
 #' Query the chromosomes or seqnames from a vector of files

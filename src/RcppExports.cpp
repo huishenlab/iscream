@@ -138,6 +138,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// htslib_version
+void htslib_version();
+RcppExport SEXP _iscream_htslib_version() {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    htslib_version();
+    return R_NilValue;
+END_RCPP
+}
 // Cpp_query_chroms
 std::set<std::string> Cpp_query_chroms(const std::vector<std::string>& bedfile_vec, const int nthreads);
 RcppExport SEXP _iscream_Cpp_query_chroms(SEXP bedfile_vecSEXP, SEXP nthreadsSEXP) {
@@ -225,6 +234,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_setup_logger", (DL_FUNC) &_iscream_setup_logger, 1},
     {"_iscream_Cpp_set_log_level", (DL_FUNC) &_iscream_Cpp_set_log_level, 1},
     {"_iscream_get_log_level", (DL_FUNC) &_iscream_get_log_level, 0},
+    {"_iscream_htslib_version", (DL_FUNC) &_iscream_htslib_version, 0},
     {"_iscream_Cpp_query_chroms", (DL_FUNC) &_iscream_Cpp_query_chroms, 2},
     {"_iscream_Cpp_query_interval", (DL_FUNC) &_iscream_Cpp_query_interval, 2},
     {"_iscream_scan_tabix", (DL_FUNC) &_iscream_scan_tabix, 2},
