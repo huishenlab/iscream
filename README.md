@@ -23,7 +23,7 @@ scMET.
 
 ### System dependencies
 
-#### *htslib* >= 1.19
+#### *htslib* >= 1.18
 
 *iscream* depends on the *htslib* header files. These may be installed with
 your package manager:
@@ -51,7 +51,7 @@ need to install both *libhts-dev* and *tabix*). *iscream* will work without
 *tabix*, but the `tabix()` function will be faster if the executable is
 installed.
 
-#### GCC
+#### GCC >= 9.4.0
 
 GNU GCC must be installed for OpenMP support. This is usually installed by
 default on Linux systems, but may need to be manually installed on MacOS to use
