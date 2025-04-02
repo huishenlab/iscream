@@ -30,6 +30,7 @@ checkHtsVersion() {
 
 echo ""
 echo "Configuring for package installation..."
+echo ""
 
 # Library settings
 PKG_CONFIG_NAME="htslib"
@@ -47,16 +48,29 @@ if [ "$INCLUDE_DIR" ] || [ "$LIB_DIR" ]; then
   PKG_CFLAGS="-I$INCLUDE_DIR $PKG_CFLAGS"
   PKG_LIBS="-L$LIB_DIR $PKG_LIBS"
 else
+  echo "Trying pkg-config to use system htslib headers..."
   pkg-config --version >/dev/null 2>&1
   if [ $? -eq 0 ]; then
-    PKGCONFIG_CFLAGS=$(pkg-config --cflags $PKG_CONFIG_NAME)
-    PKGCONFIG_LIBS=$(pkg-config --libs $PKG_CONFIG_NAME)
+    PKGCONFIG_CFLAGS=$(pkg-config --cflags $PKG_CONFIG_NAME 2> /dev/null)
+    PKGCONFIG_LIBS=$(pkg-config --libs $PKG_CONFIG_NAME 2> /dev/null)
+  fi
+
+  if [ -z $PKGCONFIG_CFLAGS ]; then
+    echo "Falling back to Rhtslib"
+    RHTSLIB_CFLAGS=$("${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e 'Rhtslib::pkgconfig("PKG_CPPFLAGS")')
+    # RHTSLIB_CFLAGS=$("${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e 'cat(system.file(package="Rhtslib", "include"))')
+    RHTSLIB_LIBS=$("${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e 'Rhtslib::pkgconfig("PKG_LIBS")')
+    # RHTSLIB_LIBS=$("${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e 'cat(system.file(package="Rhtslib", "usrlib"))')
   fi
 
   if [ "$PKGCONFIG_CFLAGS" ] || [ "$PKGCONFIG_LIBS" ]; then
     echo "Found pkg-config cflags and libs for ${PKG_CONFIG_NAME}!"
     PKG_CFLAGS=${PKGCONFIG_CFLAGS}
     PKG_LIBS=${PKGCONFIG_LIBS}
+  elif [ "$RHTSLIB_CFLAGS" ] || [ "$RHTSLIB_LIBS" ]; then
+    echo "Using Rhtslib cflags and libs for ${PKG_CONFIG_NAME}!"
+    PKG_CFLAGS="${RHTSLIB_CFLAGS}"
+    PKG_LIBS="${RHTSLIB_LIBS}"
   else
       echo "------------------------- ANTICONF ERROR ---------------------------"
       echo "Configuration failed because $PKG_CONFIG_NAME was not found. Try installing:"
@@ -92,7 +106,9 @@ echo "Using PKG_CFLAGS=$PKG_CFLAGS"
 echo "Using PKG_LIBS=$PKG_LIBS"
 
 # Test configuration
-echo "#include $PKG_TEST_HEADER" | ${CC} ${CPPFLAGS} ${PKG_CFLAGS} ${CFLAGS} -E -xc - >/dev/null 2>&1 || R_CONFIG_ERROR=1;
+if [ -z $RHTSLIB_CFLAGS ]; then
+    echo "#include $PKG_TEST_HEADER" | ${CC} ${CPPFLAGS} ${PKG_CFLAGS} ${CFLAGS} -E -xc - >/dev/null 2>&1 || R_CONFIG_ERROR=1;
+fi
 
 if [ $R_CONFIG_ERROR ]; then
   echo "------------------------- ANTICONF ERROR ---------------------------"
@@ -106,6 +122,7 @@ fi
 sed -e "s|@cflags@|$PKG_CFLAGS|" -e "s|@libs@|$PKG_LIBS|" src/Makevars.in > src/Makevars
 
 # Success
+echo ""
 echo "Success!"
 echo ""
 exit 0

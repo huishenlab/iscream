@@ -136,6 +136,10 @@ NULL
 #' @param regions A vector of region strings in the form "chr:start-end"
 NULL
 
+version <- function() {
+    invisible(.Call(`_iscream_version`))
+}
+
 #' Query the chromosomes or seqnames from a vector of files
 #' @param bedfile_vec The vector of bedfile paths
 #' @return A vector of seqnames

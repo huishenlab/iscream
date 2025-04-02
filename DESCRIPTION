@@ -20,6 +20,7 @@ LinkingTo:
     RcppArmadillo,
     RcppProgress,
     RcppSpdlog,
+    Rhtslib,
     stringfish
 Imports:
     Rcpp,
