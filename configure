@@ -6,6 +6,28 @@
 # INCLUDE_DIR and LIB_DIR manually via e.g:
 # R CMD INSTALL --configure-vars='INCLUDE_DIR=/.../include LIB_DIR=/.../lib'
 
+checkGCCVersion() {
+    version=$($1 -dumpfullversion | cut -f 1-2 -d .)
+    check=$(echo "$version < $2" | bc -l)
+    if [ "$check" -eq 1 ]; then
+      echo "------------------------- ANTICONF ERROR ---------------------------"
+      echo "Configuration failed because $1 version $version does not meet the minimum version requirement $2 "
+      echo "--------------------------------------------------------------------"
+      exit 1;
+    fi
+}
+
+checkHtsVersion() {
+    version=$(htsfile --version | sed -E '1!d' | cut -f 3 -d ' ' | cut -f 1-2 -d .)
+    check=$(echo "$version < $1" | bc -l)
+    if [ "$check" -eq 1 ]; then
+      echo "------------------------- ANTICONF ERROR ---------------------------"
+      echo "Configuration failed because htslib version $version does not meet the minimum version requirement $1"
+      echo "--------------------------------------------------------------------"
+      exit 1;
+    fi
+}
+
 echo ""
 echo "Configuring for package installation..."
 
@@ -13,6 +35,9 @@ echo "Configuring for package installation..."
 PKG_CONFIG_NAME="htslib"
 PKG_DEB_NAME="libhts-dev"
 PKG_RPM_NAME="htslib-devel"
+PKG_CONDA_NAME="htslib"
+PKG_NIX_NAME="htslib"
+PKG_BREW_NAME="htslib"
 PKG_TEST_HEADER="<htslib/hts.h>"
 PKG_LIBS="-lhts"
 
@@ -37,6 +62,9 @@ else
       echo "Configuration failed because $PKG_CONFIG_NAME was not found. Try installing:"
       echo " * deb: $PKG_DEB_NAME (Debian, Ubuntu, etc)"
       echo " * rpm: $PKG_RPM_NAME (Fedora, CentOS, RHEL)"
+      echo " * nixpkgs: $PKG_NIX_NAME (NixOS)"
+      echo " * brew: $PKG_BREW_NAME (MacOS, linux)"
+      echo " * bioconda: $PKG_CONDA_NAME (conda, miniconda, mamba, pixi)"
       echo "If $PKG_CONFIG_NAME is already installed, check that 'pkg-config' is in your"
       echo "PATH and PKG_CONFIG_PATH contains a $PKG_CONFIG_NAME.pc file. If pkg-config"
       echo "is unavailable you can set INCLUDE_DIR and LIB_DIR manually via:"
@@ -50,6 +78,14 @@ fi
 CC=`${R_HOME}/bin/R CMD config CC`
 CFLAGS=`${R_HOME}/bin/R CMD config CFLAGS`
 CPPFLAGS=`${R_HOME}/bin/R CMD config CPPFLAGS`
+
+echo ""
+checkGCCVersion "$CC" 9.4
+echo "$CC version meets minimum requirements!"
+if [ -z $RHTSLIB_CFLAGS ]; then
+    checkHtsVersion 1.18
+    echo "htslib version meets minimum requirements!"
+fi
 
 # For debugging
 echo "Using PKG_CFLAGS=$PKG_CFLAGS"
