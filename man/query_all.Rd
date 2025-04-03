@@ -58,6 +58,13 @@ a BSseq object: \code{do.call(BSseq, query_all(...))}.
 The input regions may be string vector in the form "chr:start-end"
 or a GRanges object. If a data frame is provided, they must have "chr",
 "start", and "end" columns.
+\subsection{Bitpacking limits}{
+
+If the coverage values exceed 65,535, the upper limit of a 16-bit unsigned
+integer, it will be capped at the limit. Beta values will also be capped
+similarly, but any such values would be a bug in the aligner that produced
+the data.
+}
 }
 \examples{
 bedfiles <- system.file("extdata", package = "iscream") |>
