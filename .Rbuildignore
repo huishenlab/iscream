@@ -19,3 +19,4 @@ default.nix
 .git
 ^codecov\.yml$
 vignettes/*.nocompute
+vignettes/figure
