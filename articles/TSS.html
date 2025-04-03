@@ -124,7 +124,7 @@ for both single-cell and bulk data.</p>
 <p>Then we read the provided TSS BED file and create 2kb flanking
 regions around the start sites.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tss.regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">tss.regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span></span>
 <span>    <span class="st">"../data/methscan/Mus_musculus.GRCm38.102_TSS.bed"</span>, drop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">tss.regions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"tss"</span>, <span class="st">"geneID"</span><span class="op">)</span></span>
@@ -195,7 +195,7 @@ column relative to the TSS (using rounded values as in the
 <span>  by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">position</span>, <span class="va">sample</span><span class="op">)</span></span>
 <span><span class="op">]</span></span>
 <span></span>
-<span><span class="va">query_runtime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/timetaken.html" class="external-link">timetaken</a></span><span class="op">(</span><span class="va">query_runtime.start</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">query_runtime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/timetaken.html" class="external-link">timetaken</a></span><span class="op">(</span><span class="va">query_runtime.start</span><span class="op">)</span></span></code></pre></div>
 <p>Time to make the query and compute the summary: 2.184s elapsed
 (4.409s cpu).</p>
 </div>
@@ -205,14 +205,14 @@ column relative to the TSS (using rounded values as in the
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tss.plot</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">tss.summary</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">position</span> <span class="op">/</span> <span class="fl">1000</span>, y <span class="op">=</span> <span class="va">meth_frac</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_y_continuous</span><span class="op">(</span></span>
-<span>    labels<span class="op">=</span><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent_format</a></span><span class="op">(</span>accuracy<span class="op">=</span><span class="fl">1</span><span class="op">)</span>,</span>
+<span>    labels<span class="op">=</span><span class="fu">scales</span><span class="fu">::</span><span class="fu">percent_format</span><span class="op">(</span>accuracy<span class="op">=</span><span class="fl">1</span><span class="op">)</span>,</span>
 <span>    limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.5</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">sample</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"position relative to TSS [kb]"</span>, y <span class="op">=</span> <span class="st">"DNA methylation"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">total_runtime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/timetaken.html" class="external-link">timetaken</a></span><span class="op">(</span><span class="va">start_time</span><span class="op">)</span></span>
+<span><span class="va">total_runtime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/timetaken.html" class="external-link">timetaken</a></span><span class="op">(</span><span class="va">start_time</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tss.plot</span></span></code></pre></div>
 <div class="figure" style="text-align: center">

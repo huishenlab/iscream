@@ -86,7 +86,7 @@ your bedfile is not from the supported aligners or is a general bedfile.</p></dd
 
 <dt id="arg-raw">raw<a class="anchor" aria-label="anchor" href="#arg-raw"></a></dt>
 <dd><p>Set true to give a named list of raw strings from the regions in
-the style of <code><a href="https://rdrr.io/pkg/Rsamtools/man/scanTabix.html" class="external-link">Rsamtools::scanTabix</a></code> instead of a data.table</p></dd>
+the style of <code>Rsamtools::scanTabix</code> instead of a data.table</p></dd>
 
 
 <dt id="arg-nthreads">nthreads<a class="anchor" aria-label="anchor" href="#arg-nthreads"></a></dt>
@@ -106,7 +106,7 @@ the style of <code><a href="https://rdrr.io/pkg/Rsamtools/man/scanTabix.html" cl
 
 
 <p>'<em>iscream</em> has two methods to query records from BED files:</p><ul><li><p>the <em>tabix</em> shell executable: fast since its output can be redirected to a
-file (which <code><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">data.table::fread()</a></code> can then read) instead of having to
+file (which <code><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">data.table::fread()</a></code> can then read) instead of having to
 allocate memory and store it during the query</p></li>
 <li><p><em>iscream's</em> tabix implementation, based on the <em>tabix</em> executable using
 <em>htslib</em>, but slower on large queries since it stores the records as they
