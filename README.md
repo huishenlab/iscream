@@ -19,11 +19,9 @@ used by other packages. iscream uses [htslib](https://www.htslib.org/) to query
 genomic regions to make matrices for BSSeq or aggregate the methylated reads for
 scMET.
 
-## Installation
+## Dependencies
 
-### System dependencies
-
-#### *htslib* >= 1.18
+### *htslib* >= 1.18
 
 *iscream* depends on the *htslib* header files. These may be installed with
 your package manager:
@@ -34,7 +32,8 @@ your package manager:
 - nixpkgs: `htslib`
 - conda: `bioconda::htslib`
 
-or built manually: <https://www.htslib.org/download/>.
+or built manually: <https://www.htslib.org/download/>. See
+[htslib.md](htslib.md) for more information.
 
 The header files may also be found among your HPC modules - make sure the
 `PKG_CONFIG_PATH` environment variable includes the `pkgconfig` location for
@@ -45,16 +44,14 @@ libraries are installed with `pkg-config`:
 pkg-config --cflags --libs htslib
 ```
 
-For more information on htslib installation see [htslib.md](htslib.md).
-
-##### *tabix*
+#### *tabix*
 
 Some *htslib* installations do not include the *tabix* executable (on Ubuntu you
 need to install both *libhts-dev* and *tabix*). *iscream* will work without
 *tabix*, but the `tabix()` function will be faster if the executable is
 installed.
 
-#### GCC >= 9.4.0
+### GCC >= 9.4.0
 
 GNU GCC must be installed for OpenMP support. This is usually installed by
 default on Linux systems, but may need to be manually installed on MacOS to use
@@ -63,6 +60,8 @@ iscream with multiple threads[^1].
 [^1]: Using OpenMP is also possible with Clang on MacOS
 (<https://mac.r-project.org/openmp/>) but installing GCC with Homebrew may be
 easier (<https://formulae.brew.sh/formula/gcc>).
+
+## Installation
 
 ### GitHub
 
