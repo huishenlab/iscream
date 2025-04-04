@@ -1,15 +1,18 @@
 ## Getting htslib headers
 
-The system or user installation of htslib provides the headers iscream needs for
-compilation and running. You or your system administrator can install htslib
-with the system package manager which usually sets `PKG_CONFIG_PATH`
-automatically. On MacOS you can get htslib with the Homebrew package manager. On
-HPC systems, htslib may be provided as a module. Make sure these methods also
-set the `PKG_CONFIG_PATH`.
+You or your system administrator can install htslib with the system package
+manager which usually sets `PKG_CONFIG_PATH` automatically. On MacOS you can get
+htslib with the Homebrew package manager. On HPC systems, htslib may be provided
+as a module. Make sure these methods also set the `PKG_CONFIG_PATH`.
 
 If you aren't able to install htslib development libraries system-wide for lack
-of admin permissions, you can install them from other channels. Once set up, you
-can use the install methods from the README to install iscream.
+of admin permissions, you can install them from other channels. We recommend
+[pixi](#pixi) or [conda](#conda) since their htslib is compiled with
+[*libdeflate*](https://github.com/ebiggers/libdeflate) support and is faster
+than htslib without *libdeflate*. If you're compiling your own htslib, compile
+*libdeflate* first and then htslib. You can also use Rhtslib, but we've found
+this has poorer performance than a standard htslib installation, both with and
+without *libdeflate*.
 
 ### Conda/miniconda/mamba/micromamba
 
