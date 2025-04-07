@@ -162,21 +162,7 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
     int mapsize = kh_size(cpg_map);
     int cur_nrow = bitmat.n_rows;
     if (cur_nrow < mapsize) {
-        int diff = mapsize - bitmat.n_rows;
-        spdlog::debug("Need {} more rows", diff);
-        int extra_rows = diff;
-        if (diff < 10) {
-            extra_rows = diff * 10000;
-        } else if (diff < 10000) {
-            extra_rows = diff * 1000;
-        } else if (diff < 50000) {
-            extra_rows = diff * 500;
-        } else {
-            extra_rows = diff * 100;
-        }
-        bitmat.resize(cur_nrow + extra_rows, bitmat.n_cols);
-        resize_count++;
-        spdlog::debug("Added {} rows to existing {}", extra_rows, cur_nrow);
+        resize_mat(cur_nrow, mapsize);
     }
 
     spdlog::debug("Inserting {} CpGs into matrix", cpg_count);
@@ -186,6 +172,26 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
         bitmat(idx - 1, col_n) = bitpack(lines[i].beta, lines[i].cov);
     }
 }
+
+template <class Mat>
+void QueryAll<Mat>::resize_mat(int cur_nrow, int mapsize) {
+    int diff = mapsize - bitmat.n_rows;
+    spdlog::debug("Need {} more rows", diff);
+    int extra_rows = diff;
+    if (diff < 10) {
+        extra_rows = diff * 10000;
+    } else if (diff < 10000) {
+        extra_rows = diff * 1000;
+    } else if (diff < 50000) {
+        extra_rows = diff * 500;
+    } else {
+        extra_rows = diff * 100;
+    }
+    bitmat.resize(cur_nrow + extra_rows, bitmat.n_cols);
+    resize_count++;
+    spdlog::debug("Added {} rows to existing {}", extra_rows, cur_nrow);
+}
+
 
 template <class Mat>
 int QueryAll<Mat>::bitpack(const float beta_val, const int cov_val) {

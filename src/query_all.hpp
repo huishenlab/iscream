@@ -84,7 +84,7 @@ public:
         const int nthreads
     );
     void populate_matrix(RegionQuery& query, int& col_n, const bool bismark);
-    void print_QueryAll();
+    void resize_mat(int cur_nrow, int mapsize);
     int bitpack(const float beta, const int coverage);
 
     Mat bitmat;
