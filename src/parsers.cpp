@@ -30,23 +30,23 @@ std::vector<std::string_view> split_bedstring(std::string_view bedString) {
 //' Parse a bed record into chr, start, and compressed beta and cov
 //'
 //' @param A line from a bed file
-BedLine parseBiscuitRecord(const std::string& bedString) {
+BedRecord parseBiscuitRecord(const std::string& bedString) {
     std::vector<std::string_view> res = split_bedstring(bedString);
     std::vector<std::string> fields(res.begin(), res.end());
     std::string chrom = fields[0];
     int start = std::stoi(fields[1]);
     int end = std::stoi(fields[2]);
     float beta = std::stof(fields[3]);
-    int cov = std::stoi(fields[4]);
-    int m_count = (int) std::round(cov * beta);
+    float cov = std::stof(fields[4]);
+    float m_count = std::round(cov * beta);
 
-    return BedLine{chrom, start, end, beta, cov, m_count};
+    return BedRecord{chrom, start, end, {beta, cov, m_count}};
 }
 
 //' Parse a bed record into chr, start, and compressed beta and cov
 //'
 //' @param A line from a bed file
-BedLine parseCovRecord(const std::string& bedString) {
+BedRecord parseCovRecord(const std::string& bedString) {
     std::vector<std::string_view> res = split_bedstring(bedString);
     std::vector<std::string> fields(res.begin(), res.end());
 
@@ -57,12 +57,12 @@ BedLine parseCovRecord(const std::string& bedString) {
     std::string chrom = fields[0];
     int start = std::stoi(fields[1]);
     int end = std::stoi(fields[2]);
-    int m_count = std::stoi(fields[4]);
-    int u_count = std::stoi(fields[5]);
-    int cov = m_count + u_count;
-    float beta = (double) m_count / cov;
+    float beta = std::stof(fields[3]) / 100;
+    float m_count = std::stof(fields[4]);
+    float u_count = std::stof(fields[5]);
+    float cov = m_count + u_count;
 
-    BedLine read = {chrom, start, end, beta, cov, m_count};
+    BedRecord read = {chrom, start, end, {beta, cov, m_count}};
     return read;
 }
 
