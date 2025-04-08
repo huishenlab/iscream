@@ -21,7 +21,7 @@ scMET.
 
 ## Dependencies
 
-### *htslib* >= 1.18
+### *htslib* >= 1.17
 
 *iscream* depends on the *htslib* header files. These may be installed with
 your package manager:
