@@ -108,6 +108,15 @@ public:
             Rcpp::_("sampleNames") = sample_names
         );
     }
+    Rcpp::List ret() {
+        UNPROTECT(1); // seqnames
+        return Rcpp::List::create(
+            Rcpp::_("M") = assays["M"],
+            Rcpp::_("pos") = start,
+            Rcpp::_("chr") = seqnames,
+            Rcpp::_("sampleNames") = sample_names
+        );
+    }
 };
 
 #endif /* __cplusplus */

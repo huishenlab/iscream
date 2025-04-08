@@ -113,27 +113,51 @@ QueryAll<Mat>::QueryAll(
     }
 
     sw.reset();
-    if (sparse) {
-        spdlog::info("Creating sparse matrix");
-        Rcpp::S4 bitrmat = Rcpp::wrap(bitmat);
-        bitrmat.slot("Dimnames") = Rcpp::List::create(R_NilValue, sample_names);
-        assays = Rcpp::List::create(
-            Rcpp::_["M"] = bitrmat,
-            Rcpp::_["Cov"] = Rcpp::clone(bitrmat)
-        );
-        spdlog::debug("Took {}", sw);
-    } else {
-        spdlog::info("Creating dense matrix");
-        Rcpp::NumericMatrix bitrmat = Rcpp::wrap(bitmat);
-        Rcpp::colnames(bitrmat) = sample_names;
-        assays = Rcpp::List::create(
-            Rcpp::_["M"] = bitrmat,
-            Rcpp::_["Cov"] = Rcpp::clone(bitrmat)
-        );
-        spdlog::debug("Took {}", sw);
-    }
-}
 
+    switch(type) {
+        case BISCUIT: case BISMARK:
+            if (sparse) {
+                spdlog::info("Creating sparse matrix");
+                Rcpp::S4 bitrmat = Rcpp::wrap(bitmat);
+                bitrmat.slot("Dimnames") = Rcpp::List::create(R_NilValue, sample_names);
+                assays = Rcpp::List::create(
+                    Rcpp::_["M"] = bitrmat,
+                    Rcpp::_["Cov"] = Rcpp::clone(bitrmat)
+                );
+                spdlog::debug("Took {}", sw);
+            } else {
+                spdlog::info("Creating dense matrix");
+                Rcpp::NumericMatrix bitrmat = Rcpp::wrap(bitmat);
+                Rcpp::colnames(bitrmat) = sample_names;
+                assays = Rcpp::List::create(
+                    Rcpp::_["M"] = bitrmat,
+                    Rcpp::_["Cov"] = Rcpp::clone(bitrmat)
+                );
+                spdlog::debug("Took {}", sw);
+            }
+            break;
+        default:
+            if (sparse) {
+                spdlog::info("Creating sparse matrix");
+                Rcpp::S4 bitrmat = Rcpp::wrap(bitmat);
+                bitrmat.slot("Dimnames") = Rcpp::List::create(R_NilValue, sample_names);
+                assays = Rcpp::List::create(
+                    Rcpp::_["M"] = bitrmat
+                );
+                spdlog::debug("Took {}", sw);
+            } else {
+                spdlog::info("Creating dense matrix");
+                Rcpp::NumericMatrix bitrmat = Rcpp::wrap(bitmat);
+                Rcpp::colnames(bitrmat) = sample_names;
+                assays = Rcpp::List::create(
+                    Rcpp::_["M"] = bitrmat
+                );
+                spdlog::debug("Took {}", sw);
+            }
+    }
+
+
+}
 template <class Mat>
 void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const BSType type, const int valInd) {
 
