@@ -80,7 +80,8 @@ query_all <- function(
   b <- Cpp_query_all(
     bedfiles = bedfiles,
     regions = regions,
-    bismark = aligner != "biscuit",
+    aligner = aligner,
+    valInd = 0,
     merged = merged,
     sparse = sparse,
     prealloc = prealloc,
