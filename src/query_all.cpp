@@ -10,7 +10,8 @@ template <class Mat>
 QueryAll<Mat>::QueryAll(
     std::vector<std::string>& bedfile_vec,
     std::vector<std::string>& regions,
-    const bool bismark,
+    const BSType type,
+    const int valInd,
     const bool merged,
     const bool sparse,
     const int prealloc,
@@ -48,7 +49,7 @@ QueryAll<Mat>::QueryAll(
                 #pragma omp critical
                 {
                     try {
-                        populate_matrix(cpgs_in_interval, bedfile_n, bismark);
+                        populate_matrix(cpgs_in_interval, bedfile_n, type, valInd);
                     } catch (std::invalid_argument const& ex) {
                         stop_invalid_argument = true;
                         Rprintf("\n%s\n", ex.what());
@@ -134,7 +135,7 @@ QueryAll<Mat>::QueryAll(
 }
 
 template <class Mat>
-void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool bismark) {
+void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const BSType type, const int valInd) {
 
     int cpg_count = query.cpgs_in_interval.size();
     std::vector<BedLine> lines;
@@ -224,13 +225,37 @@ int QueryAll<Mat>::bitpack(const float beta_val, const int cov_val) {
 //' @keywords internal
 //' @export
 // [[Rcpp::export]]
-Rcpp::List Cpp_query_all(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, const bool bismark, const bool merged, const bool sparse, const int prealloc, const int nthreads) {
+Rcpp::List Cpp_query_all(
+    std::vector<std::string>& bedfiles,
+    std::vector<std::string>& regions,
+    const std::string aligner,
+    const int valInd,
+    const bool merged,
+    const bool sparse,
+    const int prealloc,
+    const int nthreads) {
+
+    BSType type;
+    if (aligner == "biscuit") {
+        type = BISCUIT;
+    } else if (aligner == "bismark") {
+        type = BISMARK;
+    } else {
+        type = GENERAL;
+        if (sparse) {
+            QueryAll query = QueryAll<arma::sp_fmat>(bedfiles, regions, type, valInd, merged, sparse, prealloc, nthreads);
+            return query.ret();
+        } else {
+            QueryAll query = QueryAll<arma::fmat>(bedfiles, regions, type, valInd, merged, sparse, prealloc, nthreads);
+            return query.ret();
+        }
+    }
 
     if (sparse) {
-        QueryAll query = QueryAll<arma::sp_umat>(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads);
+        QueryAll query = QueryAll<arma::sp_umat>(bedfiles, regions, type, valInd, merged, sparse, prealloc, nthreads);
         return query.wrap();
     } else {
-        QueryAll query = QueryAll<arma::umat>(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads);
+        QueryAll query = QueryAll<arma::umat>(bedfiles, regions, type, valInd, merged, sparse, prealloc, nthreads);
         return query.wrap();
     }
 }

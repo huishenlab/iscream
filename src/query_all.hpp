@@ -51,6 +51,12 @@ static kh_inline khint_t kh_hash_cpg(CpG cpg) {
     return kh_hash_uint32(to_hash);
 }
 
+enum BSType {
+    BISMARK,
+    BISCUIT,
+    GENERAL
+};
+
 #ifndef __MAP_INIT
 #define __MAP_INIT
 KHASHL_MAP_INIT(static, khmap_t, khmap, CpG, int, kh_hash_cpg, kh_eq_cpg);
@@ -79,13 +85,14 @@ public:
     QueryAll(
         std::vector<std::string>& bedfile_vec,
         std::vector<std::string>& regions,
-        const bool bismark,
+        const BSType type,
+        const int valInd,
         const bool merged,
         const bool sparse,
         const int prealloc,
         const int nthreads
     );
-    void populate_matrix(RegionQuery& query, int& col_n, const bool bismark);
+    void populate_matrix(RegionQuery& query, int& col_n, const BSType type, const int valInd);
     void resize_mat(int cur_nrow, int mapsize);
     int bitpack(const float beta, const int coverage);
 
