@@ -94,7 +94,7 @@ public:
     );
     void populate_matrix(RegionQuery& query, int& col_n, const BSType type, const int valInd);
     void resize_mat(int cur_nrow, int mapsize);
-    int bitpack(const float beta, const int coverage);
+    int bitpack(const float beta, const float coverage);
 
     Mat bitmat;
     Rcpp::List assays;

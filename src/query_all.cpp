@@ -138,12 +138,22 @@ template <class Mat>
 void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const BSType type, const int valInd) {
 
     int cpg_count = query.cpgs_in_interval.size();
-    std::vector<BedLine> lines;
+    std::vector<BedRecord> lines;
     std::vector<CpG> ids;
     khmap_m_resize(cpg_map, cpg_count);
+    BedRecord parsed_bedline;
     for (std::string cpg_string : query.cpgs_in_interval) {
+        switch(type) {
+            case BISCUIT:
+                parsed_bedline = parseBiscuitRecord(cpg_string);
+                break;
+            case BISMARK:
+                parsed_bedline = parseCovRecord(cpg_string);
+                break;
+            default:
+                parsed_bedline = parseBedRecord(cpg_string, valInd - 1);
+        }
 
-        BedLine parsed_bedline = bismark ? parseCovRecord(cpg_string) : parseBiscuitRecord(cpg_string);
         lines.push_back(parsed_bedline);
         spdlog::trace(
             "Parsed {} into chr: {}, start: {}, end: {}",
@@ -151,8 +161,8 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const BSType
             parsed_bedline.chr,
             parsed_bedline.start,
             parsed_bedline.end,
-            parsed_bedline.cov,
-            parsed_bedline.m_count
+            parsed_bedline.data[1],
+            parsed_bedline.data[2]
         );
         if (!chr_map.count(parsed_bedline.chr)) {
             chr_map.insert({parsed_bedline.chr, ++chr_id});
@@ -182,7 +192,11 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const BSType
     for (size_t i = 0; i < lines.size(); i++) {
         khint_t retrieve_b = khmap_get(cpg_map, ids[i]);
         int idx = kh_val(cpg_map, retrieve_b);
-        bitmat(idx - 1, col_n) = bitpack(lines[i].beta, lines[i].cov);
+        if (lines[i].data[2] == -1) {
+            bitmat(idx - 1, col_n) = lines[i].data[0];
+        } else {
+            bitmat(idx - 1, col_n) = bitpack(lines[i].data[0], lines[i].data[1]);
+        }
     }
 }
 
@@ -207,7 +221,7 @@ void QueryAll<Mat>::resize_mat(int cur_nrow, int mapsize) {
 
 
 template <class Mat>
-int QueryAll<Mat>::bitpack(const float beta_val, const int cov_val) {
+int QueryAll<Mat>::bitpack(const float beta_val, const float cov_val) {
     uint16_t cov = cov_val > INT16_MAX ? INT16_MAX : cov_val;
     uint16_t betap = std::round(beta_val * 100);
     betap = betap > INT16_MAX ? INT16_MAX : betap;
