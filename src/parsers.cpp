@@ -27,6 +27,21 @@ std::vector<std::string_view> split_bedstring(std::string_view bedString) {
     return res;
 }
 
+BedRecord parseBedRecord(const std::string& bedString, const int valInd1) {
+    std::vector<std::string_view> res = split_bedstring(bedString);
+    std::vector<std::string> fields(res.begin(), res.end());
+
+    if (valInd1 > fields.size()) {
+        Rcpp::stop("parseBedRecord: Column indices too large");
+    }
+
+    std::string chrom = fields[0];
+    int start = std::stoi(fields[1]);
+    int end = std::stoi(fields[2]);
+    float val1 = std::stof(fields[valInd1]);
+    return BedRecord{chrom, start, end, {val1, -1, -1}};
+};
+
 //' Parse a bed record into chr, start, and compressed beta and cov
 //'
 //' @param A line from a bed file
