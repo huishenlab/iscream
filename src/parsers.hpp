@@ -6,13 +6,11 @@
 #include <string>
 #include <Rcpp.h>
 
-struct BedLine {
+struct BedRecord {
     std::string chr;
     int start;
     int end;
-    float beta;
-    int cov;
-    int m_count;
+    float data[3];
 };
 
 std::vector<std::string_view> split_bedstring(std::string_view bedString);
