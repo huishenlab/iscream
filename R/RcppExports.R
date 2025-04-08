@@ -180,8 +180,8 @@ scan_tabix <- function(bedfile, regions) {
 #'
 #' @keywords internal
 #' @export
-Cpp_query_all <- function(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads) {
-    .Call(`_iscream_Cpp_query_all`, bedfiles, regions, bismark, merged, sparse, prealloc, nthreads)
+Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, prealloc, nthreads) {
+    .Call(`_iscream_Cpp_query_all`, bedfiles, regions, aligner, valInd, merged, sparse, prealloc, nthreads)
 }
 
 #' Apply a function over CpGs within features

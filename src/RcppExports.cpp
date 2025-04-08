@@ -175,19 +175,20 @@ BEGIN_RCPP
 END_RCPP
 }
 // Cpp_query_all
-Rcpp::List Cpp_query_all(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, const bool bismark, const bool merged, const bool sparse, const int prealloc, const int nthreads);
-RcppExport SEXP _iscream_Cpp_query_all(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP bismarkSEXP, SEXP mergedSEXP, SEXP sparseSEXP, SEXP preallocSEXP, SEXP nthreadsSEXP) {
+Rcpp::List Cpp_query_all(std::vector<std::string>& bedfiles, std::vector<std::string>& regions, const std::string aligner, const int valInd, const bool merged, const bool sparse, const int prealloc, const int nthreads);
+RcppExport SEXP _iscream_Cpp_query_all(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP alignerSEXP, SEXP valIndSEXP, SEXP mergedSEXP, SEXP sparseSEXP, SEXP preallocSEXP, SEXP nthreadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::vector<std::string>& >::type bedfiles(bedfilesSEXP);
     Rcpp::traits::input_parameter< std::vector<std::string>& >::type regions(regionsSEXP);
-    Rcpp::traits::input_parameter< const bool >::type bismark(bismarkSEXP);
+    Rcpp::traits::input_parameter< const std::string >::type aligner(alignerSEXP);
+    Rcpp::traits::input_parameter< const int >::type valInd(valIndSEXP);
     Rcpp::traits::input_parameter< const bool >::type merged(mergedSEXP);
     Rcpp::traits::input_parameter< const bool >::type sparse(sparseSEXP);
     Rcpp::traits::input_parameter< const int >::type prealloc(preallocSEXP);
     Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Cpp_query_all(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads));
+    rcpp_result_gen = Rcpp::wrap(Cpp_query_all(bedfiles, regions, aligner, valInd, merged, sparse, prealloc, nthreads));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -225,7 +226,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_Cpp_query_chroms", (DL_FUNC) &_iscream_Cpp_query_chroms, 2},
     {"_iscream_Cpp_query_interval", (DL_FUNC) &_iscream_Cpp_query_interval, 2},
     {"_iscream_scan_tabix", (DL_FUNC) &_iscream_scan_tabix, 2},
-    {"_iscream_Cpp_query_all", (DL_FUNC) &_iscream_Cpp_query_all, 7},
+    {"_iscream_Cpp_query_all", (DL_FUNC) &_iscream_Cpp_query_all, 8},
     {"_iscream_Cpp_summarize_regions", (DL_FUNC) &_iscream_Cpp_summarize_regions, 7},
     {NULL, NULL, 0}
 };

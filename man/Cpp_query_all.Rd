@@ -4,19 +4,28 @@
 \alias{Cpp_query_all}
 \title{Query all CpG info into M and coverage matrices}
 \usage{
-Cpp_query_all(bedfiles, regions, bismark, merged, sparse, prealloc, nthreads)
+Cpp_query_all(
+  bedfiles,
+  regions,
+  aligner,
+  valInd,
+  merged,
+  sparse,
+  prealloc,
+  nthreads
+)
 }
 \arguments{
 \item{bedfiles}{A vector of bedfiles}
 
 \item{regions}{A vector of regions}
 
-\item{bismark}{Whether the input is a bismark coverage file}
-
 \item{prealloc}{The number of rows to initialize the matrices with}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
+
+\item{bismark}{Whether the input is a bismark coverage file}
 }
 \description{
 Query all CpG info into M and coverage matrices
