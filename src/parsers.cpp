@@ -30,7 +30,7 @@ std::vector<std::string_view> split_bedstring(std::string_view bedString) {
 //' Parse a bed record into chr, start, and compressed beta and cov
 //'
 //' @param A line from a bed file
-BedLine parseBEDRecord(const std::string& bedString) {
+BedLine parseBiscuitRecord(const std::string& bedString) {
     std::vector<std::string_view> res = split_bedstring(bedString);
     std::vector<std::string> fields(res.begin(), res.end());
     std::string chrom = fields[0];

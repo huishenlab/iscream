@@ -70,7 +70,7 @@ DataVec make_data_vec(const std::vector<std::string>& cpgs, const bool mval, con
     arma::vec mvals(cpgs.size());
 
     for (int i = 0; i < cpgs.size(); i++) {
-        BedLine parsed_cpg = bismark ? parseCovRecord(cpgs[i]) : parseBEDRecord(cpgs[i]);
+        BedLine parsed_cpg = bismark ? parseCovRecord(cpgs[i]) : parseBiscuitRecord(cpgs[i]);
         covs[i] = parsed_cpg.cov;
         mvals[i] = mval ? parsed_cpg.m_count : parsed_cpg.beta;
     }

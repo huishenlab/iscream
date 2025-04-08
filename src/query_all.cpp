@@ -142,7 +142,7 @@ void QueryAll<Mat>::populate_matrix(RegionQuery& query, int& col_n, const bool b
     khmap_m_resize(cpg_map, cpg_count);
     for (std::string cpg_string : query.cpgs_in_interval) {
 
-        BedLine parsed_bedline = bismark ? parseCovRecord(cpg_string) : parseBEDRecord(cpg_string);
+        BedLine parsed_bedline = bismark ? parseCovRecord(cpg_string) : parseBiscuitRecord(cpg_string);
         lines.push_back(parsed_bedline);
         spdlog::trace(
             "Parsed {} into chr: {}, start: {}, end: {}",
