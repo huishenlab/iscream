@@ -50,7 +50,7 @@ allocate memory and store it during the query
 \emph{htslib}, but slower on large queries since it stores the records as they
 are found instead of writing to a file. However it's able to store each
 regions records independently instead of in a single file and is used in
-\code{query_all()} and \code{summarize_regions()}.
+\code{make_mat()}, \code{make_bsseq_mat()}, and \code{summarize_regions()}.
 }
 
 When \emph{iscream} is attached, it checks that the \emph{tabix} executable is

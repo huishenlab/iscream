@@ -76,7 +76,8 @@ get_threads <- function() {
 #' Functions currently using multithreading:
 #' - `tabix()`
 #' - `query_chroms()`
-#' - `query_all()`
+#' - `make_mat()`
+#' - `make_bsseq_mat()`
 #' - `summarize_regions()`
 #' @export
 #'

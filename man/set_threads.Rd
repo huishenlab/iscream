@@ -49,7 +49,8 @@ Functions currently using multithreading:
 \itemize{
 \item \code{tabix()}
 \item \code{query_chroms()}
-\item \code{query_all()}
+\item \code{make_mat()}
+\item \code{make_bsseq_mat()}
 \item \code{summarize_regions()}
 }
 }

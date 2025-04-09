@@ -59,20 +59,20 @@ exp_pos <- seq(1, 13, by = 2)
 exp_seq <- rep("chr1", 7)
 
 set_threads(1)
-biscuit_test <- query_all(biscuit_bedfiles, regions, prealloc = 2)
-bismark_test <- query_all(bismark_bedfiles, regions, aligner = "bismark")
+biscuit_test <- make_bsseq_mat(biscuit_bedfiles, regions, prealloc = 2)
+bismark_test <- make_bsseq_mat(bismark_bedfiles, regions, aligner = "bismark")
 
-biscuit_sparse_test <- query_all(biscuit_bedfiles, regions, sparse = T)
-bismark_sparse_test <- query_all(bismark_bedfiles, regions, sparse = T, aligner = "bismark")
+biscuit_sparse_test <- make_bsseq_mat(biscuit_bedfiles, regions, sparse = T)
+bismark_sparse_test <- make_bsseq_mat(bismark_bedfiles, regions, sparse = T, aligner = "bismark")
 
-biscuit_granges_test <- query_all(biscuit_bedfiles, gr, prealloc = 2)
-biscuit_df_test <- query_all(biscuit_bedfiles, regions.dt, prealloc = 2)
+biscuit_granges_test <- make_bsseq_mat(biscuit_bedfiles, gr, prealloc = 2)
+biscuit_df_test <- make_bsseq_mat(biscuit_bedfiles, regions.dt, prealloc = 2)
 
-biscuit_beta_test <- query_all(biscuit_bedfiles, regions, sparse = F, mval = F)
-bismark_beta_test <- query_all(bismark_bedfiles, regions, sparse = F, aligner = "bismark", mval = F)
+biscuit_beta_test <- make_bsseq_mat(biscuit_bedfiles, regions, sparse = F, mval = F)
+bismark_beta_test <- make_bsseq_mat(bismark_bedfiles, regions, sparse = F, aligner = "bismark", mval = F)
 
-biscuit_sparse_beta_test <- query_all(biscuit_bedfiles, regions, sparse = T, mval = F)
-bismark_sparse_beta_test <- query_all(bismark_bedfiles, regions, sparse = T, aligner = "bismark", mval = F)
+biscuit_sparse_beta_test <- make_bsseq_mat(biscuit_bedfiles, regions, sparse = T, mval = F)
+bismark_sparse_beta_test <- make_bsseq_mat(bismark_bedfiles, regions, sparse = T, aligner = "bismark", mval = F)
 
 results <- list(
   biscuit_test,

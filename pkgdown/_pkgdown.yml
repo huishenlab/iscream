@@ -26,7 +26,8 @@ reference:
       - tabix
       - query_chroms
       - summarize_regions
-      - query_all
+      - make_mat
+      - make_bsseq_mat
   - title: Utilities
     contents:
       - get_granges_string
