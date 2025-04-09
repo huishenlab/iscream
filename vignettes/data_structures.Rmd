@@ -26,7 +26,7 @@ library(GenomicRanges)
 ```
 
 GRanges can be used as the input to all of iscream's querying functions. The
-output of `tabix()` and `query_all()` can also be turned into GRanges.
+output of `tabix()` and `make_mat()`, `make_bsseq_mat()` can also be turned into GRanges.
 
 ### From `tabix` queries
 
@@ -82,11 +82,11 @@ GRanges(summary$Feature, summary = summary[, -1])
 library("SummarizedExperiment")
 ```
 
-### From `query_all` matrices
+### From `make_mat()` or `make_bsseq_mat()` matrices
 
 ```{r}
-(mats <- query_all(bedfiles, regions))
-(mats.sparse <- query_all(bedfiles, regions, sparse = TRUE))
+(mats <- make_bsseq_mat(bedfiles, regions))
+(mats.sparse <- make_bsseq_mat(bedfiles, regions, sparse = TRUE))
 gr <- GRanges(mats$chr, mats$pos)
 
 # dense
