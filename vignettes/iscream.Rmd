@@ -152,10 +152,12 @@ Since we got 45 million CpGs from all the BED files, we can approximately
 expect between 5 and 10 million unique CpGs as single-cell data has lower
 coverage than bulk. We already have the tabix query so we can get the unique
 CpG count here and use it to preallocate the matrix, reducing the number of
-matrix resizes. Making tabix queries can be a relatively quick way to
-approximate the CpG count of a dataset. If you haven't done a tabix query of
-the full dataset, you can approximate how many CpGs to expect based on CpG
-counts in one file and the coverage of your WGBS method.
+matrix resizes. We'll add 100,000 extra on top of the existing count to be safe
+since every avoided resize cuts off at least a couple seconds from the runtime.
+Making tabix queries can be a relatively quick way to approximate the CpG count
+of a dataset. If you haven't done a tabix query of the full dataset, you can
+approximate how many CpGs to expect based on CpG counts in one file and the
+coverage of your WGBS method.
 
 
 ``` r
@@ -164,19 +166,22 @@ system.time(meth_mat <- make_bsseq_mat(
   bedfiles,
   regions,
   sparse = TRUE,
-  prealloc = cpg.count
+  prealloc = cpg.count + 1e5
 ))
-#> [12:13:31.961976] [iscream::query_all] [info] Querying 5000 regions from 100 bedfiles
+#> [12:58:20.768328] [iscream::query_all] [info] Querying 5000 regions from 100 bedfiles
 #> 
-#> [12:14:22.904618] [iscream::query_all] [info] Creating metadata vectors
-#> [12:14:23.381735] [iscream::query_all] [info] nrows 7281989 - 5882 extra rows allocated with 3 resizes
-#> [12:14:27.962580] [iscream::query_all] [info] Creating sparse matrix
+#> [12:58:58.775290] [iscream::query_all] [info] Creating metadata vectors
+#> [12:58:59.034963] [iscream::query_all] [info] 7276107 loci found - 16250 extra rows allocated with 0 resizes
+#> [12:59:03.518451] [iscream::query_all] [info] Creating sparse matrix
 #>    user  system elapsed 
-#> 208.880   3.086  56.854
+#> 285.230   1.818  43.773
+```
+
+``` r
 str(meth_mat)
 #> List of 5
 #>  $ M          :Formal class 'dgCMatrix' [package "Matrix"] with 6 slots
-#>   .. ..@ i       : int [1:32627134] 9 11 12 13 14 15 16 17 18 19 ...
+#>   .. ..@ i       : int [1:32627134] 10 11 304 305 306 319 325 409 410 411 ...
 #>   .. ..@ p       : int [1:101] 0 157256 362760 626888 904511 1158005 1437240 1729046 2014168 2231683 ...
 #>   .. ..@ Dim     : int [1:2] 7276107 100
 #>   .. ..@ Dimnames:List of 2
@@ -185,7 +190,7 @@ str(meth_mat)
 #>   .. ..@ x       : num [1:32627134] 1 1 1 1 1 1 1 1 1 1 ...
 #>   .. ..@ factors : list()
 #>  $ Cov        :Formal class 'dgCMatrix' [package "Matrix"] with 6 slots
-#>   .. ..@ i       : int [1:43227794] 0 1 2 3 4 5 6 7 8 9 ...
+#>   .. ..@ i       : int [1:43227794] 10 11 61 62 65 66 67 68 69 70 ...
 #>   .. ..@ p       : int [1:101] 0 217582 488919 850016 1220035 1545163 1920047 2322291 2713873 3020522 ...
 #>   .. ..@ Dim     : int [1:2] 7276107 100
 #>   .. ..@ Dimnames:List of 2
@@ -193,7 +198,7 @@ str(meth_mat)
 #>   .. .. ..$ : chr [1:100] "bisc_SRR6911624" "bisc_SRR6911625" "bisc_SRR6911626" "bisc_SRR6911627" ...
 #>   .. ..@ x       : num [1:43227794] 1 1 1 1 1 1 1 1 1 1 ...
 #>   .. ..@ factors : list()
-#>  $ pos        : int [1:7276107] 1472309 1472386 1472390 1472394 1472407 1472414 1472439 1472489 1472503 1473922 ...
+#>  $ pos        : int [1:7276107] 1474601 1474643 1474647 1474742 1474751 1474764 1474779 1474786 1474805 1474817 ...
 #>  $ chr        : chr [1:7276107] "chr1" "chr1" "chr1" "chr1" ...
 #>  $ sampleNames: chr [1:100] "bisc_SRR6911624" "bisc_SRR6911625" "bisc_SRR6911626" "bisc_SRR6911627" ...
 ```

@@ -98,10 +98,12 @@ Since we got 45 million CpGs from all the BED files, we can approximately
 expect between 5 and 10 million unique CpGs as single-cell data has lower
 coverage than bulk. We already have the tabix query so we can get the unique
 CpG count here and use it to preallocate the matrix, reducing the number of
-matrix resizes. Making tabix queries can be a relatively quick way to
-approximate the CpG count of a dataset. If you haven't done a tabix query of
-the full dataset, you can approximate how many CpGs to expect based on CpG
-counts in one file and the coverage of your WGBS method.
+matrix resizes. We'll add 100,000 extra on top of the existing count to be safe
+since every avoided resize cuts off at least a couple seconds from the runtime.
+Making tabix queries can be a relatively quick way to approximate the CpG count
+of a dataset. If you haven't done a tabix query of the full dataset, you can
+approximate how many CpGs to expect based on CpG counts in one file and the
+coverage of your WGBS method.
 
 ```{r}
 cpg.count <- tbx_query$start |> unique() |> length()
@@ -109,7 +111,7 @@ system.time(meth_mat <- make_bsseq_mat(
   bedfiles,
   regions,
   sparse = TRUE,
-  prealloc = cpg.count
+  prealloc = cpg.count + 1e5
 ))
 str(meth_mat)
 ```
