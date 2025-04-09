@@ -47,19 +47,20 @@ get_granges_string <- function(gr, sep = c(":", "-")) {
 #' Convert DataFrame to a vector of strings. Set feature names in a "name" column
 #'
 #' @param regions_df A data frame with "chr", "start" and "end" columns
+#' @param feature_col The data frame column to use as the names of the output string vector
 #'
 #' @importFrom data.table setDT
 #'
 #' @return A character vector
 #'
 #' @export
-get_df_string <- function(regions_df) {
+get_df_string <- function(regions_df, feature_col = NULL) {
   stopifnot("colnames must be 'chr', 'start' and 'end'" = colnames(regions_df)[1:3] == c("chr", "start", "end"))
   chr <- start <- end <- NULL
   regions.dt <- setDT(regions_df)
   regions <- regions.dt[, paste0(chr, ":", start, "-", end)]
-  if (!is.null(regions_df$names)) {
-    names(regions) <- regions_df$names
+  if (!is.null(feature_col) && feature_col %in% colnames(regions_df)) {
+    names(regions) <- regions_df[[feature_col]]
   }
   return(regions)
 }

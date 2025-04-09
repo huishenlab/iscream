@@ -75,10 +75,12 @@ tbx_query
 ### Get summary data
 
 To get a summary of the methylation information of the gene bodies use
-`summarize_regions`:
+`summarize_regions`, providing the gene name column as the feature column:
 
 ```{r}
-system.time(summary_query <- summarize_regions(bedfiles, regions))
+system.time(summary_query <- summarize_regions(
+    bedfiles, regions, feature_col = "gene"
+))
 head(summary_query)
 ```
 

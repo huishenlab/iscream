@@ -9,6 +9,7 @@ summarize_regions(
   regions,
   fun = "all",
   aligner = "biscuit",
+  feature_col = NULL,
   mval = TRUE,
   set_region_rownames = FALSE,
   nthreads = NULL
@@ -24,6 +25,9 @@ details.}
 
 \item{aligner}{The aligner used to produce the BED files - one of "biscuit",
 "bismark", "bsbolt".}
+
+\item{feature_col}{If the input is a dataframe, the column to use as the
+feature label instead of the genomic region string}
 
 \item{mval}{Whether to calculate the M value (coverage \eqn{\times \beta})
 or use the beta value when applying the function.}
@@ -47,8 +51,8 @@ The input regions may be string vector in the form "chr:start-end"
 or a GRanges object. If a data frame is provided, they must have "chr",
 "start", and "end" columns. If the string vector and GenomicRanges inputs
 are named, the names will be used to describe each feature in the output
-dataframe. If input dataframes have a 'name' column, it will be used to
-populate the output's feature column.
+dataframe. If input dataframes have a feature column, set \code{feature_col} to
+that column name to populate the output's feature column.
 
 Supported \code{fun} arguments are given below. For each of these functions,
 setting \code{mval = FALSE} will use the beta values instead of the M value:

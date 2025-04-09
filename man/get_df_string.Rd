@@ -4,10 +4,12 @@
 \alias{get_df_string}
 \title{DataFrame to region strings}
 \usage{
-get_df_string(regions_df)
+get_df_string(regions_df, feature_col = NULL)
 }
 \arguments{
 \item{regions_df}{A data frame with "chr", "start" and "end" columns}
+
+\item{feature_col}{The data frame column to use as the names of the output string vector}
 }
 \value{
 A character vector
