@@ -1,5 +1,10 @@
 with import <nixpkgs> {};
 let
+
+  htslib = pkgs.htslib.overrideAttrs (finalAttrs: previousAttrs: {
+    buildInputs = previousAttrs.buildInputs ++ [ pkgs.libdeflate ];
+  });
+
   rlibs = with rPackages; [
   # base
     R
