@@ -175,7 +175,7 @@ test_that("summarize_regions 1 thread sum", {
   )
   expect_equal(
     m_sum,
-    summarize_regions(biscuit_bedfiles, regions.dt, fun = "sum", mval = TRUE, nthreads = 1)
+    summarize_regions(biscuit_bedfiles, regions.dt, fun = "sum", mval = TRUE, feature_col = "names", nthreads = 1)
   )
   expect_equal(
     beta_sum,
@@ -251,7 +251,7 @@ test_that("summarize_regions 2 thread all bismark", {
   )
   expect_equal(
     m_all,
-    summarize_regions(bismark_bedfiles, regions.dt, fun = "all", mval = TRUE, aligner = "bismark", nthreads = 2)
+    summarize_regions(bismark_bedfiles, regions.dt, fun = "all", mval = TRUE, aligner = "bismark", feature_col = "names", nthreads = 2)
   )
   expect_equal(
     beta_all,

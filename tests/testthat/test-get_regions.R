@@ -34,7 +34,7 @@ test_that("Test GRanges to string no names", {
 regions.dt[, names := names(regions)]
 colnames(regions.dt) <- c("chr", "start", "end", "names")
 test_that("Test GRanges to string with names", {
-  expect_equal(get_df_string(regions.dt), regions)
-  expect_equal(names(get_df_string(regions.dt)), names(regions))
+  expect_equal(get_df_string(regions.dt, feature_col = "names"), regions)
+  expect_equal(names(get_df_string(regions.dt, feature_col = "names")), names(regions))
 })
 
