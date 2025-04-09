@@ -255,7 +255,10 @@ int QueryAll<Mat>::bitpack(const float beta_val, const float cov_val) {
 //' Query all CpG info into M and coverage matrices
 //' @param bedfiles A vector of bedfiles
 //' @param regions A vector of regions
-//' @param bismark Whether the input is a bismark coverage file
+//' @param aligner The aligner used to make the WGBS BED files, only for
+//' `make_bsseq_mat`
+//' @param valInd The index of the data column needed for the matrix, for `make_mat`
+//' @param merged Whether the input strands have been merged/collapsed
 //' @param prealloc The number of rows to initialize the matrices with
 //' @param nthreads Set number of threads to use overriding the
 //' `"iscream.threads"` option. See `?set_threads` for more information.

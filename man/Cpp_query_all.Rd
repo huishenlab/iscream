@@ -20,12 +20,17 @@ Cpp_query_all(
 
 \item{regions}{A vector of regions}
 
+\item{aligner}{The aligner used to make the WGBS BED files, only for
+\code{make_bsseq_mat}}
+
+\item{valInd}{The index of the data column needed for the matrix, for \code{make_mat}}
+
+\item{merged}{Whether the input strands have been merged/collapsed}
+
 \item{prealloc}{The number of rows to initialize the matrices with}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
-
-\item{bismark}{Whether the input is a bismark coverage file}
 }
 \description{
 Query all CpG info into M and coverage matrices
