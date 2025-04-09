@@ -54,7 +54,7 @@ or a GRanges object. If a data frame is provided, they must have "chr",
 bedfiles <- system.file("extdata", package = "iscream") |>
   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 # examine the bedfiles
-colnames <- c("chr", "start", "end", "value")
+colnames <- c("chr", "start", "end", "beta", "coverage")
 lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 
 # make a vector of regions
