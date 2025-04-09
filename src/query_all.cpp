@@ -276,7 +276,7 @@ Rcpp::List Cpp_query_all(
     BSType type;
     if (aligner == "biscuit") {
         type = BISCUIT;
-    } else if (aligner == "bismark") {
+    } else if (aligner == "bismark" || aligner == "bsbolt") {
         type = BISMARK;
     } else {
         type = GENERAL;
