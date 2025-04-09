@@ -107,7 +107,7 @@ QueryAll<Mat>::QueryAll(
     int n_rows = bitmat.n_rows;
     if (bitmat.n_rows > mapsize) {
         int diff_rows = bitmat.n_rows - mapsize;
-        spdlog::info("nrows {} - {} extra rows allocated with {} resizes", n_rows, diff_rows, resize_count);
+        spdlog::info("{} loci found - {} extra rows allocated with {} resizes", mapsize, diff_rows, resize_count);
         bitmat.resize(mapsize, bedfile_vec.size());
         spdlog::debug("Corrected matrix size in {} s", sw);
     }
