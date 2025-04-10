@@ -195,9 +195,10 @@ void QueryAll<Mat>::resize_mat(int cur_nrow, int mapsize) {
 
 template <class Mat>
 int QueryAll<Mat>::bitpack(const float beta_val, const int cov_val) {
-    int cov = cov_val > UINT16_MAX ? UINT16_MAX : cov_val;
-    float beta = beta_val > UINT16_MAX ? UINT16_MAX : beta_val;
-    return(std::round(beta * 100) + (cov << 16));
+    uint16_t cov = cov_val > INT16_MAX ? INT16_MAX : cov_val;
+    uint16_t betap = std::round(beta_val * 100);
+    betap = betap > INT16_MAX ? INT16_MAX : betap;
+    return(betap + (cov << 16));
 }
 
 //' Query all CpG info into M and coverage matrices
