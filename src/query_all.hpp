@@ -78,6 +78,7 @@ private:
     Rcpp::IntegerVector start;
 
     bool stop_invalid_argument;
+    bool stop_out_of_range;
 
 public:
 

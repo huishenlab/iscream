@@ -28,6 +28,9 @@ QueryAll<Mat>::QueryAll(
     is_merged = merged;
     stop_invalid_argument = false;
 
+    stop_invalid_argument = false;
+    stop_out_of_range = false;
+
     bitmat.resize(prealloc, bedfile_vec.size());
 
     setup_logger("iscream::query_all");
@@ -36,16 +39,16 @@ QueryAll<Mat>::QueryAll(
     Progress bar(bedfile_vec.size(), true); 
 
     spdlog::stopwatch sw;
-#if defined(_OPENMP)
-    #pragma omp parallel for num_threads(nthreads)
-#endif
+    #if defined(_OPENMP)
+        #pragma omp parallel for num_threads(nthreads)
+    #endif
     for (int bedfile_n = 0; bedfile_n < bedfile_vec.size(); bedfile_n++) {
-        if (stop_invalid_argument) continue;
+        if (stop_invalid_argument | stop_out_of_range) continue;
         if ( !Progress::check_abort() ) {
             spdlog::debug("Querying {}", bedfile_vec[bedfile_n]);
             MultiRegionQuery cpgs_in_file = query_intervals(bedfile_vec[bedfile_n].c_str(), regions);
             for (RegionQuery cpgs_in_interval : cpgs_in_file) {
-                if (stop_invalid_argument) continue;
+                if (stop_invalid_argument | stop_out_of_range) continue;
                 #pragma omp critical
                 {
                     try {
@@ -53,16 +56,17 @@ QueryAll<Mat>::QueryAll(
                     } catch (std::invalid_argument const& ex) {
                         stop_invalid_argument = true;
                         Rprintf("\n%s\n", ex.what());
+                    } catch (std::out_of_range const& ex) {
+                        Rprintf("\n%s\n", ex.what());
+                        stop_out_of_range = true;
                     }
                 }
             }
-            if (spdlog::get_level() == spdlog::level::info && !stop_invalid_argument) bar.increment();
+            if (spdlog::get_level() == spdlog::level::info && !stop_invalid_argument && !stop_out_of_range) bar.increment();
         }
     }
-    if (stop_invalid_argument) {
-        Rcpp::stop("Caught 'std::invalid_argument': parsed data columns are not numeric");
-    }
-
+    if (stop_invalid_argument) Rcpp::stop("Caught 'std::invalid_argument': parsed data columns are not numeric");
+    if (stop_out_of_range) Rcpp::stop("Caught 'std::out_of_range': provided column index is too large");
     spdlog::debug("Made matrix in {} s", sw);
     bar.cleanup();
 
