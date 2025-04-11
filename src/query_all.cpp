@@ -25,6 +25,7 @@ QueryAll<Mat>::QueryAll(
     sample_names = Rcpp::CharacterVector(bedfile_vec.size());
     cpg_map = khmap_init();
     is_merged = merged;
+    stop_invalid_argument = false;
 
     bitmat.resize(prealloc, bedfile_vec.size());
 
@@ -38,18 +39,29 @@ QueryAll<Mat>::QueryAll(
     #pragma omp parallel for num_threads(nthreads)
 #endif
     for (int bedfile_n = 0; bedfile_n < bedfile_vec.size(); bedfile_n++) {
+        if (stop_invalid_argument) continue;
         if ( !Progress::check_abort() ) {
             spdlog::debug("Querying {}", bedfile_vec[bedfile_n]);
             MultiRegionQuery cpgs_in_file = query_intervals(bedfile_vec[bedfile_n].c_str(), regions);
             for (RegionQuery cpgs_in_interval : cpgs_in_file) {
+                if (stop_invalid_argument) continue;
                 #pragma omp critical
                 {
-                    populate_matrix(cpgs_in_interval, bedfile_n, bismark);
+                    try {
+                        populate_matrix(cpgs_in_interval, bedfile_n, bismark);
+                    } catch (std::invalid_argument const& ex) {
+                        stop_invalid_argument = true;
+                        Rprintf("\n%s\n", ex.what());
+                    }
                 }
             }
-            if (spdlog::get_level() == spdlog::level::info) bar.increment();
+            if (spdlog::get_level() == spdlog::level::info && !stop_invalid_argument) bar.increment();
         }
     }
+    if (stop_invalid_argument) {
+        Rcpp::stop("Caught 'std::invalid_argument': parsed data columns are not numeric");
+    }
+
     spdlog::debug("Made matrix in {} s", sw);
     bar.cleanup();
 

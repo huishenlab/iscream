@@ -71,6 +71,8 @@ private:
     SEXP seqnames;
     Rcpp::IntegerVector start;
 
+    bool stop_invalid_argument;
+
 public:
 
     QueryAll();
