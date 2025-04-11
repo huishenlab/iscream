@@ -1,4 +1,5 @@
 #include "parsers.hpp"
+#include "log.hpp"
 
 //' Split a line from a bed file
 //'
@@ -31,14 +32,21 @@ BedRecord parseBedRecord(const std::string& bedString, const int valInd1) {
     std::vector<std::string_view> res = split_bedstring(bedString);
     std::vector<std::string> fields(res.begin(), res.end());
 
-    if (valInd1 > fields.size()) {
-        Rcpp::stop("parseBedRecord: Column indices too large");
+    if (valInd1 >= fields.size()) {
+        throw std::out_of_range(fmt::format("Error: Column {} does not exist\n", valInd1 + 1));
     }
 
     std::string chrom = fields[0];
     int start = std::stoi(fields[1]);
     int end = std::stoi(fields[2]);
-    float val1 = std::stof(fields[valInd1]);
+    float val1;
+
+    try {
+        val1 = std::stof(fields[valInd1]);
+    } catch (std::invalid_argument const& ex) {
+        throw std::invalid_argument(fmt::format("Error: Column {} is not numeric\n", valInd1 + 1));
+    }
+
     return BedRecord{chrom, start, end, {val1, -1, -1}};
 };
 
