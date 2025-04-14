@@ -10,7 +10,8 @@ struct BedRecord {
     std::string chr;
     int start;
     int end;
-    float data[3];
+    std::vector<float> data;
+    size_t size;
 };
 
 std::vector<std::string_view> split_bedstring(std::string_view bedString);

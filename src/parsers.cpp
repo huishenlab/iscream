@@ -47,7 +47,8 @@ BedRecord parseBedRecord(const std::string& bedString, const int valInd1) {
         throw std::invalid_argument(fmt::format("Error: Column {} is not numeric\n", valInd1 + 1));
     }
 
-    return BedRecord{chrom, start, end, {val1, -1, -1}};
+    std::vector<float> data = {val1};
+    return BedRecord{chrom, start, end, data, 1};
 };
 
 //' Parse a bed record into chr, start, and compressed beta and cov
@@ -63,7 +64,8 @@ BedRecord parseBiscuitRecord(const std::string& bedString) {
     float cov = std::stof(fields[4]);
     float m_count = std::round(cov * beta);
 
-    return BedRecord{chrom, start, end, {beta, cov, m_count}};
+    std::vector<float> data = {beta, cov, m_count};
+    return BedRecord{chrom, start, end, data, 3};
 }
 
 //' Parse a bed record into chr, start, and compressed beta and cov
@@ -85,8 +87,8 @@ BedRecord parseCovRecord(const std::string& bedString) {
     float u_count = std::stof(fields[5]);
     float cov = m_count + u_count;
 
-    BedRecord read = {chrom, start, end, {beta, cov, m_count}};
-    return read;
+    std::vector<float> data = {beta, cov, m_count};
+    return BedRecord{chrom, start, end, data, 3};
 }
 
 /*   Archived   */
