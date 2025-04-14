@@ -28,10 +28,34 @@ std::vector<std::string_view> split_bedstring(std::string_view bedString) {
     return res;
 }
 
+BedRecord parseBedRecord(const std::string& bedString, std::vector<int> valInd) {
+    std::vector<std::string_view> res = split_bedstring(bedString);
+    std::vector<std::string> fields(res.begin(), res.end());
+    size_t col_count = valInd.size();
+
+    if (col_count >= fields.size()) {
+        throw std::out_of_range(fmt::format("Error: Column {} does not exist\n", col_count));
+    }
+
+    std::string chrom = fields[0];
+    int start = std::stoi(fields[1]);
+    int end = std::stoi(fields[2]);
+    std::vector<float> data(col_count);
+    int i;
+    try {
+        for (i = 0; i < valInd.size(); i++) {
+            data[i] = std::stof(fields[valInd[i] - 1]);
+        }
+    } catch (std::invalid_argument const& ex) {
+        throw std::invalid_argument(fmt::format("Error: Column {} is not numeric\n", i + 1));
+    }
+
+    return BedRecord{chrom, start, end, data, col_count};
+}
+
 BedRecord parseBedRecord(const std::string& bedString, const int valInd1) {
     std::vector<std::string_view> res = split_bedstring(bedString);
     std::vector<std::string> fields(res.begin(), res.end());
-
     if (valInd1 >= fields.size()) {
         throw std::out_of_range(fmt::format("Error: Column {} does not exist\n", valInd1 + 1));
     }
