@@ -278,27 +278,25 @@ Rcpp::List Cpp_query_all(
     const int prealloc,
     const int nthreads) {
 
-    BSType type;
-    if (aligner == "biscuit") {
-        type = BISCUIT;
-    } else if (aligner == "bismark" || aligner == "bsbolt") {
-        type = BISMARK;
-    } else {
-        type = GENERAL;
-        if (sparse) {
-            QueryAll query = QueryAll<arma::sp_fmat>(bedfiles, regions, type, valInd, merged, sparse, prealloc, nthreads);
-            return query.ret();
-        } else {
-            QueryAll query = QueryAll<arma::fmat>(bedfiles, regions, type, valInd, merged, sparse, prealloc, nthreads);
-            return query.ret();
-        }
-    }
+    BSType bstype = get_BSType(aligner);
 
-    if (sparse) {
-        QueryAll query = QueryAll<arma::sp_umat>(bedfiles, regions, type, valInd, merged, sparse, prealloc, nthreads);
-        return query.wrap();
-    } else {
-        QueryAll query = QueryAll<arma::umat>(bedfiles, regions, type, valInd, merged, sparse, prealloc, nthreads);
-        return query.wrap();
+    switch(bstype) {
+        case BISCUIT: case BISMARK:
+            if (sparse) {
+                QueryAll query = QueryAll<arma::sp_umat>(bedfiles, regions, bstype, valInd, merged, sparse, prealloc, nthreads);
+                return query.wrap();
+            } else {
+                QueryAll query = QueryAll<arma::umat>(bedfiles, regions, bstype, valInd, merged, sparse, prealloc, nthreads);
+                return query.wrap();
+            }
+
+        default:
+            if (sparse) {
+                QueryAll query = QueryAll<arma::sp_fmat>(bedfiles, regions, bstype, valInd, merged, sparse, prealloc, nthreads);
+                return query.ret();
+            } else {
+                QueryAll query = QueryAll<arma::fmat>(bedfiles, regions, bstype, valInd, merged, sparse, prealloc, nthreads);
+                return query.ret();
+            }
     }
 }

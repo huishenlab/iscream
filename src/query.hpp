@@ -9,7 +9,8 @@
 #include <omp.h>
 #endif
 
-#include "../inst/include/iscream_types.h"
+#include <htslib/hts.h>
+#include <htslib/tbx.h>
 #include <string>
 #include "parsers.hpp"
 #include "log.hpp"
