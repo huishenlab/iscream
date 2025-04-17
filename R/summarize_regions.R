@@ -1,17 +1,15 @@
-#' Summarize CpGs  methylation information over genomic regions
+#' Summarize information over genomic regions
 #'
-#' Run summarizing functions on the CpGs in bedfiles across genomic regions.
+#' Run summarizing functions on bedfile records across genomic regions.
 #' Parallelized across files using threads from the `"iscream.threads"` option.
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector, data frame or GenomicRanges of genomic regions. See
 #' details.
-#' @param aligner The aligner used to produce the BED files - one of "biscuit",
-#' "bismark", "bsbolt".
+#' @param columns A vector of indices of the numeric columns to be summarized
+#' @param col_names A vector of names to use for `columns` in the output
+#' @param fun Function(s) to apply over the region. See details.
 #' @param feature_col If the input is a dataframe, the column to use as the
 #' feature label instead of the genomic region string
-#' @param fun Function(s) to apply over the region. See details.
-#' @param mval Whether to calculate the M value (coverage \eqn{\times \beta})
-#' or use the beta value when applying the function.
 #' @param set_region_rownames Use the region strings as the returned data
 #' frame's rownames. Can be useful if you have a named regions and want both
 #' the regions strings rownames and the feature names.
@@ -36,7 +34,7 @@
 #' - Minimum: `"min"`
 #' - Maximum: `"max"`
 #' - Range: `"range"`
-#' - No. of CpGs in the region: `"cpg_count"`
+#' - No. of records in the region: `"count"`
 #'
 #' The summarizing computations are backed by the Armadillo library. See
 #' <https://arma.sourceforge.net/docs.html#stats_fns> for futher details on the
@@ -55,21 +53,22 @@
 #'
 #' # make a vector of regions
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
-#' summarize_regions(bedfiles, regions)
-#' summarize_regions(bedfiles, regions, fun = c("mean", "stddev"), mval = FALSE)
-#' summarize_regions(bedfiles, regions, fun = "sum")
+#' summarize_regions(bedfiles, regions, columns = c(4, 5), col_names = c("beta", "cov"))
+#' summarize_regions(bedfiles, regions, fun = c("mean", "stddev"), columns = c(4, 5), col_names = c("beta", "cov"))
+#' summarize_regions(bedfiles, regions, fun = "sum", columns = 5, col_names = "coverage")
 summarize_regions <- function(
   bedfiles,
   regions,
+  columns,
+  col_names,
   fun = "all",
-  aligner = "biscuit",
   feature_col = NULL,
-  mval = TRUE,
   set_region_rownames = FALSE,
+  mval = FALSE,
   nthreads = NULL
 ) {
 
-  supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "cpg_count")
+  supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "count")
 
   if (length(fun) > 1) {
     if ("all" %in% fun) {
@@ -85,11 +84,7 @@ summarize_regions <- function(
     }
   }
 
-  stopifnot("'mval' must be TRUE or FALSE" = mval %in% c(TRUE, FALSE))
-
-  verify_aligner_or_stop(aligner)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
-  verify_filetype(bedfiles, aligner, stop_on_error = TRUE)
   if (class(regions)[1] == "GRanges"){
     regions <- get_granges_string(regions)
   } else if ("data.frame" %in% class(regions)) {
@@ -102,20 +97,22 @@ summarize_regions <- function(
   df <- Cpp_summarize_regions(
     bedfiles = bedfiles,
     regions = regions,
+    col_indices = columns,
+    col_names = col_names,
     fun_vec = fun_to_use,
-    bismark = aligner != "biscuit",
-    mval = mval,
     region_rownames = set_region_rownames,
+    aligner = "general",
+    mval = mval,
     nthreads = n_threads
   )
   df[df == -99] <- NA
   df
 
-  mval_cpg_count <- paste0(ifelse(mval, "M", "beta"), ".cpg_count")
-  if (mval_cpg_count %in% colnames(df)) {
-    df <- df[, !(names(df) %in% "coverage.cpg_count")]
+  count_colnames <- paste0(col_names, ".count")
+  if (any(count_colnames %in% colnames(df))) {
+    df <- df[, !(names(df) %in% count_colnames[-1])]
   }
 
-  colnames(df)[which(colnames(df) == mval_cpg_count)] <- "cpg_count"
+  colnames(df)[which(colnames(df) == count_colnames[1])] <- "count"
   df
 }

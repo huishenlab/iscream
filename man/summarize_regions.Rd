@@ -2,16 +2,17 @@
 % Please edit documentation in R/summarize_regions.R
 \name{summarize_regions}
 \alias{summarize_regions}
-\title{Summarize CpGs  methylation information over genomic regions}
+\title{Summarize information over genomic regions}
 \usage{
 summarize_regions(
   bedfiles,
   regions,
+  columns,
+  col_names,
   fun = "all",
-  aligner = "biscuit",
   feature_col = NULL,
-  mval = TRUE,
   set_region_rownames = FALSE,
+  mval = FALSE,
   nthreads = NULL
 )
 }
@@ -21,16 +22,14 @@ summarize_regions(
 \item{regions}{A vector, data frame or GenomicRanges of genomic regions. See
 details.}
 
-\item{fun}{Function(s) to apply over the region. See details.}
+\item{columns}{A vector of indices of the numeric columns to be summarized}
 
-\item{aligner}{The aligner used to produce the BED files - one of "biscuit",
-"bismark", "bsbolt".}
+\item{col_names}{A vector of names to use for \code{columns} in the output}
+
+\item{fun}{Function(s) to apply over the region. See details.}
 
 \item{feature_col}{If the input is a dataframe, the column to use as the
 feature label instead of the genomic region string}
-
-\item{mval}{Whether to calculate the M value (coverage \eqn{\times \beta})
-or use the beta value when applying the function.}
 
 \item{set_region_rownames}{Use the region strings as the returned data
 frame's rownames. Can be useful if you have a named regions and want both
@@ -43,7 +42,7 @@ the regions strings rownames and the feature names.}
 A data.frame
 }
 \description{
-Run summarizing functions on the CpGs in bedfiles across genomic regions.
+Run summarizing functions on bedfile records across genomic regions.
 Parallelized across files using threads from the \code{"iscream.threads"} option.
 }
 \details{
@@ -65,7 +64,7 @@ setting \code{mval = FALSE} will use the beta values instead of the M value:
 \item Minimum: \code{"min"}
 \item Maximum: \code{"max"}
 \item Range: \code{"range"}
-\item No. of CpGs in the region: \code{"cpg_count"}
+\item No. of records in the region: \code{"count"}
 }
 
 The summarizing computations are backed by the Armadillo library. See
@@ -81,7 +80,7 @@ lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 
 # make a vector of regions
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
-summarize_regions(bedfiles, regions)
-summarize_regions(bedfiles, regions, fun = c("mean", "stddev"), mval = FALSE)
-summarize_regions(bedfiles, regions, fun = "sum")
+summarize_regions(bedfiles, regions, columns = c(4, 5), col_names = c("beta", "cov"))
+summarize_regions(bedfiles, regions, fun = c("mean", "stddev"), columns = c(4, 5), col_names = c("beta", "cov"))
+summarize_regions(bedfiles, regions, fun = "sum", columns = 5, col_names = "coverage")
 }
