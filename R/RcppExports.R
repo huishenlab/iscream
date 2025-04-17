@@ -187,7 +187,7 @@ Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, pr
     .Call(`_iscream_Cpp_query_all`, bedfiles, regions, aligner, valInd, merged, sparse, prealloc, nthreads)
 }
 
-#' Apply a function over CpGs within features
+#' Apply a function over BED file records within genomic features
 #'
 #' This function should be called from `summarize_regions()` since there are few
 #' sanity checks on the C++ side.
@@ -196,8 +196,9 @@ Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, pr
 #' @param fun_vec Vector of the armadillo-supported stats functions to apply over the
 #' CpGs in the ' regions: `"sum"`, `"mean"`, `"median"`, `"stddev"`,
 #' `"variance"` "`cpg_count`", `"min"`,`"max"`, and `"range"`.
+#' @param col_indices A vector of genomic regions
+#' @param col_names A vector of genomic regions
 #' @param mval Calculates M values when TRUE, use beta values when FALSE
-#' @param bismark If the input is in the bismark column format instead of BISCUIT
 #' @param region_rownames Whether to set rownames to the regions strings. Not
 #' necessary if your regions vector is unnamed. If its names, then the "Feature"
 #' column is set to the names and the rownames are set to the regions string
@@ -210,7 +211,7 @@ Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, pr
 #'
 #' @keywords internal
 #' @export
-Cpp_summarize_regions <- function(bedfiles, regions, fun_vec, mval, bismark, region_rownames = FALSE, nthreads = 1L) {
-    .Call(`_iscream_Cpp_summarize_regions`, bedfiles, regions, fun_vec, mval, bismark, region_rownames, nthreads)
+Cpp_summarize_regions <- function(bedfiles, regions, fun_vec, col_indices, col_names, aligner, mval = FALSE, region_rownames = FALSE, nthreads = 1L) {
+    .Call(`_iscream_Cpp_summarize_regions`, bedfiles, regions, fun_vec, col_indices, col_names, aligner, mval, region_rownames, nthreads)
 }
 

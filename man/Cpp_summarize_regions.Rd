@@ -2,14 +2,16 @@
 % Please edit documentation in R/RcppExports.R
 \name{Cpp_summarize_regions}
 \alias{Cpp_summarize_regions}
-\title{Apply a function over CpGs within features}
+\title{Apply a function over BED file records within genomic features}
 \usage{
 Cpp_summarize_regions(
   bedfiles,
   regions,
   fun_vec,
-  mval,
-  bismark,
+  col_indices,
+  col_names,
+  aligner,
+  mval = FALSE,
   region_rownames = FALSE,
   nthreads = 1L
 )
@@ -23,9 +25,11 @@ Cpp_summarize_regions(
 CpGs in the ' regions: \code{"sum"}, \code{"mean"}, \code{"median"}, \code{"stddev"},
 \code{"variance"} "\code{cpg_count}", \code{"min"},\code{"max"}, and \code{"range"}.}
 
-\item{mval}{Calculates M values when TRUE, use beta values when FALSE}
+\item{col_indices}{A vector of genomic regions}
 
-\item{bismark}{If the input is in the bismark column format instead of BISCUIT}
+\item{col_names}{A vector of genomic regions}
+
+\item{mval}{Calculates M values when TRUE, use beta values when FALSE}
 
 \item{region_rownames}{Whether to set rownames to the regions strings. Not
 necessary if your regions vector is unnamed. If its names, then the "Feature"

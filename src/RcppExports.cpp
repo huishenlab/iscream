@@ -193,19 +193,21 @@ BEGIN_RCPP
 END_RCPP
 }
 // Cpp_summarize_regions
-Rcpp::DataFrame Cpp_summarize_regions(const std::vector<std::string>& bedfiles, const Rcpp::CharacterVector& regions, const std::vector<std::string>& fun_vec, const bool mval, const bool bismark, const bool region_rownames, const int& nthreads);
-RcppExport SEXP _iscream_Cpp_summarize_regions(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP fun_vecSEXP, SEXP mvalSEXP, SEXP bismarkSEXP, SEXP region_rownamesSEXP, SEXP nthreadsSEXP) {
+Rcpp::DataFrame Cpp_summarize_regions(const std::vector<std::string>& bedfiles, const Rcpp::CharacterVector& regions, const std::vector<std::string>& fun_vec, const std::vector<int>& col_indices, const std::vector<std::string>& col_names, const std::string& aligner, const bool mval, const bool region_rownames, const int nthreads);
+RcppExport SEXP _iscream_Cpp_summarize_regions(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP fun_vecSEXP, SEXP col_indicesSEXP, SEXP col_namesSEXP, SEXP alignerSEXP, SEXP mvalSEXP, SEXP region_rownamesSEXP, SEXP nthreadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::vector<std::string>& >::type bedfiles(bedfilesSEXP);
     Rcpp::traits::input_parameter< const Rcpp::CharacterVector& >::type regions(regionsSEXP);
     Rcpp::traits::input_parameter< const std::vector<std::string>& >::type fun_vec(fun_vecSEXP);
+    Rcpp::traits::input_parameter< const std::vector<int>& >::type col_indices(col_indicesSEXP);
+    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type col_names(col_namesSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type aligner(alignerSEXP);
     Rcpp::traits::input_parameter< const bool >::type mval(mvalSEXP);
-    Rcpp::traits::input_parameter< const bool >::type bismark(bismarkSEXP);
     Rcpp::traits::input_parameter< const bool >::type region_rownames(region_rownamesSEXP);
-    Rcpp::traits::input_parameter< const int& >::type nthreads(nthreadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Cpp_summarize_regions(bedfiles, regions, fun_vec, mval, bismark, region_rownames, nthreads));
+    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
+    rcpp_result_gen = Rcpp::wrap(Cpp_summarize_regions(bedfiles, regions, fun_vec, col_indices, col_names, aligner, mval, region_rownames, nthreads));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -227,7 +229,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_Cpp_query_interval", (DL_FUNC) &_iscream_Cpp_query_interval, 2},
     {"_iscream_scan_tabix", (DL_FUNC) &_iscream_scan_tabix, 2},
     {"_iscream_Cpp_query_all", (DL_FUNC) &_iscream_Cpp_query_all, 8},
-    {"_iscream_Cpp_summarize_regions", (DL_FUNC) &_iscream_Cpp_summarize_regions, 7},
+    {"_iscream_Cpp_summarize_regions", (DL_FUNC) &_iscream_Cpp_summarize_regions, 9},
     {NULL, NULL, 0}
 };
 
