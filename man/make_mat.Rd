@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_mat.R
 \name{make_mat}
 \alias{make_mat}
-\title{Query value from BED files from input genomic regions and make a matrix}
+\title{Make a matrix from a numeric column of any BED file}
 \usage{
 make_mat(
   bedfiles,
@@ -20,7 +20,7 @@ make_mat(
 \item{regions}{A vector, data frame or GenomicRanges of genomic regions. See
 details.}
 
-\item{col}{The index of the data column needed for the matrix}
+\item{column}{The index of the data column needed for the matrix}
 
 \item{mat_name}{What to name the matrix in the returned list}
 
@@ -42,7 +42,8 @@ A named list of
 }
 }
 \description{
-Queries the provided regions and produces a matrix with genomic positions.
+Queries the provided regions and produces a matrix along with genomic
+positions.
 Parallelized across files using threads from the \code{"iscream.threads"} option.
 }
 \details{

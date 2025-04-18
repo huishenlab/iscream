@@ -1,4 +1,4 @@
-#' Summarize information over genomic regions
+#' Summarize information over genomic regions from any BED file
 #'
 #' Run summarizing functions on bedfile records across genomic regions.
 #' Parallelized across files using threads from the `"iscream.threads"` option.

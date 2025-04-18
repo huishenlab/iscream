@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarize_regions.R
 \name{summarize_regions}
 \alias{summarize_regions}
-\title{Summarize information over genomic regions}
+\title{Summarize information over genomic regions from any BED file}
 \usage{
 summarize_regions(
   bedfiles,

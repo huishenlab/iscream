@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_bsseq_mat.R
 \name{make_bsseq_mat}
 \alias{make_bsseq_mat}
-\title{Query all CpGs from input genomic regions}
+\title{Make M/beta and coverage matrices from WGBS BED files}
 \usage{
 make_bsseq_mat(
   bedfiles,

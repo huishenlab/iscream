@@ -1,4 +1,4 @@
-#' Query all CpGs from input genomic regions
+#' Make M/beta and coverage matrices from WGBS BED files
 #'
 #' Queries the provided regions and produces M/beta and Coverage matrices and
 #' their genomic positions. Parallelized across files using threads from the

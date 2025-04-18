@@ -1,6 +1,7 @@
-#' Query value from BED files from input genomic regions and make a matrix
+#' Make a matrix from a numeric column of any BED file
 #'
-#' Queries the provided regions and produces a matrix with genomic positions.
+#' Queries the provided regions and produces a matrix along with genomic
+#' positions.
 #' Parallelized across files using threads from the `"iscream.threads"` option.
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector, data frame or GenomicRanges of genomic regions. See
