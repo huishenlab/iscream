@@ -14,6 +14,7 @@ number of files and regions used in a function
 \item \code{"debug"}: more verbose about row allocations, how many CpGs were found in
 a region, filename parsing etc. This mode cannot be used on more than one
 thread as R cannot output messages from multiple threads without crashing.
+\item \code{"off"}: no logging
 }}
 }
 \value{

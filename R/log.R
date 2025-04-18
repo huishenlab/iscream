@@ -6,6 +6,7 @@
 #' - `"debug"`: more verbose about row allocations, how many CpGs were found in
 #' a region, filename parsing etc. This mode cannot be used on more than one
 #' thread as R cannot output messages from multiple threads without crashing.
+#' - `"off"`: no logging
 #' @return None; sets the log level to the provided level
 #'
 #' @export
