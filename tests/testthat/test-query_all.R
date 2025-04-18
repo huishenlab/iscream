@@ -79,14 +79,14 @@ bismark_bs_bC <- make_bsseq_mat(bismark_bedfiles, regions, sparse = F, aligner =
 biscuit_bs_bC_sp <- make_bsseq_mat(biscuit_bedfiles, regions, sparse = T, mval = F)
 bismark_bs_bC_sp <- make_bsseq_mat(bismark_bedfiles, regions, sparse = T, aligner = "bismark", mval = F)
 
-biscuit_b <- make_mat(biscuit_bedfiles, regions, col = 4, mat_name = "beta")
-bismark_M <- make_mat(bismark_bedfiles, regions, col = 4, mat_name = "M")
+biscuit_b <- make_mat(biscuit_bedfiles, regions, column = 4, mat_name = "beta")
+bismark_M <- make_mat(bismark_bedfiles, regions, column = 4, mat_name = "M")
 
-biscuit_b_sp <- make_mat(biscuit_bedfiles, regions, col = 4, sparse = T, mat_name = "beta")
-bismark_M_sp <- make_mat(bismark_bedfiles, regions, col = 4, sparse = T, mat_name = "M")
+biscuit_b_sp <- make_mat(biscuit_bedfiles, regions, column = 4, sparse = T, mat_name = "beta")
+bismark_M_sp <- make_mat(bismark_bedfiles, regions, column = 4, sparse = T, mat_name = "M")
 
-biscuit_C_gr <- make_mat(biscuit_bedfiles, gr, col = 5, prealloc = 2)
-biscuit_C_df <- make_mat(biscuit_bedfiles, regions.dt, col = 5, prealloc = 2)
+biscuit_C_gr <- make_mat(biscuit_bedfiles, gr, column = 5, prealloc = 2)
+biscuit_C_df <- make_mat(biscuit_bedfiles, regions.dt, column = 5, prealloc = 2)
 
 results <- list(
   biscuit_bs_MC,
@@ -276,7 +276,7 @@ test_that("matrix row,colnames,sampleNames", {
 test_that("invalid columns", {
   lapply(1:3, function(i) {
     expect_error(
-      make_mat(biscuit_bedfiles, regions, col = i, mat_name = "beta"),
+      make_mat(biscuit_bedfiles, regions, column = i, mat_name = "beta"),
       "`col` < 3 - must be a the index of a numeric data column not any of chr, start or end "
     )
   })

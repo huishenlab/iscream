@@ -7,7 +7,7 @@
 make_mat(
   bedfiles,
   regions,
-  col,
+  column,
   mat_name = "value",
   sparse = FALSE,
   prealloc = 10000,
@@ -61,5 +61,5 @@ lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 # make a vector of regions
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 # make matrix of beta values
-make_mat(bedfiles, regions, col = 4)
+make_mat(bedfiles, regions, column = 4)
 }

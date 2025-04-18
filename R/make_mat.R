@@ -6,7 +6,7 @@
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector, data frame or GenomicRanges of genomic regions. See
 #' details.
-#' @param col The index of the data column needed for the matrix
+#' @param column The index of the data column needed for the matrix
 #' @param mat_name What to name the matrix in the returned list
 #' @param sparse Whether to return a sparse matrix
 #' @param prealloc The number of rows to initialize the matrices with. If the
@@ -37,18 +37,18 @@
 #' # make a vector of regions
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 #' # make matrix of beta values
-#' make_mat(bedfiles, regions, col = 4)
+#' make_mat(bedfiles, regions, column = 4)
 make_mat <- function(
   bedfiles,
   regions,
-  col,
+  column,
   mat_name = "value",
   sparse = FALSE,
   prealloc = 10000,
   nthreads = NULL
 ) {
 
-  if (col < 4) {
+  if (column < 4) {
     stop("`col` < 3 - must be a the index of a numeric data column not any of chr, start or end ")
   }
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
@@ -65,7 +65,7 @@ make_mat <- function(
     bedfiles = bedfiles,
     regions = regions,
     aligner = "none",
-    valInd = col,
+    valInd = column,
     merged = FALSE,
     sparse = sparse,
     prealloc = prealloc,
