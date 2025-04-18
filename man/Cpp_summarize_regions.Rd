@@ -23,7 +23,7 @@ Cpp_summarize_regions(
 
 \item{fun_vec}{Vector of the armadillo-supported stats functions to apply over the
 CpGs in the ' regions: \code{"sum"}, \code{"mean"}, \code{"median"}, \code{"stddev"},
-\code{"variance"} "\code{cpg_count}", \code{"min"},\code{"max"}, and \code{"range"}.}
+\code{"variance"} "\code{count}", \code{"min"},\code{"max"}, and \code{"range"}.}
 
 \item{col_indices}{A vector of genomic regions}
 

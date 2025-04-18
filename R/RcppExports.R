@@ -195,7 +195,7 @@ Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, pr
 #' @param regions A vector of genomic regions
 #' @param fun_vec Vector of the armadillo-supported stats functions to apply over the
 #' CpGs in the ' regions: `"sum"`, `"mean"`, `"median"`, `"stddev"`,
-#' `"variance"` "`cpg_count`", `"min"`,`"max"`, and `"range"`.
+#' `"variance"` "`count`", `"min"`,`"max"`, and `"range"`.
 #' @param col_indices A vector of genomic regions
 #' @param col_names A vector of genomic regions
 #' @param mval Calculates M values when TRUE, use beta values when FALSE
