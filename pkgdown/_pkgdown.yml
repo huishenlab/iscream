@@ -26,6 +26,7 @@ reference:
       - tabix
       - query_chroms
       - summarize_regions
+      - summarize_meth_regions
       - make_mat
       - make_bsseq_mat
   - title: Utilities
