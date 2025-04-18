@@ -12,7 +12,6 @@ summarize_regions(
   fun = "all",
   feature_col = NULL,
   set_region_rownames = FALSE,
-  mval = FALSE,
   nthreads = NULL
 )
 }
@@ -53,8 +52,7 @@ are named, the names will be used to describe each feature in the output
 dataframe. If input dataframes have a feature column, set \code{feature_col} to
 that column name to populate the output's feature column.
 
-Supported \code{fun} arguments are given below. For each of these functions,
-setting \code{mval = FALSE} will use the beta values instead of the M value:
+Supported \code{fun} arguments are given below.
 \itemize{
 \item Sum: \code{"sum"}
 \item Mean: \code{"mean"}

@@ -64,7 +64,6 @@ summarize_regions <- function(
   fun = "all",
   feature_col = NULL,
   set_region_rownames = FALSE,
-  mval = FALSE,
   nthreads = NULL
 ) {
 
@@ -102,7 +101,7 @@ summarize_regions <- function(
     fun_vec = fun_to_use,
     region_rownames = set_region_rownames,
     aligner = "general",
-    mval = mval,
+    mval = FALSE,
     nthreads = n_threads
   )
   df[df == -99] <- NA
