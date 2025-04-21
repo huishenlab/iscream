@@ -1,4 +1,4 @@
-## Getting htslib headers
+# Getting htslib headers
 
 iscream currently has Rhtslib as a "LinkingTo" dependency so if a system
 installation of htslib is not found with pkg-config, the installer will fall
