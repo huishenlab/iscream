@@ -29,11 +29,26 @@ library(iscream)
 
 ### Input BED files
 
+Running this vignette requires downloading 2GB of BED files and tabix indices
+from this Zenodo record: <https://zenodo.org/records/14733834>.
+
+```{r download_data, eval = FALSE}
+methscan_zip_path <- tempfile("methscan")
+methscan_dir <- tempdir()
+download.file(
+    "https://zenodo.org/records/14733834/files/methscan_data.zip",
+    destfile = methscan_zip_path
+)
+unzip(methscan_zip_path, exdir = methscan_dir)
+```
+
+
+
 100 human cell WGBS data from the snmc-seq2 dataset:
 
 ```{r}
 bedfiles <- list.files(
-  "../data/snmcseq2",
+  methscan_dir,
   pattern = "*.bed.gz$",
   full.names = TRUE
 )[1:100]

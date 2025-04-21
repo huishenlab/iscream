@@ -35,9 +35,21 @@ using tools like *methscan* more efficiently. For example, using iscream,
 producing the plot of TSS methylation profiles can be done in R directly from
 tabixed BED files for both single-cell and bulk data.
 
+### Setup
+
+```{r, message = FALSE}
+options("iscream.threads" = 8)
+library(iscream)
+library(data.table)
+library(ggplot2)
+```
+
 ### Download the data
 
-```{r download_data, eval = FALSE}
+Running this vignette requires downloading 18MB of BED files and tabix indices
+from this Zenodo record: <https://zenodo.org/records/14733834>
+
+```{r download_data}
 methscan_zip_path <- tempfile("methscan")
 methscan_dir <- tempdir()
 download.file(
@@ -47,14 +59,6 @@ download.file(
 unzip(methscan_zip_path, exdir = methscan_dir)
 ```
 
-### Setup
-
-```{r, message = FALSE}
-options("iscream.threads" = 8)
-library(iscream)
-library(data.table)
-library(ggplot2)
-```
 ```{r}
 start_time = proc.time()
 ```
@@ -62,12 +66,14 @@ start_time = proc.time()
 First, we generate a list of the BED file paths:
 
 ```{r}
+data_dir <- paste0(methscan_dir, "/scbs_tutorial_data")
 bedfiles <- list.files(
-    "/tmp/scbs_tutorial_data",
+    data_dir,
     pattern = "*.cov.gz$",
     full.names = TRUE
 )
 ```
+
 ### Get the Transcription start sites and flanking regions
 
 Then we read the provided TSS BED file and create 2kb flanking regions around
@@ -75,7 +81,7 @@ the start sites.
 
 ```{r}
 tss.regions <- fread(
-    "/tmp/scbs_tutorial_data/Mus_musculus.GRCm38.102_TSS.bed", drop = c(3, 5, 6)
+    paste0(data_dir, "/Mus_musculus.GRCm38.102_TSS.bed"), drop = c(3, 5, 6)
 )
 colnames(tss.regions) <- c("chr", "tss", "geneID")
 head(tss.regions)
