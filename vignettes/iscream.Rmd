@@ -102,11 +102,17 @@ To get a summary of the methylation information of the gene bodies use
 
 
 ``` r
-system.time(summary_query <- summarize_regions(bedfiles, regions))
-#> [12:13:24.310639] [iscream::summarize_regions] [info] Summarizing 5000 regions from 100 bedfiles
-#> [12:13:24.310748] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, cpg_count
+system.time(summary_query <- summarize_meth_regions(
+  bedfiles,
+  regions,
+  feature_col = "gene")
+)
+#> [10:53:41.512886] [iscream::summarize_regions] [info] Summarizing 5000 regions from 100 bedfiles
+#> [10:53:41.512931] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count
+#> [10:53:41.512933] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
 #>    user  system elapsed 
-#>  27.350   0.609   5.563
+#>  30.369   0.515   5.628
+```
 head(summary_query)
 #>                  Feature          Sample coverage.sum M.sum coverage.mean
 #> 1   chr1:1471764-1497848 bisc_SRR6911624          109    95      1.101010
@@ -136,6 +142,19 @@ head(summary_query)
 #> 4              1       2       255
 #> 5              2       3       255
 #> 6              0       1        74
+
+Alternatively to get just the beta column use the general `summarize_regions()`
+function, specifying the columns to summarize:
+
+
+``` r
+system.time(summary_query <- summarize_regions(
+  bedfiles,
+  regions,
+  columns = 4,
+  col_names = "beta",
+  feature_col = "gene")
+)
 ```
 
 ### Build matrices

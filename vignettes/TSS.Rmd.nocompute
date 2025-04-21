@@ -157,7 +157,7 @@ relative position per sample.
 
 ```{r summarize_regions, warning=FALSE, message=FALSE, dpi=300, fig.width=10, fig.height=8, fig.align="center", fig.cap="TSS distribution by sample"}
 library("ggridges")
-tss.means <- summarize_regions(
+tss.means <- summarize_meth_regions(
   bedfiles,
   tss.for_query,
   aligner = "bismark",

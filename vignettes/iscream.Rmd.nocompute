@@ -78,10 +78,25 @@ To get a summary of the methylation information of the gene bodies use
 `summarize_regions`, providing the gene name column as the feature column:
 
 ```{r}
-system.time(summary_query <- summarize_regions(
-    bedfiles, regions, feature_col = "gene"
-))
+system.time(summary_query <- summarize_meth_regions(
+  bedfiles,
+  regions,
+  feature_col = "gene")
+)
 head(summary_query)
+```
+
+Alternatively to get just the beta column use the general `summarize_regions()`
+function, specifying the columns to summarize:
+
+```{r, eval = FALSE}
+system.time(summary_query <- summarize_regions(
+  bedfiles,
+  regions,
+  columns = 4,
+  col_names = "beta",
+  feature_col = "gene")
+)
 ```
 
 ### Build matrices

@@ -203,7 +203,7 @@ relative position per sample.
 
 ``` r
 library("ggridges")
-tss.means <- summarize_regions(
+tss.means <- summarize_meth_regions(
   bedfiles,
   tss.for_query,
   aligner = "bismark",
@@ -213,8 +213,9 @@ tss.means <- summarize_regions(
 ```
 
 ```
-## [14:59:58.508299] [iscream::summarize_regions] [info] Summarizing 21622 regions from 30 bedfiles
-## [14:59:58.508335] [iscream::summarize_regions] [info] using mean
+## [10:52:35.428330] [iscream::summarize_regions] [info] Summarizing 21622 regions from 30 bedfiles
+## [10:52:35.428371] [iscream::summarize_regions] [info] using mean
+## [10:52:35.428373] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta
 ```
 
 ``` r
