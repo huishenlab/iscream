@@ -50,7 +50,16 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Cpp_query_all</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, <span class="va">bismark</span>, <span class="va">merged</span>, <span class="va">sparse</span>, <span class="va">prealloc</span>, <span class="va">nthreads</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Cpp_query_all</span><span class="op">(</span></span>
+<span>  <span class="va">bedfiles</span>,</span>
+<span>  <span class="va">regions</span>,</span>
+<span>  <span class="va">aligner</span>,</span>
+<span>  <span class="va">valInd</span>,</span>
+<span>  <span class="va">merged</span>,</span>
+<span>  <span class="va">sparse</span>,</span>
+<span>  <span class="va">prealloc</span>,</span>
+<span>  <span class="va">nthreads</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -65,8 +74,17 @@
 <dd><p>A vector of regions</p></dd>
 
 
-<dt id="arg-bismark">bismark<a class="anchor" aria-label="anchor" href="#arg-bismark"></a></dt>
-<dd><p>Whether the input is a bismark coverage file</p></dd>
+<dt id="arg-aligner">aligner<a class="anchor" aria-label="anchor" href="#arg-aligner"></a></dt>
+<dd><p>The aligner used to make the WGBS BED files, only for
+<code>make_bsseq_mat</code></p></dd>
+
+
+<dt id="arg-valind">valInd<a class="anchor" aria-label="anchor" href="#arg-valind"></a></dt>
+<dd><p>The index of the data column needed for the matrix, for <code>make_mat</code></p></dd>
+
+
+<dt id="arg-merged">merged<a class="anchor" aria-label="anchor" href="#arg-merged"></a></dt>
+<dd><p>Whether the input strands have been merged/collapsed</p></dd>
 
 
 <dt id="arg-prealloc">prealloc<a class="anchor" aria-label="anchor" href="#arg-prealloc"></a></dt>

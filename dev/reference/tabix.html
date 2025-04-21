@@ -112,7 +112,7 @@ allocate memory and store it during the query</p></li>
 <em>htslib</em>, but slower on large queries since it stores the records as they
 are found instead of writing to a file. However it's able to store each
 regions records independently instead of in a single file and is used in
-<code><a href="query_all.html">query_all()</a></code> and <code><a href="summarize_regions.html">summarize_regions()</a></code>.</p></li>
+<code><a href="make_mat.html">make_mat()</a></code>, <code><a href="make_bsseq_mat.html">make_bsseq_mat()</a></code>, and <code><a href="summarize_regions.html">summarize_regions()</a></code>.</p></li>
 </ul><p>When <em>iscream</em> is attached, it checks that the <em>tabix</em> executable is
 available with <code><a href="https://rdrr.io/r/base/Sys.which.html" class="external-link">Sys.which()</a></code> and, if available, sets <code>options("tabix.method" = "shell")</code>. <code>tabix()</code> then uses the <em>tabix</em> executable to make
 queries, except if <code>raw = TRUE</code>. If <em>tabix</em> is not found, <em>iscream</em> uses its

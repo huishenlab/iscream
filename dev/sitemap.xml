@@ -30,11 +30,13 @@
 <url><loc>https://huishenlab.github.io/iscream/dev/reference/get_omp_threads.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/dev/reference/get_threads.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/dev/reference/index.html</loc></url>
-<url><loc>https://huishenlab.github.io/iscream/dev/reference/query_all.html</loc></url>
+<url><loc>https://huishenlab.github.io/iscream/dev/reference/make_bsseq_mat.html</loc></url>
+<url><loc>https://huishenlab.github.io/iscream/dev/reference/make_mat.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/dev/reference/query_chroms.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/dev/reference/scan_tabix.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/dev/reference/set_log_level.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/dev/reference/set_threads.html</loc></url>
+<url><loc>https://huishenlab.github.io/iscream/dev/reference/summarize_meth_regions.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/dev/reference/summarize_regions.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/dev/reference/tabix.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/dev/reference/validate_log_level.html</loc></url>
