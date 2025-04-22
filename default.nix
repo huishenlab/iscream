@@ -21,12 +21,14 @@ let
     RcppArmadillo
     RcppProgress
     RcppSpdlog
+    Rhtslib
 
   # Suggests
     biscuiteer
     bsseq
     DelayedArray
     GenomicRanges
+    ggplot2
     ggridges
 
   # dev dependencies
