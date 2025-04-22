@@ -7,6 +7,7 @@
 #' this argument.
 #' @param col.names A vector of column names for the result data.table. Set if
 #' your bedfile is not from the supported aligners or is a general bedfile.
+#' @param zero_based Whether the input BED file has a zero-based start column.
 #' @param raw Set true to give a named list of raw strings from the regions in
 #' the style of `Rsamtools::scanTabix` instead of a data.table
 #' @param nthreads Set number of threads to use overriding the
@@ -56,7 +57,7 @@
 #'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 #' tabix(bedfiles[1], regions, col.names = c("chr", "start", "end", "beta", "coverage"))
-tabix <- function(bedfiles, regions, aligner = NULL, col.names = NULL, raw = FALSE, nthreads = NULL) {
+tabix <- function(bedfiles, regions, aligner = NULL, col.names = NULL, zero_based = TRUE, raw = FALSE, nthreads = NULL) {
   verify_files_or_stop(bedfiles)
   if (!is.null(aligner)) {
     verify_aligner_or_stop(aligner)
@@ -82,14 +83,13 @@ tabix <- function(bedfiles, regions, aligner = NULL, col.names = NULL, raw = FAL
     col.names <- c(col.names, "file")
   }
   result_colnames <- col.names %||% get_colnames(aligner, bedfiles, result)
-  is.biscuit <- aligner == "biscuit"
   result <- check_colnames(result, result_colnames)
 
   # get GRanges
   if (class(regions)[1] == "GRanges") {
     result.gr <- GenomicRanges::makeGRangesFromDataFrame(
       result,
-      starts.in.df.are.0based = is.biscuit,
+      starts.in.df.are.0based = zero_based,
       keep.extra.columns = TRUE
     )
     overlaps <- GenomicRanges::findOverlaps(result.gr, regions)
@@ -215,11 +215,12 @@ get_df_input_regions <- function(regions) {
 
 
 get_colnames <- function(aligner, bedfiles, result) {
+  base_colnames <- c("chr", "start", "end")
+
   if (is.null(aligner)) {
-    return(colnames(result))
+    return(c(base_colnames, colnames(result)[-1:-3]))
   }
 
-  base_colnames <- c("chr", "start", "end")
   biscuit_colnames <- c("beta", "coverage")
   bismark_colnames <- c("methylation.percentage", "count.methylated", "count.unmethylated")
 
