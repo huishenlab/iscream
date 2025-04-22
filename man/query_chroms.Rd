@@ -2,7 +2,7 @@
 % Please edit documentation in R/query.R
 \name{query_chroms}
 \alias{query_chroms}
-\title{Query the chromosomes or seqnames from a vector of files}
+\title{Query the chromosomes or seqnames from a vector of BED files}
 \usage{
 query_chroms(bedfiles, nthreads = NULL)
 }
@@ -16,5 +16,5 @@ query_chroms(bedfiles, nthreads = NULL)
 A vector of seqnames
 }
 \description{
-Query the chromosomes or seqnames from a vector of files
+Query the chromosomes or seqnames from a vector of BED files
 }

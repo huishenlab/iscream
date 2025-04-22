@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabix.R
 \name{tabix}
 \alias{tabix}
-\title{Query lines from a tabixed bedfile}
+\title{Query lines from a tabixed BED file}
 \usage{
 tabix(
   bedfiles,
@@ -36,7 +36,7 @@ the style of \code{Rsamtools::scanTabix} instead of a data.table}
 A data.table
 }
 \description{
-Query lines from a tabixed bedfile
+Query lines from a tabixed BED file
 }
 \details{
 \subsection{Query method}{
