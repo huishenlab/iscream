@@ -4,6 +4,7 @@
 <url><loc>https://huishenlab.github.io/iscream/LICENSE.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/articles/TSS.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/articles/data_structures.html</loc></url>
+<url><loc>https://huishenlab.github.io/iscream/articles/htslib.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/articles/index.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/articles/iscream.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/articles/manuscript_data.html</loc></url>
@@ -30,12 +31,15 @@
 <url><loc>https://huishenlab.github.io/iscream/reference/get_m_sparse.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/get_omp_threads.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/get_threads.html</loc></url>
+<url><loc>https://huishenlab.github.io/iscream/reference/htslib_version.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/index.html</loc></url>
-<url><loc>https://huishenlab.github.io/iscream/reference/query_all.html</loc></url>
+<url><loc>https://huishenlab.github.io/iscream/reference/make_bsseq_mat.html</loc></url>
+<url><loc>https://huishenlab.github.io/iscream/reference/make_mat.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/query_chroms.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/scan_tabix.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/set_log_level.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/set_threads.html</loc></url>
+<url><loc>https://huishenlab.github.io/iscream/reference/summarize_meth_regions.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/summarize_regions.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/tabix.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/validate_log_level.html</loc></url>

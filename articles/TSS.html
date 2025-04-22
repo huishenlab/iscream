@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,8 +41,9 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/data_structures.html">Getting other data structures from iscream</a></li>
-    <li><a class="dropdown-item" href="../articles/manuscript_data.html">Manuscript data availabiliy</a></li>
     <li><a class="dropdown-item" href="../articles/TSS.html">Plotting TSS methylation profiles</a></li>
+    <li><a class="dropdown-item" href="../articles/htslib.html">Getting htslib headers</a></li>
+    <li><a class="dropdown-item" href="../articles/manuscript_data.html">Manuscript data availabiliy</a></li>
   </ul>
 </li>
       </ul>
@@ -104,20 +105,37 @@ gene bodies, or DMRs found using tools like <em>methscan</em> more
 efficiently. For example, using iscream, producing the plot of TSS
 methylation profiles can be done in R directly from tabixed BED files
 for both single-cell and bulk data.</p>
+<div class="section level3">
+<h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"iscream.threads"</span> <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://huishenlab.github.io/iscream/">iscream</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="download-the-data">Download the data<a class="anchor" aria-label="anchor" href="#download-the-data"></a>
+</h3>
+<p>Running this vignette requires downloading 18MB of BED files and
+tabix indices from this Zenodo record: <a href="https://zenodo.org/records/14733834" class="external-link uri">https://zenodo.org/records/14733834</a></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">start_time</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">methscan_zip_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"methscan"</span><span class="op">)</span></span>
+<span><span class="va">methscan_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span></span>
+<span>    <span class="st">"https://zenodo.org/records/14733834/files/methscan_data.zip"</span>,</span>
+<span>    destfile <span class="op">=</span> <span class="va">methscan_zip_path</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">methscan_zip_path</span>, exdir <span class="op">=</span> <span class="va">methscan_dir</span><span class="op">)</span></span>
+<span><span class="va">start_time</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>First, we generate a list of the BED file paths:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bedfiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span></span>
-<span>    <span class="st">"../data/methscan"</span>,</span>
+<span>    <span class="va">data_dir</span>,</span>
 <span>    pattern <span class="op">=</span> <span class="st">"*.cov.gz$"</span>,</span>
 <span>    full.names <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level3">
 <h3 id="get-the-transcription-start-sites-and-flanking-regions">Get the Transcription start sites and flanking regions<a class="anchor" aria-label="anchor" href="#get-the-transcription-start-sites-and-flanking-regions"></a>
 </h3>
@@ -125,7 +143,7 @@ for both single-cell and bulk data.</p>
 regions around the start sites.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tss.regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span></span>
-<span>    <span class="st">"../data/methscan/Mus_musculus.GRCm38.102_TSS.bed"</span>, drop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="st">"/Mus_musculus.GRCm38.102_TSS.bed"</span><span class="op">)</span>, drop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">tss.regions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"tss"</span>, <span class="st">"geneID"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tss.regions</span><span class="op">)</span></span></code></pre></div>
@@ -196,21 +214,21 @@ column relative to the TSS (using rounded values as in the
 <span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">query_runtime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/timetaken.html" class="external-link">timetaken</a></span><span class="op">(</span><span class="va">query_runtime.start</span><span class="op">)</span></span></code></pre></div>
-<p>Time to make the query and compute the summary: 2.184s elapsed
-(4.409s cpu).</p>
+<p>Time to make the query and compute the summary: 3.389s elapsed (53.1s
+cpu).</p>
 </div>
 <div class="section level3">
 <h3 id="plot-average-methylation-profiles-around-the-tss">Plot average methylation profiles around the TSS<a class="anchor" aria-label="anchor" href="#plot-average-methylation-profiles-around-the-tss"></a>
 </h3>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tss.plot</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">tss.summary</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">position</span> <span class="op">/</span> <span class="fl">1000</span>, y <span class="op">=</span> <span class="va">meth_frac</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_y_continuous</span><span class="op">(</span></span>
-<span>    labels<span class="op">=</span><span class="fu">scales</span><span class="fu">::</span><span class="fu">percent_format</span><span class="op">(</span>accuracy<span class="op">=</span><span class="fl">1</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">tss.plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">tss.summary</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">position</span> <span class="op">/</span> <span class="fl">1000</span>, y <span class="op">=</span> <span class="va">meth_frac</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span></span>
+<span>    labels<span class="op">=</span><span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent_format</a></span><span class="op">(</span>accuracy<span class="op">=</span><span class="fl">1</span><span class="op">)</span>,</span>
 <span>    limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.5</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">sample</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"position relative to TSS [kb]"</span>, y <span class="op">=</span> <span class="st">"DNA methylation"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">sample</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"position relative to TSS [kb]"</span>, y <span class="op">=</span> <span class="st">"DNA methylation"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">total_runtime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/timetaken.html" class="external-link">timetaken</a></span><span class="op">(</span><span class="va">start_time</span><span class="op">)</span></span>
 <span></span>
@@ -221,49 +239,99 @@ TSS profiles
 </p>
 </div>
 <p>Total runtime, from getting the bedfiles and regions to making the
-query, calculating the summaries and plotting: 2.225s elapsed (4.447s
+query, calculating the summaries and plotting: 3.458s elapsed (53.2s
 cpu). With methscan, generating the TSS methylation profiles alone took
 11 seconds.</p>
+</div>
+<div class="section level3">
+<h3 id="using-summarize_regions">Using <code>summarize_regions</code><a class="anchor" aria-label="anchor" href="#using-summarize_regions"></a>
+</h3>
+<p>A similar analysis can be done using the
+<code><a href="../reference/summarize_regions.html">summarize_regions()</a></code> function if you only need to see the
+distribution of beta means by sample, rather than means by relative
+position per sample.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://wilkelab.org/ggridges/" class="external-link">"ggridges"</a></span><span class="op">)</span></span>
+<span><span class="va">tss.means</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_meth_regions.html">summarize_meth_regions</a></span><span class="op">(</span></span>
+<span>  <span class="va">bedfiles</span>,</span>
+<span>  <span class="va">tss.for_query</span>,</span>
+<span>  aligner <span class="op">=</span> <span class="st">"bismark"</span>,</span>
+<span>  fun <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  mval <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [11:26:01.827829] [iscream::summarize_regions] [info] Summarizing 21622 regions from 30 bedfiles</span></span>
+<span><span class="co">## [11:26:01.827888] [iscream::summarize_regions] [info] using mean</span></span>
+<span><span class="co">## [11:26:01.827894] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta</span></span></code></pre>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">tss.means</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">beta.mean</span>, y <span class="op">=</span> <span class="va">Sample</span>, fill <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">after_stat</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://wilkelab.org/ggridges/reference/geom_ridgeline_gradient.html" class="external-link">geom_density_ridges_gradient</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"BrBG"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="figure%2Fsummarize_regions-1.png" alt="TSS distribution by sample"><p class="caption">
+TSS distribution by sample
+</p>
+</div>
+<p>For per-sample means you could collapse the means within samples:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tss.means</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>beta.mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">beta.mean</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">Sample</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>      x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">Sample</span>, <span class="va">beta.mean</span><span class="op">)</span>,</span>
+<span>      y <span class="op">=</span> <span class="va">beta.mean</span>,</span>
+<span>      fill <span class="op">=</span> <span class="va">beta.mean</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">'identity'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Sample"</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="figure%2Funnamed-chunk-7-1.png" alt="Mean TSS by sample"><p class="caption">
+Mean TSS by sample
+</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R version 4.4.1 (2024-06-14)</span></span>
+<pre><code><span><span class="co">## R version 4.4.2 (2024-10-31)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
-<span><span class="co">## Running under: Ubuntu 24.04.1 LTS</span></span>
+<span><span class="co">## Running under: AlmaLinux 9.5 (Teal Serval)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
-<span><span class="co">## BLAS/LAPACK: /nix/store/p2a6x92n2gwljav85zz3hzid1nk7iq0l-blas-3/lib/libblas.so.3;  LAPACK version 3.12.0</span></span>
+<span><span class="co">## BLAS/LAPACK: /usr/lib64/libopenblas-r0.3.26.so;  LAPACK version 3.12.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
-<span><span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
-<span><span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></span>
-<span><span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
-<span><span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
-<span><span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
-<span><span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
+<span><span class="co">##  [1] LC_CTYPE=C.utf8        LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
+<span><span class="co">##  [4] LC_COLLATE=C.utf8      LC_MONETARY=C.UTF-8    LC_MESSAGES=C.utf8    </span></span>
+<span><span class="co">##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
+<span><span class="co">## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## time zone: America/Detroit</span></span>
-<span><span class="co">## tzcode source: system (glibc)</span></span>
+<span><span class="co">## time zone: UTC</span></span>
+<span><span class="co">## tzcode source: internal</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## attached base packages:</span></span>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] ggplot2_3.5.1      data.table_1.15.4  iscream_0.0.0.9000</span></span>
+<span><span class="co">## [1] ggridges_0.5.6     ggplot2_3.5.1      data.table_1.17.0  iscream_0.0.0.9000</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] vctrs_0.6.5        cli_3.6.3          knitr_1.47         rlang_1.1.4       </span></span>
-<span><span class="co">##  [5] xfun_0.45          highr_0.11         generics_0.1.3     labeling_0.4.3    </span></span>
-<span><span class="co">##  [9] RcppParallel_5.1.8 glue_1.7.0         colorspace_2.1-1   stringfish_0.16.0 </span></span>
-<span><span class="co">## [13] scales_1.3.0       fansi_1.0.6        grid_4.4.1         evaluate_0.24.0   </span></span>
-<span><span class="co">## [17] munsell_0.5.1      tibble_3.2.1       lifecycle_1.0.4    compiler_4.4.1    </span></span>
-<span><span class="co">## [21] dplyr_1.1.4        pkgconfig_2.0.3    Rcpp_1.0.13        farver_2.1.2      </span></span>
-<span><span class="co">## [25] lattice_0.22-6     R6_2.5.1           tidyselect_1.2.1   utf8_1.2.4        </span></span>
-<span><span class="co">## [29] pillar_1.9.0       parallelly_1.38.0  parallel_4.4.1     magrittr_2.0.3    </span></span>
-<span><span class="co">## [33] Matrix_1.7-0       withr_3.0.0        tools_4.4.1        gtable_0.3.5</span></span></code></pre>
+<span><span class="co">##  [1] vctrs_0.6.5         cli_3.6.4           knitr_1.50         </span></span>
+<span><span class="co">##  [4] rlang_1.1.5         xfun_0.51           generics_0.1.3     </span></span>
+<span><span class="co">##  [7] labeling_0.4.3      RcppParallel_5.1.10 glue_1.8.0         </span></span>
+<span><span class="co">## [10] colorspace_2.1-1    stringfish_0.16.0   scales_1.3.0       </span></span>
+<span><span class="co">## [13] grid_4.4.2          evaluate_1.0.3      munsell_0.5.1      </span></span>
+<span><span class="co">## [16] tibble_3.2.1        lifecycle_1.0.4     compiler_4.4.2     </span></span>
+<span><span class="co">## [19] dplyr_1.1.4         RColorBrewer_1.1-3  Rcpp_1.0.14        </span></span>
+<span><span class="co">## [22] pkgconfig_2.0.3     farver_2.1.2        lattice_0.22-6     </span></span>
+<span><span class="co">## [25] viridisLite_0.4.2   R6_2.6.1            tidyselect_1.2.1   </span></span>
+<span><span class="co">## [28] pillar_1.10.1       parallelly_1.43.0   parallel_4.4.2     </span></span>
+<span><span class="co">## [31] magrittr_2.0.3      Matrix_1.7-3        withr_3.0.2        </span></span>
+<span><span class="co">## [34] tools_4.4.2         gtable_0.3.6</span></span></code></pre>
 <!-- vim: set filetype=rmd: -->
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
