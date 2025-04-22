@@ -42,3 +42,12 @@ reference:
     contents:
       - get_log_level
       - set_log_level
+
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - data_structures
+  - TSS
+  - htslib
+  - manuscript_data
