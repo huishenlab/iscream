@@ -99,6 +99,14 @@ compiling your own htslib, compile <em>libdeflate</em> first and then
 htslib. With Rhtslib we’ve seen poorer performance compared to a
 standard htslib installation, both with and without
 <em>libdeflate</em>.</p>
+<p>To see what htslib version iscream is using and whether it has
+libdeflate, run</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://huishenlab.github.io/iscream/">iscream</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/htslib_version.html">htslib_version</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1.21</span></span>
+<span><span class="co">#&gt; build=configure libcurl=yes S3=yes GCS=yes libdeflate=yes lzma=yes bzip2=yes plugins=no htscodecs=1.6.1</span></span></code></pre></div>
+<p>and check that <code>libdeflate=yes</code>.</p>
 <div class="figure" style="text-align: center">
 <img src="htslib_files/figure-html/unnamed-chunk-2-1.png" alt="Effect of htslib v1.18 source on iscream matrix creation runtime from one bulk WGBS BED file" width="1800"><p class="caption">
 Effect of htslib v1.18 source on iscream matrix creation runtime from
@@ -110,20 +118,20 @@ one bulk WGBS BED file
 </h3>
 <p>Create an <code>environment.yaml</code> with the following contents
 to install htslib 1.21:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> iscream</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">channels</span><span class="kw">:</span></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> bioconda</span></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> conda-forge</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">dependencies</span><span class="kw">:</span></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> htslib=1.21</span></span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> pkg-config=0.29.2</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> iscream</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">channels</span><span class="kw">:</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> bioconda</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> conda-forge</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="fu">dependencies</span><span class="kw">:</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> htslib=1.21</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> pkg-config=0.29.2</span></span></code></pre></div>
 <p>Add this file to your project directory and run</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">conda</span> env create <span class="at">-f</span> environment.yaml</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">conda</span> activate iscream</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="bu">export</span> <span class="va">PKG_CONFIG_PATH</span><span class="op">=</span><span class="va">$CONDA_PREFIX</span>/lib</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="bu">export</span> <span class="va">LD_LIBRARY_PATH</span><span class="op">=</span><span class="va">$CONDA_PREFIX</span>/lib/</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">conda</span> env create <span class="at">-f</span> environment.yaml</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">conda</span> activate iscream</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="bu">export</span> <span class="va">PKG_CONFIG_PATH</span><span class="op">=</span><span class="va">$CONDA_PREFIX</span>/lib</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="bu">export</span> <span class="va">LD_LIBRARY_PATH</span><span class="op">=</span><span class="va">$CONDA_PREFIX</span>/lib/</span></code></pre></div>
 <p>Confirm that the headers are available for compilation</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">pkg-config</span> <span class="at">--cflags</span> <span class="at">--libs</span> htslib</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">pkg-config</span> <span class="at">--cflags</span> <span class="at">--libs</span> htslib</span></code></pre></div>
 <p>You should get something like</p>
 <pre><code><span><span class="op">-</span><span class="va">I</span><span class="op">/</span><span class="va">home</span><span class="op">/</span><span class="va">user</span><span class="op">/</span><span class="va">miniconda3</span><span class="op">/</span><span class="va">envs</span><span class="op">/</span><span class="va">iscream</span><span class="op">/</span><span class="va">include</span> <span class="op">-</span><span class="va">L</span><span class="op">/</span><span class="va">home</span><span class="op">/</span><span class="va">user</span><span class="op">/</span><span class="va">miniconda3</span><span class="op">/</span><span class="va">envs</span><span class="op">/</span><span class="va">iscream</span><span class="op">/</span><span class="va">lib</span> <span class="op">-</span><span class="va">lhts</span></span></code></pre>
 </div>
@@ -134,23 +142,23 @@ to install htslib 1.21:</p>
 <p>Pixi uses the conda repositories to install packages. Create a
 <code>pixi.toml</code> file with this content and add the file to your
 project directory:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="kw">[project]</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="dt">channels</span> <span class="op">=</span> <span class="op">[</span><span class="st">"conda-forge"</span><span class="op">,</span> <span class="st">"bioconda"</span><span class="op">]</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">"iscream"</span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="dt">platforms</span> <span class="op">=</span> <span class="op">[</span><span class="st">"linux-64"</span><span class="op">]</span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">"0.1.0"</span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="kw">[activation.env]</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="dt">LD_LIBRARY_PATH</span><span class="op">=</span><span class="st">"$CONDA_PREFIX/lib"</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="kw">[dependencies]</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="dt">htslib</span> <span class="op">=</span> <span class="st">"1.21.*"</span></span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="dt">pkg-config</span> <span class="op">=</span> <span class="st">"&gt;=0.29.2,&lt;0.30"</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="kw">[project]</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="dt">channels</span> <span class="op">=</span> <span class="op">[</span><span class="st">"conda-forge"</span><span class="op">,</span> <span class="st">"bioconda"</span><span class="op">]</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">"iscream"</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="dt">platforms</span> <span class="op">=</span> <span class="op">[</span><span class="st">"linux-64"</span><span class="op">]</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">"0.1.0"</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="kw">[activation.env]</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="dt">LD_LIBRARY_PATH</span><span class="op">=</span><span class="st">"$CONDA_PREFIX/lib"</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="kw">[dependencies]</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="dt">htslib</span> <span class="op">=</span> <span class="st">"1.21.*"</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="dt">pkg-config</span> <span class="op">=</span> <span class="st">"&gt;=0.29.2,&lt;0.30"</span></span></code></pre></div>
 <p>To create an environment with the required system dependencies
 run</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">pixi</span> shell</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">pixi</span> shell</span></code></pre></div>
 <p>Confirm that the headers are available for compilation</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">pkg-config</span> <span class="at">--cflags</span> <span class="at">--libs</span> htslib</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="ex">pkg-config</span> <span class="at">--cflags</span> <span class="at">--libs</span> htslib</span></code></pre></div>
 <p>You should get something like</p>
 <pre><code><span><span class="op">-</span><span class="va">I</span><span class="op">/</span><span class="va">home</span><span class="op">/</span><span class="va">user</span><span class="op">/</span><span class="va">iscream</span><span class="op">/</span><span class="va">.pixi</span><span class="op">/</span><span class="va">envs</span><span class="op">/</span><span class="va">default</span><span class="op">/</span><span class="va">include</span> <span class="op">-</span><span class="va">L</span><span class="op">/</span><span class="va">home</span><span class="op">/</span><span class="va">user</span><span class="op">/</span><span class="va">iscream</span><span class="op">/</span><span class="va">.pixi</span><span class="op">/</span><span class="va">envs</span><span class="op">/</span><span class="va">default</span><span class="op">/</span><span class="va">lib</span> <span class="op">-</span><span class="va">lhts</span></span></code></pre>
 </div>
