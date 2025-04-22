@@ -76,10 +76,10 @@ tabix <- function(bedfiles, regions, aligner = NULL, col.names = NULL, raw = FAL
     regions_df <- get_df_input_regions(regions)
     result <- tabix.shell(bedfiles, regions_df, nthreads)
   }
+  if (is.null(result)) return(NULL)
 
-  if (is.null(result)) {
-    message("No records found")
-    return(NULL)
+  if (!is.null(col.names) && length(bedfiles) > 1) {
+    col.names <- c(col.names, "file")
   }
   result_colnames <- col.names %||% get_colnames(aligner, bedfiles, result)
   is.biscuit <- aligner == "biscuit"
@@ -113,7 +113,7 @@ tabix.shell <- function(bedfiles, regions_df, nthreads) {
   mclapply(bedfiles, function(bedfile) {
     tbx_query <- tabix.shell.single(bedfile, regions_df)
     if (!is.null(tbx_query)) {
-      tbx_query[, sample := file_path_sans_ext(basename(bedfile), compression = TRUE) ]
+      tbx_query[, file := file_path_sans_ext(basename(bedfile), compression = TRUE) ]
     }
   }, mc.cores = .get_threads(nthreads)) |> rbindlist()
 }
@@ -158,7 +158,7 @@ tabix.htslib <- function(bedfiles, input_regions, nthreads) {
         regions = input_regions
       )
       if (!is.null(tbx_query)) {
-        tbx_query[, sample := file_path_sans_ext(basename(file), compression = TRUE)]
+        tbx_query[, file := file_path_sans_ext(basename(file), compression = TRUE)]
       }
       return(tbx_query)
     }, mc.cores = .get_threads(nthreads))
@@ -215,7 +215,9 @@ get_df_input_regions <- function(regions) {
 
 
 get_colnames <- function(aligner, bedfiles, result) {
-  if (is.null(aligner)) return(colnames(result))
+  if (is.null(aligner)) {
+    return(colnames(result))
+  }
 
   base_colnames <- c("chr", "start", "end")
   biscuit_colnames <- c("beta", "coverage")
@@ -228,6 +230,9 @@ get_colnames <- function(aligner, bedfiles, result) {
     }
   } else {
     result_colnames <- c(base_colnames, bismark_colnames)
+  }
+  if (length(bedfiles) > 1) {
+    result_colnames <- c(result_colnames, "file")
   }
   result_colnames
 }

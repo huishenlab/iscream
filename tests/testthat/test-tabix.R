@@ -81,7 +81,22 @@ test_multi_tabix_dataframe <- function(htslib = FALSE) {
   }
   multi_tabix <- lapply(biscuit_tabix_beds, function(i) {
     tabix(i, regions)[,
-    sample := tools::file_path_sans_ext(basename(i), compression = TRUE)
+    file := tools::file_path_sans_ext(basename(i), compression = TRUE)
+    ]
+  }) |> rbindlist()
+  multi_tabix_biscuit <- lapply(biscuit_tabix_beds, function(i) {
+    tabix(i, regions, aligner = "biscuit")[,
+    file := tools::file_path_sans_ext(basename(i), compression = TRUE)
+    ]
+  }) |> rbindlist()
+  multi_tabix_bismark <- lapply(bismark_tabix_beds, function(i) {
+    tabix(i, regions, aligner = "bismark")[,
+    file := tools::file_path_sans_ext(basename(i), compression = TRUE)
+    ]
+  }) |> rbindlist()
+  multi_tabix_custom <- lapply(biscuit_tabix_beds, function(i) {
+    tabix(i, regions, col.names = c("1", "2", "3", "4", "5"))[,
+    file := tools::file_path_sans_ext(basename(i), compression = TRUE)
     ]
   }) |> rbindlist()
 
@@ -89,6 +104,18 @@ test_multi_tabix_dataframe <- function(htslib = FALSE) {
     expect_equal(
       tabix(biscuit_tabix_beds, regions),
       multi_tabix
+    )
+    expect_equal(
+      tabix(biscuit_tabix_beds, regions, aligner = "biscuit"),
+      multi_tabix_biscuit
+    )
+    expect_equal(
+      tabix(bismark_tabix_beds, regions, aligner = "bismark"),
+      multi_tabix_bismark
+    )
+    expect_equal(
+      tabix(biscuit_tabix_beds, regions, col.names = c("1", "2", "3", "4", "5")),
+      multi_tabix_custom
     )
     expect_equal(
       suppressWarnings(tabix(biscuit_tabix_beds, regions.missing_in_3)),
