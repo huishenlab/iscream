@@ -7,7 +7,8 @@
 #' this argument.
 #' @param col.names A vector of column names for the result data.table. Set if
 #' your bedfile is not from the supported aligners or is a general bedfile.
-#' @param zero_based Whether the input BED file has a zero-based start column.
+#' @param zero_based Whether the input BED file has a zero-based start column -
+#' used when coverting the result data frame to GenomicRanges.
 #' @param raw Set true to give a named list of raw strings from the regions in
 #' the style of `Rsamtools::scanTabix` instead of a data.table
 #' @param nthreads Set number of threads to use overriding the

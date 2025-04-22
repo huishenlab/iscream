@@ -48,6 +48,10 @@ gr
 tabix(bedfiles, gr)
 ```
 
+If the input BED file is not zero-based (e.g. Bismark coverage files), set
+`zero_based = FALSE` in the `tabix()` call to get the correct conversion from
+data frame to GenomicRanges.
+
 ### From `summarize_regions`
 
 With a named set of regions, you'll need to `set_region_rownames` as the input

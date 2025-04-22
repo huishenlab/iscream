@@ -27,7 +27,8 @@ this argument.}
 \item{col.names}{A vector of column names for the result data.table. Set if
 your bedfile is not from the supported aligners or is a general bedfile.}
 
-\item{zero_based}{Whether the input BED file has a zero-based start column.}
+\item{zero_based}{Whether the input BED file has a zero-based start column -
+used when coverting the result data frame to GenomicRanges.}
 
 \item{raw}{Set true to give a named list of raw strings from the regions in
 the style of \code{Rsamtools::scanTabix} instead of a data.table}
