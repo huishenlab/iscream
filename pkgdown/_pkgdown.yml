@@ -19,15 +19,16 @@ sidebar:
   structure: [links, license, community, citation, authors, dev]
 
 reference:
-  - title: Reading
-    desc: Read data from aligned WGBS bedfiles
-  - subtitle: By region
+  - title: Read data from BED files
+  - subtitle: General BED files
     contents:
       - tabix
       - query_chroms
       - summarize_regions
-      - summarize_meth_regions
       - make_mat
+  - subtitle: WGBS BED files
+    contents:
+      - summarize_meth_regions
       - make_bsseq_mat
   - title: Utilities
     contents:
