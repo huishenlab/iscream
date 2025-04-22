@@ -26,6 +26,7 @@ a BSseq object: do.call(BSseq, make_bsseq_mat(...)).'><meta property="og:image" 
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/data_structures.html">Getting other data structures from iscream</a></li>
+    <li><a class="dropdown-item" href="../articles/htslib.html">Getting htslib headers</a></li>
     <li><a class="dropdown-item" href="../articles/manuscript_data.html">Manuscript data availabiliy</a></li>
     <li><a class="dropdown-item" href="../articles/TSS.html">Plotting TSS methylation profiles</a></li>
   </ul></li>
@@ -192,11 +193,11 @@ the data.</p>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">make_bsseq_mat</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:21:26.165082] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [14:18:16.255998] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:21:26.165527] [iscream::query_all] [info] Creating metadata vectors</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:21:26.165579] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:21:26.165584] [iscream::query_all] [info] Creating dense matrix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [14:18:16.256415] [iscream::query_all] [info] Creating metadata vectors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [14:18:16.256467] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [14:18:16.256473] [iscream::query_all] [info] Creating dense matrix</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $M</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      a b c d</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1 0 0 1</span>

@@ -3,10 +3,11 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   data_structures: data_structures.html
+  htslib: htslib.html
   iscream: iscream.html
   manuscript_data: manuscript_data.html
   TSS: TSS.html
-last_built: 2025-04-21T16:21Z
+last_built: 2025-04-22T14:18Z
 urls:
   reference: https://huishenlab.github.io/iscream/reference
   article: https://huishenlab.github.io/iscream/articles
