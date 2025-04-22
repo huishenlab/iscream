@@ -48,7 +48,7 @@ articles:
 - title: Articles
   navbar: ~
   contents:
-  - data_structures
-  - TSS
-  - htslib
-  - manuscript_data
+    - data_structures
+    - TSS
+    - htslib
+    - manuscript_data
