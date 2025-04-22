@@ -43,6 +43,9 @@ reference:
     contents:
       - get_log_level
       - set_log_level
+  - subtitle: htslib
+    contents:
+      - htslib_version
 
 articles:
 - title: Articles

@@ -136,6 +136,13 @@ NULL
 #' @param regions A vector of region strings in the form "chr:start-end"
 NULL
 
+#' Get htslib version and available features
+#'
+#' Returns the version of htslib being used by iscream and whether features
+#' such as libdeflate support are available. This information may not always
+#' correspond to the htslib version used during iscream's installation if a
+#' different htslib version is available for linking at runtime.
+#' @export
 htslib_version <- function() {
     invisible(.Call(`_iscream_htslib_version`))
 }

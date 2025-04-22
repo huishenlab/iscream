@@ -24,6 +24,18 @@ than htslib without *libdeflate*. If you're compiling your own htslib, compile
 *libdeflate* first and then htslib. With Rhtslib we've seen poorer performance
 compared to a standard htslib installation, both with and without *libdeflate*.
 
+To see what htslib version iscream is using and whether it has libdeflate, run
+
+```r
+library(iscream)
+htslib_version()
+#> 1.21
+#> build=configure libcurl=yes S3=yes GCS=yes libdeflate=yes lzma=yes bzip2=yes plugins=no htscodecs=1.6.1
+```
+
+and check that `libdeflate=yes`.
+
+
 ```{r, echo=FALSE, error=FALSE}
 library("ggplot2")
 ```

@@ -1,9 +1,17 @@
 #include "query.hpp"
 #include <Rcpp.h>
 
+//' Get htslib version and available features
+//'
+//' Returns the version of htslib being used by iscream and whether features
+//' such as libdeflate support are available. This information may not always
+//' correspond to the htslib version used during iscream's installation if a
+//' different htslib version is available for linking at runtime.
+//' @export
 // [[Rcpp::export]]
 void htslib_version() {
     Rprintf("%s\n", hts_version());
+    Rprintf("%s\n", hts_feature_string());
 }
 
 //' Query a genomic interval from a opened htsFile and return the reads in it
