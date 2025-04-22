@@ -1,0 +1,46 @@
+rep,version,source,regions,time
+1,"1.18",system htslib(with libdeflate),1,0.274
+2,"1.18",system htslib(with libdeflate),1,0.254
+3,"1.18",system htslib(with libdeflate),1,0.262
+1,"1.18",system htslib(with libdeflate),100,0.371
+2,"1.18",system htslib(with libdeflate),100,0.373
+3,"1.18",system htslib(with libdeflate),100,0.379
+1,"1.18",system htslib(with libdeflate),500,0.713
+2,"1.18",system htslib(with libdeflate),500,0.739
+3,"1.18",system htslib(with libdeflate),500,0.718
+1,"1.18",system htslib(with libdeflate),1000,1.288
+2,"1.18",system htslib(with libdeflate),1000,1.157
+3,"1.18",system htslib(with libdeflate),1000,1.216
+1,"1.18",system htslib(with libdeflate),5000,4.543
+2,"1.18",system htslib(with libdeflate),5000,4.683
+3,"1.18",system htslib(with libdeflate),5000,4.755
+1,"1.18",system htslib(no libdeflate),1,0.347
+2,"1.18",system htslib(no libdeflate),1,0.351
+3,"1.18",system htslib(no libdeflate),1,0.359
+1,"1.18",system htslib(no libdeflate),100,0.569
+2,"1.18",system htslib(no libdeflate),100,0.564
+3,"1.18",system htslib(no libdeflate),100,0.573
+1,"1.18",system htslib(no libdeflate),500,1.17
+2,"1.18",system htslib(no libdeflate),500,1.155
+3,"1.18",system htslib(no libdeflate),500,1.165
+1,"1.18",system htslib(no libdeflate),1000,1.927
+2,"1.18",system htslib(no libdeflate),1000,2.035
+3,"1.18",system htslib(no libdeflate),1000,2.083
+1,"1.18",system htslib(no libdeflate),5000,7.364
+2,"1.18",system htslib(no libdeflate),5000,7.479
+3,"1.18",system htslib(no libdeflate),5000,7.567
+1,"1.18",Rhtslib,1,0.459
+2,"1.18",Rhtslib,1,0.455
+3,"1.18",Rhtslib,1,0.456
+1,"1.18",Rhtslib,100,0.703
+2,"1.18",Rhtslib,100,0.705
+3,"1.18",Rhtslib,100,0.705
+1,"1.18",Rhtslib,500,1.397
+2,"1.18",Rhtslib,500,1.394
+3,"1.18",Rhtslib,500,1.403
+1,"1.18",Rhtslib,1000,2.465
+2,"1.18",Rhtslib,1000,2.308
+3,"1.18",Rhtslib,1000,2.308
+1,"1.18",Rhtslib,5000,8.86
+2,"1.18",Rhtslib,5000,8.448
+3,"1.18",Rhtslib,5000,8.514

@@ -1,4 +1,11 @@
-# Getting htslib headers
+---
+title: "Getting htslib headers"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting htslib headers}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
 
 iscream currently has Rhtslib as a "LinkingTo" dependency so if a system
 installation of htslib is not found with pkg-config, the installer will fall
@@ -17,10 +24,47 @@ than htslib without *libdeflate*. If you're compiling your own htslib, compile
 *libdeflate* first and then htslib. With Rhtslib we've seen poorer performance
 compared to a standard htslib installation, both with and without *libdeflate*.
 
+```{r, echo=FALSE, error=FALSE}
+library("ggplot2")
+```
+
+```{r, echo=FALSE, dpi=300, fig.width=6, fig.height=4, fig.align="center", fig.cap="Effect of htslib v1.18 source on iscream matrix creation runtime from one bulk WGBS BED file"}
+data_dir <- system.file("extdata", package = "iscream")
+df <- read.csv(paste0(data_dir, "/htslib.csv"))
+ggplot(df, aes(x = regions, y = time, color = source)) +
+  geom_point(alpha = 0.8) +
+  stat_summary(
+    aes(x = regions, group = source),
+    fun = "mean",
+    geom = "line",
+    linewidth = 0.5,
+    show.legend = TRUE
+  ) +
+  labs(
+    x = "Genomic regions",
+    y = "Runtime (s)",
+    color = "htslib source"
+  ) +
+  theme_bw()
+
+
+```
+
 ### Conda/miniconda/mamba/micromamba
 
-The *iscream* repo provides [environment.yaml](environment.yaml) to install
-htslib 1.21 - add this file to your project directory and run
+Create an `environment.yaml` with the following contents to install htslib 1.21:
+
+```yaml
+name: iscream
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - htslib=1.21
+  - pkg-config=0.29.2
+```
+
+Add this file to your project directory and run
 
 ```bash
 conda env create -f environment.yaml
@@ -42,9 +86,25 @@ You should get something like
 
 ### [Pixi](https://pixi.sh/latest/)
 
-Pixi uses the conda repositories to install packages. The *iscream* repo
-provides [pixi.toml](pixi.toml) to install htslib 1.21 - add this file to your
-project directory and run
+Pixi uses the conda repositories to install packages. Create a `pixi.toml` file
+with this content and add the file to your project directory:
+
+```toml
+[project]
+channels = ["conda-forge", "bioconda"]
+name = "iscream"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[activation.env]
+LD_LIBRARY_PATH="$CONDA_PREFIX/lib"
+
+[dependencies]
+htslib = "1.21.*"
+pkg-config = ">=0.29.2,<0.30"
+```
+
+To create an environment with the required system dependencies run
 
 ```bash
 pixi shell
