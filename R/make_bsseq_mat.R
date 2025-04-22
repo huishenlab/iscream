@@ -31,7 +31,7 @@
 #' "start", and "end" columns.
 #'
 #' ### Bitpacking limits
-#' If the coverage values exceed 65,535, the upper limit of a 16-bit unsigned
+#' If the coverage values exceed 32,767, the upper limit of a 16-bit signed
 #' integer, it will be capped at the limit. Beta values will also be capped
 #' similarly, but any such values would be a bug in the aligner that produced
 #' the data.
