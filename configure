@@ -28,9 +28,7 @@ checkHtsVersion() {
     fi
 }
 
-echo ""
-echo "Configuring for package installation..."
-echo ""
+echo "*** Configuring for package installation..."
 
 # Library settings
 PKG_CONFIG_NAME="htslib"
@@ -48,7 +46,7 @@ if [ "$INCLUDE_DIR" ] || [ "$LIB_DIR" ]; then
   PKG_CFLAGS="-I$INCLUDE_DIR $PKG_CFLAGS"
   PKG_LIBS="-L$LIB_DIR $PKG_LIBS"
 else
-  echo "Trying pkg-config to use system htslib headers..."
+  echo "**** Trying pkg-config to use system htslib headers..."
   pkg-config --version >/dev/null 2>&1
   if [ $? -eq 0 ]; then
     PKGCONFIG_CFLAGS=$(pkg-config --cflags $PKG_CONFIG_NAME 2> /dev/null)
@@ -56,19 +54,17 @@ else
   fi
 
   if [ -z $PKGCONFIG_CFLAGS ]; then
-    echo "Falling back to Rhtslib"
+    echo "     Falling back to Rhtslib"
     RHTSLIB_CFLAGS=$("${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e 'Rhtslib::pkgconfig("PKG_CPPFLAGS")')
-    # RHTSLIB_CFLAGS=$("${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e 'cat(system.file(package="Rhtslib", "include"))')
     RHTSLIB_LIBS=$("${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e 'Rhtslib::pkgconfig("PKG_LIBS")')
-    # RHTSLIB_LIBS=$("${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e 'cat(system.file(package="Rhtslib", "usrlib"))')
   fi
 
   if [ "$PKGCONFIG_CFLAGS" ] || [ "$PKGCONFIG_LIBS" ]; then
-    echo "Found pkg-config cflags and libs for ${PKG_CONFIG_NAME}!"
+    echo "     Found pkg-config cflags and libs for ${PKG_CONFIG_NAME}!"
     PKG_CFLAGS=${PKGCONFIG_CFLAGS}
     PKG_LIBS=${PKGCONFIG_LIBS}
   elif [ "$RHTSLIB_CFLAGS" ] || [ "$RHTSLIB_LIBS" ]; then
-    echo "Using Rhtslib cflags and libs for ${PKG_CONFIG_NAME}!"
+    echo "     Using Rhtslib cflags and libs for ${PKG_CONFIG_NAME}!"
     PKG_CFLAGS="${RHTSLIB_CFLAGS}"
     PKG_LIBS="${RHTSLIB_LIBS}"
   else
@@ -93,17 +89,18 @@ CC=`${R_HOME}/bin/R CMD config CC`
 CFLAGS=`${R_HOME}/bin/R CMD config CFLAGS`
 CPPFLAGS=`${R_HOME}/bin/R CMD config CPPFLAGS`
 
-echo ""
+echo "**** Checking GCC and htslib versions"
 checkGCCVersion "$CC" 9.4
-echo "$CC version meets minimum requirements!"
+echo "     $CC version meets minimum requirements!"
 if [ -z $RHTSLIB_CFLAGS ]; then
     checkHtsVersion 1.18
-    echo "htslib version meets minimum requirements!"
+    echo "     htslib version meets minimum requirements!"
 fi
 
 # For debugging
-echo "Using PKG_CFLAGS=$PKG_CFLAGS"
-echo "Using PKG_LIBS=$PKG_LIBS"
+echo "**** Compilation flags"
+echo "     Using PKG_CFLAGS=$PKG_CFLAGS"
+echo "     Using PKG_LIBS=$PKG_LIBS"
 
 # Test configuration
 if [ -z $RHTSLIB_CFLAGS ]; then
@@ -122,7 +119,5 @@ fi
 sed -e "s|@cflags@|$PKG_CFLAGS|" -e "s|@libs@|$PKG_LIBS|" src/Makevars.in > src/Makevars
 
 # Success
-echo ""
-echo "Success!"
-echo ""
+echo "**** Success!"
 exit 0
