@@ -79,6 +79,12 @@ lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 # make a vector of regions
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 summarize_regions(bedfiles, regions, columns = c(4, 5), col_names = c("beta", "cov"))
-summarize_regions(bedfiles, regions, fun = c("mean", "stddev"), columns = c(4, 5), col_names = c("beta", "cov"))
+summarize_regions(
+  bedfiles,
+  regions,
+  fun = c("mean", "stddev"),
+  columns = c(4, 5),
+  col_names = c("beta", "cov")
+)
 summarize_regions(bedfiles, regions, fun = "sum", columns = 5, col_names = "coverage")
 }
