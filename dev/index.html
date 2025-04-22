@@ -78,8 +78,8 @@
 <p><em>Integrating Single-Cell Results for Exploring and Analyzing Methylation</em></p>
 <!-- badges: start -->
 
-<p>Analysis and visualization of Whole Genome Bisulfite Sequencing (WGBS) data requires reading aligned sequencing data into formats that existing packages like <a href="https://bioconductor.org/packages/devel/bioc/html/bsseq.html" class="external-link">BSseq</a> and <a href="https://github.com/andreaskapou/scMET" class="external-link">scMET</a> can analyze. Getting the data from on-disk formats like bedfiles to a matrix of methylation values can be difficult because, with nearly 30 million CpGs, WGBS data can be quite large.</p>
-<p>iscream aims to efficiently read alinged (sc)WGBS data into formats that can be used by other packages. iscream uses <a href="https://www.htslib.org/" class="external-link">htslib</a> to query genomic regions to make matrices for BSSeq or aggregate the methylated reads for scMET.</p>
+<p>Analysis and visualization of Whole Genome Bisulfite Sequencing (WGBS) data requires reading aligned sequencing data into formats that existing packages like <a href="https://bioconductor.org/packages/devel/bioc/html/bsseq.html" class="external-link">BSseq</a> and <a href="https://github.com/andreaskapou/scMET" class="external-link">scMET</a> can analyze. Getting the data from on-disk formats like BED files to a matrix of methylation values can be difficult because, with nearly 30 million CpGs, WGBS data can be quite large.</p>
+<p>iscream aims to efficiently read data from any BED file into formats usable by other packages. Using <a href="https://www.htslib.org/" class="external-link">htslib</a>, iscream can query genomic regions like <a href="https://en.wikipedia.org/wiki/Tabix" class="external-link">tabix</a>, summarize the queried data and make matrices, with specific support for WGBS BED files aligned by <a href="https://huishenlab.github.io/biscuit/" class="external-link">BISCUIT</a>, <a href="https://www.bioinformatics.babraham.ac.uk/projects/bismark/" class="external-link">Bismark</a> and <a href="https://bsbolt.readthedocs.io/en/latest/" class="external-link">BSBolt</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
@@ -103,7 +103,10 @@
 </ul>
 <p>or built manually: <a href="https://www.htslib.org/download/" class="external-link uri">https://www.htslib.org/download/</a>. See <code><a href="articles/htslib.html">vignette("htslib")</a></code> for more information.</p>
 <p>The header files may also be found among your HPC modules - make sure the <code>PKG_CONFIG_PATH</code> environment variable includes the <code>pkgconfig</code> location for your installation of <em>htslib</em>. You can verify that the <em>htslib</em> development libraries are installed with <code>pkg-config</code>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">pkg-config</span> <span class="at">--cflags</span> <span class="at">--libs</span> htslib</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># set path if necessary</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">PKG_CONFIG_PATH</span><span class="op">=</span>[path <span class="va">to</span> <span class="va">htslib</span> <span class="va">installation</span>]</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># verify that htslib can be found</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">pkg-config</span> <span class="at">--cflags</span> <span class="at">--libs</span> htslib</span></code></pre></div>
 <div class="section level4">
 <h4 id="tabix">
 <em>tabix</em><a class="anchor" aria-label="anchor" href="#tabix"></a>
@@ -136,7 +139,7 @@
 <div class="section level3">
 <h3 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h3>
-<p>A user guide is available on the <a href="https://huishenlab.github.io/iscream/">package website</a>. Bug reports may be submitted through GitHub issues.</p>
+<p>See the <a href="https://huishenlab.github.io/iscream/articles/iscream.html">quick start guide</a> for an overview of iscream’s functionality and the <a href="https://huishenlab.github.io/iscream/reference/">function reference</a> for all available functions. Bug reports may be submitted through <a href="https://github.com/huishenlab/iscream/issues" class="external-link">GitHub issues</a>.</p>
 </div>
 </div>
 
@@ -171,6 +174,7 @@
 <li>James Eapen <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-6016-3598" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Jacob Morrison <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-8592-4744" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Hui Shen <br><small class="roles"> Thesis advisor, funder </small> <a href="https://orcid.org/0000-0001-9767-4084" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 

@@ -103,17 +103,23 @@ library:</p>
 <p>Running this vignette requires downloading 2GB of BED files and tabix
 indices from this Zenodo record: <a href="https://zenodo.org/records/14733834" class="external-link uri">https://zenodo.org/records/14733834</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">methscan_zip_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"methscan"</span><span class="op">)</span></span>
-<span><span class="va">methscan_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">snmc_zip_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"snmcseq2"</span><span class="op">)</span></span>
+<span><span class="va">snmc_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span></span>
-<span>    <span class="st">"https://zenodo.org/records/14733834/files/methscan_data.zip"</span>,</span>
-<span>    destfile <span class="op">=</span> <span class="va">methscan_zip_path</span></span>
+<span>    <span class="st">"https://zenodo.org/records/14733834/files/sc_beds.zip"</span>,</span>
+<span>    destfile <span class="op">=</span> <span class="va">snmc_zip_path</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">methscan_zip_path</span>, exdir <span class="op">=</span> <span class="va">methscan_dir</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">snmc_zip_path</span>, exdir <span class="op">=</span> <span class="va">snmcseq2_dir</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">genes_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"genes"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span></span>
+<span>    <span class="st">"https://zenodo.org/records/14733834/files/genes.bed"</span>,</span>
+<span>    destfile <span class="op">=</span> <span class="va">genes_file</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>100 human cell WGBS data from the snmc-seq2 dataset:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bedfiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span></span>
-<span>  <span class="va">methscan_dir</span>,</span>
+<span>  <span class="va">snmc_dir</span>,</span>
 <span>  pattern <span class="op">=</span> <span class="st">"*.bed.gz$"</span>,</span>
 <span>  full.names <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">]</span></span></code></pre></div>
@@ -127,7 +133,7 @@ input:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span></span>
-<span>  <span class="st">"../data/genes.bed"</span>,</span>
+<span>  <span class="va">genes_file</span>,</span>
 <span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"gene"</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5000</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
@@ -152,7 +158,7 @@ BED files much like the <em>tabix</em> shell command. It returns the
 queried lines from the BED files, parsed into columns, as a
 <code>data.table</code>. <code><a href="../reference/tabix.html">tabix()</a></code> is a generic BED files
 query function and is not restricted to methylation BED files. It has
-built-in support for BISCUIT, Bismark, and BSbolt BED file column names,
+built-in support for BISCUIT, Bismark, and BSBolt BED file column names,
 set with the <code>aligner</code> argument, but can take other column
 names with the <code>colnames</code> argument.</p>
 <p>If multiple input files are provided, they are queried in parallel.
@@ -247,17 +253,17 @@ CpGs between files, this can take a long time. Here, gene bodies are
 large and the final matrix can contain millions of CpGs. Further, with
 single-cell data, chances are new CpGs are found in every file.</p>
 <p>Preallocating the number of rows, however, can drastically reduce
-runtime. Since we got 45 million CpGs from all the BED files, we can
-approximately expect between 5 and 10 million unique CpGs as single-cell
-data has lower coverage than bulk. We already have the tabix query so we
-can get the unique CpG count here and use it to preallocate the matrix,
-reducing the number of matrix resizes. We’ll add 100,000 extra on top of
-the existing count to be safe since every avoided resize cuts off at
-least a couple seconds from the runtime. Making tabix queries can be a
-relatively quick way to approximate the CpG count of a dataset. If you
-haven’t done a tabix query of the full dataset, you can approximate how
-many CpGs to expect based on CpG counts in one file and the coverage of
-your WGBS method.</p>
+runtime. Since we got 45 million CpGs from all the BED files with the
+tabix query above, we can expect approximately between 5 and 10 million
+unique CpGs as single-cell data has lower coverage than bulk. We already
+have the tabix query so we can get the unique CpG count here and use it
+to preallocate the matrix, reducing the number of matrix resizes. We’ll
+add 100,000 extra on top of the existing count to be safe since every
+avoided resize cuts off at least a couple seconds from the runtime.
+Making tabix queries can be a relatively quick way to approximate the
+CpG count of a dataset. If you haven’t done a tabix query of the full
+dataset, you can approximate how many CpGs to expect based on CpG counts
+in one file and the coverage of your WGBS method.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cpg.count</span> <span class="op">&lt;-</span> <span class="va">tbx_query</span><span class="op">$</span><span class="va">start</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">meth_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_bsseq_mat.html">make_bsseq_mat</a></span><span class="op">(</span></span>
@@ -302,18 +308,18 @@ sample names, chromosome names and positions of the loci.</p>
 <p>This list can be used to produce a BSseq object. However since BSseq
 cannot work with sparse matrices, the two matrices would need to be
 converted to dense matrices first.</p>
-<p>If you want just one column from the BED file as a matrix instead of
-the two for BSseq, use <code><a href="../reference/make_mat.html">make_mat()</a></code>: to a matrix of beta
-values (column 4 in the BISCUIT BED file) run
-<code>make_mat(bedfiles, regions, col = 4, mat_name = "beta")</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">BSseq</span>, <span class="va">meth_mat</span><span class="op">)</span></span></code></pre></div>
+<p>If you want just one column from the BED file as a matrix instead of
+the two for BSseq, use <code><a href="../reference/make_mat.html">make_mat()</a></code>. For example, to get a
+matrix of beta values (column 4 in the BISCUIT BED file) run</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">make_mat</span>(bedfiles, regions, <span class="at">col =</span> <span class="dv">4</span>, <span class="at">mat_name =</span> <span class="st">"beta"</span>)<span class="st">`</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.4.2 (2024-10-31)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
