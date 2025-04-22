@@ -54,8 +54,9 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tabix</span><span class="op">(</span></span>
 <span>  <span class="va">bedfiles</span>,</span>
 <span>  <span class="va">regions</span>,</span>
-<span>  aligner <span class="op">=</span> <span class="st">"biscuit"</span>,</span>
+<span>  aligner <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  col.names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  zero_based <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  raw <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  nthreads <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -83,6 +84,10 @@ this argument.</p></dd>
 <dt id="arg-col-names">col.names<a class="anchor" aria-label="anchor" href="#arg-col-names"></a></dt>
 <dd><p>A vector of column names for the result data.table. Set if
 your bedfile is not from the supported aligners or is a general bedfile.</p></dd>
+
+
+<dt id="arg-zero-based">zero_based<a class="anchor" aria-label="anchor" href="#arg-zero-based"></a></dt>
+<dd><p>Whether the input BED file has a zero-based start column.</p></dd>
 
 
 <dt id="arg-raw">raw<a class="anchor" aria-label="anchor" href="#arg-raw"></a></dt>
