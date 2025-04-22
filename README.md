@@ -11,13 +11,16 @@ Analysis and visualization of Whole Genome Bisulfite Sequencing (WGBS) data
 requires reading aligned sequencing data into formats that existing packages
 like [BSseq](https://bioconductor.org/packages/devel/bioc/html/bsseq.html) and
 [scMET](https://github.com/andreaskapou/scMET) can analyze. Getting the data
-from on-disk formats like bedfiles to a matrix of methylation values can be
+from on-disk formats like BED files to a matrix of methylation values can be
 difficult because, with nearly 30 million CpGs, WGBS data can be quite large.
 
-iscream aims to efficiently read alinged (sc)WGBS data into formats that can be
-used by other packages. iscream uses [htslib](https://www.htslib.org/) to query
-genomic regions to make matrices for BSSeq or aggregate the methylated reads for
-scMET.
+iscream aims to efficiently read data from any BED file into formats usable by
+other packages. Using [htslib](https://www.htslib.org/), iscream can query
+genomic regions like [tabix](https://en.wikipedia.org/wiki/Tabix), summarize the
+queried data and make matrices, with specific support for WGBS BED files aligned
+by [BISCUIT](https://huishenlab.github.io/biscuit/),
+[Bismark](https://www.bioinformatics.babraham.ac.uk/projects/bismark/) and
+[BSBolt](https://bsbolt.readthedocs.io/en/latest/).
 
 ## Dependencies
 
