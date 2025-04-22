@@ -33,13 +33,19 @@ Running this vignette requires downloading 2GB of BED files and tabix indices
 from this Zenodo record: <https://zenodo.org/records/14733834>.
 
 ```{r download_data, eval = FALSE}
-methscan_zip_path <- tempfile("methscan")
-methscan_dir <- tempdir()
+snmc_zip_path <- tempfile("snmcseq2")
+snmc_dir <- tempdir()
 download.file(
-    "https://zenodo.org/records/14733834/files/methscan_data.zip",
-    destfile = methscan_zip_path
+    "https://zenodo.org/records/14733834/files/sc_beds.zip",
+    destfile = snmc_zip_path
 )
-unzip(methscan_zip_path, exdir = methscan_dir)
+unzip(snmc_zip_path, exdir = snmcseq2_dir)
+
+genes_file <- tempfile("genes")
+download.file(
+    "https://zenodo.org/records/14733834/files/genes.bed",
+    destfile = genes_file
+)
 ```
 
 
@@ -48,7 +54,7 @@ unzip(methscan_zip_path, exdir = methscan_dir)
 
 ```{r}
 bedfiles <- list.files(
-  methscan_dir,
+  snmc_dir,
   pattern = "*.bed.gz$",
   full.names = TRUE
 )[1:100]
@@ -61,7 +67,7 @@ Here we'll be using 5000 gene body regions as the input:
 ```{r}
 library(data.table)
 regions <- fread(
-  "../data/genes.bed",
+  genes_file,
   col.names = c("chr", "start", "end", "gene")
 )[1:5000]
 head(regions)
@@ -75,7 +81,7 @@ The `tabix()` function can be used to query regions from BED files much like the
 *tabix* shell command. It returns the queried lines from the BED files, parsed
 into columns, as a `data.table`. `tabix()` is a generic BED files query function
 and is not restricted to methylation BED files. It has built-in support for
-BISCUIT, Bismark, and BSbolt BED file column names, set with the `aligner`
+BISCUIT, Bismark, and BSBolt BED file column names, set with the `aligner`
 argument, but can take other column names with the `colnames` argument.
 
 If multiple input files are provided, they are queried in parallel. If `raw =
@@ -124,16 +130,16 @@ Here, gene bodies are large and the final matrix can contain millions of CpGs.
 Further, with single-cell data, chances are new CpGs are found in every file.
 
 Preallocating the number of rows, however, can drastically reduce runtime.
-Since we got 45 million CpGs from all the BED files, we can approximately
-expect between 5 and 10 million unique CpGs as single-cell data has lower
-coverage than bulk. We already have the tabix query so we can get the unique
-CpG count here and use it to preallocate the matrix, reducing the number of
-matrix resizes. We'll add 100,000 extra on top of the existing count to be safe
-since every avoided resize cuts off at least a couple seconds from the runtime.
-Making tabix queries can be a relatively quick way to approximate the CpG count
-of a dataset. If you haven't done a tabix query of the full dataset, you can
-approximate how many CpGs to expect based on CpG counts in one file and the
-coverage of your WGBS method.
+Since we got 45 million CpGs from all the BED files with the tabix query above,
+we can expect approximately between 5 and 10 million unique CpGs as single-cell
+data has lower coverage than bulk. We already have the tabix query so we can get
+the unique CpG count here and use it to preallocate the matrix, reducing the
+number of matrix resizes. We'll add 100,000 extra on top of the existing count
+to be safe since every avoided resize cuts off at least a couple seconds from
+the runtime. Making tabix queries can be a relatively quick way to approximate
+the CpG count of a dataset. If you haven't done a tabix query of the full
+dataset, you can approximate how many CpGs to expect based on CpG counts in one
+file and the coverage of your WGBS method.
 
 ```{r}
 cpg.count <- tbx_query$start |> unique() |> length()
@@ -154,13 +160,17 @@ This list can be used to produce a BSseq object. However since BSseq cannot work
 with sparse matrices, the two matrices would need to be converted to dense
 matrices first.
 
+```{r, eval = FALSE}
+bs <- do.call(BSseq, meth_mat)
+```
+
 If you want just one column from the BED file as a matrix instead of the two
-for BSseq, use `make_mat()`: to a matrix of beta values (column 4 in the
-BISCUIT BED file) run `make_mat(bedfiles, regions, col = 4, mat_name = "beta")`.
+for BSseq, use `make_mat()`. For example, to get a matrix of beta values
+(column 4 in the BISCUIT BED file) run
 
 
 ```{r, eval = FALSE}
-bs <- do.call(BSseq, meth_mat)
+make_mat(bedfiles, regions, col = 4, mat_name = "beta")`
 ```
 
 ## Session info

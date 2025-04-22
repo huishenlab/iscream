@@ -57,9 +57,6 @@ download.file(
     destfile = methscan_zip_path
 )
 unzip(methscan_zip_path, exdir = methscan_dir)
-```
-
-```{r}
 start_time = proc.time()
 ```
 

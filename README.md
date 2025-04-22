@@ -44,6 +44,9 @@ your installation of *htslib*. You can verify that the *htslib* development
 libraries are installed with `pkg-config`:
 
 ```bash
+# set path if necessary
+export PKG_CONFIG_PATH=[path to htslib installation]
+# verify that htslib can be found
 pkg-config --cflags --libs htslib
 ```
 
@@ -90,5 +93,6 @@ pak::pkg_install("huishenlab/iscream")
 
 ### Usage
 
-A user guide is available on the [package website](https://huishenlab.github.io/iscream/).
-Bug reports may be submitted through GitHub issues.
+See the [quick start guide](https://huishenlab.github.io/iscream/articles/iscream.html)
+for an overview of iscream's functionality and the [function reference](https://huishenlab.github.io/iscream/reference/)
+for all available functions. Bug reports may be submitted through [GitHub issues](https://github.com/huishenlab/iscream/issues).
