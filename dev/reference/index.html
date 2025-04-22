@@ -20,9 +20,9 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/data_structures.html">Getting other data structures from iscream</a></li>
+    <li><a class="dropdown-item" href="../articles/TSS.html">Plotting TSS methylation profiles</a></li>
     <li><a class="dropdown-item" href="../articles/htslib.html">Getting htslib headers</a></li>
     <li><a class="dropdown-item" href="../articles/manuscript_data.html">Manuscript data availabiliy</a></li>
-    <li><a class="dropdown-item" href="../articles/TSS.html">Plotting TSS methylation profiles</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -44,14 +44,14 @@
     </div>
 
     <div class="section level2">
-      <h2 id="reading">Reading<a class="anchor" aria-label="anchor" href="#reading"></a></h2>
+      <h2 id="read-data-from-aligned-bed-files">Read data from aligned BED files<a class="anchor" aria-label="anchor" href="#read-data-from-aligned-bed-files"></a></h2>
 
-      <div class="section-desc"><p>Read data from aligned WGBS bedfiles</p></div>
+
 
 
     </div><div class="section level2">
 
-      <h3 id="by-region">By region<a class="anchor" aria-label="anchor" href="#by-region"></a></h3>
+      <h3 id="general-bed-files">General BED files<a class="anchor" aria-label="anchor" href="#general-bed-files"></a></h3>
 
 
 
@@ -65,13 +65,13 @@
           <code><a href="tabix.html">tabix()</a></code>
 
         </dt>
-        <dd>Query lines from a tabixed bedfile</dd>
+        <dd>Query lines from a tabixed BED file</dd>
       </dl><dl><dt>
 
           <code><a href="query_chroms.html">query_chroms()</a></code>
 
         </dt>
-        <dd>Query the chromosomes or seqnames from a vector of files</dd>
+        <dd>Query the chromosomes or seqnames from a vector of BED files</dd>
       </dl><dl><dt>
 
           <code><a href="summarize_regions.html">summarize_regions()</a></code>
@@ -80,16 +80,27 @@
         <dd>Summarize information over genomic regions from any BED file</dd>
       </dl><dl><dt>
 
-          <code><a href="summarize_meth_regions.html">summarize_meth_regions()</a></code>
-
-        </dt>
-        <dd>Summarize CpGs methylation information over genomic regions</dd>
-      </dl><dl><dt>
-
           <code><a href="make_mat.html">make_mat()</a></code>
 
         </dt>
         <dd>Make a matrix from a numeric column of any BED file</dd>
+      </dl></div><div class="section level2">
+
+      <h3 id="wgbs-bed-files">WGBS BED files<a class="anchor" aria-label="anchor" href="#wgbs-bed-files"></a></h3>
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="summarize_meth_regions.html">summarize_meth_regions()</a></code>
+
+        </dt>
+        <dd>Summarize CpGs methylation information over genomic regions</dd>
       </dl><dl><dt>
 
           <code><a href="make_bsseq_mat.html">make_bsseq_mat()</a></code>
