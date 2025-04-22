@@ -35,22 +35,22 @@ test_tabix_dataframe <- function(htslib = FALSE) {
   }
   test_that("tabix dataframe with", {
     expect_equal(
-      tabix(biscuit_tabix_beds[1], regions),
+      tabix(biscuit_tabix_beds[1], regions, aligner = "biscuit"),
       fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))
     )
     expect_equal(
-      tabix(biscuit_tabix_beds[1], gr),
+      tabix(biscuit_tabix_beds[1], gr, aligner = "biscuit"),
       fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric")) |>
         GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = TRUE, keep.extra.columns = TRUE)
     )
     expect_equal(
-      tabix(biscuit_tabix_beds[1], gr.meta),
+      tabix(biscuit_tabix_beds[1], gr.meta, aligner = "biscuit"),
       fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))[,
         meta := c(rep("s1", 3), rep("s2", 2), rep("s3", 2))
         ] |> GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = TRUE, keep.extra.columns = TRUE)
     )
     expect_equal(
-      tabix(biscuit_tabix_beds[1], regions.dt),
+      tabix(biscuit_tabix_beds[1], regions.dt, aligner = "biscuit"),
       fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))
     )
     expect_equal(

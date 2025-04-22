@@ -56,29 +56,34 @@
 #'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 #' tabix(bedfiles[1], regions, col.names = c("chr", "start", "end", "beta", "coverage"))
-tabix <- function(bedfiles, regions, aligner = "biscuit", col.names = NULL, raw = FALSE, nthreads = NULL) {
+tabix <- function(bedfiles, regions, aligner = NULL, col.names = NULL, raw = FALSE, nthreads = NULL) {
   verify_files_or_stop(bedfiles)
-  verify_aligner_or_stop(aligner)
-  verify_filetype(bedfiles, aligner)
+  if (!is.null(aligner)) {
+    verify_aligner_or_stop(aligner)
+    verify_filetype(bedfiles, aligner)
+  }
 
   if (raw) {
     input_regions <- get_string_input_regions(regions)
     return(run_scan_tabix(bedfiles, input_regions, nthreads))
   }
 
-  is.biscuit <- aligner == "biscuit"
-  result_colnames <- col.names %||% get_colnames(aligner, bedfiles)
-  mergecg <- "mergecg" %in% result_colnames
-
   # make the query
   if (getOption("tabix.method") == "htslib") {
     input_regions <- get_string_input_regions(regions)
-    result <- tabix.htslib(bedfiles, input_regions, result_colnames, mergecg, nthreads)
+    result <- tabix.htslib(bedfiles, input_regions, nthreads)
   } else {
-
     regions_df <- get_df_input_regions(regions)
-    result <- tabix.shell(bedfiles, regions_df, result_colnames, nthreads)
+    result <- tabix.shell(bedfiles, regions_df, nthreads)
   }
+
+  if (is.null(result)) {
+    message("No records found")
+    return(NULL)
+  }
+  result_colnames <- col.names %||% get_colnames(aligner, bedfiles, result)
+  is.biscuit <- aligner == "biscuit"
+  result <- check_colnames(result, result_colnames)
 
   # get GRanges
   if (class(regions)[1] == "GRanges") {
@@ -97,25 +102,23 @@ tabix <- function(bedfiles, regions, aligner = "biscuit", col.names = NULL, raw 
     }
     return(result.gr)
   }
-
   return(result)
-
 }
 
-tabix.shell <- function(bedfiles, regions_df, result_colnames, nthreads) {
+tabix.shell <- function(bedfiles, regions_df, nthreads) {
   if (length(bedfiles) == 1) {
-    return(tabix.shell.single(bedfiles, regions_df, result_colnames))
+    return(tabix.shell.single(bedfiles, regions_df))
   }
 
   mclapply(bedfiles, function(bedfile) {
-    tbx_query <- tabix.shell.single(bedfile, regions_df, result_colnames)
+    tbx_query <- tabix.shell.single(bedfile, regions_df)
     if (!is.null(tbx_query)) {
       tbx_query[, sample := file_path_sans_ext(basename(bedfile), compression = TRUE) ]
     }
   }, mc.cores = .get_threads(nthreads)) |> rbindlist()
 }
 
-tabix.shell.single <- function(bedfile, regions_df, result_colnames) {
+tabix.shell.single <- function(bedfile, regions_df) {
   query.tmpfile <- tempfile(pattern = "regions", fileext = ".tsv")
   if (!is.null(regions_df)) write_bed(regions_df, query.tmpfile)
 
@@ -123,8 +126,7 @@ tabix.shell.single <- function(bedfile, regions_df, result_colnames) {
   result <- suppressWarnings(fread(cmd = cmd))
 
   if (is_empty(result, bedfile)) return(NULL)
-
-  return(check_colnames(result, result_colnames))
+  result
 }
 
 check_colnames <- function(result, result_colnames) {
@@ -143,21 +145,17 @@ check_colnames <- function(result, result_colnames) {
   result
 }
 
-tabix.htslib <- function(bedfiles, input_regions, result_colnames, mergecg, nthreads) {
+tabix.htslib <- function(bedfiles, input_regions, nthreads) {
   if (length(bedfiles) == 1) {
       result <- tabix.htslib.single(
         bedfile = bedfiles,
-        regions = input_regions,
-        result_colnames = result_colnames,
-        mergecg = mergecg
+        regions = input_regions
       )
   } else {
     dt_list <- mclapply(bedfiles, function(file) {
       tbx_query <- tabix.htslib.single(
         bedfile = file,
-        regions = input_regions,
-        result_colnames = result_colnames,
-        mergecg = mergecg
+        regions = input_regions
       )
       if (!is.null(tbx_query)) {
         tbx_query[, sample := file_path_sans_ext(basename(file), compression = TRUE)]
@@ -168,13 +166,12 @@ tabix.htslib <- function(bedfiles, input_regions, result_colnames, mergecg, nthr
   }
 }
 
-tabix.htslib.single <- function(bedfile, regions, result_colnames, mergecg) {
+tabix.htslib.single <- function(bedfile, regions) {
   lines <- Cpp_query_interval(bedfile, regions)
   lines_dt <- as.data.table(lines)
   if (is_empty(lines_dt, bedfile)) return(NULL)
 
-  lines_dt <- lines_dt[, tstrsplit(lines, "\t", fixed = TRUE, type.convert = TRUE)]
-  return(check_colnames(lines_dt, result_colnames))
+  lines_dt[, tstrsplit(lines, "\t", fixed = TRUE, type.convert = TRUE)]
 }
 
 run_scan_tabix <- function(bedfiles, input_regions, nthreads) {
@@ -217,7 +214,8 @@ get_df_input_regions <- function(regions) {
 }
 
 
-get_colnames <- function(aligner, bedfiles) {
+get_colnames <- function(aligner, bedfiles, result) {
+  if (is.null(aligner)) return(colnames(result))
 
   base_colnames <- c("chr", "start", "end")
   biscuit_colnames <- c("beta", "coverage")
