@@ -18,13 +18,15 @@ checkGCCVersion() {
 }
 
 checkHtsVersion() {
-    version=$(htsfile --version | sed -E '1!d' | cut -f 3 -d ' ' | cut -f 1-2 -d .)
+    version=$(tabix --version | sed -E '1!d' | cut -f 3 -d ' ' | cut -f 1-2 -d .)
     check=$(echo "$version < $1" | bc -l)
     if [ "$check" -eq 1 ]; then
       echo "------------------------- ANTICONF ERROR ---------------------------"
       echo "Configuration failed because htslib version $version does not meet the minimum version requirement $1"
       echo "--------------------------------------------------------------------"
       exit 1;
+    else
+      echo "     htslib version meets minimum requirements!"
     fi
 }
 
@@ -92,9 +94,11 @@ CPPFLAGS=`${R_HOME}/bin/R CMD config CPPFLAGS`
 echo "**** Checking GCC and htslib versions"
 checkGCCVersion "$CC" 9.4
 echo "     $CC version meets minimum requirements!"
-if [ -z $RHTSLIB_CFLAGS ]; then
-    checkHtsVersion 1.18
-    echo "     htslib version meets minimum requirements!"
+
+if [ -z "$RHTSLIB_CFLAGS" ] && command -v tabix > /dev/null; then
+    checkHtsVersion 1.17
+else
+    echo "     Could not find tabix to check for mimium htslib version - make sure its >= 1.17"
 fi
 
 # For debugging
