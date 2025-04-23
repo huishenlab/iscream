@@ -48,6 +48,9 @@
         bsseq
       ];
 
+      htslib = pkgs.htslib.overrideAttrs (finalAttrs: previousAttrs: {
+        buildInputs = previousAttrs.buildInputs ++ [ pkgs.libdeflate ];
+      });
       pkgsDeps = with pkgs; [
         R
         htslib
