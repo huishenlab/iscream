@@ -10,7 +10,7 @@ _test*
 ^data/*
 
 Makefile
-default.nix
+flake.*
 .ccls/*
 .envrc
 .lintr
