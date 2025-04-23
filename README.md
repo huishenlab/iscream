@@ -35,9 +35,11 @@ your package manager:
 - nixpkgs: `htslib`
 - conda: `bioconda::htslib`
 
-or built manually: <https://www.htslib.org/download/>. We recommend installing
-htslib with libdeflate support for optimal performance - see
-`vignette("htslib")` for more information.
+or built manually: <https://www.htslib.org/download/>. We recommend
+installing htslib with libdeflate support for optimal performance - see
+[`vignette("htslib")`](https://huishenlab.github.io/iscream/articles/htslib.html)
+for more information.
+
 
 The header files may also be found among your HPC modules - make sure the
 `PKG_CONFIG_PATH` environment variable includes the `pkgconfig` location for
