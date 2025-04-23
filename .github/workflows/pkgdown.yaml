@@ -6,6 +6,13 @@ on:
     types: [completed]
   push:
     branches: [dev]
+    paths-ignore:
+      - '**/README.md'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.gitignore'
+      - 'codecov.yml'
+      - 'Makefile'
 
 name: pkgdown
 

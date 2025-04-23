@@ -5,6 +5,11 @@ on:
     branches: [main, master, dev]
     paths-ignore:
       - '**/README.md'
+      - '**.nix'
+      - 'flake.lock'
+      - '.gitignore'
+      - 'codecov.yml'
+      - 'Makefile'
   pull_request:
     branches: [main, master]
 

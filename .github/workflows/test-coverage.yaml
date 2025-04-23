@@ -3,6 +3,13 @@
 on:
   push:
     branches: [main, dev]
+    paths-ignore:
+      - '**/README.md'
+      - 'flake.nix'
+      - 'flake.lock'
+      - '.gitignore'
+      - 'codecov.yml'
+      - 'Makefile'
   pull_request:
     branches: [main, master]
 
