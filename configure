@@ -119,16 +119,20 @@ fi
 sed -e "s|@cflags@|$PKG_CFLAGS|" -e "s|@libs@|$PKG_LIBS|" src/Makevars.in > src/Makevars
 
 # Notes
-htsloc=$(which htsfile)
 echo "**** Checking if htslib was compiled with libdeflate"
+
 if [ -n "$RHTSLIB_LIBS" ]; then
     echo "     NOTE: iscream queries may be slower with Rhtslib than with htslib compiled with libdeflate"
     echo "     See <https://huishenlab.github.io/iscream/articles/htslib.html> for more information"
-elif ldd "$htsloc" | grep -q 'libdeflate'; then
-    echo "     htslib compiled with libdeflate!"
+elif htsloc=$(which tabix) || htsloc=$(ldconfig -p | grep libhts.so | tail -n1 | cut -f 4 -d ' '); then
+    if ldd "$htsloc" | grep -q 'libdeflate'; then
+        echo "     htslib compiled with libdeflate!"
+    else
+        echo "     NOTE: htslib not compiled with libdeflate - iscream querys may be slower without libdeflate"
+        echo "     See <https://huishenlab.github.io/iscream/articles/htslib.html> for more information"
+    fi
 else
-    echo "     NOTE: htslib not compiled with libdeflate - iscream querys may be slower without libdeflate"
-    echo "     See <https://huishenlab.github.io/iscream/articles/htslib.html> for more information"
+    echo "     Could not check for libdeflate - paths to tabix and libhts.so could not be found"
 fi
 
 # Success
