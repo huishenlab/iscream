@@ -53,7 +53,7 @@ else
     PKGCONFIG_LIBS=$(pkg-config --libs $PKG_CONFIG_NAME 2> /dev/null)
   fi
 
-  if [ -z $PKGCONFIG_CFLAGS ]; then
+  if [ -z "$PKGCONFIG_CFLAGS" ] && [ -z "$PKGCONFIG_LIBS" ]; then
     echo "     Falling back to Rhtslib"
     RHTSLIB_CFLAGS=$("${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e 'Rhtslib::pkgconfig("PKG_CPPFLAGS")')
     RHTSLIB_LIBS=$("${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e 'Rhtslib::pkgconfig("PKG_LIBS")')
