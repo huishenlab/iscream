@@ -64,17 +64,25 @@
         ccls
       ];
 
+      # default package
+      rDeps = [ LinkingTo Imports Suggests ];
+      iscream = pkgs.rPackages.buildRPackage {
+        name = "iscream";
+        src = self;
+        nativeBuildInputs = sysDeps;
+        propagatedBuildInputs = rDeps;
+      };
+      # Create R development environment with iscream and other useful libraries
+      rvenv = pkgs.rWrapper.override {
+        packages = rDeps ++ rDevDeps ++ sysDeps ++ sysDevDeps;
+      };
     in {
+      packages.default = iscream;
       devShells.default = pkgs.mkShell {
-        nativeBuildInputs = [
-          rPkgsLinkingTo
-          rpkgsImports
-          rpkgsSuggests
-          rpkgsDevDeps
-          pkgsDeps
-          pkgsDevDeps
-          # rpkgsBioc # takes a long time to install
-        ];
+          buildInputs = rDeps ++ rDevDeps ++ sysDeps;
+          inputsFrom = pkgs.lib.singleton iscream;
+          packages = pkgs.lib.singleton rvenv;
+        };
         shellHook = ''
           export I_R=${pkgs.R}/lib/R/include/
           export I_RCPP=${pkgs.rPackages.Rcpp}/library/Rcpp/include/
@@ -104,6 +112,5 @@
           -I$I_STRINGFISH
           EOF
         '';
-       };
-    });
+       });
 }
