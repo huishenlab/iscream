@@ -7,7 +7,7 @@
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
 
-      rPkgsLinkingTo = with pkgs.rPackages; [
+      LinkingTo = with pkgs.rPackages; [
         Rcpp
         RcppArmadillo
         RcppProgress
@@ -16,13 +16,13 @@
         stringfish
       ];
 
-      rpkgsImports = with pkgs.rPackages; [
+      Imports = with pkgs.rPackages; [
         data_table
         Matrix
         parallelly
       ];
 
-      rpkgsSuggests = with pkgs.rPackages; [
+      Suggests = with pkgs.rPackages; [
         DelayedArray
         GenomicRanges
         ggplot2
@@ -30,7 +30,7 @@
         SummarizedExperiment
       ];
 
-      rpkgsDevDeps = with pkgs.rPackages; [
+      rDevDeps = with pkgs.rPackages; [
         covr
         devtools
         lobstr
@@ -43,7 +43,7 @@
         V8
       ];
 
-      rpkgsBioc = with pkgs.rPackages; [
+      Bioc = with pkgs.rPackages; [
         biscuiteer
         bsseq
       ];
@@ -51,13 +51,13 @@
       htslib = pkgs.htslib.overrideAttrs (finalAttrs: previousAttrs: {
         buildInputs = previousAttrs.buildInputs ++ [ pkgs.libdeflate ];
       });
-      pkgsDeps = with pkgs; [
+      sysDeps = with pkgs; [
         R
         htslib
         pkg-config
       ];
 
-      pkgsDevDeps = with pkgs; [
+      sysDevDeps = with pkgs; [
         html-tidy
         texlive.combined.scheme-full
         checkbashisms
