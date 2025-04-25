@@ -23,7 +23,6 @@
       ];
 
       Suggests = with pkgs.rPackages; [
-        DelayedArray
         GenomicRanges
         ggplot2
         ggridges
