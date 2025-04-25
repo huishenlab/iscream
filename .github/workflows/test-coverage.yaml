@@ -5,7 +5,8 @@ on:
     branches: [main, dev]
     paths-ignore:
       - '**/README.md'
-      - 'flake.nix'
+      - '**.toml'
+      - '**.nix'
       - 'flake.lock'
       - '.gitignore'
       - 'codecov.yml'
