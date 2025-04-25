@@ -9,22 +9,32 @@ package_loader <- function() {
 
   if (use_threads == avail_threads) {
     msg <- paste0(
-      msg, use_threads, " threads of detected ",
-      avail_threads, " threads.", help_msg, "."
+      msg,
+      use_threads,
+      " threads of detected ",
+      avail_threads,
+      " threads.",
+      help_msg,
+      "."
     )
   } else {
     msg <- paste0(
-      msg, use_threads,
+      msg,
+      use_threads,
       ifelse(use_threads > 1, " threads", " thread"),
       ifelse(opt_set, " based on 'options(iscream.threads)'", " by default"),
-      " but parallelly::availableCores() detects ", avail_threads,
+      " but parallelly::availableCores() detects ",
+      avail_threads,
       " possibly available threads.",
-      help_msg, " before trying to use more.")
+      help_msg,
+      " before trying to use more."
+    )
   }
 
   if (Sys.which("tabix") == "") {
     options("tabix.method" = "htslib")
-    msg <- paste0(msg,
+    msg <- paste0(
+      msg,
       "\n'tabix' executable not found in $PATH.",
       " tabix() will use htslib to make queries instead which can be slower.",
       " See ?tabix for details."

@@ -8,7 +8,12 @@
 verify_aligner_or_stop <- function(aligner) {
   supported_aligners <- c("biscuit", "bismark", "bsbolt")
   if (!(aligner %in% supported_aligners)) {
-    stop(paste("aligner =", aligner, "not supported. Use one of the supported aligners:", paste(supported_aligners, collapse = ", ")))
+    stop(paste(
+      "aligner =",
+      aligner,
+      "not supported. Use one of the supported aligners:",
+      paste(supported_aligners, collapse = ", ")
+    ))
   }
 }
 
@@ -27,7 +32,7 @@ verify_aligner_or_stop <- function(aligner) {
 #'
 #' @export
 get_granges_string <- function(gr, sep = c(":", "-")) {
-   if (requireNamespace("GenomicRanges", quietly = TRUE)) {
+  if (requireNamespace("GenomicRanges", quietly = TRUE)) {
     region_str <- paste0(
       as.character(x = GenomicRanges::seqnames(x = gr)),
       sep[[1]],
@@ -67,5 +72,7 @@ get_df_string <- function(regions_df, feature_col = NULL) {
 
 get_df_from_string <- function(regions) {
   start <- NULL
-  as.data.table(regions)[, tstrsplit(regions, ":|-", fixed = FALSE, names = c("chr", "start", "end"))][, start := as.integer(start)]
+  as.data.table(regions)[, tstrsplit(regions, ":|-", fixed = FALSE, names = c("chr", "start", "end"))][,
+    start := as.integer(start)
+  ]
 }

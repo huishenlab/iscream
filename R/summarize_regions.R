@@ -71,7 +71,6 @@ summarize_regions <- function(
   set_region_rownames = FALSE,
   nthreads = NULL
 ) {
-
   supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "count")
 
   if (length(fun) > 1) {
@@ -89,7 +88,7 @@ summarize_regions <- function(
   }
 
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
-  if (class(regions)[1] == "GRanges"){
+  if (class(regions)[1] == "GRanges") {
     regions <- get_granges_string(regions)
   } else if ("data.frame" %in% class(regions)) {
     regions <- get_df_string(regions, feature_col)

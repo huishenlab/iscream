@@ -58,7 +58,15 @@
 #'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 #' tabix(bedfiles[1], regions, col.names = c("chr", "start", "end", "beta", "coverage"))
-tabix <- function(bedfiles, regions, aligner = NULL, col.names = NULL, zero_based = TRUE, raw = FALSE, nthreads = NULL) {
+tabix <- function(
+  bedfiles,
+  regions,
+  aligner = NULL,
+  col.names = NULL,
+  zero_based = TRUE,
+  raw = FALSE,
+  nthreads = NULL
+) {
   verify_files_or_stop(bedfiles)
   if (!is.null(aligner)) {
     verify_aligner_or_stop(aligner)
@@ -111,12 +119,17 @@ tabix.shell <- function(bedfiles, regions_df, nthreads) {
     return(tabix.shell.single(bedfiles, regions_df))
   }
 
-  mclapply(bedfiles, function(bedfile) {
-    tbx_query <- tabix.shell.single(bedfile, regions_df)
-    if (!is.null(tbx_query)) {
-      tbx_query[, file := file_path_sans_ext(basename(bedfile), compression = TRUE) ]
-    }
-  }, mc.cores = .get_threads(nthreads)) |> rbindlist()
+  mclapply(
+    bedfiles,
+    function(bedfile) {
+      tbx_query <- tabix.shell.single(bedfile, regions_df)
+      if (!is.null(tbx_query)) {
+        tbx_query[, file := file_path_sans_ext(basename(bedfile), compression = TRUE)]
+      }
+    },
+    mc.cores = .get_threads(nthreads)
+  ) |>
+    rbindlist()
 }
 
 tabix.shell.single <- function(bedfile, regions_df) {
@@ -134,9 +147,12 @@ check_colnames <- function(result, result_colnames) {
   n_col <- ncol(result)
   if (length(result_colnames) < n_col) {
     warning(paste(
-        "Did not use input 'colnames' - only",
-        length(result_colnames), "names provided for", n_col, "column data.table"
-      ))
+      "Did not use input 'colnames' - only",
+      length(result_colnames),
+      "names provided for",
+      n_col,
+      "column data.table"
+    ))
     return(result)
   } else if (length(result_colnames) > n_col) {
     warning("Fewer columns in data than provided colnames")
@@ -148,21 +164,25 @@ check_colnames <- function(result, result_colnames) {
 
 tabix.htslib <- function(bedfiles, input_regions, nthreads) {
   if (length(bedfiles) == 1) {
-      result <- tabix.htslib.single(
-        bedfile = bedfiles,
-        regions = input_regions
-      )
+    result <- tabix.htslib.single(
+      bedfile = bedfiles,
+      regions = input_regions
+    )
   } else {
-    dt_list <- mclapply(bedfiles, function(file) {
-      tbx_query <- tabix.htslib.single(
-        bedfile = file,
-        regions = input_regions
-      )
-      if (!is.null(tbx_query)) {
-        tbx_query[, file := file_path_sans_ext(basename(file), compression = TRUE)]
-      }
-      return(tbx_query)
-    }, mc.cores = .get_threads(nthreads))
+    dt_list <- mclapply(
+      bedfiles,
+      function(file) {
+        tbx_query <- tabix.htslib.single(
+          bedfile = file,
+          regions = input_regions
+        )
+        if (!is.null(tbx_query)) {
+          tbx_query[, file := file_path_sans_ext(basename(file), compression = TRUE)]
+        }
+        return(tbx_query)
+      },
+      mc.cores = .get_threads(nthreads)
+    )
     result <- rbindlist(dt_list)
   }
 }
@@ -177,11 +197,15 @@ tabix.htslib.single <- function(bedfile, regions) {
 
 run_scan_tabix <- function(bedfiles, input_regions, nthreads) {
   if (length(bedfiles) == 1) {
-    return (scan_tabix(bedfiles, input_regions))
+    return(scan_tabix(bedfiles, input_regions))
   } else {
-    bedline_list <- mclapply(bedfiles, function(file) {
-      scan_tabix(file, input_regions)
-    }, mc.cores = .get_threads(nthreads)) |>
+    bedline_list <- mclapply(
+      bedfiles,
+      function(file) {
+        scan_tabix(file, input_regions)
+      },
+      mc.cores = .get_threads(nthreads)
+    ) |>
       setNames(
         nm = file_path_sans_ext(basename(bedfiles), compression = TRUE),
         object = _
@@ -252,7 +276,11 @@ write_bed <- function(regions_df, outfile) {
 
 is_empty <- function(result, bedfile) {
   if (nrow(result) == 0) {
-    warning(paste("No records found in", bedfile, "- if this is unexpected check that your region format matches your bedfiles"))
+    warning(paste(
+      "No records found in",
+      bedfile,
+      "- if this is unexpected check that your region format matches your bedfiles"
+    ))
     return(TRUE)
   }
   return(FALSE)

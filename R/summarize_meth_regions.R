@@ -68,7 +68,6 @@ summarize_meth_regions <- function(
   set_region_rownames = FALSE,
   nthreads = NULL
 ) {
-
   supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "count")
 
   if (length(fun) > 1) {
@@ -94,7 +93,7 @@ summarize_meth_regions <- function(
   verify_aligner_or_stop(aligner)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   verify_filetype(bedfiles, aligner, stop_on_error = TRUE)
-  if (class(regions)[1] == "GRanges"){
+  if (class(regions)[1] == "GRanges") {
     regions <- get_granges_string(regions)
   } else if ("data.frame" %in% class(regions)) {
     regions <- get_df_string(regions, feature_col)
@@ -116,7 +115,7 @@ summarize_meth_regions <- function(
   )
   df[df == -99] <- NA
 
-  mval_count<- paste0(ifelse(mval, "M", "beta"), ".count")
+  mval_count <- paste0(ifelse(mval, "M", "beta"), ".count")
   if (mval_count %in% colnames(df)) {
     df <- df[, !(names(df) %in% "coverage.count")]
   }

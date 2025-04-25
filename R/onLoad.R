@@ -2,4 +2,3 @@
   setup_logger()
   invisible()
 }
-

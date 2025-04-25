@@ -47,8 +47,11 @@ validate_log_level <- function(level = get_log_level(), n_threads) {
 
   if (n_threads > 1 && !(level %in% quiet_logging)) {
     stop(paste(
-      n_threads, "threads were requested",
-      "but", level, "logging cannot use more than 1 thread.",
+      n_threads,
+      "threads were requested",
+      "but",
+      level,
+      "logging cannot use more than 1 thread.",
       "Run `set_log_level(\"info\")` to use multiple threads.",
       "See `?set_log_level` for more details."
     ))
