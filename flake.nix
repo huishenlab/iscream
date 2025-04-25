@@ -80,7 +80,7 @@
     in {
       packages.default = iscream;
       devShells.default = pkgs.mkShell {
-          buildInputs = rDeps ++ rDevDeps ++ sysDeps;
+          buildInputs = rDeps ++ rDevDeps ++ sysDeps ++ sysDevDeps;
           inputsFrom = pkgs.lib.singleton iscream;
           packages = pkgs.lib.singleton rvenv;
         };
