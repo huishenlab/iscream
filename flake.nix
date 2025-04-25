@@ -58,6 +58,7 @@
       ];
 
       sysDevDeps = with pkgs; [
+        air-formatter
         html-tidy
         texlive.combined.scheme-full
         checkbashisms
