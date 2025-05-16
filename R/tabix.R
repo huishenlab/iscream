@@ -199,13 +199,7 @@ run_scan_tabix <- function(bedfiles, input_regions, nthreads) {
   if (length(bedfiles) == 1) {
     return(scan_tabix(bedfiles, input_regions))
   } else {
-    bedline_list <- mclapply(
-      bedfiles,
-      function(file) {
-        scan_tabix(file, input_regions)
-      },
-      mc.cores = .get_threads(nthreads)
-    ) |>
+    bedline_list <- mclapply(bedfiles, scan_tabix, input_regions, mc.cores = .get_threads(nthreads)) |>
       setNames(
         nm = file_path_sans_ext(basename(bedfiles), compression = TRUE),
         object = _
