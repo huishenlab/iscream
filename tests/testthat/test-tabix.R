@@ -95,46 +95,50 @@ test_multi_tabix_dataframe <- function(htslib = FALSE) {
     ]
   }) |> rbindlist()
   multi_tabix_custom <- lapply(biscuit_tabix_beds, function(i) {
-    tabix(i, regions, col.names = c("1", "2", "3", "4", "5"))[,
+    tabix(i, regions, col.names = c("1", "2"))[,
     file := tools::file_path_sans_ext(basename(i), compression = TRUE)
     ]
   }) |> rbindlist()
 
-  test_that("tabix multi query", {
-    expect_equal(
-      tabix(biscuit_tabix_beds, regions),
-      multi_tabix
-    )
-    expect_equal(
-      tabix(biscuit_tabix_beds, regions, aligner = "biscuit"),
-      multi_tabix_biscuit
-    )
-    expect_equal(
-      tabix(bismark_tabix_beds, regions, aligner = "bismark"),
-      multi_tabix_bismark
-    )
-    expect_equal(
-      tabix(biscuit_tabix_beds, regions, col.names = c("1", "2", "3", "4", "5")),
-      multi_tabix_custom
-    )
-    expect_equal(
-      suppressWarnings(tabix(biscuit_tabix_beds, regions.missing_in_3)),
-      tabix(biscuit_tabix_beds[-3], regions.missing_in_3)
-    )
-  })
+  expect_equal(
+    tabix(biscuit_tabix_beds, regions),
+    multi_tabix
+  )
+  expect_equal(
+    tabix(biscuit_tabix_beds, regions, aligner = "biscuit"),
+    multi_tabix_biscuit
+  )
+  expect_equal(
+    tabix(bismark_tabix_beds, regions, aligner = "bismark"),
+    multi_tabix_bismark
+  )
+  expect_equal(
+    tabix(biscuit_tabix_beds, regions, col.names = c("1", "2")),
+    multi_tabix_custom
+  )
+  expect_equal(
+    suppressWarnings(tabix(biscuit_tabix_beds, regions.missing_in_3)),
+    tabix(biscuit_tabix_beds[-3], regions.missing_in_3)
+  )
   options("tabix.method" = "shell")
 }
 
-test_multi_tabix_dataframe(htslib = FALSE)
-test_multi_tabix_dataframe(htslib = TRUE)
+test_that("tabix multi query with shell", {
+  test_multi_tabix_dataframe(htslib = FALSE)
+})
+
+test_that("tabix multi query with htslib", {
+  test_multi_tabix_dataframe(htslib = TRUE)
+})
 
 
 # test colnames
-custom_cols <- paste0("c", 1:5)
+base_colnames <- c("chr", "start", "end")
+custom_cols <- paste0("c", 1:2)
 test_that("tabix custom colnames", {
   expect_equal(
     colnames(tabix(chrom_beds[1], regions, col.names = custom_cols)),
-    custom_cols
+    c(base_colnames, custom_cols)
   )
 })
 
@@ -146,16 +150,15 @@ test_that("tabix custom colnames too many", {
   )
 })
 
-custom_cols <- paste0("c", 1:4)
+custom_cols <- paste0("c1")
 test_that("tabix custom colnames too few", {
   expect_warning(
     tabix(chrom_beds[1], regions, col.names = custom_cols),
-    paste("Did not use input 'colnames' - only", length(custom_cols), "names provided for 5 column data.table")
+    paste("Did not use input data 'colnames' - only", length(custom_cols), "names provided for 2 data columns")
   )
 })
 
 
-base_colnames <- c("chr", "start", "end")
 biscuit_colnames <- c("beta", "coverage")
 bismark_colnames <- c("methylation.percentage", "count.methylated", "count.unmethylated")
 test_that("tabix mergecg colnames", {

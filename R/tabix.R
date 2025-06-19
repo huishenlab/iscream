@@ -5,8 +5,9 @@
 #' @param aligner The aligner used to produce the BED files - one of "biscuit",
 #' "bismark", "bsbolt". Will set the result data.table's column names based on
 #' this argument.
-#' @param col.names A vector of column names for the result data.table. Set if
-#' your bedfile is not from the supported aligners or is a general bedfile.
+#' @param col.names A vector of column names for the data columns of the
+#' result.table, not including "chr", "start", and "end". Set if your BED file
+#' is not from the supported aligners or is a general BED file.
 #' @param zero_based Whether the input BED file has a zero-based start column -
 #' used when coverting the result data frame to GenomicRanges.
 #' @param raw Set true to give a named list of raw strings from the regions in
@@ -46,7 +47,7 @@
 #' not be converted as they are already 1-based and the `ranges` slot will be
 #' only one position.
 #'
-#' @importFrom data.table as.data.table tstrsplit set := rbindlist fread fwrite
+#' @importFrom data.table as.data.table tstrsplit set := rbindlist fread fwrite setnames
 #' @importFrom parallel mclapply
 #' @importFrom tools file_path_sans_ext
 #' @importFrom stats setNames
@@ -57,7 +58,7 @@
 #' bedfiles <- system.file("extdata", package = "iscream") |>
 #'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
-#' tabix(bedfiles[1], regions, col.names = c("chr", "start", "end", "beta", "coverage"))
+#' tabix(bedfiles[1], regions, col.names = c("beta", "coverage"))
 tabix <- function(
   bedfiles,
   regions,
@@ -91,11 +92,18 @@ tabix <- function(
     return(NULL)
   }
 
-  if (!is.null(col.names) && length(bedfiles) > 1) {
-    col.names <- c(col.names, "file")
+  base_colnames <- c("chr", "start", "end")
+  if (is.null(aligner)) {
+    result_colnames <- get_bed_colnames(col.names, bedfiles, result, base_colnames)
+  } else {
+    result_colnames <- get_meth_colnames(aligner, bedfiles, result, base_colnames)
   }
-  result_colnames <- col.names %||% get_colnames(aligner, bedfiles, result)
-  result <- check_colnames(result, result_colnames)
+
+  if (length(bedfiles) > 1) {
+    result_colnames <- c(result_colnames, "file")
+  }
+
+  setnames(result, result_colnames)
 
   # get GRanges
   if (class(regions)[1] == "GRanges") {
@@ -143,25 +151,6 @@ tabix.shell.single <- function(bedfile, regions_df) {
   result <- suppressWarnings(fread(cmd = cmd))
 
   if (is_empty(result, bedfile)) return(NULL)
-  result
-}
-
-check_colnames <- function(result, result_colnames) {
-  n_col <- ncol(result)
-  if (length(result_colnames) < n_col) {
-    warning(paste(
-      "Did not use input 'colnames' - only",
-      length(result_colnames),
-      "names provided for",
-      n_col,
-      "column data.table"
-    ))
-    return(result)
-  } else if (length(result_colnames) > n_col) {
-    warning("Fewer columns in data than provided colnames")
-  }
-
-  colnames(result) <- result_colnames[1:n_col]
   result
 }
 
@@ -235,14 +224,8 @@ get_df_input_regions <- function(regions) {
   }
 }
 
-
-get_colnames <- function(aligner, bedfiles, result) {
+get_meth_colnames <- function(aligner, bedfiles, result, base_colnames) {
   base_colnames <- c("chr", "start", "end")
-
-  if (is.null(aligner)) {
-    return(c(base_colnames, colnames(result)[-1:-3]))
-  }
-
   biscuit_colnames <- c("beta", "coverage")
   bismark_colnames <- c("methylation.percentage", "count.methylated", "count.unmethylated")
 
@@ -254,10 +237,31 @@ get_colnames <- function(aligner, bedfiles, result) {
   } else {
     result_colnames <- c(base_colnames, bismark_colnames)
   }
-  if (length(bedfiles) > 1) {
-    result_colnames <- c(result_colnames, "file")
-  }
   result_colnames
+}
+
+get_bed_colnames <- function(col.names, bedfiles, result, base_colnames) {
+  data_cols <- ifelse(length(bedfiles) > 1, ncol(result) - 4, ncol(result) - 3)
+  input_length <- length(col.names)
+
+  if (input_length < data_cols) {
+    data_colnames <- c(base_colnames, paste0("V", 1:data_cols))
+    if (input_length == 0) {
+      return(data_colnames)
+    }
+    warning(paste(
+      "Did not use input data 'colnames' - only",
+      length(col.names),
+      "names provided for",
+      data_cols,
+      "data columns"
+    ))
+    return(data_colnames)
+  } else if (length(col.names) > data_cols) {
+    warning("Fewer columns in data than provided colnames")
+  }
+
+  c(base_colnames, col.names[1:data_cols])
 }
 
 

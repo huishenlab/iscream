@@ -24,8 +24,9 @@ details.}
 "bismark", "bsbolt". Will set the result data.table's column names based on
 this argument.}
 
-\item{col.names}{A vector of column names for the result data.table. Set if
-your bedfile is not from the supported aligners or is a general bedfile.}
+\item{col.names}{A vector of column names for the data columns of the
+result.table, not including "chr", "start", and "end". Set if your BED file
+is not from the supported aligners or is a general BED file.}
 
 \item{zero_based}{Whether the input BED file has a zero-based start column -
 used when coverting the result data frame to GenomicRanges.}
@@ -81,5 +82,5 @@ only one position.
 bedfiles <- system.file("extdata", package = "iscream") |>
   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
-tabix(bedfiles[1], regions, col.names = c("chr", "start", "end", "beta", "coverage"))
+tabix(bedfiles[1], regions, col.names = c("beta", "coverage"))
 }
