@@ -86,7 +86,10 @@ tabix <- function(
     regions_df <- get_df_input_regions(regions)
     result <- tabix.shell(bedfiles, regions_df, nthreads)
   }
-  if (is.null(result)) return(NULL)
+
+  if (is.null(result)) {
+    return(NULL)
+  }
 
   if (!is.null(col.names) && length(bedfiles) > 1) {
     col.names <- c(col.names, "file")
