@@ -192,3 +192,23 @@ test_that("tabix multi query raw", {
   )
 })
 
+
+test_that("check tabix.method", {
+  with_mocked_bindings(
+    {
+      tabix_msg <- "tabix' executable not found in $PATH. tabix() will use htslib to make queries instead which can be slower. See ?tabix for details."
+      expect_true(grepl(tabix_msg, iscream:::package_loader(), fixed = TRUE))
+      expect_equal(getOption("tabix.method"), "htslib")
+    },
+    Sys.which = function(input) "",
+    .package = "base"
+  )
+  with_mocked_bindings(
+    {
+      iscream:::package_loader()
+      expect_equal(getOption("tabix.method"), "shell")
+    },
+    Sys.which = function(input) "tabix",
+    .package = "base"
+  )
+})
