@@ -193,9 +193,9 @@ object:</p>
 <span>  set_region_rownames <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [19:19:20.727765] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [19:19:20.727814] [iscream::summarize_regions] [info] using sum, mean</span></span>
-<span><span class="co">## [19:19:20.727818] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
+<pre><code><span><span class="co">## [19:32:26.653483] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [19:32:26.653532] [iscream::summarize_regions] [info] using sum, mean</span></span>
+<span><span class="co">## [19:32:26.653536] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
 <pre><code><span><span class="co">##            Feature Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
 <span><span class="co">## chr1:1-6         A      a            4     2      1.333333 0.6666667</span></span>
 <span><span class="co">## chr1:7-10        B      a            3     1      1.500000 0.5000000</span></span>
@@ -248,9 +248,9 @@ column as the GRanges input regions:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [19:19:20.848509] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [19:19:20.848546] [iscream::summarize_regions] [info] using sum, mean</span></span>
-<span><span class="co">## [19:19:20.848550] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
+<pre><code><span><span class="co">## [19:32:26.772511] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [19:32:26.772545] [iscream::summarize_regions] [info] using sum, mean</span></span>
+<span><span class="co">## [19:32:26.772549] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
 <pre><code><span><span class="co">##       Feature Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
 <span><span class="co">## 1    chr1:1-6      a            4     2      1.333333 0.6666667</span></span>
 <span><span class="co">## 2   chr1:7-10      a            3     1      1.500000 0.5000000</span></span>
@@ -308,11 +308,11 @@ matrices<a class="anchor" aria-label="anchor" href="#from-make_mat-or-make_bsseq
 </h3>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">mats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_bsseq_mat.html">make_bsseq_mat</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [19:19:23.236557] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [19:32:29.087864] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [19:19:23.236905] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [19:19:23.236942] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [19:19:23.236945] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
+<span><span class="co">## [19:32:29.088210] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [19:32:29.088248] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [19:32:29.088251] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
 <pre><code><span><span class="co">## $M</span></span>
 <span><span class="co">##      a b c d</span></span>
 <span><span class="co">## [1,] 1 0 0 1</span></span>
@@ -343,11 +343,11 @@ matrices<a class="anchor" aria-label="anchor" href="#from-make_mat-or-make_bsseq
 <span><span class="co">## [1] "a" "b" "c" "d"</span></span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">mats.sparse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_bsseq_mat.html">make_bsseq_mat</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [19:19:23.237985] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [19:32:29.089276] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [19:19:23.238278] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [19:19:23.238292] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [19:19:23.238301] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
+<span><span class="co">## [19:32:29.089590] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [19:32:29.089606] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [19:32:29.089614] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
 <pre><code><span><span class="co">## $M</span></span>
 <span><span class="co">## 7 x 4 sparse Matrix of class "dgCMatrix"</span></span>
 <span><span class="co">##      a b c d</span></span>
