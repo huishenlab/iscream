@@ -259,7 +259,7 @@ for BSseq, use `make_mat()`. For example, to get a matrix of beta values
 (column 4 in the BISCUIT BED file) run
 
 ``` r
-make_mat(bedfiles, regions, col = 4, mat_name = "beta")`
+make_mat(bedfiles, regions, col = 4, mat_name = "beta")
 ```
 
 ## Session info

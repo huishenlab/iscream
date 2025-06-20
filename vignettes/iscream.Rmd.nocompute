@@ -170,7 +170,7 @@ for BSseq, use `make_mat()`. For example, to get a matrix of beta values
 
 
 ```{r, eval = FALSE}
-make_mat(bedfiles, regions, col = 4, mat_name = "beta")`
+make_mat(bedfiles, regions, col = 4, mat_name = "beta")
 ```
 
 ## Session info
