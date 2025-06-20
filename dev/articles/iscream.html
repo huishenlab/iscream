@@ -49,6 +49,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/data_structures.html">Getting other data structures from iscream</a></li>
     <li><a class="dropdown-item" href="../articles/TSS.html">Plotting TSS methylation profiles</a></li>
+    <li><a class="dropdown-item" href="../articles/tabix.html">iscream vs Rsamtools::scanTabix</a></li>
     <li><a class="dropdown-item" href="../articles/htslib.html">Getting htslib headers</a></li>
     <li><a class="dropdown-item" href="../articles/manuscript_data.html">Manuscript data availabiliy</a></li>
   </ul>
@@ -319,7 +320,8 @@ converted to dense matrices first.</p>
 <p>If you want just one column from the BED file as a matrix instead of
 the two for BSseq, use <code><a href="../reference/make_mat.html">make_mat()</a></code>. For example, to get a
 matrix of beta values (column 4 in the BISCUIT BED file) run</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">make_mat</span>(bedfiles, regions, <span class="at">col =</span> <span class="dv">4</span>, <span class="at">mat_name =</span> <span class="st">"beta"</span>)<span class="st">`</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/make_mat.html">make_mat</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, col <span class="op">=</span> <span class="fl">4</span>, mat_name <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
