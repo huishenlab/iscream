@@ -54,5 +54,6 @@ articles:
   contents:
     - data_structures
     - TSS
+    - tabix
     - htslib
     - manuscript_data
