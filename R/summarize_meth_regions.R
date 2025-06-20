@@ -56,6 +56,7 @@
 #' # make a vector of regions
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 #' summarize_meth_regions(bedfiles, regions)
+#' names(regions) <- c("A", "B", "C")
 #' summarize_meth_regions(bedfiles, regions, fun = c("mean", "stddev"), mval = FALSE)
 #' summarize_meth_regions(bedfiles, regions, fun = "sum")
 summarize_meth_regions <- function(

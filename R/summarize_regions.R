@@ -60,6 +60,7 @@
 #'   columns = c(4, 5),
 #'   col_names = c("beta", "cov")
 #' )
+#' names(regions) <- c("A", "B", "C")
 #' summarize_regions(bedfiles, regions, fun = "sum", columns = 5, col_names = "coverage")
 summarize_regions <- function(
   bedfiles,
