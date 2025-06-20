@@ -3,6 +3,8 @@ template:
   bootstrap: 5
   light-switch: true
   math-rendering: mathjax
+  bslib:
+    code_font: "Iosevka Term"
 
 authors:
   footer:
