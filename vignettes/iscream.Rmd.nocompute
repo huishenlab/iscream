@@ -82,14 +82,14 @@ The `tabix()` function can be used to query regions from BED files much like the
 into columns, as a `data.table`. `tabix()` is a generic BED files query function
 and is not restricted to methylation BED files. It has built-in support for
 BISCUIT, Bismark, and BSBolt BED file column names, set with the `aligner`
-argument, but can take other column names with the `colnames` argument.
+argument, but can take other column names with the `col.names` argument.
 
 If multiple input files are provided, they are queried in parallel. If `raw =
 TRUE`, `tabix()` will return the same data as `Rsamtools::scanTabix()` does - a
 named list of strings.
 
 ```{r}
-system.time(tbx_query <- tabix(bedfiles, regions))
+system.time(tbx_query <- tabix(bedfiles, regions, col.names = c("beta", "coverage")))
 tbx_query
 ```
 
