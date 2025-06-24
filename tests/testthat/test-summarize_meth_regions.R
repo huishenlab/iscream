@@ -13,7 +13,7 @@ supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max"
 
 # utils
 get_meth_colnames <- function(mval, funcs) {
-  base_colnames <- c("Feature", "Sample")
+  base_colnames <- c("feature", "file")
   values <- c("coverage", ifelse(mval, "M", "beta"))
   if ("all" %in% funcs) {
     return(c(base_colnames, as.vector(outer(values, supported_funcs, paste, sep = ".")), "cpg_count"))

@@ -1,4 +1,4 @@
-Feature,Sample,coverage.sum,beta.sum
+feature,file,coverage.sum,beta.sum
 A,a,4,2
 B,a,3,0.5
 C,a,5,2

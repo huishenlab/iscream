@@ -211,7 +211,7 @@ Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, pr
 #' @param col_names A vector of genomic regions
 #' @param mval Calculates M values when TRUE, use beta values when FALSE
 #' @param region_rownames Whether to set rownames to the regions strings. Not
-#' necessary if your regions vector is unnamed. If its names, then the "Feature"
+#' necessary if your regions vector is unnamed. If its names, then the "feature"
 #' column is set to the names and the rownames are set to the regions string
 #' @param nthreads Number of cores to use. See details.
 #'

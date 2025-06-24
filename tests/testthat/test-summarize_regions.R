@@ -12,7 +12,7 @@ gr <- GenomicRanges::GRanges(regions)
 supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range")
 
 get_colnames <- function(funcs, col_names) {
-  base_colnames <- c("Feature", "Sample")
+  base_colnames <- c("feature", "file")
   values <- c(col_names)
   if ("all" %in% funcs) {
     return(c(base_colnames, as.vector(outer(values, supported_funcs, paste, sep = ".")), "count"))
