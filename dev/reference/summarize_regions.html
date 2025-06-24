@@ -195,22 +195,22 @@ supported functions</p>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"cov"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [00:59:03.317496] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [00:59:03.317510] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [00:59:03.317514] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Feature Sample beta.sum cov.sum beta.mean cov.mean beta.median cov.median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6      a      2.0       4 0.6666667 1.333333        1.00        1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10      a      0.5       3 0.2500000 1.500000        0.25        1.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  chr1:11-14      a      2.0       5 1.0000000 2.500000        1.00        2.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    chr1:1-6      b      1.0       4 0.5000000 2.000000        0.50        2.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   chr1:7-10      b      1.0       1 1.0000000 1.000000        1.00        1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  chr1:11-14      b      1.0       3 0.5000000 1.500000        0.50        1.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    chr1:1-6      c      1.0       2 1.0000000 2.000000        1.00        2.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   chr1:7-10      c      1.0       3 0.5000000 1.500000        0.50        1.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  chr1:11-14      c       NA      NA        NA       NA          NA         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   chr1:1-6      d      2.0       3 1.0000000 1.500000        1.00        1.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  chr1:7-10      d      0.5       3 0.2500000 1.500000        0.25        1.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 chr1:11-14      d      1.0       1 1.0000000 1.000000        1.00        1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13:36:40.240513] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13:36:40.240529] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13:36:40.240533] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       feature file beta.sum cov.sum beta.mean cov.mean beta.median cov.median</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6    a      2.0       4 0.6666667 1.333333        1.00        1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10    a      0.5       3 0.2500000 1.500000        0.25        1.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  chr1:11-14    a      2.0       5 1.0000000 2.500000        1.00        2.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    chr1:1-6    b      1.0       4 0.5000000 2.000000        0.50        2.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   chr1:7-10    b      1.0       1 1.0000000 1.000000        1.00        1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  chr1:11-14    b      1.0       3 0.5000000 1.500000        0.50        1.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    chr1:1-6    c      1.0       2 1.0000000 2.000000        1.00        2.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   chr1:7-10    c      1.0       3 0.5000000 1.500000        0.50        1.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  chr1:11-14    c       NA      NA        NA       NA          NA         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   chr1:1-6    d      2.0       3 1.0000000 1.500000        1.00        1.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  chr1:7-10    d      0.5       3 0.2500000 1.500000        0.25        1.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 chr1:11-14    d      1.0       1 1.0000000 1.000000        1.00        1.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    beta.stddev cov.stddev beta.variance cov.variance beta.min cov.min beta.max</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.5773503  0.5773503     0.3333333    0.3333333        0       1      1.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    0.3535534  0.7071068     0.1250000    0.5000000        0       1      0.5</span>
@@ -244,40 +244,40 @@ supported functions</p>
 <span class="r-in"><span>  columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"cov"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [00:59:03.331598] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [00:59:03.331629] [iscream::summarize_regions] [info] using mean, stddev</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [00:59:03.331633] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Feature Sample beta.mean cov.mean beta.stddev cov.stddev</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6      a 0.6666667 1.333333   0.5773503  0.5773503</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10      a 0.2500000 1.500000   0.3535534  0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  chr1:11-14      a 1.0000000 2.500000   0.0000000  0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    chr1:1-6      b 0.5000000 2.000000   0.7071068  0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   chr1:7-10      b 1.0000000 1.000000   0.0000000  0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  chr1:11-14      b 0.5000000 1.500000   0.7071068  0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    chr1:1-6      c 1.0000000 2.000000   0.0000000  0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   chr1:7-10      c 0.5000000 1.500000   0.7071068  0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  chr1:11-14      c        NA       NA          NA         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   chr1:1-6      d 1.0000000 1.500000   0.0000000  0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  chr1:7-10      d 0.2500000 1.500000   0.3535534  0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 chr1:11-14      d 1.0000000 1.000000   0.0000000  0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13:36:40.254665] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13:36:40.254675] [iscream::summarize_regions] [info] using mean, stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13:36:40.254678] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       feature file beta.mean cov.mean beta.stddev cov.stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6    a 0.6666667 1.333333   0.5773503  0.5773503</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10    a 0.2500000 1.500000   0.3535534  0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  chr1:11-14    a 1.0000000 2.500000   0.0000000  0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    chr1:1-6    b 0.5000000 2.000000   0.7071068  0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   chr1:7-10    b 1.0000000 1.000000   0.0000000  0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  chr1:11-14    b 0.5000000 1.500000   0.7071068  0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    chr1:1-6    c 1.0000000 2.000000   0.0000000  0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   chr1:7-10    c 0.5000000 1.500000   0.7071068  0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  chr1:11-14    c        NA       NA          NA         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   chr1:1-6    d 1.0000000 1.500000   0.0000000  0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  chr1:7-10    d 0.2500000 1.500000   0.3535534  0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 chr1:11-14    d 1.0000000 1.000000   0.0000000  0.0000000</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="st">"sum"</span>, columns <span class="op">=</span> <span class="fl">5</span>, col_names <span class="op">=</span> <span class="st">"coverage"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [00:59:03.335585] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [00:59:03.335593] [iscream::summarize_regions] [info] using sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [00:59:03.335596] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Feature Sample coverage.sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        A      a            4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        B      a            3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        C      a            5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        A      b            4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        B      b            1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        C      b            3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        A      c            2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        B      c            3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        C      c           NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10       A      d            3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11       B      d            3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12       C      d            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13:36:40.258663] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13:36:40.258671] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13:36:40.258674] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    feature file coverage.sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        A    a            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        B    a            3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        C    a            5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        A    b            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        B    b            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        C    b            3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        A    c            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        B    c            3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        C    c           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10       A    d            3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11       B    d            3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12       C    d            1</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
