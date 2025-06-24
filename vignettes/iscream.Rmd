@@ -137,7 +137,7 @@ system.time(summary_query <- summarize_meth_regions(
 #>    user  system elapsed 
 #>  24.616   0.618   4.913
 head(summary_query)
-#>   Feature          Sample coverage.sum M.sum coverage.mean    M.mean
+#>   feature            file coverage.sum M.sum coverage.mean    M.mean
 #> 1  ATAD3B bisc_SRR6911624          109    95      1.101010 0.9595960
 #> 2  PRDM16 bisc_SRR6911624         1470   789      1.074561 0.5767544
 #> 3   PEX10 bisc_SRR6911624           62    15      1.000000 0.2419355

@@ -221,7 +221,7 @@ tss.means <- summarize_meth_regions(
 ```
 
 ``` r
-ggplot(tss.means, aes(x = beta.mean, y = Sample, fill = after_stat(x))) +
+ggplot(tss.means, aes(x = beta.mean, y = file, fill = after_stat(x))) +
   geom_density_ridges_gradient() +
   scale_fill_distiller(palette = "BrBG") +
   theme_classic()
@@ -236,10 +236,10 @@ For per-sample means you could collapse the means within samples:
 
 
 ``` r
-tss.means[, .(beta.mean = mean(beta.mean, na.rm = TRUE)), by = Sample] |>
+tss.means[, .(beta.mean = mean(beta.mean, na.rm = TRUE)), by = file] |>
   ggplot(
     aes(
-      x = reorder(Sample, beta.mean),
+      x = reorder(file, beta.mean),
       y = beta.mean,
       fill = beta.mean)
     ) +

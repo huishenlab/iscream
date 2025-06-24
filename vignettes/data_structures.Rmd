@@ -67,7 +67,7 @@ to create the GRanges object:
 GRanges(rownames(summary), summary = summary)
 ```
 
-If the regions vector is not named, pass the `Feature` column as the GRanges
+If the regions vector is not named, pass the `feature` column as the GRanges
 input regions:
 
 ```{r}
@@ -76,7 +76,7 @@ input regions:
   unname(regions),
   fun = c("sum", "mean"))
 )
-GRanges(summary$Feature, summary = summary[, -1])
+GRanges(summary$feature, summary = summary[, -1])
 ```
 
 
