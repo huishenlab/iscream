@@ -192,38 +192,38 @@ object:</p>
 <span>  set_region_rownames <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [01:13:34.844348] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [01:13:34.844396] [iscream::summarize_regions] [info] using sum, mean</span></span>
-<span><span class="co">## [01:13:34.844401] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
-<pre><code><span><span class="co">##            Feature Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
-<span><span class="co">## chr1:1-6         A      a            4     2      1.333333 0.6666667</span></span>
-<span><span class="co">## chr1:7-10        B      a            3     1      1.500000 0.5000000</span></span>
-<span><span class="co">## chr1:11-14       C      a            5     5      2.500000 2.5000000</span></span>
-<span><span class="co">## chr1:1-6         A      b            4     2      2.000000 1.0000000</span></span>
-<span><span class="co">## chr1:7-10        B      b            1     1      1.000000 1.0000000</span></span>
-<span><span class="co">## chr1:11-14       C      b            3     1      1.500000 0.5000000</span></span>
-<span><span class="co">## chr1:1-6         A      c            2     2      2.000000 2.0000000</span></span>
-<span><span class="co">## chr1:7-10        B      c            3     1      1.500000 0.5000000</span></span>
-<span><span class="co">## chr1:11-14       C      c           NA    NA            NA        NA</span></span>
-<span><span class="co">## chr1:1-6         A      d            3     3      1.500000 1.5000000</span></span>
-<span><span class="co">## chr1:7-10        B      d            3     1      1.500000 0.5000000</span></span>
-<span><span class="co">## chr1:11-14       C      d            1     1      1.000000 1.0000000</span></span></code></pre>
+<pre><code><span><span class="co">## [13:53:58.414076] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [13:53:58.414125] [iscream::summarize_regions] [info] using sum, mean</span></span>
+<span><span class="co">## [13:53:58.414130] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
+<pre><code><span><span class="co">##            feature file coverage.sum M.sum coverage.mean    M.mean</span></span>
+<span><span class="co">## chr1:1-6         A    a            4     2      1.333333 0.6666667</span></span>
+<span><span class="co">## chr1:7-10        B    a            3     1      1.500000 0.5000000</span></span>
+<span><span class="co">## chr1:11-14       C    a            5     5      2.500000 2.5000000</span></span>
+<span><span class="co">## chr1:1-6         A    b            4     2      2.000000 1.0000000</span></span>
+<span><span class="co">## chr1:7-10        B    b            1     1      1.000000 1.0000000</span></span>
+<span><span class="co">## chr1:11-14       C    b            3     1      1.500000 0.5000000</span></span>
+<span><span class="co">## chr1:1-6         A    c            2     2      2.000000 2.0000000</span></span>
+<span><span class="co">## chr1:7-10        B    c            3     1      1.500000 0.5000000</span></span>
+<span><span class="co">## chr1:11-14       C    c           NA    NA            NA        NA</span></span>
+<span><span class="co">## chr1:1-6         A    d            3     3      1.500000 1.5000000</span></span>
+<span><span class="co">## chr1:7-10        B    d            3     1      1.500000 0.5000000</span></span>
+<span><span class="co">## chr1:11-14       C    d            1     1      1.000000 1.0000000</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">summary</span><span class="op">)</span>, summary <span class="op">=</span> <span class="va">summary</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## GRanges object with 12 ranges and 6 metadata columns:</span></span>
-<span><span class="co">##        seqnames    ranges strand | summary.Feature summary.Sample</span></span>
-<span><span class="co">##           &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; |     &lt;character&gt;    &lt;character&gt;</span></span>
-<span><span class="co">##    [1]     chr1       1-6      * |               A              a</span></span>
-<span><span class="co">##    [2]     chr1      7-10      * |               B              a</span></span>
-<span><span class="co">##    [3]     chr1     11-14      * |               C              a</span></span>
-<span><span class="co">##    [4]     chr1       1-6      * |               A              b</span></span>
-<span><span class="co">##    [5]     chr1      7-10      * |               B              b</span></span>
-<span><span class="co">##    ...      ...       ...    ... .             ...            ...</span></span>
-<span><span class="co">##    [8]     chr1      7-10      * |               B              c</span></span>
-<span><span class="co">##    [9]     chr1     11-14      * |               C              c</span></span>
-<span><span class="co">##   [10]     chr1       1-6      * |               A              d</span></span>
-<span><span class="co">##   [11]     chr1      7-10      * |               B              d</span></span>
-<span><span class="co">##   [12]     chr1     11-14      * |               C              d</span></span>
+<span><span class="co">##        seqnames    ranges strand | summary.feature summary.file</span></span>
+<span><span class="co">##           &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; |     &lt;character&gt;  &lt;character&gt;</span></span>
+<span><span class="co">##    [1]     chr1       1-6      * |               A            a</span></span>
+<span><span class="co">##    [2]     chr1      7-10      * |               B            a</span></span>
+<span><span class="co">##    [3]     chr1     11-14      * |               C            a</span></span>
+<span><span class="co">##    [4]     chr1       1-6      * |               A            b</span></span>
+<span><span class="co">##    [5]     chr1      7-10      * |               B            b</span></span>
+<span><span class="co">##    ...      ...       ...    ... .             ...          ...</span></span>
+<span><span class="co">##    [8]     chr1      7-10      * |               B            c</span></span>
+<span><span class="co">##    [9]     chr1     11-14      * |               C            c</span></span>
+<span><span class="co">##   [10]     chr1       1-6      * |               A            d</span></span>
+<span><span class="co">##   [11]     chr1      7-10      * |               B            d</span></span>
+<span><span class="co">##   [12]     chr1     11-14      * |               C            d</span></span>
 <span><span class="co">##        summary.coverage.sum summary.M.sum summary.coverage.mean summary.M.mean</span></span>
 <span><span class="co">##                   &lt;numeric&gt;     &lt;numeric&gt;             &lt;numeric&gt;      &lt;numeric&gt;</span></span>
 <span><span class="co">##    [1]                    4             2               1.33333       0.666667</span></span>
@@ -239,7 +239,7 @@ object:</p>
 <span><span class="co">##   [12]                    1             1                   1.0            1.0</span></span>
 <span><span class="co">##   -------</span></span>
 <span><span class="co">##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span></span></code></pre>
-<p>If the regions vector is not named, pass the <code>Feature</code>
+<p>If the regions vector is not named, pass the <code>feature</code>
 column as the GRanges input regions:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_meth_regions.html">summarize_meth_regions</a></span><span class="op">(</span></span>
@@ -247,38 +247,38 @@ column as the GRanges input regions:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [01:13:34.959364] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [01:13:34.959385] [iscream::summarize_regions] [info] using sum, mean</span></span>
-<span><span class="co">## [01:13:34.959389] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
-<pre><code><span><span class="co">##       Feature Sample coverage.sum M.sum coverage.mean    M.mean</span></span>
-<span><span class="co">## 1    chr1:1-6      a            4     2      1.333333 0.6666667</span></span>
-<span><span class="co">## 2   chr1:7-10      a            3     1      1.500000 0.5000000</span></span>
-<span><span class="co">## 3  chr1:11-14      a            5     5      2.500000 2.5000000</span></span>
-<span><span class="co">## 4    chr1:1-6      b            4     2      2.000000 1.0000000</span></span>
-<span><span class="co">## 5   chr1:7-10      b            1     1      1.000000 1.0000000</span></span>
-<span><span class="co">## 6  chr1:11-14      b            3     1      1.500000 0.5000000</span></span>
-<span><span class="co">## 7    chr1:1-6      c            2     2      2.000000 2.0000000</span></span>
-<span><span class="co">## 8   chr1:7-10      c            3     1      1.500000 0.5000000</span></span>
-<span><span class="co">## 9  chr1:11-14      c           NA    NA            NA        NA</span></span>
-<span><span class="co">## 10   chr1:1-6      d            3     3      1.500000 1.5000000</span></span>
-<span><span class="co">## 11  chr1:7-10      d            3     1      1.500000 0.5000000</span></span>
-<span><span class="co">## 12 chr1:11-14      d            1     1      1.000000 1.0000000</span></span></code></pre>
+<pre><code><span><span class="co">## [13:53:58.531044] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [13:53:58.531068] [iscream::summarize_regions] [info] using sum, mean</span></span>
+<span><span class="co">## [13:53:58.531073] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
+<pre><code><span><span class="co">##       feature file coverage.sum M.sum coverage.mean    M.mean</span></span>
+<span><span class="co">## 1    chr1:1-6    a            4     2      1.333333 0.6666667</span></span>
+<span><span class="co">## 2   chr1:7-10    a            3     1      1.500000 0.5000000</span></span>
+<span><span class="co">## 3  chr1:11-14    a            5     5      2.500000 2.5000000</span></span>
+<span><span class="co">## 4    chr1:1-6    b            4     2      2.000000 1.0000000</span></span>
+<span><span class="co">## 5   chr1:7-10    b            1     1      1.000000 1.0000000</span></span>
+<span><span class="co">## 6  chr1:11-14    b            3     1      1.500000 0.5000000</span></span>
+<span><span class="co">## 7    chr1:1-6    c            2     2      2.000000 2.0000000</span></span>
+<span><span class="co">## 8   chr1:7-10    c            3     1      1.500000 0.5000000</span></span>
+<span><span class="co">## 9  chr1:11-14    c           NA    NA            NA        NA</span></span>
+<span><span class="co">## 10   chr1:1-6    d            3     3      1.500000 1.5000000</span></span>
+<span><span class="co">## 11  chr1:7-10    d            3     1      1.500000 0.5000000</span></span>
+<span><span class="co">## 12 chr1:11-14    d            1     1      1.000000 1.0000000</span></span></code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">summary</span><span class="op">$</span><span class="va">Feature</span>, summary <span class="op">=</span> <span class="va">summary</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">summary</span><span class="op">$</span><span class="va">feature</span>, summary <span class="op">=</span> <span class="va">summary</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## GRanges object with 12 ranges and 5 metadata columns:</span></span>
-<span><span class="co">##        seqnames    ranges strand | summary.Sample summary.coverage.sum</span></span>
-<span><span class="co">##           &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; |    &lt;character&gt;            &lt;numeric&gt;</span></span>
-<span><span class="co">##    [1]     chr1       1-6      * |              a                    4</span></span>
-<span><span class="co">##    [2]     chr1      7-10      * |              a                    3</span></span>
-<span><span class="co">##    [3]     chr1     11-14      * |              a                    5</span></span>
-<span><span class="co">##    [4]     chr1       1-6      * |              b                    4</span></span>
-<span><span class="co">##    [5]     chr1      7-10      * |              b                    1</span></span>
-<span><span class="co">##    ...      ...       ...    ... .            ...                  ...</span></span>
-<span><span class="co">##    [8]     chr1      7-10      * |              c                    3</span></span>
-<span><span class="co">##    [9]     chr1     11-14      * |              c                   NA</span></span>
-<span><span class="co">##   [10]     chr1       1-6      * |              d                    3</span></span>
-<span><span class="co">##   [11]     chr1      7-10      * |              d                    3</span></span>
-<span><span class="co">##   [12]     chr1     11-14      * |              d                    1</span></span>
+<span><span class="co">##        seqnames    ranges strand | summary.file summary.coverage.sum</span></span>
+<span><span class="co">##           &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; |  &lt;character&gt;            &lt;numeric&gt;</span></span>
+<span><span class="co">##    [1]     chr1       1-6      * |            a                    4</span></span>
+<span><span class="co">##    [2]     chr1      7-10      * |            a                    3</span></span>
+<span><span class="co">##    [3]     chr1     11-14      * |            a                    5</span></span>
+<span><span class="co">##    [4]     chr1       1-6      * |            b                    4</span></span>
+<span><span class="co">##    [5]     chr1      7-10      * |            b                    1</span></span>
+<span><span class="co">##    ...      ...       ...    ... .          ...                  ...</span></span>
+<span><span class="co">##    [8]     chr1      7-10      * |            c                    3</span></span>
+<span><span class="co">##    [9]     chr1     11-14      * |            c                   NA</span></span>
+<span><span class="co">##   [10]     chr1       1-6      * |            d                    3</span></span>
+<span><span class="co">##   [11]     chr1      7-10      * |            d                    3</span></span>
+<span><span class="co">##   [12]     chr1     11-14      * |            d                    1</span></span>
 <span><span class="co">##        summary.M.sum summary.coverage.mean summary.M.mean</span></span>
 <span><span class="co">##            &lt;numeric&gt;             &lt;numeric&gt;      &lt;numeric&gt;</span></span>
 <span><span class="co">##    [1]             2               1.33333       0.666667</span></span>
@@ -309,11 +309,11 @@ matrices<a class="anchor" aria-label="anchor" href="#from-make_mat-or-make_bsseq
 </h3>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">mats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_bsseq_mat.html">make_bsseq_mat</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [01:13:37.912397] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [13:54:01.467009] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [01:13:37.912762] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [01:13:37.912802] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [01:13:37.912806] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
+<span><span class="co">## [13:54:01.467367] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [13:54:01.467408] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [13:54:01.467412] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
 <pre><code><span><span class="co">## $M</span></span>
 <span><span class="co">##      a b c d</span></span>
 <span><span class="co">## [1,] 1 0 0 1</span></span>
@@ -344,11 +344,11 @@ matrices<a class="anchor" aria-label="anchor" href="#from-make_mat-or-make_bsseq
 <span><span class="co">## [1] "a" "b" "c" "d"</span></span></code></pre>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">mats.sparse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_bsseq_mat.html">make_bsseq_mat</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [01:13:37.913829] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [13:54:01.468497] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [01:13:37.914115] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [01:13:37.914130] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [01:13:37.914139] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
+<span><span class="co">## [13:54:01.468790] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [13:54:01.468805] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [13:54:01.468814] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
 <pre><code><span><span class="co">## $M</span></span>
 <span><span class="co">## 7 x 4 sparse Matrix of class "dgCMatrix"</span></span>
 <span><span class="co">##      a b c d</span></span>
