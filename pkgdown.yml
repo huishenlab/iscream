@@ -1,13 +1,14 @@
 pandoc: 3.1.11
-pkgdown: 2.1.1
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   data_structures: data_structures.html
   htslib: htslib.html
   iscream: iscream.html
   manuscript_data: manuscript_data.html
+  tabix: tabix.html
   TSS: TSS.html
-last_built: 2025-04-23T17:51Z
+last_built: 2025-06-24T00:24Z
 urls:
   reference: https://huishenlab.github.io/iscream/reference
   article: https://huishenlab.github.io/iscream/articles
