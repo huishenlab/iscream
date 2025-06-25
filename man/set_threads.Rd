@@ -50,8 +50,8 @@ Functions currently using multithreading:
 \item \code{tabix()}
 \item \code{query_chroms()}
 \item \code{make_mat()}
-\item \code{make_bsseq_mat()}
-\item \code{summarize_regions()}
+\item \code{make_mat()}, \code{make_bsseq_mat()}
+\item \code{summarize_regions()}, \code{summarize_meth_regions()}
 }
 }
 \examples{

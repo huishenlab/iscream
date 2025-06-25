@@ -77,8 +77,9 @@ get_threads <- function() {
 #' - `tabix()`
 #' - `query_chroms()`
 #' - `make_mat()`
-#' - `make_bsseq_mat()`
-#' - `summarize_regions()`
+#' - `make_mat()`, `make_bsseq_mat()`
+#' - `summarize_regions()`, `summarize_meth_regions()`
+#'
 #' @export
 #'
 #' @examples
