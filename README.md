@@ -1,18 +1,9 @@
 ## iscream <a href="https://huishenlab.github.io/iscream/"><img src="man/figures/logo.png" align="right" height="138" style="float:right; height:138px;"/></a>
 
-*Integrating Single-Cell Results for Exploring and Analyzing Methylation*
-
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/huishenlab/iscream/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/huishenlab/iscream/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/huishenlab/iscream/graph/badge.svg)](https://app.codecov.io/gh/huishenlab/iscream)
 <!-- badges: end -->
-
-Analysis and visualization of Whole Genome Bisulfite Sequencing (WGBS) data
-requires reading aligned sequencing data into formats that existing packages
-like [BSseq](https://bioconductor.org/packages/devel/bioc/html/bsseq.html) and
-[scMET](https://github.com/andreaskapou/scMET) can analyze. Getting the data
-from on-disk formats like BED files to a matrix of methylation values can be
-difficult because, with nearly 30 million CpGs, WGBS data can be quite large.
 
 iscream aims to efficiently read data from any BED file into formats usable by
 other packages. Using [htslib](https://www.htslib.org/), iscream can query
@@ -21,6 +12,20 @@ queried data and make matrices, with specific support for WGBS BED files aligned
 by [BISCUIT](https://huishenlab.github.io/biscuit/),
 [Bismark](https://www.bioinformatics.babraham.ac.uk/projects/bismark/) and
 [BSBolt](https://bsbolt.readthedocs.io/en/latest/).
+
+Analysis and visualization of Whole Genome Bisulfite Sequencing (WGBS)[^1] data
+requires reading aligned sequencing data into formats that existing packages
+like [BSseq](https://bioconductor.org/packages/devel/bioc/html/bsseq.html) and
+[scMET](https://github.com/andreaskapou/scMET) can analyze. Getting the data
+from on-disk BED files to a matrix of methylation values can be difficult
+because, with nearly 30 million CpGs, WGBS data can be quite large. iscream
+makes importing WGBS data for targeted exploration and analysis faster and more
+memory efficient.
+
+[^1]: The name iscream comes from "*Integrating Single-Cell Results for
+Exploring and Analyzing Methylation*" as it was originally developed to read BED
+files from WGBS. It was then generalized to work with any BED file.
+
 
 ## Dependencies
 
@@ -64,9 +69,9 @@ installed.
 
 GNU GCC must be installed for OpenMP support. This is usually installed by
 default on Linux systems, but may need to be manually installed on MacOS to use
-iscream with multiple threads[^1].
+iscream with multiple threads[^2].
 
-[^1]: Using OpenMP is also possible with Clang on MacOS
+[^2]: Using OpenMP is also possible with Clang on MacOS
 (<https://mac.r-project.org/openmp/>) but installing GCC with Homebrew may be
 easier (<https://formulae.brew.sh/formula/gcc>).
 
