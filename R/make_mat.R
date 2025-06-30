@@ -1,23 +1,31 @@
-#' Make a matrix from a numeric column of any BED file
+#' Make a matrix from a numeric column of BED files
 #'
 #' Queries the provided regions and produces a matrix along with genomic
-#' positions.
-#' Parallelized across files using threads from the `"iscream.threads"` option.
+#' positions that can be returned as a `RangedSummarizedExperiment` (if
+#' SummarizedExperiment is installed). Parallelized across files using threads
+#' from the `"iscream.threads"` option.
 #' @param bedfiles A vector of bedfile paths
-#' @param regions A vector, data frame or GenomicRanges of genomic regions. See
-#' details.
+#' @param regions A vector, data frame or GenomicRanges of genomic regions. See details.
 #' @param column The index of the data column needed for the matrix
-#' @param mat_name What to name the matrix in the returned list
+#' @param mat_name What to name the matrix in the returned object
 #' @param sparse Whether to return a sparse matrix
 #' @param prealloc The number of rows to initialize the matrices with. If the
 #' number of loci are approximately known, this can reduce runtime as fewer
 #' resizes need to be made.
+#' @param make_se Whether to return a SummarizedExperiment (default)
+#' @param make_gr Whether to return a GenomicRanges
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
-#' @return A named list of
-#' - the matrix with the value of interest
-#' - a character vector of chromosomes and numeric vector of base positions
-#' - a character vector of the input sample BED file names
+#'
+#' @return
+#' - If `SummarizedExperiment` is available, a RangedSummarizedExperiment
+#'
+#' - If `make_gr = TRUE` and `GenomicRanges` is available, a `GRanges` object,
+#'
+#' - Otherwise, a named list of
+#'   - the matrix with the value of interest
+#'   - a character vector of chromosomes and numeric vector of base positions
+#'   - a character vector of the input sample BED file names
 #'
 #' @details
 #' The input regions may be string vector in the form "chr:start-end"
@@ -45,6 +53,8 @@ make_mat <- function(
   mat_name = "value",
   sparse = FALSE,
   prealloc = 10000,
+  make_se = TRUE,
+  make_gr = FALSE,
   nthreads = NULL
 ) {
   if (column < 4) {
@@ -70,6 +80,18 @@ make_mat <- function(
     prealloc = prealloc,
     nthreads = n_threads
   )
-  names(mat)[which(names(mat) == "M")] = mat_name
-  mat
+
+  if (make_gr & requireNamespace("GenomicRanges", quietly = TRUE)) {
+    gr <- GenomicRanges::GRanges(mat$chr, mat$pos)
+    GenomicRanges::mcols(gr) <- mat$M
+    gr
+  } else if (make_se & requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    matlist <- list(mat$M)
+    names(matlist) <- mat_name
+    gr <- GenomicRanges::GRanges(mat$chr, mat$pos)
+    SummarizedExperiment::SummarizedExperiment(assays = matlist, rowRanges = gr)
+  } else {
+    names(mat)[which(names(mat) == "M")] = mat_name
+    mat
+  }
 }

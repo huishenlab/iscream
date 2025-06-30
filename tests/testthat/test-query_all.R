@@ -79,14 +79,14 @@ bismark_bs_bC <- make_bsseq_mat(bismark_bedfiles, regions, sparse = F, aligner =
 biscuit_bs_bC_sp <- make_bsseq_mat(biscuit_bedfiles, regions, sparse = T, mval = F)
 bismark_bs_bC_sp <- make_bsseq_mat(bismark_bedfiles, regions, sparse = T, aligner = "bismark", mval = F)
 
-biscuit_b <- make_mat(biscuit_bedfiles, regions, column = 4, mat_name = "beta")
-bismark_M <- make_mat(bismark_bedfiles, regions, column = 4, mat_name = "M")
+biscuit_b <- make_mat(biscuit_bedfiles, regions, column = 4, mat_name = "beta", make_se = FALSE)
+bismark_M <- make_mat(bismark_bedfiles, regions, column = 4, mat_name = "M", make_se = FALSE)
 
-biscuit_b_sp <- make_mat(biscuit_bedfiles, regions, column = 4, sparse = T, mat_name = "beta")
-bismark_M_sp <- make_mat(bismark_bedfiles, regions, column = 4, sparse = T, mat_name = "M")
+biscuit_b_sp <- make_mat(biscuit_bedfiles, regions, column = 4, sparse = T, mat_name = "beta", make_se = FALSE)
+bismark_M_sp <- make_mat(bismark_bedfiles, regions, column = 4, sparse = T, mat_name = "M", make_se = FALSE)
 
-biscuit_C_gr <- make_mat(biscuit_bedfiles, gr, column = 5, prealloc = 2)
-biscuit_C_df <- make_mat(biscuit_bedfiles, regions.dt, column = 5, prealloc = 2)
+biscuit_C_gr <- make_mat(biscuit_bedfiles, gr, column = 5, prealloc = 2, make_se = FALSE)
+biscuit_C_df <- make_mat(biscuit_bedfiles, regions.dt, column = 5, prealloc = 2, make_se = FALSE)
 
 results <- list(
   biscuit_bs_MC,
@@ -271,6 +271,15 @@ test_dims <- function(result_obj, exp_dims, mval) {
 
 test_that("matrix row,colnames,sampleNames", {
   lapply(results[1], test_dims, exp_dims)
+})
+
+test_that("SE, GR", {
+  grmat <- make_mat(biscuit_bedfiles, regions, column = 4, mat_name = "beta", make_gr = TRUE)
+  expect_equal(class(grmat)[1], "GRanges")
+  semat <- make_mat(biscuit_bedfiles, regions, column = 4, mat_name = "beta", make_se = TRUE)
+  expect_equal(class(semat)[1], "RangedSummarizedExperiment")
+  semat <- make_mat(biscuit_bedfiles, regions, column = 4, mat_name = "beta")
+  expect_equal(class(semat)[1], "RangedSummarizedExperiment")
 })
 
 test_that("invalid columns", {

@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_mat.R
 \name{make_mat}
 \alias{make_mat}
-\title{Make a matrix from a numeric column of any BED file}
+\title{Make a matrix from a numeric column of BED files}
 \usage{
 make_mat(
   bedfiles,
@@ -11,18 +11,19 @@ make_mat(
   mat_name = "value",
   sparse = FALSE,
   prealloc = 10000,
+  make_se = TRUE,
+  make_gr = FALSE,
   nthreads = NULL
 )
 }
 \arguments{
 \item{bedfiles}{A vector of bedfile paths}
 
-\item{regions}{A vector, data frame or GenomicRanges of genomic regions. See
-details.}
+\item{regions}{A vector, data frame or GenomicRanges of genomic regions. See details.}
 
 \item{column}{The index of the data column needed for the matrix}
 
-\item{mat_name}{What to name the matrix in the returned list}
+\item{mat_name}{What to name the matrix in the returned object}
 
 \item{sparse}{Whether to return a sparse matrix}
 
@@ -30,21 +31,30 @@ details.}
 number of loci are approximately known, this can reduce runtime as fewer
 resizes need to be made.}
 
+\item{make_se}{Whether to return a SummarizedExperiment (default)}
+
+\item{make_gr}{Whether to return a GenomicRanges}
+
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
 }
 \value{
-A named list of
+\itemize{
+\item If \code{SummarizedExperiment} is available, a RangedSummarizedExperiment
+\item If \code{make_gr = TRUE} and \code{GenomicRanges} is available, a \code{GRanges} object,
+\item Otherwise, a named list of
 \itemize{
 \item the matrix with the value of interest
 \item a character vector of chromosomes and numeric vector of base positions
 \item a character vector of the input sample BED file names
 }
 }
+}
 \description{
 Queries the provided regions and produces a matrix along with genomic
-positions.
-Parallelized across files using threads from the \code{"iscream.threads"} option.
+positions that can be returned as a \code{RangedSummarizedExperiment} (if
+SummarizedExperiment is installed). Parallelized across files using threads
+from the \code{"iscream.threads"} option.
 }
 \details{
 The input regions may be string vector in the form "chr:start-end"
