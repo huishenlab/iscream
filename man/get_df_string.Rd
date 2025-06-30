@@ -17,3 +17,7 @@ A character vector
 \description{
 Convert DataFrame to a vector of strings. Set feature names in a "name" column
 }
+\examples{
+(df <- data.frame(chr = c("chr1", "chr2"), start = c(1, 5), end = c(4, 10)))
+get_df_string(df)
+}

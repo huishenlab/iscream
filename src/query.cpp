@@ -7,6 +7,10 @@
 //' such as libdeflate support are available. This information may not always
 //' correspond to the htslib version used during iscream's installation if a
 //' different htslib version is available for linking at runtime.
+//'
+//' @examples
+//' htslib_version()
+//'
 //' @export
 // [[Rcpp::export]]
 void htslib_version() {

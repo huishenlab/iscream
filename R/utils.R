@@ -31,6 +31,10 @@ verify_aligner_or_stop <- function(aligner) {
 #' @return A character vector
 #'
 #' @export
+#' @examples
+#' if (requireNamespace("GenomicRanges", quietly = TRUE)) {
+#'   get_granges_string(GenomicRanges::GRanges(c("chr1:1-10", "chr2:15-20")))
+#' }
 get_granges_string <- function(gr, sep = c(":", "-")) {
   if (requireNamespace("GenomicRanges", quietly = TRUE)) {
     region_str <- paste0(
@@ -59,6 +63,9 @@ get_granges_string <- function(gr, sep = c(":", "-")) {
 #' @return A character vector
 #'
 #' @export
+#' @examples
+#' (df <- data.frame(chr = c("chr1", "chr2"), start = c(1, 5), end = c(4, 10)))
+#' get_df_string(df)
 get_df_string <- function(regions_df, feature_col = NULL) {
   stopifnot("colnames must be 'chr', 'start' and 'end'" = colnames(regions_df)[1:3] == c("chr", "start", "end"))
   chr <- start <- end <- NULL

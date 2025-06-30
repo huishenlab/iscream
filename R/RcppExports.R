@@ -108,6 +108,9 @@ Cpp_set_log_level <- function(name) {
 #' Can handle all of spdlogs levels, but iscream functions only supports
 #' "info" and "debug"
 #' @return The current logging level as a string
+#' @examples
+#' get_log_level()
+#'
 #' @export
 get_log_level <- function() {
     .Call(`_iscream_get_log_level`)
@@ -134,6 +137,10 @@ NULL
 #' such as libdeflate support are available. This information may not always
 #' correspond to the htslib version used during iscream's installation if a
 #' different htslib version is available for linking at runtime.
+#'
+#' @examples
+#' htslib_version()
+#'
 #' @export
 htslib_version <- function() {
     invisible(.Call(`_iscream_htslib_version`))

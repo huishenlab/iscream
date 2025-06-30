@@ -13,3 +13,7 @@ The current logging level as a string
 Can handle all of spdlogs levels, but iscream functions only supports
 "info" and "debug"
 }
+\examples{
+get_log_level()
+
+}

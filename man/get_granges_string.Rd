@@ -23,3 +23,8 @@ Convert GRanges object to a vector of strings
 This function was adapted from
 \href{https://github.com/stuart-lab/signac/blob/0b33b1154f9a610897d1efad2c0065081c4e7132/R/utilities.R#L732C1-L756C2}{stuart-lab/signac}.
 }
+\examples{
+if (requireNamespace("GenomicRanges", quietly = TRUE)) {
+  get_granges_string(GenomicRanges::GRanges(c("chr1:1-10", "chr2:15-20")))
+}
+}
