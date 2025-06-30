@@ -10,7 +10,7 @@ check_files_exist <- function(files_vec, error_file_prefix = "Bedfile") {
   valid_files <- file.exists(files_vec)
   missing_files <- files_vec[!valid_files]
   if (length(missing_files != 0)) {
-    stop(paste0(error_file_prefix, ": ", missing_files, " could not be found\n"))
+    stop(error_file_prefix, ": ", missing_files, " could not be found\n")
   }
 }
 
@@ -48,9 +48,9 @@ verify_filetype <- function(bedfiles, aligner, stop_on_error = FALSE) {
   warning_msg <- ifelse(stop_on_error, check_name_warning, paste(check_name_warning, "and data frame colnames"))
 
   if (aligner == "biscuit" & any(sf_grepl(bedfiles, pattern = ".cov"))) {
-    warn_stop(paste("'aligner' set to 'biscuit' but files found with '.cov', extension", warning_msg))
+    warn_stop("'aligner' set to 'biscuit' but files found with '.cov', extension ", warning_msg)
   }
   if (aligner != "biscuit" & any(!sf_grepl(bedfiles, pattern = ".cov"))) {
-    warn_stop(paste("'aligner' set to", aligner, "but no files found with '.cov', extension", warning_msg))
+    warn_stop("'aligner' set to ", aligner, " but no files found with '.cov', extension ", warning_msg)
   }
 }

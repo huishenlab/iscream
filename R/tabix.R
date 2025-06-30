@@ -249,13 +249,13 @@ get_bed_colnames <- function(col.names, bedfiles, result, base_colnames) {
     if (input_length == 0) {
       return(data_colnames)
     }
-    warning(paste(
-      "Did not use input data 'colnames' - only",
+    warning(
+      "Did not use input data 'colnames' - only ",
       length(col.names),
-      "names provided for",
+      " names provided for ",
       data_cols,
-      "data columns"
-    ))
+      " data columns"
+    )
     return(data_colnames)
   } else if (length(col.names) > data_cols) {
     warning("Fewer columns in data than provided colnames")
@@ -277,11 +277,11 @@ write_bed <- function(regions_df, outfile) {
 
 is_empty <- function(result, bedfile) {
   if (nrow(result) == 0) {
-    warning(paste(
-      "No records found in",
+    warning(
+      "No records found in ",
       bedfile,
-      "- if this is unexpected check that your region format matches your bedfiles"
-    ))
+      " - if this is unexpected check that your region format matches your bedfiles"
+    )
     return(TRUE)
   }
   return(FALSE)

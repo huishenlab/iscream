@@ -90,7 +90,7 @@ get_threads <- function() {
 set_threads <- function(n_threads) {
   check_thread_count(n_threads)
   options(iscream.threads = n_threads)
-  message(paste0("iscream now using ", n_threads, " of ", availableCores(), " available threads."))
+  message("iscream now using ", n_threads, " of ", availableCores(), " available threads.")
 }
 
 #' Check that the required threads are available
@@ -116,10 +116,10 @@ check_thread_count <- function(
   } else {
     msg <- paste0("Cannot use ", n_threads, " threads. Your")
   }
-  stop(paste0(
+  stop(
     msg,
     " system has only ",
     avail_threads,
     " threads. See parallelly::availableCores(which = 'all') for more informaion on available resources"
-  ))
+  )
 }

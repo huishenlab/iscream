@@ -39,21 +39,21 @@ validate_log_level <- function(level = get_log_level(), n_threads) {
 
   if (!(level %in% supported)) {
     if (level %in% unsupported) {
-      stop(paste(level, "logging is currently not supported"))
+      stop(level, " logging is currently not supported")
     } else {
-      stop(paste(level, "is not a supported spdlog log level"))
+      stop(level, " is not a supported spdlog log level")
     }
   }
 
   if (n_threads > 1 && !(level %in% quiet_logging)) {
-    stop(paste(
+    stop(
       n_threads,
-      "threads were requested",
-      "but",
+      " threads were requested ",
+      " but ",
       level,
-      "logging cannot use more than 1 thread.",
-      "Run `set_log_level(\"info\")` to use multiple threads.",
-      "See `?set_log_level` for more details."
-    ))
+      " logging cannot use more than 1 thread.",
+      " Run `set_log_level(\"info\")` to use multiple threads.",
+      " See `?set_log_level` for more details."
+    )
   }
 }
