@@ -7,7 +7,6 @@
 //' @return The beta value
 //'
 //' @keywords internal
-//' @export
 // [[Rcpp::export]]
 int decode_beta(int encoded) {
     return (int) encoded & 0xffff;
@@ -19,7 +18,6 @@ int decode_beta(int encoded) {
 //' @return The coverage value
 //'
 //' @keywords internal
-//' @export
 // [[Rcpp::export]]
 int decode_cov(int encoded) {
     return (int) encoded >> 16;
@@ -28,7 +26,6 @@ int decode_cov(int encoded) {
 //' Get coverage values from bit-packed dense matrix
 //'
 //' @keywords internal
-//' @export
 // [[Rcpp::export]]
 void get_cov(Rcpp::NumericMatrix& m, const int nthreads) {
   arma::mat M(m.begin(), m.nrow(), m.ncol(), false);
@@ -44,7 +41,6 @@ void get_cov(Rcpp::NumericMatrix& m, const int nthreads) {
 //' Get M values from bit-packed dense matrix
 //'
 //' @keywords internal
-//' @export
 // [[Rcpp::export]]
 void get_m(Rcpp::NumericMatrix& m, const int nthreads) {
   arma::mat M(m.begin(), m.nrow(), m.ncol(), false);
@@ -63,7 +59,6 @@ void get_m(Rcpp::NumericMatrix& m, const int nthreads) {
 //' Get beta values from bit-packed dense matrix
 //'
 //' @keywords internal
-//' @export
 // [[Rcpp::export]]
 void get_beta(Rcpp::NumericMatrix& m, const int nthreads) {
   arma::mat M(m.begin(), m.nrow(), m.ncol(), false);
@@ -79,7 +74,6 @@ void get_beta(Rcpp::NumericMatrix& m, const int nthreads) {
 //' Get coverage values from bit-packed sparse matrix
 //'
 //' @keywords internal
-//' @export
 // [[Rcpp::export]]
 void get_cov_sparse(Rcpp::S4& m) {
     Rcpp::NumericVector elements = m.slot("x");
@@ -93,7 +87,6 @@ void get_cov_sparse(Rcpp::S4& m) {
 //' Get M values from bit-packed sparse matrix
 //'
 //' @keywords internal
-//' @export
 // [[Rcpp::export]]
 void get_m_sparse(Rcpp::S4& m) {
     Rcpp::NumericVector elements = m.slot("x");
@@ -111,7 +104,6 @@ void get_m_sparse(Rcpp::S4& m) {
 //' @return The beta value
 //'
 //' @keywords internal
-//' @export
 // [[Rcpp::export]]
 void get_beta_sparse(Rcpp::S4& m) {
     Rcpp::NumericVector elements = m.slot("x");

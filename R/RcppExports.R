@@ -7,7 +7,6 @@
 #' @return The beta value
 #'
 #' @keywords internal
-#' @export
 decode_beta <- function(encoded) {
     .Call(`_iscream_decode_beta`, encoded)
 }
@@ -18,7 +17,6 @@ decode_beta <- function(encoded) {
 #' @return The coverage value
 #'
 #' @keywords internal
-#' @export
 decode_cov <- function(encoded) {
     .Call(`_iscream_decode_cov`, encoded)
 }
@@ -26,7 +24,6 @@ decode_cov <- function(encoded) {
 #' Get coverage values from bit-packed dense matrix
 #'
 #' @keywords internal
-#' @export
 get_cov <- function(m, nthreads) {
     invisible(.Call(`_iscream_get_cov`, m, nthreads))
 }
@@ -34,7 +31,6 @@ get_cov <- function(m, nthreads) {
 #' Get M values from bit-packed dense matrix
 #'
 #' @keywords internal
-#' @export
 get_m <- function(m, nthreads) {
     invisible(.Call(`_iscream_get_m`, m, nthreads))
 }
@@ -42,7 +38,6 @@ get_m <- function(m, nthreads) {
 #' Get beta values from bit-packed dense matrix
 #'
 #' @keywords internal
-#' @export
 get_beta <- function(m, nthreads) {
     invisible(.Call(`_iscream_get_beta`, m, nthreads))
 }
@@ -50,7 +45,6 @@ get_beta <- function(m, nthreads) {
 #' Get coverage values from bit-packed sparse matrix
 #'
 #' @keywords internal
-#' @export
 get_cov_sparse <- function(m) {
     invisible(.Call(`_iscream_get_cov_sparse`, m))
 }
@@ -58,7 +52,6 @@ get_cov_sparse <- function(m) {
 #' Get M values from bit-packed sparse matrix
 #'
 #' @keywords internal
-#' @export
 get_m_sparse <- function(m) {
     invisible(.Call(`_iscream_get_m_sparse`, m))
 }
@@ -69,7 +62,6 @@ get_m_sparse <- function(m) {
 #' @return The beta value
 #'
 #' @keywords internal
-#' @export
 get_beta_sparse <- function(m) {
     invisible(.Call(`_iscream_get_beta_sparse`, m))
 }
@@ -152,7 +144,6 @@ htslib_version <- function() {
 #' @return A vector of seqnames
 #'
 #' @keywords internal
-#' @export
 Cpp_query_chroms <- function(bedfile_vec, nthreads) {
     .Call(`_iscream_Cpp_query_chroms`, bedfile_vec, nthreads)
 }
@@ -164,7 +155,6 @@ Cpp_query_chroms <- function(bedfile_vec, nthreads) {
 #' @param regions A vector of region strings in the form "chr:start-end"
 #'
 #' @keywords internal
-#' @export
 Cpp_query_interval <- function(bedfile, regions) {
     .Call(`_iscream_Cpp_query_interval`, bedfile, regions)
 }
@@ -176,7 +166,6 @@ Cpp_query_interval <- function(bedfile, regions) {
 #' @param regions A vector of region strings in the form "chr:start-end"
 #'
 #' @keywords internal
-#' @export
 scan_tabix <- function(bedfile, regions) {
     .Call(`_iscream_scan_tabix`, bedfile, regions)
 }
@@ -193,7 +182,6 @@ scan_tabix <- function(bedfile, regions) {
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
 #' @keywords internal
-#' @export
 Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, prealloc, nthreads) {
     .Call(`_iscream_Cpp_query_all`, bedfiles, regions, aligner, valInd, merged, sparse, prealloc, nthreads)
 }
@@ -221,7 +209,6 @@ Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, pr
 #' can be manaully set with `set_threads()`.
 #'
 #' @keywords internal
-#' @export
 Cpp_summarize_regions <- function(bedfiles, regions, fun_vec, col_indices, col_names, aligner, mval = FALSE, region_rownames = FALSE, nthreads = 1L) {
     .Call(`_iscream_Cpp_summarize_regions`, bedfiles, regions, fun_vec, col_indices, col_names, aligner, mval, region_rownames, nthreads)
 }

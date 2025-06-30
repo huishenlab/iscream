@@ -174,7 +174,6 @@ double summarize(const StatFunction func, const arma::vec& data_vec) {
 //' can be manaully set with `set_threads()`.
 //'
 //' @keywords internal
-//' @export
 // [[Rcpp::export]]
 Rcpp::DataFrame Cpp_summarize_regions(
     const std::vector<std::string>& bedfiles,

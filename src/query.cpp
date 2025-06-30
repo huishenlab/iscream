@@ -74,7 +74,6 @@ std::vector<RegionQuery> query_intervals(
 //' @return A vector of seqnames
 //'
 //' @keywords internal
-//' @export
 // [[Rcpp::export]]
 std::set<std::string> Cpp_query_chroms(const std::vector<std::string>& bedfile_vec, const int nthreads) {
     std::set<std::string> seqnames;
@@ -107,7 +106,6 @@ std::set<std::string> Cpp_query_chroms(const std::vector<std::string>& bedfile_v
 //' @param regions A vector of region strings in the form "chr:start-end"
 //'
 //' @keywords internal
-//' @export
 // [[Rcpp::export]]
 Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::vector<std::string>& regions) {
     const char* fname = bedfile.c_str();
@@ -141,7 +139,6 @@ Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::
 //' @param regions A vector of region strings in the form "chr:start-end"
 //'
 //' @keywords internal
-//' @export
 // [[Rcpp::export]]
 Rcpp::List scan_tabix(const std::string& bedfile, const std::vector<std::string>& regions) {
     const char* fname = bedfile.c_str();

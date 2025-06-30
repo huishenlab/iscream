@@ -266,7 +266,6 @@ int QueryAll<Mat>::bitpack(const float beta_val, const float cov_val) {
 //' `"iscream.threads"` option. See `?set_threads` for more information.
 //'
 //' @keywords internal
-//' @export
 // [[Rcpp::export]]
 Rcpp::List Cpp_query_all(
     std::vector<std::string>& bedfiles,
