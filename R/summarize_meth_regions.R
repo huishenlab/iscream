@@ -94,7 +94,7 @@ summarize_meth_regions <- function(
   verify_aligner_or_stop(aligner)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   verify_filetype(bedfiles, aligner, stop_on_error = TRUE)
-  if (class(regions)[1] == "GRanges") {
+  if (is(regions, "GRanges")) {
     regions <- get_granges_string(regions)
   } else if ("data.frame" %in% class(regions)) {
     regions <- get_df_string(regions, feature_col)

@@ -61,7 +61,7 @@ make_mat <- function(
     stop("`col` < 3 - must be a the index of a numeric data column not any of chr, start or end ")
   }
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
-  if (class(regions)[1] == "GRanges") {
+  if (is(regions, "GRanges")) {
     regions <- get_granges_string(regions)
   } else if ("data.frame" %in% class(regions)) {
     regions <- get_df_string(regions)

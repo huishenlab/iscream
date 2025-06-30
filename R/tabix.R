@@ -106,7 +106,7 @@ tabix <- function(
   setnames(result, result_colnames)
 
   # get GRanges
-  if (class(regions)[1] == "GRanges") {
+  if (is(regions, "GRanges")) {
     result.gr <- GenomicRanges::makeGRangesFromDataFrame(
       result,
       starts.in.df.are.0based = zero_based,
@@ -203,7 +203,7 @@ run_scan_tabix <- function(bedfiles, input_regions, nthreads) {
 # helpers
 
 get_string_input_regions <- function(regions) {
-  if (class(regions)[1] == "GRanges") {
+  if (is(regions, "GRanges")) {
     get_granges_string(regions)
   } else if ("data.frame" %in% class(regions)) {
     get_df_string(regions)
@@ -213,7 +213,7 @@ get_string_input_regions <- function(regions) {
 }
 
 get_df_input_regions <- function(regions) {
-  if (class(regions)[1] == "GRanges") {
+  if (is(regions, "GRanges")) {
     regions_df <- as.data.table(regions)[, 1:3]
     colnames(regions_df)[1] <- "chr"
     return(regions_df)
