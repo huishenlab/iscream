@@ -102,7 +102,7 @@ make_bsseq_mat <- function(
     get_cov(b$Cov, n_threads)
   }
   if (!mval) {
-    names(b)[which(names(b) == "M")] = "beta"
+    names(b)[which(names(b) == "M")] <- "beta"
   }
   b
 }

@@ -91,7 +91,7 @@ make_mat <- function(
     gr <- GenomicRanges::GRanges(mat$chr, mat$pos)
     SummarizedExperiment::SummarizedExperiment(assays = matlist, rowRanges = gr)
   } else {
-    names(mat)[which(names(mat) == "M")] = mat_name
+    names(mat)[which(names(mat) == "M")] <- mat_name
     mat
   }
 }
