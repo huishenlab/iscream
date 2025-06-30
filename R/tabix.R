@@ -88,7 +88,11 @@ tabix <- function(
     result <- tabix.shell(bedfiles, regions_df, nthreads)
   }
 
+  # single-file empties returns null, multi file returns a non-null empty data.table
   if (is.null(result)) {
+    return(NULL)
+  } else if (nrow(result) == 0) {
+    warning("No records found in any file - if this is unexpected check that your region format matches your bedfiles")
     return(NULL)
   }
 
