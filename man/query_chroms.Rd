@@ -18,3 +18,8 @@ A vector of seqnames
 \description{
 Query the chromosomes or seqnames from a vector of BED files
 }
+\examples{
+bedfiles <- system.file("extdata", package = "iscream") |>
+  list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
+query_chroms(bedfiles)
+}

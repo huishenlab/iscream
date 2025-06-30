@@ -5,6 +5,10 @@
 #' @return A vector of seqnames
 #'
 #' @export
+#' @examples
+#' bedfiles <- system.file("extdata", package = "iscream") |>
+#'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
+#' query_chroms(bedfiles)
 query_chroms <- function(bedfiles, nthreads = NULL) {
   verify_files_or_stop(bedfiles)
 
