@@ -38,7 +38,7 @@ the style of \code{Rsamtools::scanTabix} instead of a data.table}
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
 }
 \value{
-A data.table
+A data frame or \code{GRanges} if the input was \code{GRanges}.
 }
 \description{
 Query lines from a tabixed BED file

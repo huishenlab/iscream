@@ -51,7 +51,7 @@
 #' @importFrom parallel mclapply
 #' @importFrom tools file_path_sans_ext
 #' @importFrom stats setNames
-#' @return A data.table
+#' @return A data frame or `GRanges` if the input was `GRanges`.
 #'
 #' @export
 #' @examples
