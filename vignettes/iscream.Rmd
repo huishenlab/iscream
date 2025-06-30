@@ -28,8 +28,9 @@ library(iscream)
 
 ### Input BED files
 
-Running this vignette requires downloading 2GB of BED files and tabix indices
-from this Zenodo record: <https://zenodo.org/records/14733834>.
+Running this vignette requires downloading 2GB of single-cell whole genome
+bisulfite sequencing (WGBS) BED files and tabix indices from this Zenodo
+record: <https://zenodo.org/records/14733834>.
 
 
 ``` r
@@ -87,22 +88,25 @@ head(regions)
 
 ### Make tabix queries
 
-The `tabix()` function can be used to query regions from BED files much like the
-*tabix* shell command. It returns the queried lines from the BED files, parsed
-into columns, as a `data.table`. `tabix()` is a generic BED files query function
-and is not restricted to methylation BED files. It has built-in support for
-BISCUIT, Bismark, and BSBolt BED file column names, set with the `aligner`
-argument, but can take other column names with the `col.names` argument.
+The `tabix()` function can be used to query regions from BED files much like
+the *tabix* shell command. It returns the queried lines from the BED files,
+parsed into columns, as a `data.table`. `tabix()` is a generic BED files query
+function. It has support for the BISCUIT, Bismark, and BSBolt aligners, set
+with the `aligner` argument, to correctly set column names in the output.
 
 If multiple input files are provided, they are queried in parallel. If `raw =
 TRUE`, `tabix()` will return the same data as `Rsamtools::scanTabix()` does - a
-named list of strings.
+named list of strings. For large queries, `tabix()` may currently seem
+unresponsive, but a progress bar is in development to show its progress.
 
 
 ``` r
 system.time(tbx_query <- tabix(bedfiles, regions, col.names = c("beta", "coverage")))
 #>    user  system elapsed 
-#>  32.184   5.368  11.000
+#>  29.272   7.398  10.178
+```
+
+``` r
 tbx_query
 #>              chr     start       end  beta coverage            file
 #>           <char>     <int>     <int> <num>    <int>          <char>
@@ -121,54 +125,8 @@ tbx_query
 
 ### Get summary data
 
-To get a summary of the methylation information of the gene bodies use
-`summarize_regions`, providing the gene name column as the feature column:
-
-
-``` r
-system.time(summary_query <- summarize_meth_regions(
-  bedfiles,
-  regions,
-  feature_col = "gene")
-)
-#> [11:20:22.814673] [iscream::summarize_regions] [info] Summarizing 5000 regions from 100 bedfiles
-#> [11:20:22.814996] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count
-#> [11:20:22.815005] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
-#>    user  system elapsed 
-#>  24.616   0.618   4.913
-head(summary_query)
-#>   feature            file coverage.sum M.sum coverage.mean    M.mean
-#> 1  ATAD3B bisc_SRR6911624          109    95      1.101010 0.9595960
-#> 2  PRDM16 bisc_SRR6911624         1470   789      1.074561 0.5767544
-#> 3   PEX10 bisc_SRR6911624           62    15      1.000000 0.2419355
-#> 4   PEX14 bisc_SRR6911624          258   200      1.011765 0.7843137
-#> 5   PLCH2 bisc_SRR6911624          272   195      1.066667 0.7647059
-#> 6   SPSB1 bisc_SRR6911624           74    64      1.000000 0.8648649
-#>   coverage.median M.median coverage.stddev  M.stddev coverage.variance
-#> 1               1        1       0.3028757 0.4932026        0.09173366
-#> 2               1        1       0.2892802 0.5888135        0.08368306
-#> 3               1        0       0.0000000 0.4317514        0.00000000
-#> 4               1        1       0.1080374 0.4307897        0.01167207
-#> 5               1        1       0.2796698 0.5169655        0.07821522
-#> 6               1        1       0.0000000 0.3442015        0.00000000
-#>   M.variance coverage.min M.min coverage.max M.max coverage.range M.range
-#> 1  0.2432488            1     0            2     2              1       2
-#> 2  0.3467014            1     0            3     3              2       3
-#> 3  0.1864093            1     0            1     1              0       1
-#> 4  0.1855797            1     0            2     2              1       2
-#> 5  0.2672534            1     0            3     3              2       3
-#> 6  0.1184746            1     0            1     1              0       1
-#>   cpg_count
-#> 1        99
-#> 2      1368
-#> 3        62
-#> 4       255
-#> 5       255
-#> 6        74
-```
-
-Alternatively to get just the beta column use the general `summarize_regions()`
-function, specifying the columns to summarize:
+To get a summary of the information of the gene bodies use `summarize_regions`,
+providing the gene name column as the feature column:
 
 
 ``` r
@@ -179,47 +137,89 @@ system.time(summary_query <- summarize_regions(
   col_names = "beta",
   feature_col = "gene")
 )
+#> [15:59:49.032602] [iscream::summarize_regions] [info] Summarizing 5000 regions from 100 bedfiles
+#> [15:59:49.032651] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count
+#> [15:59:49.032653] [iscream::summarize_regions] [info] with columns 4 as beta
+#>    user  system elapsed 
+#>  27.525   0.536   5.107
+```
+
+``` r
+head(summary_query)
+#>   feature            file beta.sum beta.mean beta.median beta.stddev
+#> 1  ATAD3B bisc_SRR6911624   85.000 0.8585859           1   0.3502215
+#> 2  PRDM16 bisc_SRR6911624  723.500 0.5288743           1   0.4976973
+#> 3   PEX10 bisc_SRR6911624   15.000 0.2419355           0   0.4317514
+#> 4   PEX14 bisc_SRR6911624  198.000 0.7764706           1   0.4174294
+#> 5   PLCH2 bisc_SRR6911624  184.333 0.7228745           1   0.4474832
+#> 6   SPSB1 bisc_SRR6911624   64.000 0.8648649           1   0.3442015
+#>   beta.variance beta.min beta.max beta.range count
+#> 1     0.1226551        0        1          1    99
+#> 2     0.2477026        0        1          1  1368
+#> 3     0.1864093        0        1          1    62
+#> 4     0.1742473        0        1          1   255
+#> 5     0.2002412        0        1          1   255
+#> 6     0.1184746        0        1          1    74
+```
+
+Alternatively to use the methylation-specific `summarize_meth_regions()`
+function:
+
+
+``` r
+system.time(summary_query <- summarize_meth_regions(
+  bedfiles,
+  regions,
+  feature_col = "gene")
+)
 ```
 
 ### Build matrices
 
-The `make_bsseq_mat()` function queries and stores every CpG in the input
-regions. Unlike `summarize_regions()` the output matrix dimensions are unknown
-at runtime. Although usually quite fast, if the CpG count is very large and
-there are few overlaps in the CpGs between files, this can take a long time.
-Here, gene bodies are large and the final matrix can contain millions of CpGs.
-Further, with single-cell data, chances are new CpGs are found in every file.
+The `make_mat()` function queries and stores every locus within the input
+regions across input files. Unlike `summarize_regions()` the output matrix
+dimensions are unknown at runtime. Although usually quite fast, if the locus
+count is very large and there are few overlaps in the loci between files, this
+can take a long time. Here, gene bodies are large and the final matrix can
+contain millions of loci. Further, with sparse data, chances are new loci are
+found in every file.
 
 Preallocating the number of rows, however, can drastically reduce runtime.
-Since we got 45 million CpGs from all the BED files with the tabix query above,
-we can expect approximately between 5 and 10 million unique CpGs as single-cell
-data has lower coverage than bulk. We already have the tabix query so we can get
-the unique CpG count here and use it to preallocate the matrix, reducing the
-number of matrix resizes. We'll add 100,000 extra on top of the existing count
-to be safe since every avoided resize cuts off at least a couple seconds from
-the runtime. Making tabix queries can be a relatively quick way to approximate
-the CpG count of a dataset. If you haven't done a tabix query of the full
-dataset, you can approximate how many CpGs to expect based on CpG counts in one
-file and the coverage of your WGBS method.
+Since we got 45 million loci/CpGs from all the BED files with the tabix query
+above, we can expect approximately between 5 and 10 million unique loci as
+single-cell data has lower coverage than bulk. We already have the tabix query
+so we can get the unique CpG count here and use it to preallocate the matrix,
+reducing the number of matrix resizes. We'll add 100,000 extra on top of the
+existing count to be safe since every avoided resize cuts off at least a couple
+seconds from the runtime. Making tabix queries can be a relatively quick way to
+approximate the CpG count of a dataset. If you haven't done a tabix query of
+the full dataset, you can approximate how many CpGs to expect based on CpG
+counts in one file and the coverage of your WGBS method. Here we make a matrix
+of the beta-values in the 4th column:
+
 
 ``` r
 cpg.count <- tbx_query$start |> unique() |> length()
-system.time(meth_mat <- make_bsseq_mat(
+system.time(meth_mat <- make_mat(
   bedfiles,
   regions,
+  column = 4,
   sparse = TRUE,
   prealloc = cpg.count + 1e5
 ))
-#> [11:20:29.883091] [iscream::query_all] [info] Querying 5000 regions from 100 bedfiles
+#> [15:59:56.450308] [iscream::query_all] [info] Querying 5000 regions from 100 bedfiles
 #> 
-#> [11:21:13.888292] [iscream::query_all] [info] Creating metadata vectors
-#> [11:21:14.365486] [iscream::query_all] [info] 7276107 loci found - 16250 extra rows allocated with 0 resizes
-#> [11:21:22.518141] [iscream::query_all] [info] Creating sparse matrix
+#> [16:00:40.571982] [iscream::query_all] [info] Creating metadata vectors
+#> [16:00:40.867558] [iscream::query_all] [info] 7276107 loci found - 16250 extra rows allocated with 0 resizes
+#> [16:00:44.217883] [iscream::query_all] [info] Creating sparse matrix
 #>    user  system elapsed 
-#> 275.560   2.978  53.696
+#> 335.525   1.186  47.981
+```
+
+``` r
 str(meth_mat)
-#> List of 5
-#>  $ M          :Formal class 'dgCMatrix' [package "Matrix"] with 6 slots
+#> List of 4
+#>  $ value      :Formal class 'dgCMatrix' [package "Matrix"] with 6 slots
 #>   .. ..@ i       : int [1:32627134] 9 11 12 13 14 15 16 17 18 19 ...
 #>   .. ..@ p       : int [1:101] 0 157256 362760 626888 904511 1158005 1437240 1729046 2014168 2231683 ...
 #>   .. ..@ Dim     : int [1:2] 7276107 100
@@ -228,38 +228,28 @@ str(meth_mat)
 #>   .. .. ..$ : chr [1:100] "bisc_SRR6911624" "bisc_SRR6911625" "bisc_SRR6911626" "bisc_SRR6911627" ...
 #>   .. ..@ x       : num [1:32627134] 1 1 1 1 1 1 1 1 1 1 ...
 #>   .. ..@ factors : list()
-#>  $ Cov        :Formal class 'dgCMatrix' [package "Matrix"] with 6 slots
-#>   .. ..@ i       : int [1:43227794] 0 1 2 3 4 5 6 7 8 9 ...
-#>   .. ..@ p       : int [1:101] 0 217582 488919 850016 1220035 1545163 1920047 2322291 2713873 3020522 ...
-#>   .. ..@ Dim     : int [1:2] 7276107 100
-#>   .. ..@ Dimnames:List of 2
-#>   .. .. ..$ : NULL
-#>   .. .. ..$ : chr [1:100] "bisc_SRR6911624" "bisc_SRR6911625" "bisc_SRR6911626" "bisc_SRR6911627" ...
-#>   .. ..@ x       : num [1:43227794] 1 1 1 1 1 1 1 1 1 1 ...
-#>   .. ..@ factors : list()
 #>  $ pos        : int [1:7276107] 1472309 1472386 1472390 1472394 1472407 1472414 1472439 1472489 1472503 1473922 ...
 #>  $ chr        : chr [1:7276107] "chr1" "chr1" "chr1" "chr1" ...
 #>  $ sampleNames: chr [1:100] "bisc_SRR6911624" "bisc_SRR6911625" "bisc_SRR6911626" "bisc_SRR6911627" ...
 ```
 
-The output of `make_bsseq_mat()` is a named list containing matrices of coverage
-values and M values and vectors of the sample names, chromosome names and
-positions of the loci.
+The output of `make_mat()` is a named list containing a matrix of beta values
+and vectors of the sample names, chromosome names and positions of the loci.
 
-This list can be used to produce a BSseq object. However since BSseq cannot work
-with sparse matrices, the two matrices would need to be converted to dense
-matrices first.
+If you want to make a BSseq object, you can use `make_bsseq_mat()` which makes
+both beta/M-value and coverage value matrices. Its output can be used to
+produce a BSseq object. However since BSseq cannot work with sparse matrices,
+the two matrices would need to be converted to dense matrices first.
+
 
 ``` r
+meth_mat <- make_bsseq_mat(
+  bedfiles,
+  regions,
+  sparse = TRUE,
+  prealloc = cpg.count + 1e5
+)
 bs <- do.call(BSseq, meth_mat)
-```
-
-If you want just one column from the BED file as a matrix instead of the two
-for BSseq, use `make_mat()`. For example, to get a matrix of beta values
-(column 4 in the BISCUIT BED file) run
-
-``` r
-make_mat(bedfiles, regions, col = 4, mat_name = "beta")
 ```
 
 ## Session info
@@ -267,34 +257,36 @@ make_mat(bedfiles, regions, col = 4, mat_name = "beta")
 
 ``` r
 sessionInfo()
-#> R version 4.4.2 (2024-10-31)
+#> R version 4.4.3 (2025-02-28)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: AlmaLinux 9.5 (Teal Serval)
+#> Running under: Ubuntu 24.04.2 LTS
 #> 
 #> Matrix products: default
-#> BLAS/LAPACK: /usr/lib64/libopenblas-r0.3.26.so;  LAPACK version 3.12.0
+#> BLAS/LAPACK: /nix/store/6kknwpcf8fl7ihkkxmdb6p764kdn443n-blas-3/lib/libblas.so.3;  LAPACK version 3.12.0
 #> 
 #> locale:
-#>  [1] LC_CTYPE=C.utf8        LC_NUMERIC=C           LC_TIME=C.UTF-8       
-#>  [4] LC_COLLATE=C.utf8      LC_MONETARY=C.UTF-8    LC_MESSAGES=C.utf8    
-#>  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
-#> [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
+#>  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+#>  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+#>  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+#>  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+#>  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+#> [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 #> 
-#> time zone: UTC
-#> tzcode source: internal
+#> time zone: America/Detroit
+#> tzcode source: system (glibc)
 #> 
 #> attached base packages:
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] data.table_1.17.0  iscream_0.0.0.9000
+#> [1] data.table_1.17.0  iscream_0.1.0.9000
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] compiler_4.4.2      parallelly_1.43.0   Matrix_1.7-3       
-#>  [4] parallel_4.4.2      tools_4.4.2         Rcpp_1.0.14        
-#>  [7] grid_4.4.2          knitr_1.50          xfun_0.51          
+#>  [1] compiler_4.4.3      parallelly_1.42.0   Matrix_1.7-2       
+#>  [4] parallel_4.4.3      tools_4.4.3         Rcpp_1.0.14        
+#>  [7] grid_4.4.3          knitr_1.47          xfun_0.51          
 #> [10] RcppParallel_5.1.10 stringfish_0.16.0   lattice_0.22-6     
-#> [13] evaluate_1.0.3
+#> [13] evaluate_0.24.0
 ```
 
 <!-- vim: set filetype=rmd: -->
