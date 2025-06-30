@@ -6,7 +6,3 @@
 	font-style: normal;
 	src: url('font/IosevkaTerm-Regular.woff2') format('woff2');
 }
-
-span.co {
-    white-space: pre-wrap;
-}
