@@ -30,6 +30,7 @@
       ];
 
       rDevDeps = with pkgs.rPackages; [
+        BiocCheck
         covr
         devtools
         lobstr
