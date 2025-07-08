@@ -45,3 +45,4 @@ Config/testthat/edition: 3
 NeedsCompilation: yes
 OS_type: unix
 SystemRequirements: htslib: htslib-devel (rpm) or libhts-dev (deb)
+biocViews: DataImport, DNAMethylation, Sequencing, Software
