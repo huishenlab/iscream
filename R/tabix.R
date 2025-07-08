@@ -262,7 +262,7 @@ get_bed_colnames <- function(col.names, bedfiles, result, base_colnames) {
   input_length <- length(col.names)
 
   if (input_length < data_cols) {
-    data_colnames <- c(base_colnames, paste0("V", 1:data_cols))
+    data_colnames <- c(base_colnames, paste0("V", seq_len(data_cols)))
     if (input_length == 0) {
       return(data_colnames)
     }
@@ -278,7 +278,7 @@ get_bed_colnames <- function(col.names, bedfiles, result, base_colnames) {
     warning("Fewer columns in data than provided colnames")
   }
 
-  c(base_colnames, col.names[1:data_cols])
+  c(base_colnames, col.names[seq_len(data_cols)])
 }
 
 

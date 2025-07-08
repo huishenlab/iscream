@@ -67,7 +67,10 @@ get_granges_string <- function(gr, sep = c(":", "-")) {
 #' (df <- data.frame(chr = c("chr1", "chr2"), start = c(1, 5), end = c(4, 10)))
 #' get_df_string(df)
 get_df_string <- function(regions_df, feature_col = NULL) {
-  stopifnot("colnames must be 'chr', 'start' and 'end'" = colnames(regions_df)[1:3] == c("chr", "start", "end"))
+  colnames.check <- colnames(regions_df)[seq_len(3)]
+  stopifnot(
+    "colnames must be 'chr', 'start' and 'end'" = colnames.check == c("chr", "start", "end")
+  )
   chr <- start <- end <- NULL
   regions.dt <- setDT(regions_df)
   regions <- regions.dt[, paste0(chr, ":", start, "-", end)]
