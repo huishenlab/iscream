@@ -42,6 +42,8 @@
 #' <https://arma.sourceforge.net/docs.html#stats_fns> for futher details on the
 #' supported functions
 #'
+#' @importFrom methods is
+#'
 #' @return A data.frame
 #'
 #' @export

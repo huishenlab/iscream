@@ -41,6 +41,8 @@
 #'
 #' @return A data.frame
 #'
+#' @importFrom methods is
+#'
 #' @export
 #'
 #' @examples

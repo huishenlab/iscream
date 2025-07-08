@@ -27,6 +27,7 @@ Imports:
     Rcpp,
     Matrix,
     data.table,
+    methods,
     parallelly,
     stringfish
 Suggests:

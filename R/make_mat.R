@@ -33,6 +33,7 @@
 #' "start", and "end" columns.
 #'
 #' @importFrom Matrix drop0
+#' @importFrom methods is
 #'
 #' @export
 #' @examples

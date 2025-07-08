@@ -37,6 +37,7 @@
 #' the data.
 #'
 #' @importFrom Matrix drop0
+#' @importFrom methods is
 #'
 #' @export
 #' @examples
