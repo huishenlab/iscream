@@ -18,12 +18,12 @@ void htslib_version() {
     Rprintf("%s\n", hts_feature_string());
 }
 
-//' Query a genomic interval from a opened htsFile and return the reads in it
-//'
-//' @param region Genomic region string in the form "chr:start-end"
-//' @param bedFile The opened htslib bed file stream
-//' @param tbx The bed file's tab-index
-//' @returns A vector of strings from the matching region of the bed file
+// Query a genomic interval from a opened htsFile and return the reads in it
+//
+// @param region Genomic region string in the form "chr:start-end"
+// @param bedFile The opened htslib bed file stream
+// @param tbx The bed file's tab-index
+// @returns A vector of strings from the matching region of the bed file
 std::vector<std::string> tabix_query(
     const std::string& region,
     htsFile* bedFile, tbx_t* tbx
@@ -47,11 +47,11 @@ std::vector<std::string> tabix_query(
     return reads;
 }
 
-//' Get reads from multiple genomic regions from a tabixed bed file
-//'
-//' @param bedfile The name of the bed file - must have a corresponding tabix
-//' file with the same name and .tbi extension
-//' @param regions A vector of region strings in the form "chr:start-end"
+// Get reads from multiple genomic regions from a tabixed bed file
+//
+// @param bedfile The name of the bed file - must have a corresponding tabix
+// file with the same name and .tbi extension
+// @param regions A vector of region strings in the form "chr:start-end"
 std::vector<RegionQuery> query_intervals(
     const char* bedfile,
     const std::vector<std::string>& regions
@@ -73,11 +73,10 @@ std::vector<RegionQuery> query_intervals(
     return all_reads;
 }
 
-//' Query the chromosomes or seqnames from a vector of files
-//' @param bedfile_vec The vector of bedfile paths
-//' @return A vector of seqnames
-//'
-//' @keywords internal
+// Query the chromosomes or seqnames from a vector of files
+// @param bedfile_vec The vector of bedfile paths
+// @return A vector of seqnames
+//
 // [[Rcpp::export]]
 std::set<std::string> Cpp_query_chroms(const std::vector<std::string>& bedfile_vec, const int nthreads) {
     std::set<std::string> seqnames;
@@ -103,13 +102,14 @@ std::set<std::string> Cpp_query_chroms(const std::vector<std::string>& bedfile_v
     return seqnames;
 }
 
-//' Get reads from a single genomic region from one tabixed bed file to return as CharacterVector
-//'
-//' @param bedfile The name of the bed file - must have a corresponding tabix
-//' file with the same name and .tbi extension
-//' @param regions A vector of region strings in the form "chr:start-end"
-//'
-//' @keywords internal
+// Get reads from a single genomic region from one tabixed bed file to return as CharacterVector
+//
+// @param bedfile The name of the bed file - must have a corresponding tabix
+// file with the same name and .tbi extension
+// @param regions A vector of region strings in the form "chr:start-end"
+//
+// @return Vector of records
+//
 // [[Rcpp::export]]
 Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::vector<std::string>& regions) {
     const char* fname = bedfile.c_str();
@@ -136,13 +136,14 @@ Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::
     return out;
 }
 
-//' Get namde list of reads from a single genomic region from one tabixed bed file
-//'
-//' @param bedfile The name of the bed file - must have a corresponding tabix
-//' file with the same name and .tbi extension
-//' @param regions A vector of region strings in the form "chr:start-end"
-//'
-//' @keywords internal
+// Get namde list of reads from a single genomic region from one tabixed bed file
+//
+// @param bedfile The name of the bed file - must have a corresponding tabix
+// file with the same name and .tbi extension
+// @param regions A vector of region strings in the form "chr:start-end"
+//
+// @return Named list of records, input regions as names
+//
 // [[Rcpp::export]]
 Rcpp::List scan_tabix(const std::string& bedfile, const std::vector<std::string>& regions) {
     const char* fname = bedfile.c_str();

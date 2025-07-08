@@ -26,8 +26,7 @@ get_threads <- function() {
   c("use_threads" = opt_threads, "opt_set" = TRUE, "avail_threads" = avail_threads)
 }
 
-#' Get the number of threads to use in functions from param or option
-#' @keywords internal
+# Get the number of threads to use in functions from param or option
 .get_threads <- function(nthreads) {
   ifelse(
     is.null(nthreads),
@@ -110,7 +109,9 @@ check_thread_count <- function(
   avail_threads = availableCores(),
   opt_set = FALSE
 ) {
-  if (n_threads <= avail_threads) return(n_threads)
+  if (n_threads <= avail_threads) {
+    return(n_threads)
+  }
   if (opt_set) {
     msg <- paste0("The `iscream.threads` option is set to ", n_threads, " threads but your")
   } else {

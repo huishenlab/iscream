@@ -6,20 +6,15 @@
 #include <omp.h>
 #endif
 
-//' Get the number of available threads from OpenMP.
-//'
-//' This queries the number of available threads usign OpenMP, but will not
-//' reliably provide an accurate available thread count. To get a more reliable
-//' count that accounts for environment variables and HPC schedulers, use
-//' get_threads()`. This function was pulled from
-//' github.com/rdatatable/data.table
-//' @param verbose Whether to be verbose on available omp threads
-//'
-//' @keywords internal
-//' @export
-//'
-//' @examples
-//' get_omp_threads(verbose = TRUE)
+// Get the number of available threads from OpenMP.
+//
+// This queries the number of available threads usign OpenMP, but will not
+// reliably provide an accurate available thread count. To get a more reliable
+// count that accounts for environment variables and HPC schedulers, use
+// get_threads()`. This function was pulled from
+// github.com/rdatatable/data.table
+// @param verbose Whether to be verbose on available omp threads
+//
 // [[Rcpp::export]]
 int get_omp_threads(bool verbose) {
     if (verbose) {
