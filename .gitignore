@@ -13,9 +13,19 @@ R/_*
 data
 pileup
 testdata/*
+_test*
+_data*
+
+**/.Rprofile
 
 # R files
  _test*
 _libs/*
 .Rhistory
 docs
+.Rhistory
+.Rprofile
+
+# dev
+.direnv/*
+.envrc
