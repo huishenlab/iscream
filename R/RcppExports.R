@@ -76,6 +76,8 @@ get_log_level <- function() {
 #' correspond to the htslib version used during iscream's installation if a
 #' different htslib version is available for linking at runtime.
 #'
+#' @return None
+#'
 #' @examples
 #' htslib_version()
 #'
@@ -107,6 +109,8 @@ scan_tabix <- function(bedfile, regions) {
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
+#' @return A list of one or two matrices, chromosome, position, and filename vectors
+#'
 #' @keywords internal
 Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, prealloc, nthreads) {
     .Call(`_iscream_Cpp_query_all`, bedfiles, regions, aligner, valInd, merged, sparse, prealloc, nthreads)
@@ -133,6 +137,8 @@ Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, pr
 #' The optimal number of threads depends on the number of bedfiles, but is set
 #' to half the available OpenMP cores. See `?get_threads` for more details. It
 #' can be manaully set with `set_threads()`.
+#'
+#' @return A summary data.frame
 #'
 #' @keywords internal
 Cpp_summarize_regions <- function(bedfiles, regions, fun_vec, col_indices, col_names, aligner, mval = FALSE, region_rownames = FALSE, nthreads = 1L) {

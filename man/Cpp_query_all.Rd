@@ -32,6 +32,9 @@ Cpp_query_all(
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
 }
+\value{
+A list of one or two matrices, chromosome, position, and filename vectors
+}
 \description{
 Query all CpG info into M and coverage matrices
 }

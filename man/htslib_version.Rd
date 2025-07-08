@@ -6,6 +6,9 @@
 \usage{
 htslib_version()
 }
+\value{
+None
+}
 \description{
 Returns the version of htslib being used by iscream and whether features
 such as libdeflate support are available. This information may not always

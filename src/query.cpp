@@ -8,6 +8,8 @@
 //' correspond to the htslib version used during iscream's installation if a
 //' different htslib version is available for linking at runtime.
 //'
+//' @return None
+//'
 //' @examples
 //' htslib_version()
 //'

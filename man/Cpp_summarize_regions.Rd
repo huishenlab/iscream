@@ -37,6 +37,9 @@ column is set to the names and the rownames are set to the regions string}
 
 \item{nthreads}{Number of cores to use. See details.}
 }
+\value{
+A summary data.frame
+}
 \description{
 This function should be called from \code{summarize_regions()} since there are few
 sanity checks on the C++ side.
