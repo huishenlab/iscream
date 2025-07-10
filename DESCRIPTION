@@ -36,6 +36,7 @@ Suggests:
     ggridges,
     rmarkdown,
     GenomicRanges,
+    IRanges,
     SummarizedExperiment,
     S4Vectors,
     testthat (>= 3.0.0)

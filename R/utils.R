@@ -83,3 +83,10 @@ get_df_from_string <- function(regions) {
     start := as.integer(start)
   ]
 }
+
+# Get GRanges from chr and pos vector
+getGR <- function(chr, pos) {
+  if (requireNamespace("GenomicRanges", quietly = TRUE)) {
+    GenomicRanges::GRanges(chr, IRanges::IRanges(pos, pos, width = 1))
+  }
+}

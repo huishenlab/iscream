@@ -83,13 +83,13 @@ make_mat <- function(
   )
 
   if (make_gr & requireNamespace("GenomicRanges", quietly = TRUE)) {
-    gr <- GenomicRanges::GRanges(mat$chr, mat$pos)
+    gr <- getGR(mat$chr, mat$pos)
     GenomicRanges::mcols(gr) <- mat$M
     gr
   } else if (make_se & requireNamespace("SummarizedExperiment", quietly = TRUE)) {
     matlist <- list(mat$M)
     names(matlist) <- mat_name
-    gr <- GenomicRanges::GRanges(mat$chr, mat$pos)
+    gr <- getGR(mat$chr, mat$pos)
     SummarizedExperiment::SummarizedExperiment(assays = matlist, rowRanges = gr)
   } else {
     names(mat)[which(names(mat) == "M")] <- mat_name
