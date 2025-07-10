@@ -68,7 +68,7 @@ summarize_regions <- function(
   bedfiles,
   regions,
   columns,
-  col_names,
+  col_names = NULL,
   fun = "all",
   feature_col = NULL,
   set_region_rownames = FALSE,
@@ -89,6 +89,8 @@ summarize_regions <- function(
       fun_to_use <- fun
     }
   }
+
+  col_names <- col_names %||% paste0("V", seq_len(length(columns)))
 
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   if (is(regions, "GRanges")) {
