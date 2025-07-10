@@ -1,0 +1,181 @@
+---
+title: "Improving iscream performance"
+name: James Eapen
+output:
+  BiocStyle::html_document:
+    toc_float: true
+abstract: >
+  A guide to improving iscream's runtime and memory efficiency
+vignette: >
+  %\VignetteIndexEntry{Improving iscream performance}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: refs.bib
+link-citations: yes
+date: 10 July 2025
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Setup
+
+### Input BED files
+
+Running this vignette requires downloading 2GB of single-cell whole genome
+bisulfite sequencing (WGBS) BED files and tabix indices from this Zenodo
+record: <https://zenodo.org/records/14733834>.
+
+```{r download_data, eval = FALSE}
+snmc_zip_path <- tempfile("snmcseq2")
+snmc_dir <- tempdir()
+download.file(
+    "https://zenodo.org/records/14733834/files/sc_beds.zip",
+    destfile = snmc_zip_path
+)
+unzip(snmc_zip_path, exdir = snmcseq2_dir)
+
+genes_file <- tempfile("genes")
+download.file(
+    "https://zenodo.org/records/14733834/files/genes.bed",
+    destfile = genes_file
+)
+```
+
+100 human cell WGBS data from the snmC-seq2 [@luo2018a] dataset:
+
+```{r}
+bedfiles <- list.files(
+  snmc_dir,
+  pattern = "*.bed.gz$",
+  full.names = TRUE
+)[1:100]
+```
+
+### Regions
+
+Here we'll be using 5000 gene body regions as the input:
+
+```{r}
+library(data.table)
+regions <- fread(
+  genes_file,
+  col.names = c("chr", "start", "end", "gene")
+)[1:5000]
+head(regions)
+```
+
+## Multithreading
+
+iscream uses multithreading to reduce querying runtime. The number of threads
+can be set before or after loading the library. iscream will read the option
+while loading and so can be set in `.Rprofile`
+
+```{r}
+options("iscream.threads" = 8)
+library(iscream)
+```
+
+Queries are parallelized across the input BED files. While this reduces
+runtime, it increases memory usage as data from multiple files are loaded into
+memory at the same time. For more information on multithreading and its
+considerations see `?set_threads()`.
+
+### `tabix()`
+
+`tabix()` queries regions from BED files much like the *tabix* shell command,
+but supports multiple files and can query them in parallel. Although fast,
+`tabix()` may seem unresponsive on large queries as `parallel::mclapply()`
+doesn't show progression, but a progress bar is in development.
+
+iscream has two `tabix()` implementations, one using the command line `tabix`
+executable and the other using the htslib API. The command line tool is faster
+as it can stream to a file and for reading in R while the htslib API stores the
+strings in memory and is slower. iscream will look for the tabix executable on
+startup and will only fall back to the htslip API if the executable is not
+found. See `?tabix()` details for more information.
+
+```{r}
+qt <- system.time(
+  tbx_query <- tabix(bedfiles, regions, col.names = c("beta", "coverage"))
+)
+tbx_query
+```
+
+On 8 threads, retrieving `r prettyNum(nrow(tbx_query), big.mark = ",")` records
+across `r length(bedfiles)` files took `r qt['elapsed']` seconds.
+
+### `summarize_regions`
+
+To get a summary of the information of the gene bodies use `summarize_regions`,
+providing the gene name column as the feature column:
+
+```{r}
+qt <- system.time(
+  summary_query <- summarize_regions(
+    bedfiles,
+    regions,
+    columns = 4,
+    col_names = "beta",
+    feature_col = "gene"
+  )
+)
+head(summary_query)
+```
+
+On 8 threads, summarizing the `r prettyNum(nrow(tbx_query), big.mark = ",")`
+records across all `r length(bedfiles)` files took `r qt['elapsed']` seconds.
+As with `tabix()`, runtime reduces and memory usage increases with increasing
+thread counts.
+
+### `make_mat`
+
+The `make_mat()` function queries and stores every locus within the input
+regions across input files. Unlike `summarize_regions()` the output matrix
+dimensions are unknown at runtime. Although usually quite fast, if the locus
+count is very large and there are few overlaps in the loci between files, this
+can take a long time. Here, gene bodies are large and the final matrix can
+contain millions of loci. Further, with sparse data, chances are new loci are
+found in every file.
+
+Preallocating the number of rows, however, can drastically reduce runtime.
+Since we got 45 million loci/CpGs from all the BED files with the tabix query
+above, we can expect approximately between 5 and 10 million unique loci as
+single-cell data has lower coverage than bulk. We already have the tabix query
+so we can get the unique CpG count here and use it to preallocate the matrix,
+reducing the number of matrix resizes. We'll add 100,000 extra on top of the
+existing count to be safe since every avoided resize cuts off at least a couple
+seconds from the runtime. Making tabix queries can be a relatively quick way to
+approximate the CpG count of a dataset. If you haven't done a tabix query of
+the full dataset, you can approximate how many CpGs to expect based on CpG
+counts in one file and the coverage of your WGBS method. Here we make a matrix
+of the beta-values in the 4th column:
+
+```{r}
+cpg.count <- tbx_query$start |> unique() |> length()
+qt <- system.time(meth_mat <- make_mat(
+  bedfiles,
+  regions,
+  column = 4,
+  sparse = TRUE,
+  prealloc = cpg.count + 1e5
+))
+meth_mat
+```
+
+Making this `r dim(meth_mat) |> prettyNum(big.mark=',') |> paste(collapse=' x ')`
+matrix took `r qt['elapsed']` seconds.
+
+## Session info
+
+```{r session}
+sessionInfo()
+```
+
+## References
+
+<!-- vim: set filetype=rmd: -->

@@ -52,6 +52,7 @@ articles:
 - title: Articles
   navbar: ~
   contents:
+    - performance
     - data_structures
     - TSS
     - tabix
