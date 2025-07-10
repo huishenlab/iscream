@@ -1,6 +1,8 @@
 ---
 title: "Getting other data structures from iscream"
-output: rmarkdown::html_vignette
+output:
+  BiocStyle::html_document:
+    toc_float: true
 vignette: >
   %\VignetteIndexEntry{Getting other data structures from iscream}
   %\VignetteEngine{knitr::rmarkdown}
@@ -25,8 +27,9 @@ regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 library(GenomicRanges)
 ```
 
-GRanges can be used as the input to all of iscream's querying functions. The
-output of `tabix()` and `make_mat()`, `make_bsseq_mat()` can also be turned into GRanges.
+`r Biocpkg("GenomicRanges")` can be used as the input to all of iscream's
+querying functions. The output of `tabix()` and `make_mat()`, `make_bsseq_mat()`
+can also be turned into `GRanges`.
 
 ### From `tabix` queries
 
@@ -55,13 +58,15 @@ data frame to GenomicRanges.
 
 ### From `summarize_regions`
 
-With a named set of regions, you'll need to `set_region_rownames` as the input
-to create the GRanges object:
+With a named set of regions, or with `feature_col` set with a data frame of
+input regions, you'll need to `set_region_rownames` as the input to create the
+GRanges object:
 
 ```{r}
-(summary <- summarize_meth_regions(
+(summary <- summarize_regions(
   bedfiles,
   regions,
+  column = 4,
   set_region_rownames = TRUE,
   fun = c("sum", "mean"))
 )
@@ -77,38 +82,22 @@ input regions:
   unname(regions),
   fun = c("sum", "mean"))
 )
-GRanges(summary$feature, summary = summary[, -1])
+summary |> (function(.) GRanges(.$feature, summary = .[, -1]))()
 ```
 
+### From `make_mat`
 
-## Making SummarizedExperiment objects
-
-```{r, message=FALSE}
-library("SummarizedExperiment")
-```
-
-### From `make_mat()` or `make_bsseq_mat()` matrices
+`make_mat()` returns a `r Biocpkg("SummarizedExperiment")` by default but can
+return a `GRanges` object for dense matrices with `make_gr = TRUE`.
 
 ```{r}
-(mats <- make_bsseq_mat(bedfiles, regions))
-(mats.sparse <- make_bsseq_mat(bedfiles, regions, sparse = TRUE))
-gr <- GRanges(mats$chr, mats$pos)
-
-# dense
-SummarizedExperiment(assays = list(M = mats$M, Cov = mats$Cov), rowRanges = gr)
-
-# sparse
-SummarizedExperiment(
-  assays = list(M = mats.sparse$M, Cov = mats.sparse$Cov),
-  rowRanges = gr
-)
-
+make_mat(bedfiles, regions, column = 4, mat_name = "beta", make_gr = TRUE)
 ```
 
 ## Making `BSseq` objects
 
-A BSseq object is a type of SummarizedExperiment, but it cannot handle sparse
-matrices:
+A `r Biocpkg("bsseq")` object is a type of SummarizedExperiment, but it cannot
+handle sparse matrices:
 
 ```{r, eval=FALSE}
 library(bsseq)
