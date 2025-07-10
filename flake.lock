@@ -20,16 +20,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1752079492,
-        "narHash": "sha256-/soJ/fZCQNR19BuDMEvplSsTju16vkp4oJ/0Uvb6AB4=",
-        "owner": "NixOS",
+        "lastModified": 1752150616,
+        "narHash": "sha256-4joE5kyoPi9igVCp2ppf4Du1zM6kmxFzupeQPRkDEBM=",
+        "owner": "rstats-on-nix",
         "repo": "nixpkgs",
-        "rev": "e4c377c1b8624a709f77c23330f2c0328fdc7776",
+        "rev": "4d75a96df4d3e4cf5855d19d9db8d34976411c06",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "release-25.05",
+        "owner": "rstats-on-nix",
+        "ref": "r-bioc-devel",
         "repo": "nixpkgs",
         "type": "github"
       }

@@ -1,6 +1,6 @@
 {
   description = "Flake to get iscream development environment";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/release-25.05";
+  inputs.nixpkgs.url = "github:rstats-on-nix/nixpkgs/r-bioc-devel";
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
   outputs = { self, nixpkgs, flake-utils }:
@@ -32,6 +32,8 @@
 
       rDevDeps = with pkgs.rPackages; [
         BiocCheck
+        BiocManager
+        BiocVersion
         covr
         devtools
         lobstr
