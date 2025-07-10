@@ -1,6 +1,8 @@
 ---
 title: "Plotting TSS methylation profiles"
-output: rmarkdown::html_vignette
+output:
+  BiocStyle::html_document:
+    toc_float: true
 vignette: >
   %\VignetteIndexEntry{Plotting TSS methylation profiles}
   %\VignetteEngine{knitr::rmarkdown}
@@ -35,7 +37,7 @@ using tools like *methscan* more efficiently. For example, using iscream,
 producing the plot of TSS methylation profiles can be done in R directly from
 tabixed BED files for both single-cell and bulk data.
 
-### Setup
+## Setup
 
 ```{r, message = FALSE}
 options("iscream.threads" = 8)
@@ -70,6 +72,8 @@ bedfiles <- list.files(
     full.names = TRUE
 )
 ```
+
+## Using `tabix()`
 
 ### Get the Transcription start sites and flanking regions
 
@@ -152,7 +156,7 @@ Total runtime, from getting the bedfiles and regions to making the query,
 calculating the summaries and plotting: `r total_runtime`. With methscan,
 generating the TSS methylation profiles alone took 11 seconds.
 
-### Using `summarize_regions`
+## Using `summarize_regions`
 
 A similar analysis can be done using the `summarize_regions()` function if you
 only need to see the distribution of beta means by sample, rather than means by
