@@ -23,6 +23,7 @@
       ];
 
       Suggests = with pkgs.rPackages; [
+        BiocStyle
         GenomicRanges
         ggplot2
         ggridges

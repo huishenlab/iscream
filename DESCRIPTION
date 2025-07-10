@@ -31,6 +31,7 @@ Imports:
     parallelly,
     stringfish
 Suggests:
+    BiocStyle,
     knitr,
     ggplot2,
     ggridges,
