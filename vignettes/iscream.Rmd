@@ -1,292 +1,247 @@
 ---
-title: "Getting started with iscream"
-output: rmarkdown::html_vignette
+title: "An introduction to iscream"
+author:
+- name: James Eapen
+  affiliation:
+  - Department of Epigenetics, Van Andel Institute, Grand Rapids, MI
+output:
+  BiocStyle::html_document:
+    toc_float: true
 vignette: >
-  %\VignetteIndexEntry{Getting started with iscream}
+  %\VignetteIndexEntry{An introduction to iscream}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-#bibliography: refs.bib
+bibliography: refs.bib
 link-citations: yes
 ---
 
+```{r, include=FALSE}
+options("datatable.print.nrows" = 50)
+library(BiocStyle)
+```
 
+## Introduction
 
-## Setup
+iscream is a BED file querying package that can can retrieve records from
+multiple [tabixed](https://en.wikipedia.org/wiki/Tabix) BED files based on a
+input regions of interest. It can make queries like tabix, summarize data from
+loci within the regions of interest and make matrices across input files and
+regions. All operations can be done in parallel and return R/Bioconductor data
+structures.
 
-### Loading *iscream*
+iscream was designed to be memory efficient and fast. For more information on
+performance considerations on large datasets see `vignette("performance")`.
 
-The number of threads can be set before or after loading the library:
+### Loading iscream
 
-
-``` r
-options("iscream.threads" = 8)
+```{r}
 library(iscream)
-#> iscream using 8 threads based on 'options(iscream.threads)' 
-#> but parallelly::availableCores() detects 16 possibly available threads.
-#> See `?set_threads` for information on multithreading before trying to use more.
+set_threads(2)
 ```
 
-### Input BED files
+On load, iscream will inform the user about the number if threads it is set to
+use. This is configurable with either `set_threads()` or by setting
+`option("iscream.threads")`, which can be done in your `.Rprofile` to set it on
+startup. Once loaded you use the following querying functions.
 
-Running this vignette requires downloading 2GB of single-cell whole genome
-bisulfite sequencing (WGBS) BED files and tabix indices from this Zenodo
-record: <https://zenodo.org/records/14733834>.
+## `tabix`
 
+tabix is a command-line tool that queries loci from compressed BED files. As
+input it receives the path to a tabixed BED file and one or more genomic regions
+of interest. The regions of interest may be passed in the `"chr:start-end"`
+format or as a BED file. Given these inputs, it prints the loci from the tabixed
+BED file that fall within the regions of interest. This output may be redirected
+to a file and read into R.
 
-``` r
-snmc_zip_path <- tempfile("snmcseq2")
-snmc_dir <- tempdir()
-download.file(
-    "https://zenodo.org/records/14733834/files/sc_beds.zip",
-    destfile = snmc_zip_path
-)
-unzip(snmc_zip_path, exdir = snmcseq2_dir)
+iscream's `tabix()` function works in a similar way but supports multiple files
+and multiple input formats all in one function. It receives a vector of paths to
+tabixed BED files and regions of interest. The input regions may be a vector of
+`"chr:start-end"` strings, a data frame with `"chr"`, `"start"`, and `"end"`
+columns or a `GRanges` object. It queries the BEDfiles and returns the loci as a
+parsed `r CRANpkg("data.table")`, or a `GRanges` object if the input is a
+`GRanges` object.
 
-genes_file <- tempfile("genes")
-download.file(
-    "https://zenodo.org/records/14733834/files/genes.bed",
-    destfile = genes_file
-)
+Using iscream eliminates context switching between the shell and R for tabix
+queries since the queries are made in R and the result is an R data structure.
+Rsamtools is another R package that can query data from BED files, but it only
+supports one file at a time and only accepts `GRanges` as the input regions. See
+`vignette("tabix")` for a comparison of iscream and Rsamtools.
+
+### Setup
+
+Using `list.files()`, you can get the paths to all compressed bed files in a
+directory. These files contain small regions from chromosome 1 and Y from the
+snmC-seq2 methylation data data [@luo2018a].
+
+```{r}
+data_dir <- system.file("extdata", package = "iscream")
+(bedfiles <- list.files(
+  data_dir,
+  pattern = "cell[1-5].bed.gz$",
+  full.names = TRUE))
 ```
 
+For demonstration, I'm using two regions.
 
-
-100 human cell WGBS data from the snmc-seq2 dataset:
-
-
-``` r
-bedfiles <- list.files(
-  snmc_dir,
-  pattern = "*.bed.gz$",
-  full.names = TRUE
-)[1:100]
-```
-### Regions
-
-Since *iscream* is a region-based querying tool, we need to load some regions.
-Here we'll be using 5000 gene body regions as the input:
-
-
-``` r
-library(data.table)
-regions <- fread(
-  genes_file,
-  col.names = c("chr", "start", "end", "gene")
-)[1:5000]
-head(regions)
-#>       chr    start      end   gene
-#>    <char>    <int>    <int> <char>
-#> 1:   chr1  1471764  1497848 ATAD3B
-#> 2:   chr1  3069167  3438621 PRDM16
-#> 3:   chr1  2403963  2413797  PEX10
-#> 4:   chr1 10472287 10630758  PEX14
-#> 5:   chr1  2425979  2505532  PLCH2
-#> 6:   chr1  9292893  9369532  SPSB1
+```{r}
+regions <- c("chr1:184577-680065", "chrY:56877780-56882524")
 ```
 
-## Running iscream
+**Note**: in this dataset the chromosome identifier is in a "chr[number]"
+format. However, in some datasets, the chromosome ID is just a number or a
+letter like '1', or 'Y'. To see the chromosome ID format across your files you
+can use `query_chroms()` to get all unique chromosomes across all input files:
 
-### Make tabix queries
-
-The `tabix()` function can be used to query regions from BED files much like
-the *tabix* shell command. It returns the queried lines from the BED files,
-parsed into columns, as a `data.table`. `tabix()` is a generic BED files query
-function. It has support for the BISCUIT, Bismark, and BSBolt aligners, set
-with the `aligner` argument, to correctly set column names in the output.
-
-If multiple input files are provided, they are queried in parallel. If `raw =
-TRUE`, `tabix()` will return the same data as `Rsamtools::scanTabix()` does - a
-named list of strings. For large queries, `tabix()` may currently seem
-unresponsive, but a progress bar is in development to show its progress.
-
-
-``` r
-system.time(tbx_query <- tabix(bedfiles, regions, col.names = c("beta", "coverage")))
-#>    user  system elapsed 
-#>  29.272   7.398  10.178
+```{r}
+query_chroms(bedfiles)
 ```
 
-``` r
-tbx_query
-#>              chr     start       end  beta coverage            file
-#>           <char>     <int>     <int> <num>    <int>          <char>
-#>        1:   chr1    923949    923950 0.000        1 bisc_SRR6911624
-#>        2:   chr1    923953    923954 0.000        1 bisc_SRR6911624
-#>        3:   chr1    923959    923960 0.000        1 bisc_SRR6911624
-#>        4:   chr1    923971    923972 0.000        1 bisc_SRR6911624
-#>        5:   chr1    923973    923974 0.000        1 bisc_SRR6911624
-#>       ---                                                          
-#> 45733375:   chr4 190179369 190179370 0.000        2 bisc_SRR6911723
-#> 45733376:   chr4 190179686 190179687 1.000        1 bisc_SRR6911723
-#> 45733377:   chr4 190179687 190179688 0.500        2 bisc_SRR6911723
-#> 45733378:   chr4 190179753 190179754 1.000        1 bisc_SRR6911723
-#> 45733379:   chr4 190179754 190179755 0.333        3 bisc_SRR6911723
+### Making queries
+
+`tabix()` one file:
+
+```{r}
+tabix(bedfiles[1], regions)
 ```
 
-### Get summary data
+With multiple files, the output contains a column for the file name.
 
-To get a summary of the information of the gene bodies use `summarize_regions`,
-providing the gene name column as the feature column:
+```{r}
+tabix(bedfiles, regions)
+```
 
+### Using `GRanges`
 
-``` r
-system.time(summary_query <- summarize_regions(
+To get `r Biocpkg("GenomicRanges")` objects, use a `GRanges` object as the input regions, or call
+`GRanges()` on the output. With `GRanges` input, the output `ranges` are
+computed with `subsetByOverlaps`.
+
+```{r, message=FALSE}
+library(GenomicRanges)
+gr <- GRanges(regions)
+tabix(bedfiles, gr) |> makeGRangesFromDataFrame(keep.extra.columns = TRUE)
+```
+
+### Setting column names
+
+You can set the result data column names or the `GRanges` `mcols` with
+`col.names`:
+
+```{r}
+tabix(bedfiles, regions, col.names = c("beta", "coverage"))
+tabix(bedfiles, gr, col.names = c("beta", "coverage")) |> makeGRangesFromDataFrame(keep.extra.columns = TRUE)
+```
+
+### Rsamtools-style output
+
+`tabix()` also has a `raw` argument if you want an unparsed named list like
+Rsamtools, but with multi-file support:
+
+```{r}
+tabix(bedfiles, regions, raw = TRUE)
+```
+
+### WGBS BED files
+
+Since iscream was originally developed to read Whole Genome Bisulfite Sequencing
+data, it has the `aligner` argument for automatically setting column names for
+the BISCUIT [@zhou2024], Bismark [@krueger2011], and BSBolt [@farrell2021].
+
+## `summarize_regions`
+
+Using the same bedfiles and regions, iscream can also summarize the data per
+region. This requires providing the index of the data columns you want
+summarized and their column names. By default, all summarizing functions are run
+on each input column:
+
+- Sum: `"sum"`
+- Mean: `"mean"`
+- Median: `"median"`
+- Standard deviation: `"stddev"`
+- Variance: `"variance"`
+- Minimum: `"min"`
+- Maximum: `"max"`
+- Range: `"range"`
+- No. of records in the region: `"count"`
+
+```{r}
+summarize_regions(
   bedfiles,
   regions,
-  columns = 4,
-  col_names = "beta",
-  feature_col = "gene")
-)
-#> [15:59:49.032602] [iscream::summarize_regions] [info] Summarizing 5000 regions from 100 bedfiles
-#> [15:59:49.032651] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count
-#> [15:59:49.032653] [iscream::summarize_regions] [info] with columns 4 as beta
-#>    user  system elapsed 
-#>  27.525   0.536   5.107
-```
-
-``` r
-head(summary_query)
-#>   feature            file beta.sum beta.mean beta.median beta.stddev
-#> 1  ATAD3B bisc_SRR6911624   85.000 0.8585859           1   0.3502215
-#> 2  PRDM16 bisc_SRR6911624  723.500 0.5288743           1   0.4976973
-#> 3   PEX10 bisc_SRR6911624   15.000 0.2419355           0   0.4317514
-#> 4   PEX14 bisc_SRR6911624  198.000 0.7764706           1   0.4174294
-#> 5   PLCH2 bisc_SRR6911624  184.333 0.7228745           1   0.4474832
-#> 6   SPSB1 bisc_SRR6911624   64.000 0.8648649           1   0.3442015
-#>   beta.variance beta.min beta.max beta.range count
-#> 1     0.1226551        0        1          1    99
-#> 2     0.2477026        0        1          1  1368
-#> 3     0.1864093        0        1          1    62
-#> 4     0.1742473        0        1          1   255
-#> 5     0.2002412        0        1          1   255
-#> 6     0.1184746        0        1          1    74
-```
-
-Alternatively to use the methylation-specific `summarize_meth_regions()`
-function:
-
-
-``` r
-system.time(summary_query <- summarize_meth_regions(
-  bedfiles,
-  regions,
-  feature_col = "gene")
+  columns = c(4, 5),
+  col_names = c("beta", "coverage")
 )
 ```
 
-### Build matrices
-
-The `make_mat()` function queries and stores every locus within the input
-regions across input files. Unlike `summarize_regions()` the output matrix
-dimensions are unknown at runtime. Although usually quite fast, if the locus
-count is very large and there are few overlaps in the loci between files, this
-can take a long time. Here, gene bodies are large and the final matrix can
-contain millions of loci. Further, with sparse data, chances are new loci are
-found in every file.
-
-Preallocating the number of rows, however, can drastically reduce runtime.
-Since we got 45 million loci/CpGs from all the BED files with the tabix query
-above, we can expect approximately between 5 and 10 million unique loci as
-single-cell data has lower coverage than bulk. We already have the tabix query
-so we can get the unique CpG count here and use it to preallocate the matrix,
-reducing the number of matrix resizes. We'll add 100,000 extra on top of the
-existing count to be safe since every avoided resize cuts off at least a couple
-seconds from the runtime. Making tabix queries can be a relatively quick way to
-approximate the CpG count of a dataset. If you haven't done a tabix query of
-the full dataset, you can approximate how many CpGs to expect based on CpG
-counts in one file and the coverage of your WGBS method. Here we make a matrix
-of the beta-values in the 4th column:
+The `feature` column here contains the genomic region coordinates, but can be
+set to something more informational if you have named regions. You can also
+select function with `fun`:
 
 
-``` r
-cpg.count <- tbx_query$start |> unique() |> length()
-system.time(meth_mat <- make_mat(
+```{r}
+names(regions) <- c("R1", "R2")
+summarize_regions(
   bedfiles,
   regions,
-  column = 4,
-  sparse = TRUE,
-  prealloc = cpg.count + 1e5
-))
-#> [15:59:56.450308] [iscream::query_all] [info] Querying 5000 regions from 100 bedfiles
-#> 
-#> [16:00:40.571982] [iscream::query_all] [info] Creating metadata vectors
-#> [16:00:40.867558] [iscream::query_all] [info] 7276107 loci found - 16250 extra rows allocated with 0 resizes
-#> [16:00:44.217883] [iscream::query_all] [info] Creating sparse matrix
-#>    user  system elapsed 
-#> 335.525   1.186  47.981
-```
-
-``` r
-str(meth_mat)
-#> List of 4
-#>  $ value      :Formal class 'dgCMatrix' [package "Matrix"] with 6 slots
-#>   .. ..@ i       : int [1:32627134] 9 11 12 13 14 15 16 17 18 19 ...
-#>   .. ..@ p       : int [1:101] 0 157256 362760 626888 904511 1158005 1437240 1729046 2014168 2231683 ...
-#>   .. ..@ Dim     : int [1:2] 7276107 100
-#>   .. ..@ Dimnames:List of 2
-#>   .. .. ..$ : NULL
-#>   .. .. ..$ : chr [1:100] "bisc_SRR6911624" "bisc_SRR6911625" "bisc_SRR6911626" "bisc_SRR6911627" ...
-#>   .. ..@ x       : num [1:32627134] 1 1 1 1 1 1 1 1 1 1 ...
-#>   .. ..@ factors : list()
-#>  $ pos        : int [1:7276107] 1472309 1472386 1472390 1472394 1472407 1472414 1472439 1472489 1472503 1473922 ...
-#>  $ chr        : chr [1:7276107] "chr1" "chr1" "chr1" "chr1" ...
-#>  $ sampleNames: chr [1:100] "bisc_SRR6911624" "bisc_SRR6911625" "bisc_SRR6911626" "bisc_SRR6911627" ...
-```
-
-The output of `make_mat()` is a named list containing a matrix of beta values
-and vectors of the sample names, chromosome names and positions of the loci.
-
-If you want to make a BSseq object, you can use `make_bsseq_mat()` which makes
-both beta/M-value and coverage value matrices. Its output can be used to
-produce a BSseq object. However since BSseq cannot work with sparse matrices,
-the two matrices would need to be converted to dense matrices first.
-
-
-``` r
-meth_mat <- make_bsseq_mat(
-  bedfiles,
-  regions,
-  sparse = TRUE,
-  prealloc = cpg.count + 1e5
+  fun = c("mean", "sum"),
+  columns = 5,
+  col_names = "coverage"
 )
-bs <- do.call(BSseq, meth_mat)
 ```
+
+### WGBS BED files
+
+For WGBS data specifically, you can use `summarize_meth_regions()`, which takes
+the `aligner` argument to correctly parse the columns.
+
+```{r}
+summarize_meth_regions(
+  bedfiles,
+  regions,
+  fun = c("mean", "sum")
+)
+```
+
+
+## `make_mat`
+
+`make_mat` makes a matrix where every row is a locus found in at least one input
+file and the columns are the input files. It returns a `r Biocpkg("RangedSummarizedExperiment")`
+by default, but can also return a `GRanges` object or a named list of the
+matrix, coordinates, and file names.
+
+```{r, message=FALSE}
+library(SummarizedExperiment)
+mat <- make_mat(bedfiles, regions, column = 4, mat_name = "beta")
+head(assay(mat), 10)
+```
+
+If you have sparse data, you can save memory with `sparse = TRUE`
+
+```{r}
+mat <- make_mat(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
+head(assay(mat), 10)
+```
+
+### WGBS BED files
+
+For a `r Biocpkg("BSseq")` compatible object, use `make_meth_mat` which returns
+a list of BSseq inputs. To make the `BSseq` object run
+
+```{r, eval=FALSE}
+meth_mat <- make_mat(bedfiles, regions)
+do.call(BSseq, meth_mat)
+```
+
+For more information on the supported Bioconductor data structures see
+`r Biocpkg("iscream", "data_structures")`. An example workflow using
+iscream to examine transcription start site methylation is at
+`r Biocpkg("iscream", "TSS")`.
 
 ## Session info
 
-
-``` r
+```{r}
 sessionInfo()
-#> R version 4.4.3 (2025-02-28)
-#> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.2 LTS
-#> 
-#> Matrix products: default
-#> BLAS/LAPACK: /nix/store/6kknwpcf8fl7ihkkxmdb6p764kdn443n-blas-3/lib/libblas.so.3;  LAPACK version 3.12.0
-#> 
-#> locale:
-#>  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-#>  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-#>  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-#>  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-#>  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-#> [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-#> 
-#> time zone: America/Detroit
-#> tzcode source: system (glibc)
-#> 
-#> attached base packages:
-#> [1] stats     graphics  grDevices utils     datasets  methods   base     
-#> 
-#> other attached packages:
-#> [1] data.table_1.17.0  iscream_0.1.0.9000
-#> 
-#> loaded via a namespace (and not attached):
-#>  [1] compiler_4.4.3      parallelly_1.42.0   Matrix_1.7-2       
-#>  [4] parallel_4.4.3      tools_4.4.3         Rcpp_1.0.14        
-#>  [7] grid_4.4.3          knitr_1.47          xfun_0.51          
-#> [10] RcppParallel_5.1.10 stringfish_0.16.0   lattice_0.22-6     
-#> [13] evaluate_0.24.0
 ```
 
-<!-- vim: set filetype=rmd: -->
+## References
