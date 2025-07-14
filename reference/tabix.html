@@ -65,6 +65,7 @@
 <span>  col.names <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  zero_based <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  raw <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  grlist <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  nthreads <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -104,6 +105,11 @@ used when coverting the result data frame to GenomicRanges.</p></dd>
 the style of <code>Rsamtools::scanTabix</code> instead of a data.table</p></dd>
 
 
+<dt id="arg-grlist">grlist<a class="anchor" aria-label="anchor" href="#arg-grlist"></a></dt>
+<dd><p>Whether to return a GRangesList or a single GRanges object
+when querying multiple files</p></dd>
+
+
 <dt id="arg-nthreads">nthreads<a class="anchor" aria-label="anchor" href="#arg-nthreads"></a></dt>
 <dd><p>Set number of threads to use overriding the
 <code>"iscream.threads"</code> option. See <code><a href="set_threads.html">?set_threads</a></code> for more information.</p></dd>
@@ -111,7 +117,7 @@ the style of <code>Rsamtools::scanTabix</code> instead of a data.table</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data.table</p>
+    <p>A data frame or <code>GRanges</code> if the input was <code>GRanges</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
