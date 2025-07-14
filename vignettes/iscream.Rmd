@@ -15,7 +15,7 @@ bibliography: refs.bib
 link-citations: yes
 ---
 
-```{r, include=FALSE}
+```{r setup, include=FALSE}
 options("datatable.print.nrows" = 50)
 library(BiocStyle)
 ```
@@ -34,7 +34,7 @@ performance considerations on large datasets see `vignette("performance")`.
 
 ### Loading iscream
 
-```{r}
+```{r load_iscream}
 library(iscream)
 set_threads(2)
 ```
@@ -73,7 +73,7 @@ Using `list.files()`, you can get the paths to all compressed bed files in a
 directory. These files contain small regions from chromosome 1 and Y from the
 snmC-seq2 methylation data data [@luo2018a].
 
-```{r}
+```{r load_data}
 data_dir <- system.file("extdata", package = "iscream")
 (bedfiles <- list.files(
   data_dir,
@@ -83,7 +83,7 @@ data_dir <- system.file("extdata", package = "iscream")
 
 For demonstration, I'm using two regions.
 
-```{r}
+```{r make_regions}
 regions <- c("chr1:184577-680065", "chrY:56877780-56882524")
 ```
 
@@ -92,7 +92,7 @@ format. However, in some datasets, the chromosome ID is just a number or a
 letter like '1', or 'Y'. To see the chromosome ID format across your files you
 can use `query_chroms()` to get all unique chromosomes across all input files:
 
-```{r}
+```{r query_chroms}
 query_chroms(bedfiles)
 ```
 
@@ -100,13 +100,13 @@ query_chroms(bedfiles)
 
 `tabix()` one file:
 
-```{r}
+```{r tabix_one}
 tabix(bedfiles[1], regions)
 ```
 
 With multiple files, the output contains a column for the file name.
 
-```{r}
+```{r tabix_all}
 tabix(bedfiles, regions)
 ```
 
@@ -116,7 +116,7 @@ To get `r Biocpkg("GenomicRanges")` objects, use a `GRanges` object as the input
 `GRanges()` on the output. With `GRanges` input, the output `ranges` are
 computed with `subsetByOverlaps`.
 
-```{r, message=FALSE}
+```{r tabix_gr, message=FALSE}
 library(GenomicRanges)
 gr <- GRanges(regions)
 tabix(bedfiles, gr) |> makeGRangesFromDataFrame(keep.extra.columns = TRUE)
@@ -127,7 +127,7 @@ tabix(bedfiles, gr) |> makeGRangesFromDataFrame(keep.extra.columns = TRUE)
 You can set the result data column names or the `GRanges` `mcols` with
 `col.names`:
 
-```{r}
+```{r tabix_colnames}
 tabix(bedfiles, regions, col.names = c("beta", "coverage"))
 tabix(bedfiles, gr, col.names = c("beta", "coverage")) |> makeGRangesFromDataFrame(keep.extra.columns = TRUE)
 ```
@@ -137,7 +137,7 @@ tabix(bedfiles, gr, col.names = c("beta", "coverage")) |> makeGRangesFromDataFra
 `tabix()` also has a `raw` argument if you want an unparsed named list like
 Rsamtools, but with multi-file support:
 
-```{r}
+```{r tabix_raw}
 tabix(bedfiles, regions, raw = TRUE)
 ```
 
@@ -164,7 +164,7 @@ on each input column:
 - Range: `"range"`
 - No. of records in the region: `"count"`
 
-```{r}
+```{r summary}
 summarize_regions(
   bedfiles,
   regions,
@@ -178,7 +178,7 @@ set to something more informational if you have named regions. You can also
 select function with `fun`:
 
 
-```{r}
+```{r summary_named}
 names(regions) <- c("R1", "R2")
 summarize_regions(
   bedfiles,
@@ -194,7 +194,7 @@ summarize_regions(
 For WGBS data specifically, you can use `summarize_meth_regions()`, which takes
 the `aligner` argument to correctly parse the columns.
 
-```{r}
+```{r summarize_meth_regions}
 summarize_meth_regions(
   bedfiles,
   regions,
@@ -210,7 +210,7 @@ file and the columns are the input files. It returns a `r Biocpkg("RangedSummari
 by default, but can also return a `GRanges` object or a named list of the
 matrix, coordinates, and file names.
 
-```{r, message=FALSE}
+```{r make_mat, message=FALSE}
 library(SummarizedExperiment)
 mat <- make_mat(bedfiles, regions, column = 4, mat_name = "beta")
 head(assay(mat), 10)
@@ -218,7 +218,7 @@ head(assay(mat), 10)
 
 If you have sparse data, you can save memory with `sparse = TRUE`
 
-```{r}
+```{r sparse}
 mat <- make_mat(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
 head(assay(mat), 10)
 ```
@@ -240,7 +240,7 @@ iscream to examine transcription start site methylation is at
 
 ## Session info
 
-```{r}
+```{r si}
 sessionInfo()
 ```
 

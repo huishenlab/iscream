@@ -14,7 +14,7 @@ link-citations: yes
 The examples here show how iscream output can be converted into other data
 structures for further analysis.
 
-```{r}
+```{r setup}
 library(iscream)
 data_dir <- system.file("extdata", package = "iscream")
 bedfiles <- list.files(data_dir, pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
@@ -23,7 +23,7 @@ regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 
 ## GRanges
 
-```{r, message=FALSE}
+```{r gr, message=FALSE}
 library(GenomicRanges)
 ```
 
@@ -33,7 +33,7 @@ can also be turned into `GRanges`.
 
 ### From `tabix` queries
 
-```{r}
+```{r tabix}
 tabix(bedfiles[1], regions) |> GRanges()
 ```
 
@@ -42,7 +42,7 @@ If the input is already a `GRanges` object, `tabix()` will also return a
 returns a `GRangesList`. `tabix()` uses `findOverlaps()` to join input metadata
 with the queried data.
 
-```{r}
+```{r tabix_gr}
 gr <- GRanges(regions)
 values(gr) <- DataFrame(
     gene = c("gene1", "gene2", "gene3"),
@@ -62,7 +62,7 @@ With a named set of regions, or with `feature_col` set with a data frame of
 input regions, you'll need to `set_region_rownames` as the input to create the
 GRanges object:
 
-```{r}
+```{r summarize_regions}
 (summary <- summarize_regions(
   bedfiles,
   regions,
@@ -76,7 +76,7 @@ GRanges(rownames(summary), summary = summary)
 If the regions vector is not named, pass the `feature` column as the GRanges
 input regions:
 
-```{r}
+```{r summarize_meth_regions}
 (summary <- summarize_meth_regions(
   bedfiles,
   unname(regions),
@@ -90,7 +90,7 @@ summary |> (function(.) GRanges(.$feature, summary = .[, -1]))()
 `make_mat()` returns a `r Biocpkg("SummarizedExperiment")` by default but can
 return a `GRanges` object for dense matrices with `make_gr = TRUE`.
 
-```{r}
+```{r make_mat}
 make_mat(bedfiles, regions, column = 4, mat_name = "beta", make_gr = TRUE)
 ```
 
@@ -106,6 +106,6 @@ do.call(BSseq, mats)
 
 ## Session info
 
-```{r}
+```{r si}
 sessionInfo()
 ```
