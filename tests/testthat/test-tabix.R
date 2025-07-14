@@ -85,24 +85,28 @@ test_multi_tabix_dataframe <- function(htslib = FALSE) {
   }
   multi_tabix <- lapply(biscuit_tabix_beds, function(i) {
     tabix(i, regions)[,
-    file := tools::file_path_sans_ext(basename(i), compression = TRUE)
+      file := tools::file_path_sans_ext(basename(i), compression = TRUE)
     ]
-  }) |> rbindlist()
+  }) |>
+    rbindlist()
   multi_tabix_biscuit <- lapply(biscuit_tabix_beds, function(i) {
     tabix(i, regions, aligner = "biscuit")[,
-    file := tools::file_path_sans_ext(basename(i), compression = TRUE)
+      file := tools::file_path_sans_ext(basename(i), compression = TRUE)
     ]
-  }) |> rbindlist()
+  }) |>
+    rbindlist()
   multi_tabix_bismark <- lapply(bismark_tabix_beds, function(i) {
     tabix(i, regions, aligner = "bismark")[,
-    file := tools::file_path_sans_ext(basename(i), compression = TRUE)
+      file := tools::file_path_sans_ext(basename(i), compression = TRUE)
     ]
-  }) |> rbindlist()
+  }) |>
+    rbindlist()
   multi_tabix_custom <- lapply(biscuit_tabix_beds, function(i) {
     tabix(i, regions, col.names = c("1", "2"))[,
-    file := tools::file_path_sans_ext(basename(i), compression = TRUE)
+      file := tools::file_path_sans_ext(basename(i), compression = TRUE)
     ]
-  }) |> rbindlist()
+  }) |>
+    rbindlist()
 
   expect_equal(
     tabix(biscuit_tabix_beds, regions),
@@ -135,6 +139,24 @@ test_that("tabix multi query with htslib", {
   test_multi_tabix_dataframe(htslib = TRUE)
 })
 
+test_that("tabix multi GR(List)", {
+  grl <- GenomicRanges::GRangesList(
+    lapply(seq_len(length(biscuit_tabix_beds)), function(bed) {
+      res <- tabix(biscuit_tabix_beds[bed], gr)
+      GenomicRanges::mcols(res)$file <- letters[bed]
+      res
+    })
+  )
+  names(grl) <- c(letters[1:4])
+
+  res <- tabix(biscuit_tabix_beds, gr)
+  expect_s4_class(res, "CompressedGRangesList")
+  expect_equal(names(res), letters[1:4])
+  expect_equal(res, grl)
+
+  res <- tabix(biscuit_tabix_beds, gr, grlist = FALSE)
+  expect_s4_class(res, "GRanges")
+})
 
 # test colnames
 base_colnames <- c("chr", "start", "end")
@@ -174,9 +196,9 @@ test_that("tabix mergecg colnames", {
 
 # test raw output
 tabix_raw_res <- list(
-    `chr1:1-6` =  c("chr1\t2\t4\t1.000\t2"),
-    `chr1:7-10` = c("chr1\t6\t8\t0.000\t2", "chr1\t8\t10\t1.000\t1"),
-    `chr1:11-14` = character(0)
+  `chr1:1-6` = c("chr1\t2\t4\t1.000\t2"),
+  `chr1:7-10` = c("chr1\t6\t8\t0.000\t2", "chr1\t8\t10\t1.000\t1"),
+  `chr1:11-14` = character(0)
 )
 
 test_that("tabix raw list", {

@@ -11,6 +11,7 @@ tabix(
   col.names = NULL,
   zero_based = TRUE,
   raw = FALSE,
+  grlist = TRUE,
   nthreads = NULL
 )
 }
@@ -33,6 +34,9 @@ used when coverting the result data frame to GenomicRanges.}
 
 \item{raw}{Set true to give a named list of raw strings from the regions in
 the style of \code{Rsamtools::scanTabix} instead of a data.table}
+
+\item{grlist}{Whether to return a GRangesList or a single GRanges object
+when querying multiple files}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}

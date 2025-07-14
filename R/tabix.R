@@ -12,6 +12,8 @@
 #' used when coverting the result data frame to GenomicRanges.
 #' @param raw Set true to give a named list of raw strings from the regions in
 #' the style of `Rsamtools::scanTabix` instead of a data.table
+#' @param grlist Whether to return a GRangesList or a single GRanges object
+#' when querying multiple files
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
@@ -67,6 +69,7 @@ tabix <- function(
   col.names = NULL,
   zero_based = TRUE,
   raw = FALSE,
+  grlist = TRUE,
   nthreads = NULL
 ) {
   verify_files_or_stop(bedfiles)
@@ -124,6 +127,9 @@ tabix <- function(
       mcols.subjectHits <- GenomicRanges::mcols(regions)[S4Vectors::subjectHits(overlaps), mcols.colnames]
       GenomicRanges::mcols(result.gr)[S4Vectors::queryHits(overlaps), mcols.colnames] <-
         GenomicRanges::mcols(regions)[S4Vectors::subjectHits(overlaps), mcols.colnames]
+    }
+    if ("file" %in% colnames(GenomicRanges::mcols(result.gr)) & grlist) {
+      return(GenomicRanges::split(result.gr, as.factor(result.gr$file)))
     }
     return(result.gr)
   }
