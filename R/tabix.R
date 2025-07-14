@@ -150,12 +150,16 @@ tabix.shell <- function(bedfiles, regions_df, nthreads) {
 
 tabix.shell.single <- function(bedfile, regions_df) {
   query.tmpfile <- tempfile(pattern = "regions", fileext = ".tsv")
-  if (!is.null(regions_df)) write_bed(regions_df, query.tmpfile)
+  if (!is.null(regions_df)) {
+    write_bed(regions_df, query.tmpfile)
+  }
 
   cmd <- paste("tabix", bedfile, "-R", query.tmpfile)
   result <- suppressWarnings(fread(cmd = cmd))
 
-  if (is_empty(result, bedfile)) return(NULL)
+  if (is_empty(result, bedfile)) {
+    return(NULL)
+  }
   result
 }
 
@@ -187,7 +191,9 @@ tabix.htslib <- function(bedfiles, input_regions, nthreads) {
 tabix.htslib.single <- function(bedfile, regions) {
   lines <- Cpp_query_interval(bedfile, regions)
   lines_dt <- as.data.table(lines)
-  if (is_empty(lines_dt, bedfile)) return(NULL)
+  if (is_empty(lines_dt, bedfile)) {
+    return(NULL)
+  }
 
   lines_dt[, tstrsplit(lines, "\t", fixed = TRUE, type.convert = TRUE)]
 }
