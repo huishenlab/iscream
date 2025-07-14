@@ -78,6 +78,14 @@ easier (<https://formulae.brew.sh/formula/gcc>).
 
 ## Installation
 
+### Bioconductor
+
+```r
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("iscream")
+```
+
 ### GitHub
 
 You can install the development version from Github by cloning the repo and
