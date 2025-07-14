@@ -35,8 +35,9 @@ tabix(bedfiles[1], regions) |> GRanges()
 ```
 
 If the input is already a `GRanges` object, `tabix()` will also return a
-`GRanges` object along with any attached metadata. `tabix()` uses the input
-`findOverlaps()` to join input metadata with the queried data.
+`GRanges` object along with any attached metadata. With multiple input files, it
+returns a `GRangesList`. `tabix()` uses `findOverlaps()` to join input metadata
+with the queried data.
 
 ```{r}
 gr <- GRanges(regions)
