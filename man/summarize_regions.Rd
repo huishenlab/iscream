@@ -8,7 +8,7 @@ summarize_regions(
   bedfiles,
   regions,
   columns,
-  col_names,
+  col_names = NULL,
   fun = "all",
   feature_col = NULL,
   set_region_rownames = FALSE,
