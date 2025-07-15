@@ -21,15 +21,16 @@ bedfiles <- list.files(data_dir, pattern = "[a|b|c|d].bed.gz$", full.names = TRU
 regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 ```
 
-## GRanges
+## `r Biocpkg("GenomicRanges")`
 
 ```{r gr, message=FALSE}
 library(GenomicRanges)
 ```
 
-`r Biocpkg("GenomicRanges")` can be used as the input to all of iscream's
-querying functions. The output of `tabix()` and `make_mat()`, `make_bsseq_mat()`
-can also be turned into `GRanges`.
+`GRanges` objects can be used as the input regions to all of iscream's querying
+functions. `tabix_gr()` and `make_mat_gr()` return `GRanges` objects. The
+outputs of of `tabix()` and `make_mat()`, `make_bsseq_mat()` can also be turned
+into `GRanges`.
 
 ### From `tabix` queries
 
@@ -45,14 +46,18 @@ values(gr) <- DataFrame(
     some_metadata = c("s1", "s2", "s3")
 )
 gr
-tabix_gr(bedfiles[1], regions)
+tabix_gr(bedfiles[1], gr)
 ```
 
-The `data.table` output of `tabix()` can also be piped into `GRanges`, but may
-not preserve metadata.
+The `data.table` output of `tabix()` can also be piped into `GRanges`, but does
+not preserve input metadata.
 
 ```{r tabix}
-tabix(bedfiles[1], regions) |> GRanges()
+tabix(bedfiles[1], gr) |>
+  makeGRangesFromDataFrame(
+    starts.in.df.are.0based = TRUE,
+    keep.extra.columns = TRUE
+  )
 ```
 
 If the input BED file is not zero-based (e.g. Bismark coverage files), set
@@ -61,9 +66,24 @@ data frame to GenomicRanges.
 
 ### From `summarize_regions`
 
-With a named set of regions, or with `feature_col` set with a data frame of
-input regions, you'll need to `set_region_rownames` as the input to create the
-GRanges object:
+`summarize_regions` returns a data frame with a feature column identifying each
+summary row's genomic region.
+
+If the regions don't have names (see `?summarize_regions`), pass the `feature`
+column with the genomic regions as the GRanges input regions:
+
+```{r summarize_meth_regions}
+(summary <- summarize_meth_regions(
+  bedfiles,
+  unname(regions),
+  fun = c("sum", "mean"))
+)
+GRanges(summary$feature, summary = summary[, -1])
+```
+
+If the input regions are named use `set_region_rownames = TRUE` so that the
+genomic regions strings are preserved and use them as the `GRanges` input
+regions.
 
 ```{r summarize_regions}
 (summary <- summarize_regions(
@@ -76,30 +96,24 @@ GRanges object:
 GRanges(rownames(summary), summary = summary)
 ```
 
-If the regions vector is not named, pass the `feature` column as the GRanges
-input regions:
-
-```{r summarize_meth_regions}
-(summary <- summarize_meth_regions(
-  bedfiles,
-  unname(regions),
-  fun = c("sum", "mean"))
-)
-GRanges(summary$feature, summary = summary[, -1])
-```
-
 ### From `make_mat`
 
-`make_mat_se()` returns a `r Biocpkg("SummarizedExperiment")` for both sparse
-and dense matrices while `make_mat_gr()` returns a `GRanges` object for dense
-matrices.
+`make_mat_gr()` returns a `GRanges` object for dense matrices.
 
 ```{r make_mat}
-make_mat_se(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
 make_mat_gr(bedfiles, regions, column = 4, mat_name = "beta")
 ```
 
-## Making `BSseq` objects
+## `r Biocpkg("SummarizedExperiment")`
+
+`make_mat_se()` returns a `RangedSummarizedExperiment` for both sparse and dense
+matrices.
+
+```{r mat_se}
+make_mat_se(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
+```
+
+### Making `BSseq` objects
 
 A `r Biocpkg("bsseq")` object is a type of SummarizedExperiment, but it cannot
 handle sparse matrices:
