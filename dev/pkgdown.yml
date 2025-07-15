@@ -6,9 +6,10 @@ articles:
   htslib: htslib.html
   iscream: iscream.html
   manuscript_data: manuscript_data.html
+  performance: performance.html
   tabix: tabix.html
   TSS: TSS.html
-last_built: 2025-07-14T20:54Z
+last_built: 2025-07-15T18:07Z
 urls:
   reference: https://huishenlab.github.io/iscream/reference
   article: https://huishenlab.github.io/iscream/articles

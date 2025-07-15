@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Getting other data structures from iscream • iscream</title>
+<title>iscream compatible data structures • iscream</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -22,7 +22,7 @@
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="Getting other data structures from iscream">
+<meta property="og:title" content="iscream compatible data structures">
 <meta name="robots" content="noindex">
 </head>
 <body>
@@ -33,7 +33,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/data_structures.html">Getting other data structures from iscream</a></li>
+<li><a class="dropdown-item" href="../articles/performance.html">Improving iscream performance</a></li>
+    <li><a class="dropdown-item" href="../articles/data_structures.html">iscream compatible data structures</a></li>
     <li><a class="dropdown-item" href="../articles/TSS.html">Plotting TSS methylation profiles</a></li>
     <li><a class="dropdown-item" href="../articles/tabix.html">iscream vs Rsamtools::scanTabix</a></li>
     <li><a class="dropdown-item" href="../articles/htslib.html">Getting htslib headers</a></li>
@@ -80,7 +81,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Getting other data structures from iscream</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>iscream compatible data structures</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/huishenlab/iscream/blob/dev/vignettes/data_structures.Rmd" class="external-link"><code>vignettes/data_structures.Rmd</code></a></small>
@@ -104,34 +105,19 @@ data structures for further analysis.</p>
 </h2>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span></span></code></pre></div>
-<p>GRanges can be used as the input to all of iscream’s querying
-functions. The output of <code><a href="../reference/tabix.html">tabix()</a></code> and
-<code><a href="../reference/make_mat.html">make_mat()</a></code>, <code><a href="../reference/make_bsseq_mat.html">make_bsseq_mat()</a></code> can also be
-turned into GRanges.</p>
+<p><em><a href="https://bioconductor.org/packages/3.21/GenomicRanges" class="external-link">GenomicRanges</a></em>
+can be used as the input to all of iscream’s querying functions. The
+output of <code><a href="../reference/tabix.html">tabix()</a></code> and <code><a href="../reference/make_mat.html">make_mat()</a></code>,
+<code><a href="../reference/make_bsseq_mat.html">make_bsseq_mat()</a></code> can also be turned into
+<code>GRanges</code>.</p>
 <div class="section level3">
 <h3 id="from-tabix-queries">From <code>tabix</code> queries<a class="anchor" aria-label="anchor" href="#from-tabix-queries"></a>
 </h3>
+<p><code><a href="../reference/tabix.html">tabix_gr()</a></code> returns a <code>GenomicRanges</code> object.
+The <code>regions</code> parameter can be a string vector, a data frame
+or a <code>GRanges</code> object. If given a <code>GRanges</code> object
+with metadata, those columns will be preserved in the output.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">bedfiles</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">regions</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## GRanges object with 7 ranges and 2 metadata columns:</span></span>
-<span><span class="co">##       seqnames    ranges strand |        V1        V2</span></span>
-<span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;integer&gt;</span></span>
-<span><span class="co">##   [1]     chr1       0-2      * |       1.0         1</span></span>
-<span><span class="co">##   [2]     chr1       2-4      * |       1.0         1</span></span>
-<span><span class="co">##   [3]     chr1       4-6      * |       0.0         2</span></span>
-<span><span class="co">##   [4]     chr1       6-8      * |       0.0         1</span></span>
-<span><span class="co">##   [5]     chr1      8-10      * |       0.5         2</span></span>
-<span><span class="co">##   [6]     chr1     10-12      * |       1.0         2</span></span>
-<span><span class="co">##   [7]     chr1     12-14      * |       1.0         3</span></span>
-<span><span class="co">##   -------</span></span>
-<span><span class="co">##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span></span></code></pre>
-<p>If the input is already a <code>GRanges</code> object,
-<code><a href="../reference/tabix.html">tabix()</a></code> will also return a <code>GRanges</code> object
-along with any attached metadata. With multiple input files, it returns
-a <code>GRangesList</code>. <code><a href="../reference/tabix.html">tabix()</a></code> uses
-<code><a href="https://rdrr.io/pkg/IRanges/man/findOverlaps-methods.html" class="external-link">findOverlaps()</a></code> to join input metadata with the queried
-data.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">gr</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span></span>
 <span>    gene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gene1"</span>, <span class="st">"gene2"</span>, <span class="st">"gene3"</span><span class="op">)</span>,</span>
@@ -146,82 +132,34 @@ data.</p>
 <span><span class="co">##   C     chr1     11-14      * |       gene3            s3</span></span>
 <span><span class="co">##   -------</span></span>
 <span><span class="co">##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span></span></code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tabix.html">tabix_gr</a></span><span class="op">(</span><span class="va">bedfiles</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">regions</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## GRanges object with 7 ranges and 2 metadata columns:</span></span>
+<span><span class="co">##       seqnames    ranges strand |        V1        V2</span></span>
+<span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;integer&gt;</span></span>
+<span><span class="co">##   [1]     chr1       1-2      * |       1.0         1</span></span>
+<span><span class="co">##   [2]     chr1       3-4      * |       1.0         1</span></span>
+<span><span class="co">##   [3]     chr1       5-6      * |       0.0         2</span></span>
+<span><span class="co">##   [4]     chr1       7-8      * |       0.0         1</span></span>
+<span><span class="co">##   [5]     chr1      9-10      * |       0.5         2</span></span>
+<span><span class="co">##   [6]     chr1     11-12      * |       1.0         2</span></span>
+<span><span class="co">##   [7]     chr1     13-14      * |       1.0         3</span></span>
+<span><span class="co">##   -------</span></span>
+<span><span class="co">##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span></span></code></pre>
+<p>The <code>data.table</code> output of <code><a href="../reference/tabix.html">tabix()</a></code> can also
+be piped into <code>GRanges</code>, but may not preserve metadata.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">gr</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## GRangesList object of length 4:</span></span>
-<span><span class="co">## $a</span></span>
-<span><span class="co">## GRanges object with 7 ranges and 5 metadata columns:</span></span>
-<span><span class="co">##       seqnames    ranges strand |        V1        V2        file        gene</span></span>
-<span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;integer&gt; &lt;character&gt; &lt;character&gt;</span></span>
-<span><span class="co">##   [1]     chr1       1-2      * |       1.0         1           a       gene1</span></span>
-<span><span class="co">##   [2]     chr1       3-4      * |       1.0         1           a       gene1</span></span>
-<span><span class="co">##   [3]     chr1       5-6      * |       0.0         2           a       gene1</span></span>
-<span><span class="co">##   [4]     chr1       7-8      * |       0.0         1           a       gene2</span></span>
-<span><span class="co">##   [5]     chr1      9-10      * |       0.5         2           a       gene2</span></span>
-<span><span class="co">##   [6]     chr1     11-12      * |       1.0         2           a       gene3</span></span>
-<span><span class="co">##   [7]     chr1     13-14      * |       1.0         3           a       gene3</span></span>
-<span><span class="co">##       some_metadata</span></span>
-<span><span class="co">##         &lt;character&gt;</span></span>
-<span><span class="co">##   [1]            s1</span></span>
-<span><span class="co">##   [2]            s1</span></span>
-<span><span class="co">##   [3]            s1</span></span>
-<span><span class="co">##   [4]            s2</span></span>
-<span><span class="co">##   [5]            s2</span></span>
-<span><span class="co">##   [6]            s3</span></span>
-<span><span class="co">##   [7]            s3</span></span>
-<span><span class="co">##   -------</span></span>
-<span><span class="co">##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $b</span></span>
-<span><span class="co">## GRanges object with 5 ranges and 5 metadata columns:</span></span>
-<span><span class="co">##       seqnames    ranges strand |        V1        V2        file        gene</span></span>
-<span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;integer&gt; &lt;character&gt; &lt;character&gt;</span></span>
-<span><span class="co">##   [1]     chr1       1-2      * |         0         2           b       gene1</span></span>
-<span><span class="co">##   [2]     chr1       5-6      * |         1         2           b       gene1</span></span>
-<span><span class="co">##   [3]     chr1       7-8      * |         1         1           b       gene2</span></span>
-<span><span class="co">##   [4]     chr1     11-12      * |         0         2           b       gene3</span></span>
-<span><span class="co">##   [5]     chr1     13-14      * |         1         1           b       gene3</span></span>
-<span><span class="co">##       some_metadata</span></span>
-<span><span class="co">##         &lt;character&gt;</span></span>
-<span><span class="co">##   [1]            s1</span></span>
-<span><span class="co">##   [2]            s1</span></span>
-<span><span class="co">##   [3]            s2</span></span>
-<span><span class="co">##   [4]            s3</span></span>
-<span><span class="co">##   [5]            s3</span></span>
-<span><span class="co">##   -------</span></span>
-<span><span class="co">##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $c</span></span>
-<span><span class="co">## GRanges object with 3 ranges and 5 metadata columns:</span></span>
-<span><span class="co">##       seqnames    ranges strand |        V1        V2        file        gene</span></span>
-<span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;integer&gt; &lt;character&gt; &lt;character&gt;</span></span>
-<span><span class="co">##   [1]     chr1       3-4      * |         1         2           c       gene1</span></span>
-<span><span class="co">##   [2]     chr1       7-8      * |         0         2           c       gene2</span></span>
-<span><span class="co">##   [3]     chr1      9-10      * |         1         1           c       gene2</span></span>
-<span><span class="co">##       some_metadata</span></span>
-<span><span class="co">##         &lt;character&gt;</span></span>
-<span><span class="co">##   [1]            s1</span></span>
-<span><span class="co">##   [2]            s2</span></span>
-<span><span class="co">##   [3]            s2</span></span>
-<span><span class="co">##   -------</span></span>
-<span><span class="co">##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $d</span></span>
-<span><span class="co">## GRanges object with 5 ranges and 5 metadata columns:</span></span>
-<span><span class="co">##       seqnames    ranges strand |        V1        V2        file        gene</span></span>
-<span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;integer&gt; &lt;character&gt; &lt;character&gt;</span></span>
-<span><span class="co">##   [1]     chr1       1-2      * |       1.0         1           d       gene1</span></span>
-<span><span class="co">##   [2]     chr1       3-4      * |       1.0         2           d       gene1</span></span>
-<span><span class="co">##   [3]     chr1       7-8      * |       0.0         1           d       gene2</span></span>
-<span><span class="co">##   [4]     chr1      9-10      * |       0.5         2           d       gene2</span></span>
-<span><span class="co">##   [5]     chr1     13-14      * |       1.0         1           d       gene3</span></span>
-<span><span class="co">##       some_metadata</span></span>
-<span><span class="co">##         &lt;character&gt;</span></span>
-<span><span class="co">##   [1]            s1</span></span>
-<span><span class="co">##   [2]            s1</span></span>
-<span><span class="co">##   [3]            s2</span></span>
-<span><span class="co">##   [4]            s2</span></span>
-<span><span class="co">##   [5]            s3</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">bedfiles</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">regions</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## GRanges object with 7 ranges and 2 metadata columns:</span></span>
+<span><span class="co">##       seqnames    ranges strand |        V1        V2</span></span>
+<span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;integer&gt;</span></span>
+<span><span class="co">##   [1]     chr1       0-2      * |       1.0         1</span></span>
+<span><span class="co">##   [2]     chr1       2-4      * |       1.0         1</span></span>
+<span><span class="co">##   [3]     chr1       4-6      * |       0.0         2</span></span>
+<span><span class="co">##   [4]     chr1       6-8      * |       0.0         1</span></span>
+<span><span class="co">##   [5]     chr1      8-10      * |       0.5         2</span></span>
+<span><span class="co">##   [6]     chr1     10-12      * |       1.0         2</span></span>
+<span><span class="co">##   [7]     chr1     12-14      * |       1.0         3</span></span>
 <span><span class="co">##   -------</span></span>
 <span><span class="co">##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span></span></code></pre>
 <p>If the input BED file is not zero-based (e.g. Bismark coverage
@@ -231,61 +169,63 @@ call to get the correct conversion from data frame to GenomicRanges.</p>
 <div class="section level3">
 <h3 id="from-summarize_regions">From <code>summarize_regions</code><a class="anchor" aria-label="anchor" href="#from-summarize_regions"></a>
 </h3>
-<p>With a named set of regions, you’ll need to
+<p>With a named set of regions, or with <code>feature_col</code> set
+with a data frame of input regions, you’ll need to
 <code>set_region_rownames</code> as the input to create the GRanges
 object:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="va">summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_meth_regions.html">summarize_meth_regions</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_regions.html">summarize_regions</a></span><span class="op">(</span></span>
 <span>  <span class="va">bedfiles</span>,</span>
 <span>  <span class="va">regions</span>,</span>
+<span>  column <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  set_region_rownames <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [20:54:34.039643] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [20:54:34.039693] [iscream::summarize_regions] [info] using sum, mean</span></span>
-<span><span class="co">## [20:54:34.039698] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
-<pre><code><span><span class="co">##            feature file coverage.sum M.sum coverage.mean    M.mean</span></span>
-<span><span class="co">## chr1:1-6         A    a            4     2      1.333333 0.6666667</span></span>
-<span><span class="co">## chr1:7-10        B    a            3     1      1.500000 0.5000000</span></span>
-<span><span class="co">## chr1:11-14       C    a            5     5      2.500000 2.5000000</span></span>
-<span><span class="co">## chr1:1-6         A    b            4     2      2.000000 1.0000000</span></span>
-<span><span class="co">## chr1:7-10        B    b            1     1      1.000000 1.0000000</span></span>
-<span><span class="co">## chr1:11-14       C    b            3     1      1.500000 0.5000000</span></span>
-<span><span class="co">## chr1:1-6         A    c            2     2      2.000000 2.0000000</span></span>
-<span><span class="co">## chr1:7-10        B    c            3     1      1.500000 0.5000000</span></span>
-<span><span class="co">## chr1:11-14       C    c           NA    NA            NA        NA</span></span>
-<span><span class="co">## chr1:1-6         A    d            3     3      1.500000 1.5000000</span></span>
-<span><span class="co">## chr1:7-10        B    d            3     1      1.500000 0.5000000</span></span>
-<span><span class="co">## chr1:11-14       C    d            1     1      1.000000 1.0000000</span></span></code></pre>
+<pre><code><span><span class="co">## [18:07:17.555019] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [18:07:17.555050] [iscream::summarize_regions] [info] using sum, mean</span></span>
+<span><span class="co">## [18:07:17.555055] [iscream::summarize_regions] [info] with columns 4 as V1</span></span></code></pre>
+<pre><code><span><span class="co">##            feature file V1.sum   V1.mean</span></span>
+<span><span class="co">## chr1:1-6         A    a    2.0 0.6666667</span></span>
+<span><span class="co">## chr1:7-10        B    a    0.5 0.2500000</span></span>
+<span><span class="co">## chr1:11-14       C    a    2.0 1.0000000</span></span>
+<span><span class="co">## chr1:1-6         A    b    1.0 0.5000000</span></span>
+<span><span class="co">## chr1:7-10        B    b    1.0 1.0000000</span></span>
+<span><span class="co">## chr1:11-14       C    b    1.0 0.5000000</span></span>
+<span><span class="co">## chr1:1-6         A    c    1.0 1.0000000</span></span>
+<span><span class="co">## chr1:7-10        B    c    1.0 0.5000000</span></span>
+<span><span class="co">## chr1:11-14       C    c     NA        NA</span></span>
+<span><span class="co">## chr1:1-6         A    d    2.0 1.0000000</span></span>
+<span><span class="co">## chr1:7-10        B    d    0.5 0.2500000</span></span>
+<span><span class="co">## chr1:11-14       C    d    1.0 1.0000000</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">summary</span><span class="op">)</span>, summary <span class="op">=</span> <span class="va">summary</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## GRanges object with 12 ranges and 6 metadata columns:</span></span>
-<span><span class="co">##        seqnames    ranges strand | summary.feature summary.file</span></span>
-<span><span class="co">##           &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; |     &lt;character&gt;  &lt;character&gt;</span></span>
-<span><span class="co">##    [1]     chr1       1-6      * |               A            a</span></span>
-<span><span class="co">##    [2]     chr1      7-10      * |               B            a</span></span>
-<span><span class="co">##    [3]     chr1     11-14      * |               C            a</span></span>
-<span><span class="co">##    [4]     chr1       1-6      * |               A            b</span></span>
-<span><span class="co">##    [5]     chr1      7-10      * |               B            b</span></span>
-<span><span class="co">##    ...      ...       ...    ... .             ...          ...</span></span>
-<span><span class="co">##    [8]     chr1      7-10      * |               B            c</span></span>
-<span><span class="co">##    [9]     chr1     11-14      * |               C            c</span></span>
-<span><span class="co">##   [10]     chr1       1-6      * |               A            d</span></span>
-<span><span class="co">##   [11]     chr1      7-10      * |               B            d</span></span>
-<span><span class="co">##   [12]     chr1     11-14      * |               C            d</span></span>
-<span><span class="co">##        summary.coverage.sum summary.M.sum summary.coverage.mean summary.M.mean</span></span>
-<span><span class="co">##                   &lt;numeric&gt;     &lt;numeric&gt;             &lt;numeric&gt;      &lt;numeric&gt;</span></span>
-<span><span class="co">##    [1]                    4             2               1.33333       0.666667</span></span>
-<span><span class="co">##    [2]                    3             1               1.50000       0.500000</span></span>
-<span><span class="co">##    [3]                    5             5               2.50000       2.500000</span></span>
-<span><span class="co">##    [4]                    4             2               2.00000       1.000000</span></span>
-<span><span class="co">##    [5]                    1             1               1.00000       1.000000</span></span>
-<span><span class="co">##    ...                  ...           ...                   ...            ...</span></span>
-<span><span class="co">##    [8]                    3             1                   1.5            0.5</span></span>
-<span><span class="co">##    [9]                   NA            NA                    NA             NA</span></span>
-<span><span class="co">##   [10]                    3             3                   1.5            1.5</span></span>
-<span><span class="co">##   [11]                    3             1                   1.5            0.5</span></span>
-<span><span class="co">##   [12]                    1             1                   1.0            1.0</span></span>
+<pre><code><span><span class="co">## GRanges object with 12 ranges and 4 metadata columns:</span></span>
+<span><span class="co">##        seqnames    ranges strand | summary.feature summary.file summary.V1.sum</span></span>
+<span><span class="co">##           &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; |     &lt;character&gt;  &lt;character&gt;      &lt;numeric&gt;</span></span>
+<span><span class="co">##    [1]     chr1       1-6      * |               A            a            2.0</span></span>
+<span><span class="co">##    [2]     chr1      7-10      * |               B            a            0.5</span></span>
+<span><span class="co">##    [3]     chr1     11-14      * |               C            a            2.0</span></span>
+<span><span class="co">##    [4]     chr1       1-6      * |               A            b            1.0</span></span>
+<span><span class="co">##    [5]     chr1      7-10      * |               B            b            1.0</span></span>
+<span><span class="co">##    ...      ...       ...    ... .             ...          ...            ...</span></span>
+<span><span class="co">##    [8]     chr1      7-10      * |               B            c            1.0</span></span>
+<span><span class="co">##    [9]     chr1     11-14      * |               C            c             NA</span></span>
+<span><span class="co">##   [10]     chr1       1-6      * |               A            d            2.0</span></span>
+<span><span class="co">##   [11]     chr1      7-10      * |               B            d            0.5</span></span>
+<span><span class="co">##   [12]     chr1     11-14      * |               C            d            1.0</span></span>
+<span><span class="co">##        summary.V1.mean</span></span>
+<span><span class="co">##              &lt;numeric&gt;</span></span>
+<span><span class="co">##    [1]        0.666667</span></span>
+<span><span class="co">##    [2]        0.250000</span></span>
+<span><span class="co">##    [3]        1.000000</span></span>
+<span><span class="co">##    [4]        0.500000</span></span>
+<span><span class="co">##    [5]        1.000000</span></span>
+<span><span class="co">##    ...             ...</span></span>
+<span><span class="co">##    [8]            0.50</span></span>
+<span><span class="co">##    [9]              NA</span></span>
+<span><span class="co">##   [10]            1.00</span></span>
+<span><span class="co">##   [11]            0.25</span></span>
+<span><span class="co">##   [12]            1.00</span></span>
 <span><span class="co">##   -------</span></span>
 <span><span class="co">##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span></span></code></pre>
 <p>If the regions vector is not named, pass the <code>feature</code>
@@ -296,9 +236,9 @@ column as the GRanges input regions:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [20:54:34.161033] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [20:54:34.161058] [iscream::summarize_regions] [info] using sum, mean</span></span>
-<span><span class="co">## [20:54:34.161062] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
+<pre><code><span><span class="co">## [18:07:17.669321] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [18:07:17.669352] [iscream::summarize_regions] [info] using sum, mean</span></span>
+<span><span class="co">## [18:07:17.669356] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
 <pre><code><span><span class="co">##       feature file coverage.sum M.sum coverage.mean    M.mean</span></span>
 <span><span class="co">## 1    chr1:1-6    a            4     2      1.333333 0.6666667</span></span>
 <span><span class="co">## 2   chr1:7-10    a            3     1      1.500000 0.5000000</span></span>
@@ -313,7 +253,7 @@ column as the GRanges input regions:</p>
 <span><span class="co">## 11  chr1:7-10    d            3     1      1.500000 0.5000000</span></span>
 <span><span class="co">## 12 chr1:11-14    d            1     1      1.000000 1.0000000</span></span></code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">summary</span><span class="op">$</span><span class="va">feature</span>, summary <span class="op">=</span> <span class="va">summary</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">summary</span> <span class="op">|&gt;</span> <span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">.</span><span class="op">$</span><span class="va">feature</span>, summary <span class="op">=</span> <span class="va">.</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## GRanges object with 12 ranges and 5 metadata columns:</span></span>
 <span><span class="co">##        seqnames    ranges strand | summary.file summary.coverage.sum</span></span>
 <span><span class="co">##           &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; |  &lt;character&gt;            &lt;numeric&gt;</span></span>
@@ -344,130 +284,62 @@ column as the GRanges input regions:</p>
 <span><span class="co">##   -------</span></span>
 <span><span class="co">##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span></span></code></pre>
 </div>
-</div>
-<div class="section level2">
-<h2 id="making-summarizedexperiment-objects">Making SummarizedExperiment objects<a class="anchor" aria-label="anchor" href="#making-summarizedexperiment-objects"></a>
-</h2>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">"SummarizedExperiment"</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="from-make_mat-or-make_bsseq_mat-matrices">From <code>make_mat()</code> or <code>make_bsseq_mat()</code>
-matrices<a class="anchor" aria-label="anchor" href="#from-make_mat-or-make_bsseq_mat-matrices"></a>
+<h3 id="from-make_mat">From <code>make_mat</code><a class="anchor" aria-label="anchor" href="#from-make_mat"></a>
 </h3>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="va">mats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_bsseq_mat.html">make_bsseq_mat</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [20:54:36.531985] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<p><code><a href="../reference/make_mat.html">make_mat_se()</a></code> returns a <em><a href="https://bioconductor.org/packages/3.21/SummarizedExperiment" class="external-link">SummarizedExperiment</a></em>
+for both sparse and dense matrices while <code><a href="../reference/make_mat.html">make_mat_gr()</a></code>
+returns a <code>GRanges</code> object for dense matrices.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/make_mat.html">make_mat_se</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, column <span class="op">=</span> <span class="fl">4</span>, mat_name <span class="op">=</span> <span class="st">"beta"</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [18:07:17.782656] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [20:54:36.532315] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [20:54:36.532354] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [20:54:36.532357] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
-<pre><code><span><span class="co">## $M</span></span>
-<span><span class="co">##      a b c d</span></span>
-<span><span class="co">## [1,] 1 0 0 1</span></span>
-<span><span class="co">## [2,] 1 0 2 2</span></span>
-<span><span class="co">## [3,] 0 2 0 0</span></span>
-<span><span class="co">## [4,] 0 1 0 0</span></span>
-<span><span class="co">## [5,] 1 0 1 1</span></span>
-<span><span class="co">## [6,] 2 0 0 0</span></span>
-<span><span class="co">## [7,] 3 1 0 1</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $Cov</span></span>
-<span><span class="co">##      a b c d</span></span>
-<span><span class="co">## [1,] 1 2 0 1</span></span>
-<span><span class="co">## [2,] 1 0 2 2</span></span>
-<span><span class="co">## [3,] 2 2 0 0</span></span>
-<span><span class="co">## [4,] 1 1 2 1</span></span>
-<span><span class="co">## [5,] 2 0 1 2</span></span>
-<span><span class="co">## [6,] 2 2 0 0</span></span>
-<span><span class="co">## [7,] 3 1 0 1</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $pos</span></span>
-<span><span class="co">## [1]  0  2  4  6  8 10 12</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $chr</span></span>
-<span><span class="co">## [1] "chr1" "chr1" "chr1" "chr1" "chr1" "chr1" "chr1"</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $sampleNames</span></span>
-<span><span class="co">## [1] "a" "b" "c" "d"</span></span></code></pre>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="va">mats.sparse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_bsseq_mat.html">make_bsseq_mat</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [20:54:36.533356] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## [20:54:36.533640] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [20:54:36.533655] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [20:54:36.533663] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
-<pre><code><span><span class="co">## $M</span></span>
-<span><span class="co">## 7 x 4 sparse Matrix of class "dgCMatrix"</span></span>
-<span><span class="co">##      a b c d</span></span>
-<span><span class="co">## [1,] 1 . . 1</span></span>
-<span><span class="co">## [2,] 1 . 2 2</span></span>
-<span><span class="co">## [3,] . 2 . .</span></span>
-<span><span class="co">## [4,] . 1 . .</span></span>
-<span><span class="co">## [5,] 1 . 1 1</span></span>
-<span><span class="co">## [6,] 2 . . .</span></span>
-<span><span class="co">## [7,] 3 1 . 1</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $Cov</span></span>
-<span><span class="co">## 7 x 4 sparse Matrix of class "dgCMatrix"</span></span>
-<span><span class="co">##      a b c d</span></span>
-<span><span class="co">## [1,] 1 2 . 1</span></span>
-<span><span class="co">## [2,] 1 . 2 2</span></span>
-<span><span class="co">## [3,] 2 2 . .</span></span>
-<span><span class="co">## [4,] 1 1 2 1</span></span>
-<span><span class="co">## [5,] 2 . 1 2</span></span>
-<span><span class="co">## [6,] 2 2 . .</span></span>
-<span><span class="co">## [7,] 3 1 . 1</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $pos</span></span>
-<span><span class="co">## [1]  0  2  4  6  8 10 12</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $chr</span></span>
-<span><span class="co">## [1] "chr1" "chr1" "chr1" "chr1" "chr1" "chr1" "chr1"</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $sampleNames</span></span>
-<span><span class="co">## [1] "a" "b" "c" "d"</span></span></code></pre>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">mats</span><span class="op">$</span><span class="va">chr</span>, <span class="va">mats</span><span class="op">$</span><span class="va">pos</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># dense</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span>assays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>M <span class="op">=</span> <span class="va">mats</span><span class="op">$</span><span class="va">M</span>, Cov <span class="op">=</span> <span class="va">mats</span><span class="op">$</span><span class="va">Cov</span><span class="op">)</span>, rowRanges <span class="op">=</span> <span class="va">gr</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">## [18:07:17.783120] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [18:07:17.783171] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [18:07:17.783180] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
 <pre><code><span><span class="co">## class: RangedSummarizedExperiment </span></span>
 <span><span class="co">## dim: 7 4 </span></span>
 <span><span class="co">## metadata(0):</span></span>
-<span><span class="co">## assays(2): M Cov</span></span>
+<span><span class="co">## assays(1): beta</span></span>
 <span><span class="co">## rownames: NULL</span></span>
 <span><span class="co">## rowData names(0):</span></span>
 <span><span class="co">## colnames(4): a b c d</span></span>
 <span><span class="co">## colData names(0):</span></span></code></pre>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># sparse</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span></span>
-<span>  assays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>M <span class="op">=</span> <span class="va">mats.sparse</span><span class="op">$</span><span class="va">M</span>, Cov <span class="op">=</span> <span class="va">mats.sparse</span><span class="op">$</span><span class="va">Cov</span><span class="op">)</span>,</span>
-<span>  rowRanges <span class="op">=</span> <span class="va">gr</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## class: RangedSummarizedExperiment </span></span>
-<span><span class="co">## dim: 7 4 </span></span>
-<span><span class="co">## metadata(0):</span></span>
-<span><span class="co">## assays(2): M Cov</span></span>
-<span><span class="co">## rownames: NULL</span></span>
-<span><span class="co">## rowData names(0):</span></span>
-<span><span class="co">## colnames(4): a b c d</span></span>
-<span><span class="co">## colData names(0):</span></span></code></pre>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/make_mat.html">make_mat_gr</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, column <span class="op">=</span> <span class="fl">4</span>, mat_name <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [18:07:19.858024] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## [18:07:19.858475] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [18:07:19.858503] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [18:07:19.858508] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
+<pre><code><span><span class="co">## GRanges object with 7 ranges and 4 metadata columns:</span></span>
+<span><span class="co">##       seqnames    ranges strand |         a         b         c         d</span></span>
+<span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;</span></span>
+<span><span class="co">##   [1]     chr1         0      * |       1.0         0         0       1.0</span></span>
+<span><span class="co">##   [2]     chr1         2      * |       1.0         0         1       1.0</span></span>
+<span><span class="co">##   [3]     chr1         4      * |       0.0         1         0       0.0</span></span>
+<span><span class="co">##   [4]     chr1         6      * |       0.0         1         0       0.0</span></span>
+<span><span class="co">##   [5]     chr1         8      * |       0.5         0         1       0.5</span></span>
+<span><span class="co">##   [6]     chr1        10      * |       1.0         0         0       0.0</span></span>
+<span><span class="co">##   [7]     chr1        12      * |       1.0         1         0       1.0</span></span>
+<span><span class="co">##   -------</span></span>
+<span><span class="co">##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
 <h2 id="making-bsseq-objects">Making <code>BSseq</code> objects<a class="anchor" aria-label="anchor" href="#making-bsseq-objects"></a>
 </h2>
-<p>A BSseq object is a type of SummarizedExperiment, but it cannot
-handle sparse matrices:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<p>A <em><a href="https://bioconductor.org/packages/3.21/bsseq" class="external-link">bsseq</a></em>
+object is a type of SummarizedExperiment, but it cannot handle sparse
+matrices:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">bsseq</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">BSseq</span>, <span class="va">mats</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.5.1 (2025-06-13)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
@@ -491,29 +363,36 @@ handle sparse matrices:</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] SummarizedExperiment_1.38.1 Biobase_2.68.0             </span></span>
-<span><span class="co">##  [3] MatrixGenerics_1.20.0       matrixStats_1.5.0          </span></span>
-<span><span class="co">##  [5] GenomicRanges_1.60.0        GenomeInfoDb_1.44.0        </span></span>
-<span><span class="co">##  [7] IRanges_2.42.0              S4Vectors_0.46.0           </span></span>
-<span><span class="co">##  [9] BiocGenerics_0.54.0         generics_0.1.4             </span></span>
-<span><span class="co">## [11] iscream_0.1.0.9000         </span></span>
+<span><span class="co">## [1] GenomicRanges_1.60.0 GenomeInfoDb_1.44.0  IRanges_2.42.0      </span></span>
+<span><span class="co">## [4] S4Vectors_0.46.0     BiocGenerics_0.54.0  generics_0.1.4      </span></span>
+<span><span class="co">## [7] iscream_0.99.0       BiocStyle_2.36.0    </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] sass_0.4.10             SparseArray_1.8.0       lattice_0.22-7         </span></span>
-<span><span class="co">##  [4] digest_0.6.37           evaluate_1.0.4          grid_4.5.1             </span></span>
-<span><span class="co">##  [7] fastmap_1.2.0           jsonlite_2.0.0          Matrix_1.7-3           </span></span>
-<span><span class="co">## [10] httr_1.4.7              UCSC.utils_1.4.0        textshaping_1.0.1      </span></span>
-<span><span class="co">## [13] jquerylib_0.1.4         abind_1.4-8             cli_3.6.5              </span></span>
-<span><span class="co">## [16] rlang_1.1.6             crayon_1.5.3            XVector_0.48.0         </span></span>
-<span><span class="co">## [19] parallelly_1.45.0       cachem_1.1.0            DelayedArray_0.34.1    </span></span>
-<span><span class="co">## [22] yaml_2.3.10             S4Arrays_1.8.1          tools_4.5.1            </span></span>
-<span><span class="co">## [25] parallel_4.5.1          GenomeInfoDbData_1.2.14 R6_2.6.1               </span></span>
-<span><span class="co">## [28] lifecycle_1.0.4         fs_1.6.6                stringfish_0.17.0      </span></span>
-<span><span class="co">## [31] ragg_1.4.0              desc_1.4.3              pkgdown_2.1.3          </span></span>
-<span><span class="co">## [34] RcppParallel_5.1.10     bslib_0.9.0             data.table_1.17.8      </span></span>
-<span><span class="co">## [37] Rcpp_1.1.0              systemfonts_1.2.3       xfun_0.52              </span></span>
-<span><span class="co">## [40] knitr_1.50              htmltools_0.5.8.1       rmarkdown_2.29         </span></span>
-<span><span class="co">## [43] compiler_4.5.1</span></span></code></pre>
+<span><span class="co">##  [1] sass_0.4.10                 SparseArray_1.8.0          </span></span>
+<span><span class="co">##  [3] lattice_0.22-7              digest_0.6.37              </span></span>
+<span><span class="co">##  [5] evaluate_1.0.4              grid_4.5.1                 </span></span>
+<span><span class="co">##  [7] bookdown_0.43               fastmap_1.2.0              </span></span>
+<span><span class="co">##  [9] jsonlite_2.0.0              Matrix_1.7-3               </span></span>
+<span><span class="co">## [11] BiocManager_1.30.26         httr_1.4.7                 </span></span>
+<span><span class="co">## [13] UCSC.utils_1.4.0            textshaping_1.0.1          </span></span>
+<span><span class="co">## [15] jquerylib_0.1.4             abind_1.4-8                </span></span>
+<span><span class="co">## [17] cli_3.6.5                   rlang_1.1.6                </span></span>
+<span><span class="co">## [19] crayon_1.5.3                XVector_0.48.0             </span></span>
+<span><span class="co">## [21] Biobase_2.68.0              parallelly_1.45.0          </span></span>
+<span><span class="co">## [23] DelayedArray_0.34.1         cachem_1.1.0               </span></span>
+<span><span class="co">## [25] yaml_2.3.10                 S4Arrays_1.8.1             </span></span>
+<span><span class="co">## [27] tools_4.5.1                 parallel_4.5.1             </span></span>
+<span><span class="co">## [29] GenomeInfoDbData_1.2.14     SummarizedExperiment_1.38.1</span></span>
+<span><span class="co">## [31] R6_2.6.1                    matrixStats_1.5.0          </span></span>
+<span><span class="co">## [33] lifecycle_1.0.4             fs_1.6.6                   </span></span>
+<span><span class="co">## [35] stringfish_0.17.0           ragg_1.4.0                 </span></span>
+<span><span class="co">## [37] desc_1.4.3                  pkgdown_2.1.3              </span></span>
+<span><span class="co">## [39] RcppParallel_5.1.10         bslib_0.9.0                </span></span>
+<span><span class="co">## [41] data.table_1.17.8           Rcpp_1.1.0                 </span></span>
+<span><span class="co">## [43] systemfonts_1.2.3           xfun_0.52                  </span></span>
+<span><span class="co">## [45] MatrixGenerics_1.20.0       knitr_1.50                 </span></span>
+<span><span class="co">## [47] htmltools_0.5.8.1           rmarkdown_2.29             </span></span>
+<span><span class="co">## [49] compiler_4.5.1</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

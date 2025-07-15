@@ -33,7 +33,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/data_structures.html">Getting other data structures from iscream</a></li>
+<li><a class="dropdown-item" href="../articles/performance.html">Improving iscream performance</a></li>
+    <li><a class="dropdown-item" href="../articles/data_structures.html">iscream compatible data structures</a></li>
     <li><a class="dropdown-item" href="../articles/TSS.html">Plotting TSS methylation profiles</a></li>
     <li><a class="dropdown-item" href="../articles/tabix.html">iscream vs Rsamtools::scanTabix</a></li>
     <li><a class="dropdown-item" href="../articles/htslib.html">Getting htslib headers</a></li>
@@ -113,15 +114,14 @@ gene bodies, or DMRs found using tools like <em>methscan</em> more
 efficiently. For example, using iscream, producing the plot of TSS
 methylation profiles can be done in R directly from tabixed BED files
 for both single-cell and bulk data.</p>
-<div class="section level3">
-<h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
-</h3>
+<div class="section level2">
+<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"iscream.threads"</span> <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://huishenlab.github.io/iscream/">iscream</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
-</div>
 <div class="section level3">
 <h3 id="download-the-data">Download the data<a class="anchor" aria-label="anchor" href="#download-the-data"></a>
 </h3>
@@ -145,6 +145,10 @@ tabix indices from this Zenodo record: <a href="https://zenodo.org/records/14733
 <span>    full.names <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
+</div>
+<div class="section level2">
+<h2 id="using-tabix">Using <code>tabix()</code><a class="anchor" aria-label="anchor" href="#using-tabix"></a>
+</h2>
 <div class="section level3">
 <h3 id="get-the-transcription-start-sites-and-flanking-regions">Get the Transcription start sites and flanking regions<a class="anchor" aria-label="anchor" href="#get-the-transcription-start-sites-and-flanking-regions"></a>
 </h3>
@@ -252,9 +256,10 @@ query, calculating the summaries and plotting: 3.458s elapsed (53.2s
 cpu). With methscan, generating the TSS methylation profiles alone took
 11 seconds.</p>
 </div>
-<div class="section level3">
-<h3 id="using-summarize_regions">Using <code>summarize_regions</code><a class="anchor" aria-label="anchor" href="#using-summarize_regions"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="using-summarize_regions">Using <code>summarize_regions</code><a class="anchor" aria-label="anchor" href="#using-summarize_regions"></a>
+</h2>
 <p>A similar analysis can be done using the
 <code><a href="../reference/summarize_regions.html">summarize_regions()</a></code> function if you only need to see the
 distribution of beta means by sample, rather than means by relative

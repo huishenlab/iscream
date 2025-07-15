@@ -19,7 +19,7 @@ from the "iscream.threads" option.'><meta property="og:image" content="https://h
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,8 @@ from the "iscream.threads" option.'><meta property="og:image" content="https://h
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/data_structures.html">Getting other data structures from iscream</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/performance.html">Improving iscream performance</a></li>
+    <li><a class="dropdown-item" href="../articles/data_structures.html">iscream compatible data structures</a></li>
     <li><a class="dropdown-item" href="../articles/TSS.html">Plotting TSS methylation profiles</a></li>
     <li><a class="dropdown-item" href="../articles/tabix.html">iscream vs Rsamtools::scanTabix</a></li>
     <li><a class="dropdown-item" href="../articles/htslib.html">Getting htslib headers</a></li>
@@ -74,8 +75,25 @@ from the <code>"iscream.threads"</code> option.</p>
 <span>  mat_name <span class="op">=</span> <span class="st">"value"</span>,</span>
 <span>  sparse <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  prealloc <span class="op">=</span> <span class="fl">10000</span>,</span>
-<span>  make_se <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  make_gr <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  nthreads <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">make_mat_se</span><span class="op">(</span></span>
+<span>  <span class="va">bedfiles</span>,</span>
+<span>  <span class="va">regions</span>,</span>
+<span>  <span class="va">column</span>,</span>
+<span>  mat_name <span class="op">=</span> <span class="st">"value"</span>,</span>
+<span>  sparse <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  prealloc <span class="op">=</span> <span class="fl">10000</span>,</span>
+<span>  nthreads <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">make_mat_gr</span><span class="op">(</span></span>
+<span>  <span class="va">bedfiles</span>,</span>
+<span>  <span class="va">regions</span>,</span>
+<span>  <span class="va">column</span>,</span>
+<span>  mat_name <span class="op">=</span> <span class="st">"value"</span>,</span>
+<span>  prealloc <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  nthreads <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -110,14 +128,6 @@ number of loci are approximately known, this can reduce runtime as fewer
 resizes need to be made.</p></dd>
 
 
-<dt id="arg-make-se">make_se<a class="anchor" aria-label="anchor" href="#arg-make-se"></a></dt>
-<dd><p>Whether to return a SummarizedExperiment (default)</p></dd>
-
-
-<dt id="arg-make-gr">make_gr<a class="anchor" aria-label="anchor" href="#arg-make-gr"></a></dt>
-<dd><p>Whether to return a GenomicRanges</p></dd>
-
-
 <dt id="arg-nthreads">nthreads<a class="anchor" aria-label="anchor" href="#arg-nthreads"></a></dt>
 <dd><p>Set number of threads to use overriding the
 <code>"iscream.threads"</code> option. See <code><a href="set_threads.html">?set_threads</a></code> for more information.</p></dd>
@@ -126,12 +136,12 @@ resizes need to be made.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
 
-<ul><li><p>If <code>SummarizedExperiment</code> is available, a RangedSummarizedExperiment</p></li>
-<li><p>If <code>make_gr = TRUE</code> and <code>GenomicRanges</code> is available, a <code>GRanges</code> object,</p></li>
-<li><p>Otherwise, a named list of</p><ul><li><p>the matrix with the value of interest</p></li>
+<ul><li><p><code>make_mat()</code>: A named list of</p><ul><li><p>the matrix with the value of interest</p></li>
 <li><p>a character vector of chromosomes and numeric vector of base positions</p></li>
 <li><p>a character vector of the input sample BED file names</p></li>
 </ul></li>
+<li><p><code>make_mat_gr()</code>: if <code>GenomicRanges</code> is available, a <code>GRanges</code></p></li>
+<li><p><code>make_mat_se()</code>: if <code>SummarizedExperiment</code> is available, a <code>RangedSummarizedExperiment</code></p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -196,19 +206,30 @@ or a GRanges object. If a data frame is provided, they must have "chr",
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># make matrix of beta values</span></span></span>
 <span class="r-in"><span><span class="fu">make_mat</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, column <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20:54:24.418688] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:07:10.525598] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20:54:24.419065] [iscream::query_all] [info] Creating metadata vectors</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20:54:24.419097] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20:54:24.419101] [iscream::query_all] [info] Creating dense matrix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class: RangedSummarizedExperiment </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dim: 7 4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> metadata(0):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> assays(1): value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> rownames: NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(0):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> colnames(4): a b c d</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> colData names(0):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:07:10.526007] [iscream::query_all] [info] Creating metadata vectors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:07:10.526039] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:07:10.526043] [iscream::query_all] [info] Creating dense matrix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        a b c   d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1.0 0 0 1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1.0 0 1 1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.0 1 0 0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.0 1 0 0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.5 0 1 0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 1.0 0 0 0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [7,] 1.0 1 0 1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $pos</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  0  2  4  6  8 10 12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "chr1" "chr1" "chr1" "chr1" "chr1" "chr1" "chr1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $sampleNames</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "a" "b" "c" "d"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
