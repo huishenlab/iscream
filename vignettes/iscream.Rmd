@@ -58,14 +58,15 @@ and multiple input formats all in one function. It receives a vector of paths to
 tabixed BED files and regions of interest. The input regions may be a vector of
 `"chr:start-end"` strings, a data frame with `"chr"`, `"start"`, and `"end"`
 columns or a `GRanges` object. It queries the BEDfiles and returns the loci as a
-parsed `r CRANpkg("data.table")`, or a `GRanges` object if the input is a
-`GRanges` object.
+parsed `r CRANpkg("data.table")`. To get a `GRanges` object instead, use
+`tabix_gr`.
 
 Using iscream eliminates context switching between the shell and R for tabix
 queries since the queries are made in R and the result is an R data structure.
-Rsamtools is another R package that can query data from BED files, but it only
-supports one file at a time and only accepts `GRanges` as the input regions. See
-`vignette("tabix")` for a comparison of iscream and Rsamtools.
+`r Biocpkg("Rsamtools")` is another R package that can query data from BED
+files, but it only supports one file at a time and only accepts `GRanges` as the
+input regions. See `vignette("tabix")` for a comparison of iscream and
+Rsamtools.
 
 ### Setup
 
@@ -112,14 +113,14 @@ tabix(bedfiles, regions)
 
 ### Using `GRanges`
 
-To get `r Biocpkg("GenomicRanges")` objects, use a `GRanges` object as the input regions, or call
-`GRanges()` on the output. With `GRanges` input, the output `ranges` are
-computed with `subsetByOverlaps`.
+`tabix()` accepts `GRanges` objects as input regions. To get `r Biocpkg("GenomicRanges")`
+objects instead of data frames, use `tabix_gr` which will also preserve any
+input `GRanges` metadata.
 
 ```{r tabix_gr, message=FALSE}
 library(GenomicRanges)
 gr <- GRanges(regions)
-tabix(bedfiles, gr) |> makeGRangesFromDataFrame(keep.extra.columns = TRUE)
+tabix(bedfiles, gr)
 ```
 
 ### Setting column names
@@ -128,17 +129,16 @@ You can set the result data column names or the `GRanges` `mcols` with
 `col.names`:
 
 ```{r tabix_colnames}
-tabix(bedfiles, regions, col.names = c("beta", "coverage"))
-tabix(bedfiles, gr, col.names = c("beta", "coverage")) |> makeGRangesFromDataFrame(keep.extra.columns = TRUE)
+tabix_gr(bedfiles, regions, col.names = c("beta", "coverage"))
 ```
 
 ### Rsamtools-style output
 
-`tabix()` also has a `raw` argument if you want an unparsed named list like
-Rsamtools, but with multi-file support:
+`tabix_raw()` will return an unparsed named list like `r Biocpkg("Rsamtools")`,
+but with multi-file support:
 
 ```{r tabix_raw}
-tabix(bedfiles, regions, raw = TRUE)
+tabix_raw(bedfiles, regions)
 ```
 
 ### WGBS BED files
@@ -206,21 +206,23 @@ summarize_meth_regions(
 ## `make_mat`
 
 `make_mat` makes a matrix where every row is a locus found in at least one input
-file and the columns are the input files. It returns a `r Biocpkg("RangedSummarizedExperiment")`
-by default, but can also return a `GRanges` object or a named list of the
-matrix, coordinates, and file names.
+file and the columns are the input files. It returns a named list of the matrix,
+coordinates, and file names you can use to make other data structures.
+`make_mat_se()` returns a `r Biocpkg("RangedSummarizedExperiment")`, and
+`make_mat_gr()` returns a `GRanges` object.
 
 ```{r make_mat, message=FALSE}
 library(SummarizedExperiment)
-mat <- make_mat(bedfiles, regions, column = 4, mat_name = "beta")
+(mat <- make_mat_se(bedfiles, regions, column = 4, mat_name = "beta"))
 head(assay(mat), 10)
 ```
 
-If you have sparse data, you can save memory with `sparse = TRUE`
+If you have sparse data, you can save memory with `sparse = TRUE`, but only for
+`make_mat()` and `make_mat_se()`.
 
 ```{r sparse}
 mat <- make_mat(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
-head(assay(mat), 10)
+head(mat$beta, 10)
 ```
 
 ### WGBS BED files
