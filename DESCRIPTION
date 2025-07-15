@@ -1,5 +1,5 @@
 Package: iscream
-Title: Integrating Single-Cell Results for Exploring and Analyzing Methylation
+Title: Fast and memory efficient package to make BED file queries, summaries and matrices
 Version: 0.99.0
 Authors@R: c(
     person("James", "Eapen", email = "james.eapen@vai.org", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-6016-3598")),
