@@ -31,7 +31,6 @@ make_mat_gr(
   regions,
   column,
   mat_name = "value",
-  sparse = FALSE,
   prealloc = 10000,
   nthreads = NULL
 )

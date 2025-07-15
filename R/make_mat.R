@@ -107,11 +107,18 @@ make_mat_gr <- function(
   regions,
   column,
   mat_name = "value",
-  sparse = FALSE,
   prealloc = 10000,
   nthreads = NULL
 ) {
-  mat <- make_mat(bedfiles, regions, column, mat_name, sparse, prealloc, nthreads)
+  mat <- make_mat(
+    bedfiles,
+    regions,
+    column,
+    mat_name,
+    sparse = FALSE,
+    prealloc,
+    nthreads
+  )
   if (requireNamespace("GenomicRanges", quietly = TRUE)) {
     gr <- getGR(mat$chr, mat$pos)
     GenomicRanges::mcols(gr) <- mat[[mat_name]]
