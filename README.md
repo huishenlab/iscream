@@ -40,8 +40,9 @@ your package manager:
 - nixpkgs: `htslib`
 - conda: `bioconda::htslib`
 
-or built manually: <https://www.htslib.org/download/>. We recommend
-installing htslib with libdeflate support for optimal performance - see
+or built manually: <https://www.htslib.org/download/>. *iscream* can use
+*Rhtslib* as the htslib source but we recommend installing htslib with
+libdeflate support for optimal performance - see
 [`vignette("htslib")`](https://huishenlab.github.io/iscream/articles/htslib.html)
 for more information.
 
