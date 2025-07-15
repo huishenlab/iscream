@@ -3,6 +3,7 @@
 \name{tabix}
 \alias{tabix}
 \alias{tabix_gr}
+\alias{tabix_raw}
 \title{Query lines from a tabixed BED file}
 \usage{
 tabix(
@@ -24,8 +25,12 @@ tabix_gr(
   nthreads = NULL
 )
 
+tabix_raw(
+  bedfiles,
+  regions,
+  col.names = NULL,
+  zero_based = TRUE,
   raw = FALSE,
-  grlist = TRUE,
   nthreads = NULL
 )
 }
@@ -46,12 +51,6 @@ is not from the supported aligners or is a general BED file.}
 \item{zero_based}{Whether the input BED file has a zero-based start column -
 used when coverting the result data frame to GenomicRanges.}
 
-\item{raw}{Set true to give a named list of raw strings from the regions in
-the style of \code{Rsamtools::scanTabix} instead of a data.table}
-
-\item{grlist}{Whether to return a GRangesList or a single GRanges object
-when querying multiple files}
-
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
 }
@@ -59,6 +58,8 @@ when querying multiple files}
 \itemize{
 \item \code{tabix()}: A data frame
 \item \code{tabix_gr()}: A GRanges object
+\item \code{tabix_raw()}: A named list of raw strings from the regions in the style
+of \code{Rsamtools::scanTabix}
 }
 }
 \description{
@@ -80,9 +81,9 @@ regions records independently instead of in a single file and is used in
 }
 
 When \emph{iscream} is attached, it checks that the \emph{tabix} executable is
-available with \code{Sys.which()} and, if available, sets \code{options("tabix.method" = "shell")}. \code{tabix()} then uses the \emph{tabix} executable to make
-queries, except if \code{raw = TRUE}. If \emph{tabix} is not found, \emph{iscream} uses its
-tabix implementation. To use only \emph{iscream's} tabix implementation, set
+available with \code{Sys.which()} and, if available, sets \code{options("tabix.method" = "shell")}. \code{tabix()} then uses the \emph{tabix} executable to make queries,
+except for \code{tabix_raw()}. If \emph{tabix} is not found, \emph{iscream} uses its tabix
+implementation. To use only \emph{iscream's} tabix implementation, set
 \code{options("tabix.method" = "htslib")}.
 }
 
@@ -105,4 +106,5 @@ bedfiles <- system.file("extdata", package = "iscream") |>
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 tabix(bedfiles, regions, col.names = c("beta", "coverage"))
 tabix_gr(bedfiles, regions, col.names = c("beta", "coverage"))
+tabix_raw(bedfiles, regions, col.names = c("beta", "coverage"))
 }

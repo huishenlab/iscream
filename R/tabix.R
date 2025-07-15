@@ -29,9 +29,9 @@
 #'
 #' When *iscream* is attached, it checks that the *tabix* executable is
 #' available with `Sys.which()` and, if available, sets `options("tabix.method"
-#' = "shell")`. `tabix()` then uses the *tabix* executable to make
-#' queries, except if `raw = TRUE`. If *tabix* is not found, *iscream* uses its
-#' tabix implementation. To use only *iscream's* tabix implementation, set
+#' = "shell")`. `tabix()` then uses the *tabix* executable to make queries,
+#' except for `tabix_raw()`. If *tabix* is not found, *iscream* uses its tabix
+#' implementation. To use only *iscream's* tabix implementation, set
 #' `options("tabix.method" = "htslib")`.
 #'
 #' ## Input region formats
@@ -53,6 +53,8 @@
 #' @returns
 #' - `tabix()`: A data frame
 #' - `tabix_gr()`: A GRanges object
+#' - `tabix_raw()`: A named list of raw strings from the regions in the style
+#' of `Rsamtools::scanTabix`
 #'
 #' @export
 #' @examples
@@ -61,24 +63,19 @@
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 #' tabix(bedfiles, regions, col.names = c("beta", "coverage"))
 #' tabix_gr(bedfiles, regions, col.names = c("beta", "coverage"))
+#' tabix_raw(bedfiles, regions, col.names = c("beta", "coverage"))
 tabix <- function(
   bedfiles,
   regions,
   aligner = NULL,
   col.names = NULL,
   zero_based = TRUE,
-  raw = FALSE,
   nthreads = NULL
 ) {
   verify_files_or_stop(bedfiles)
   if (!is.null(aligner)) {
     verify_aligner_or_stop(aligner)
     verify_filetype(bedfiles, aligner)
-  }
-
-  if (raw) {
-    input_regions <- get_string_input_regions(regions)
-    return(run_scan_tabix(bedfiles, input_regions, nthreads))
   }
 
   # make the query
