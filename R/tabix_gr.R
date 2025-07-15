@@ -1,4 +1,6 @@
 #' @rdname tabix
+#' @param zero_based Whether the input BED file has a zero-based start column -
+#' used when coverting the result data frame to GenomicRanges.
 #' @export
 tabix_gr <- function(
   bedfiles,
@@ -13,7 +15,6 @@ tabix_gr <- function(
     regions,
     aligner,
     col.names,
-    zero_based,
     nthreads
   )
   result.gr <- GenomicRanges::makeGRangesFromDataFrame(

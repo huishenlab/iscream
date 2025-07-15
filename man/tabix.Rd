@@ -6,14 +6,7 @@
 \alias{tabix_raw}
 \title{Query records from tabixed BED files}
 \usage{
-tabix(
-  bedfiles,
-  regions,
-  aligner = NULL,
-  col.names = NULL,
-  zero_based = TRUE,
-  nthreads = NULL
-)
+tabix(bedfiles, regions, aligner = NULL, col.names = NULL, nthreads = NULL)
 
 tabix_gr(
   bedfiles,
@@ -40,11 +33,11 @@ this argument.}
 result.table, not including "chr", "start", and "end". Set if your BED file
 is not from the supported aligners or is a general BED file.}
 
-\item{zero_based}{Whether the input BED file has a zero-based start column -
-used when coverting the result data frame to GenomicRanges.}
-
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
+
+\item{zero_based}{Whether the input BED file has a zero-based start column -
+used when coverting the result data frame to GenomicRanges.}
 }
 \value{
 \itemize{

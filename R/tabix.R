@@ -8,8 +8,6 @@
 #' @param col.names A vector of column names for the data columns of the
 #' result.table, not including "chr", "start", and "end". Set if your BED file
 #' is not from the supported aligners or is a general BED file.
-#' @param zero_based Whether the input BED file has a zero-based start column -
-#' used when coverting the result data frame to GenomicRanges.
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
@@ -69,7 +67,6 @@ tabix <- function(
   regions,
   aligner = NULL,
   col.names = NULL,
-  zero_based = TRUE,
   nthreads = NULL
 ) {
   verify_files_or_stop(bedfiles)
