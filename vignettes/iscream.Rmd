@@ -125,7 +125,7 @@ tabix(bedfiles, gr)
 
 ### Setting column names
 
-You can set the result data column names or the `GRanges` `mcols` with
+You can set the result data frame's column names or the `GRanges` `mcols` with
 `col.names`:
 
 ```{r tabix_colnames}
