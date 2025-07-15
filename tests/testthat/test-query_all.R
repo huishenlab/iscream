@@ -9,35 +9,19 @@ colnames(regions.dt) <- c("chr", "start", "end")
 gr <- GenomicRanges::GRanges(regions)
 
 M <- matrix(
-  c(1, 0, 0, 1,
-    1, 0, 2, 2,
-    0, 2, 0, 0,
-    0, 1, 0, 0,
-    1, 0, 1, 1,
-    2, 0, 0, 0,
-    3, 1, 0, 1),
+  c(1, 0, 0, 1, 1, 0, 2, 2, 0, 2, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 2, 0, 0, 0, 3, 1, 0, 1),
   nrow = 7,
-  byrow = TRUE)
+  byrow = TRUE
+)
 
 Cov <- matrix(
-  c(1, 2, 0, 1,
-    1, 0, 2, 2,
-    2, 2, 0, 0,
-    1, 1, 2, 1,
-    2, 0, 1, 2,
-    2, 2, 0, 0,
-    3, 1, 0, 1),
+  c(1, 2, 0, 1, 1, 0, 2, 2, 2, 2, 0, 0, 1, 1, 2, 1, 2, 0, 1, 2, 2, 2, 0, 0, 3, 1, 0, 1),
   nrow = 7,
-  byrow = TRUE)
+  byrow = TRUE
+)
 
 beta <- matrix(
-  c(1, 0, 0, 1,
-    1, 0, 1, 1,
-    0, 1, 0, 0,
-    0, 1, 0, 0,
-    0.5, 0, 1, 0.5,
-    1, 0, 0, 0,
-    1, 1, 0, 1),
+  c(1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0.5, 0, 1, 0.5, 1, 0, 0, 0, 1, 1, 0, 1),
   nrow = 7,
   byrow = TRUE
 )
@@ -79,14 +63,14 @@ bismark_bs_bC <- make_bsseq_mat(bismark_bedfiles, regions, sparse = F, aligner =
 biscuit_bs_bC_sp <- make_bsseq_mat(biscuit_bedfiles, regions, sparse = T, mval = F)
 bismark_bs_bC_sp <- make_bsseq_mat(bismark_bedfiles, regions, sparse = T, aligner = "bismark", mval = F)
 
-biscuit_b <- make_mat(biscuit_bedfiles, regions, column = 4, mat_name = "beta", make_se = FALSE)
-bismark_M <- make_mat(bismark_bedfiles, regions, column = 4, mat_name = "M", make_se = FALSE)
+biscuit_b <- make_mat(biscuit_bedfiles, regions, column = 4, mat_name = "beta")
+bismark_M <- make_mat(bismark_bedfiles, regions, column = 4, mat_name = "M")
 
-biscuit_b_sp <- make_mat(biscuit_bedfiles, regions, column = 4, sparse = T, mat_name = "beta", make_se = FALSE)
-bismark_M_sp <- make_mat(bismark_bedfiles, regions, column = 4, sparse = T, mat_name = "M", make_se = FALSE)
+biscuit_b_sp <- make_mat(biscuit_bedfiles, regions, column = 4, sparse = T, mat_name = "beta")
+bismark_M_sp <- make_mat(bismark_bedfiles, regions, column = 4, sparse = T, mat_name = "M")
 
-biscuit_C_gr <- make_mat(biscuit_bedfiles, gr, column = 5, prealloc = 2, make_se = FALSE)
-biscuit_C_df <- make_mat(biscuit_bedfiles, regions.dt, column = 5, prealloc = 2, make_se = FALSE)
+biscuit_C_gr <- make_mat(biscuit_bedfiles, gr, column = 5, prealloc = 2)
+biscuit_C_df <- make_mat(biscuit_bedfiles, regions.dt, column = 5, prealloc = 2)
 
 results <- list(
   biscuit_bs_MC,
@@ -274,11 +258,9 @@ test_that("matrix row,colnames,sampleNames", {
 })
 
 test_that("SE, GR", {
-  grmat <- make_mat(biscuit_bedfiles, regions, column = 4, mat_name = "beta", make_gr = TRUE)
+  grmat <- make_mat_gr(biscuit_bedfiles, regions, column = 4, mat_name = "beta")
   expect_equal(class(grmat)[1], "GRanges")
-  semat <- make_mat(biscuit_bedfiles, regions, column = 4, mat_name = "beta", make_se = TRUE)
-  expect_equal(class(semat)[1], "RangedSummarizedExperiment")
-  semat <- make_mat(biscuit_bedfiles, regions, column = 4, mat_name = "beta")
+  semat <- make_mat_se(biscuit_bedfiles, regions, column = 4, mat_name = "beta")
   expect_equal(class(semat)[1], "RangedSummarizedExperiment")
 })
 
