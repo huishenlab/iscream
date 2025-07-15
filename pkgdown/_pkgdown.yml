@@ -24,10 +24,10 @@ reference:
   - title: Read data from BED files
   - subtitle: General BED files
     contents:
-      - tabix
+      - starts_with("tabix")
       - query_chroms
       - summarize_regions
-      - make_mat
+      - starts_with("make_mat")
   - subtitle: WGBS BED files
     contents:
       - summarize_meth_regions
