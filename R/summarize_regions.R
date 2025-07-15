@@ -39,7 +39,7 @@
 #' <https://arma.sourceforge.net/docs.html#stats_fns> for futher details on the
 #' supported functions
 #'
-#' @return A data.frame
+#' @returns A data.frame
 #'
 #' @importFrom methods is
 #'

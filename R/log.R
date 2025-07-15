@@ -7,7 +7,7 @@
 #' a region, filename parsing etc. This mode cannot be used on more than one
 #' thread as R cannot output messages from multiple threads without crashing.
 #' - `"off"`: no logging
-#' @return None; sets the log level to the provided level
+#' @returns None; sets the log level to the provided level
 #'
 #' @export
 #'
@@ -26,7 +26,7 @@ set_log_level <- function(level = "info") {
 #' @param level The logging level to validate
 #' @param n_threads The number of threads that the next iscream function call
 #' will use
-#' @return None; sets the log level to the provide level
+#' @returns None; sets the log level to the provide level
 #'
 #' @keywords internal
 #'

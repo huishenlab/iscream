@@ -19,7 +19,7 @@
 #' as fewer resizes need to be made.
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
-#' @return A named list of
+#' @returns A named list of
 #' - coverage and either a beta- or M-value matrix
 #' - a character vector of chromosomes and numeric vector of corresponding CpG
 #' base positions

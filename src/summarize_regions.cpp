@@ -173,7 +173,7 @@ double summarize(const StatFunction func, const arma::vec& data_vec) {
 //' to half the available OpenMP cores. See `?get_threads` for more details. It
 //' can be manaully set with `set_threads()`.
 //'
-//' @return A summary data.frame
+//' @returns A summary data.frame
 //'
 //' @keywords internal
 // [[Rcpp::export]]

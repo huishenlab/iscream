@@ -8,7 +8,7 @@
 //' correspond to the htslib version used during iscream's installation if a
 //' different htslib version is available for linking at runtime.
 //'
-//' @return None
+//' @returns None
 //'
 //' @examples
 //' htslib_version()
@@ -25,7 +25,7 @@ void htslib_version() {
 // @param region Genomic region string in the form "chr:start-end"
 // @param bedFile The opened htslib bed file stream
 // @param tbx The bed file's tab-index
-// @returns A vector of strings from the matching region of the bed file
+// @returnss A vector of strings from the matching region of the bed file
 std::vector<std::string> tabix_query(
     const std::string& region,
     htsFile* bedFile, tbx_t* tbx
@@ -77,7 +77,7 @@ std::vector<RegionQuery> query_intervals(
 
 // Query the chromosomes or seqnames from a vector of files
 // @param bedfile_vec The vector of bedfile paths
-// @return A vector of seqnames
+// @returns A vector of seqnames
 //
 // [[Rcpp::export]]
 std::set<std::string> Cpp_query_chroms(const std::vector<std::string>& bedfile_vec, const int nthreads) {
@@ -110,7 +110,7 @@ std::set<std::string> Cpp_query_chroms(const std::vector<std::string>& bedfile_v
 // file with the same name and .tbi extension
 // @param regions A vector of region strings in the form "chr:start-end"
 //
-// @return Vector of records
+// @returns Vector of records
 //
 // [[Rcpp::export]]
 Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::vector<std::string>& regions) {
@@ -144,7 +144,7 @@ Rcpp::CharacterVector Cpp_query_interval(const std::string& bedfile, const std::
 // file with the same name and .tbi extension
 // @param regions A vector of region strings in the form "chr:start-end"
 //
-// @return Named list of records, input regions as names
+// @returns Named list of records, input regions as names
 //
 // [[Rcpp::export]]
 Rcpp::List scan_tabix(const std::string& bedfile, const std::vector<std::string>& regions) {

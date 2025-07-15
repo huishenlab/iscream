@@ -28,7 +28,7 @@ void Cpp_set_log_level(const std::string &name) {
 //'
 //' Can handle all of spdlogs levels, but iscream functions only supports
 //' "info" and "debug"
-//' @return The current logging level as a string
+//' @returns The current logging level as a string
 //' @examples
 //' get_log_level()
 //'

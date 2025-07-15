@@ -4,7 +4,7 @@
 // Beta value decoder
 //
 // @param encoded The bit-packed beta and cov Int
-// @return The beta value
+// @returns The beta value
 //
 // [[Rcpp::export]]
 int decode_beta(int encoded) {
@@ -14,7 +14,7 @@ int decode_beta(int encoded) {
 // Coverage value decoder
 //
 // @param encoded The bit-packed beta and cov Int
-// @return The coverage value
+// @returns The coverage value
 //
 // [[Rcpp::export]]
 int decode_cov(int encoded) {
@@ -94,7 +94,7 @@ void get_m_sparse(Rcpp::S4& m) {
 // Get beta values from bit-packed sparse matrix
 //
 // @param m The bit-packed dgcMatrix
-// @return The beta value
+// @returns The beta value
 //
 // [[Rcpp::export]]
 void get_beta_sparse(Rcpp::S4& m) {

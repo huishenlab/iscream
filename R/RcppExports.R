@@ -60,7 +60,7 @@ Cpp_set_log_level <- function(name) {
 #'
 #' Can handle all of spdlogs levels, but iscream functions only supports
 #' "info" and "debug"
-#' @return The current logging level as a string
+#' @returns The current logging level as a string
 #' @examples
 #' get_log_level()
 #'
@@ -76,7 +76,7 @@ get_log_level <- function() {
 #' correspond to the htslib version used during iscream's installation if a
 #' different htslib version is available for linking at runtime.
 #'
-#' @return None
+#' @returns None
 #'
 #' @examples
 #' htslib_version()
@@ -109,7 +109,7 @@ scan_tabix <- function(bedfile, regions) {
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
-#' @return A list of one or two matrices, chromosome, position, and filename vectors
+#' @returns A list of one or two matrices, chromosome, position, and filename vectors
 #'
 #' @keywords internal
 Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, prealloc, nthreads) {
@@ -138,7 +138,7 @@ Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, pr
 #' to half the available OpenMP cores. See `?get_threads` for more details. It
 #' can be manaully set with `set_threads()`.
 #'
-#' @return A summary data.frame
+#' @returns A summary data.frame
 #'
 #' @keywords internal
 Cpp_summarize_regions <- function(bedfiles, regions, fun_vec, col_indices, col_names, aligner, mval = FALSE, region_rownames = FALSE, nthreads = 1L) {

@@ -2,7 +2,7 @@
 #' @param bedfiles The vector of bedfile paths
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
-#' @return A vector of seqnames
+#' @returns A vector of seqnames
 #'
 #' @export
 #' @examples

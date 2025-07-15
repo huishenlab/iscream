@@ -54,7 +54,7 @@
 #' @importFrom tools file_path_sans_ext
 #' @importFrom stats setNames
 #' @importFrom methods is
-#' @return A data frame or `GRanges` if the input was `GRanges`.
+#' @returns A data frame or `GRanges` if the input was `GRanges`.
 #'
 #' @export
 #' @examples

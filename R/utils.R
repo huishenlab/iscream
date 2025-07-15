@@ -2,7 +2,7 @@
 #'
 #' Only "biscuit", "bismark", and "bsbolt" are currently supported
 #' @param aligner The input alinger
-#' @return true; quits if the input is not among supported_aligners
+#' @returns true; quits if the input is not among supported_aligners
 #'
 #' @keywords internal
 verify_aligner_or_stop <- function(aligner) {
@@ -28,7 +28,7 @@ verify_aligner_or_stop <- function(aligner) {
 #' @param sep Vector of separators to use for genomic string. First element is
 #' used to separate chromosome and coordinates, second separator is used to
 #' separate start and end coordinates.
-#' @return A character vector
+#' @returns A character vector
 #'
 #' @export
 #' @examples
@@ -60,7 +60,7 @@ get_granges_string <- function(gr, sep = c(":", "-")) {
 #'
 #' @importFrom data.table setDT
 #'
-#' @return A character vector
+#' @returns A character vector
 #'
 #' @export
 #' @examples

@@ -17,7 +17,7 @@
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
-#' @return
+#' @returns
 #' - If `SummarizedExperiment` is available, a RangedSummarizedExperiment
 #'
 #' - If `make_gr = TRUE` and `GenomicRanges` is available, a `GRanges` object,

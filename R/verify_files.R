@@ -2,7 +2,7 @@
 #'
 #' @param files_vec A vector of file paths
 #' @param error_file_prefix Error message prefix for 'Bedfile' vs 'Tabix file'
-#' @return TRUE if all input bedfiles have an associated tabix index file.
+#' @returns TRUE if all input bedfiles have an associated tabix index file.
 #' FALSE if not
 #'
 #' @keywords internal
@@ -18,7 +18,7 @@ check_files_exist <- function(files_vec, error_file_prefix = "Bedfile") {
 #'
 #' @param bedfiles A vector of bedfile paths
 #' @param verify_tabix Whether to verify the presence of tabix files
-#' @return TRUE if all input bedfiles have an associated tabix index file.
+#' @returns TRUE if all input bedfiles have an associated tabix index file.
 #' FALSE if not
 #'
 #' @keywords internal
@@ -38,7 +38,7 @@ verify_files_or_stop <- function(bedfiles, verify_tabix = TRUE) {
 #'
 #' @importFrom stringfish sf_grepl
 #'
-#' @return TRUE if all input bedfiles have an associated tabix index file.
+#' @returns TRUE if all input bedfiles have an associated tabix index file.
 #' FALSE if not
 #'
 #' @keywords internal

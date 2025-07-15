@@ -265,7 +265,7 @@ int QueryAll<Mat>::bitpack(const float beta_val, const float cov_val) {
 //' @param nthreads Set number of threads to use overriding the
 //' `"iscream.threads"` option. See `?set_threads` for more information.
 //'
-//' @return A list of one or two matrices, chromosome, position, and filename vectors
+//' @returns A list of one or two matrices, chromosome, position, and filename vectors
 //'
 //' @keywords internal
 // [[Rcpp::export]]

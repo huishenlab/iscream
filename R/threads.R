@@ -6,7 +6,7 @@
 #' `iscream.threads` option in your `~/.Rprofile`. See `?set_threads` for more
 #' information.
 #' @importFrom parallelly availableCores
-#' @return A named vector:
+#' @returns A named vector:
 #' - `use_threads` = the number of threads iscream will use
 #' - `opt_set` = whether the option was set by the user
 #' - `avail_threads` = The number of available threads as reported by
@@ -42,7 +42,7 @@ get_threads <- function() {
 
 #' @param n_threads The number of threads to use
 #' @importFrom parallelly availableCores
-#' @returns NULL. Sets the `iscream.threads` option to the requested number of
+#' @returnss NULL. Sets the `iscream.threads` option to the requested number of
 #' threads if available
 #'
 #' @details iscream uses OpenMP to parallelize certain functions. You can use
@@ -100,7 +100,7 @@ set_threads <- function(n_threads) {
 #' @param opt_set Whether the `iscream.threads` options is set
 #'
 #' @importFrom parallelly availableCores
-#' @returns `n_threads` if the requested number of threads are available and
+#' @returnss `n_threads` if the requested number of threads are available and
 #' stops if not
 #'
 #' @keywords internal
