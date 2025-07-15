@@ -12,6 +12,7 @@ regions.missing_in_3 <- c("chr1:13-14")
 regions.dt <- as.data.table(regions)[, tstrsplit(regions, ":|-")]
 colnames(regions.dt) <- c("chr", "start", "end")
 chrs <- sort(paste0("chr", c(seq(1:22), "M", "X", "Y")))
+gr <- GenomicRanges::GRanges(regions)
 
 test_that("query_chroms", {
   expect_equal(
@@ -51,6 +52,10 @@ test_tabix_dataframe <- function(htslib = FALSE) {
   )
   expect_equal(
     tabix(biscuit_tabix_beds[1], regions.dt, aligner = "biscuit"),
+    fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))
+  )
+  expect_equal(
+    tabix(biscuit_tabix_beds[1], gr, aligner = "biscuit"),
     fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))
   )
   expect_equal(
@@ -137,6 +142,46 @@ test_that("tabix multi query with shell", {
 
 test_that("tabix multi query with htslib", {
   test_multi_tabix_dataframe(htslib = TRUE)
+})
+
+gr.meta <- GenomicRanges::GRanges(regions)
+GenomicRanges::values(gr.meta) <- data.frame(meta = c("s1", "s2", "s3"))
+
+test_that("tabix_gr", {
+  # gr input
+  expect_equal(
+    tabix_gr(biscuit_tabix_beds[1], gr, aligner = "biscuit"),
+    fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric")) |>
+      GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = TRUE, keep.extra.columns = TRUE)
+  )
+  # string input
+  expect_equal(
+    tabix_gr(biscuit_tabix_beds[1], regions, aligner = "biscuit"),
+    fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric")) |>
+      GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = TRUE, keep.extra.columns = TRUE)
+  )
+  # dt input
+  expect_equal(
+    tabix_gr(biscuit_tabix_beds[1], regions.dt, aligner = "biscuit"),
+    fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric")) |>
+      GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = TRUE, keep.extra.columns = TRUE)
+  )
+  # gr input with metadata
+  expect_equal(
+    tabix_gr(biscuit_tabix_beds[1], gr.meta, aligner = "biscuit"),
+    fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))[,
+      meta := c(rep("s1", 3), rep("s2", 2), rep("s3", 2))
+    ] |>
+      GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = TRUE, keep.extra.columns = TRUE)
+  )
+  # gr input with metadata, bismark
+  expect_equal(
+    tabix_gr(bismark_tabix_beds[1], gr.meta, aligner = 'bismark', zero_based = FALSE),
+    fread(tabix_df_result_bismark, colClasses = c("character", "numeric", "numeric", "numeric", "numeric", "numeric"))[,
+      meta := c(rep("s1", 3), rep("s2", 2), rep("s3", 2))
+    ] |>
+      GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = FALSE, keep.extra.columns = TRUE)
+  )
 })
 
 test_that("tabix multi GR(List)", {

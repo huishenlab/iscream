@@ -10,10 +10,6 @@
 #' is not from the supported aligners or is a general BED file.
 #' @param zero_based Whether the input BED file has a zero-based start column -
 #' used when coverting the result data frame to GenomicRanges.
-#' @param raw Set true to give a named list of raw strings from the regions in
-#' the style of `Rsamtools::scanTabix` instead of a data.table
-#' @param grlist Whether to return a GRangesList or a single GRanges object
-#' when querying multiple files
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
@@ -54,14 +50,17 @@
 #' @importFrom tools file_path_sans_ext
 #' @importFrom stats setNames
 #' @importFrom methods is
-#' @returns A data frame or `GRanges` if the input was `GRanges`.
+#' @returns
+#' - `tabix()`: A data frame
+#' - `tabix_gr()`: A GRanges object
 #'
 #' @export
 #' @examples
 #' bedfiles <- system.file("extdata", package = "iscream") |>
 #'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
-#' tabix(bedfiles[1], regions, col.names = c("beta", "coverage"))
+#' tabix(bedfiles, regions, col.names = c("beta", "coverage"))
+#' tabix_gr(bedfiles, regions, col.names = c("beta", "coverage"))
 tabix <- function(
   bedfiles,
   regions,
@@ -69,7 +68,6 @@ tabix <- function(
   col.names = NULL,
   zero_based = TRUE,
   raw = FALSE,
-  grlist = TRUE,
   nthreads = NULL
 ) {
   verify_files_or_stop(bedfiles)
@@ -112,28 +110,7 @@ tabix <- function(
   }
 
   setnames(result, result_colnames)
-
-  # get GRanges
-  if (is(regions, "GRanges")) {
-    result.gr <- GenomicRanges::makeGRangesFromDataFrame(
-      result,
-      starts.in.df.are.0based = zero_based,
-      keep.extra.columns = TRUE
-    )
-    overlaps <- GenomicRanges::findOverlaps(result.gr, regions)
-
-    if (dim(GenomicRanges::mcols(regions))[2] > 0) {
-      mcols.colnames <- colnames(GenomicRanges::mcols(regions))
-      mcols.subjectHits <- GenomicRanges::mcols(regions)[S4Vectors::subjectHits(overlaps), mcols.colnames]
-      GenomicRanges::mcols(result.gr)[S4Vectors::queryHits(overlaps), mcols.colnames] <-
-        GenomicRanges::mcols(regions)[S4Vectors::subjectHits(overlaps), mcols.colnames]
-    }
-    if ("file" %in% colnames(GenomicRanges::mcols(result.gr)) & grlist) {
-      return(GenomicRanges::split(result.gr, as.factor(result.gr$file)))
-    }
-    return(result.gr)
-  }
-  return(result)
+  result
 }
 
 tabix.shell <- function(bedfiles, regions_df, nthreads) {
