@@ -42,7 +42,12 @@ used when coverting the result data frame to GenomicRanges.}
 \value{
 \itemize{
 \item \code{tabix()}: A data frame
-\item \code{tabix_gr()}: A GRanges object
+\item \code{tabix_gr()}: A \code{GRanges} object for single files and \code{GRangesList} for
+multiple files. When making \code{GRanges}, the 0-based records from BED-files
+will be converted to 1-based with
+\code{GenomicRanges::makeGRangesFromDataFrame()}. Bismark's coverage files will
+not be converted as they are already 1-based and the \code{ranges} slot will be
+only one position.
 \item \code{tabix_raw()}: A named list of raw strings from the regions in the style
 of \code{Rsamtools::scanTabix}
 }
@@ -75,14 +80,8 @@ implementation. To use only \emph{iscream's} tabix implementation, set
 \subsection{Input region formats}{
 
 The input regions may be string vector in the form "chr:start-end", a
-dataframe with "chr", "start" and "end" columns or a GRanges object. Input
-regions must be 1-based.  If the input is a GRanges, the output will also be
-GRanges with any associated metadata columns (joined onto the result using
-\code{GenomicRanges::findOverlaps()}). When making \code{GRanges}, the 0-based records
-from BED-files will be converted to 1-based with
-\code{GenomicRanges::makeGRangesFromDataFrame()}. Bismark's coverage files will
-not be converted as they are already 1-based and the \code{ranges} slot will be
-only one position.
+dataframe with "chr", "start" and "end" columns or a \code{GRanges} object. Input
+regions must be 1-based.
 }
 }
 \examples{
