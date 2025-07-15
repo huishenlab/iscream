@@ -4,7 +4,7 @@
 \alias{tabix}
 \alias{tabix_gr}
 \alias{tabix_raw}
-\title{Query lines from a tabixed BED file}
+\title{Query records from tabixed BED files}
 \usage{
 tabix(
   bedfiles,
@@ -63,7 +63,7 @@ of \code{Rsamtools::scanTabix}
 }
 }
 \description{
-Query lines from a tabixed BED file
+Query records from tabixed BED files
 }
 \details{
 \subsection{Query method}{

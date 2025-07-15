@@ -1,4 +1,4 @@
-#' Query lines from a tabixed BED file
+#' Query records from tabixed BED files
 #' @param bedfiles The bedfiles to be queried
 #' @param regions A vector, data frame or GenomicRanges of genomic regions. See
 #' details.
