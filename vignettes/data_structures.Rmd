@@ -85,7 +85,7 @@ input regions:
   unname(regions),
   fun = c("sum", "mean"))
 )
-summary |> (function(.) GRanges(.$feature, summary = .[, -1]))()
+GRanges(summary$feature, summary = summary[, -1])
 ```
 
 ### From `make_mat`
