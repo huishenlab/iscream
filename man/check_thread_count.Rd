@@ -18,6 +18,10 @@ Defaults to \code{parallelly::availableCores()}}
 
 \item{opt_set}{Whether the \code{iscream.threads} options is set}
 }
+\value{
+\code{n_threads} if the requested number of threads are available and
+stops if not
+}
 \description{
 Check that the required threads are available
 }

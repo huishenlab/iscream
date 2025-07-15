@@ -42,7 +42,7 @@ get_threads <- function() {
 
 #' @param n_threads The number of threads to use
 #' @importFrom parallelly availableCores
-#' @returnss NULL. Sets the `iscream.threads` option to the requested number of
+#' @returns NULL. Sets the `iscream.threads` option to the requested number of
 #' threads if available
 #'
 #' @details iscream uses OpenMP to parallelize certain functions. You can use
@@ -100,7 +100,7 @@ set_threads <- function(n_threads) {
 #' @param opt_set Whether the `iscream.threads` options is set
 #'
 #' @importFrom parallelly availableCores
-#' @returnss `n_threads` if the requested number of threads are available and
+#' @returns `n_threads` if the requested number of threads are available and
 #' stops if not
 #'
 #' @keywords internal

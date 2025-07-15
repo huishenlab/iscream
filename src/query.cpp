@@ -25,7 +25,7 @@ void htslib_version() {
 // @param region Genomic region string in the form "chr:start-end"
 // @param bedFile The opened htslib bed file stream
 // @param tbx The bed file's tab-index
-// @returnss A vector of strings from the matching region of the bed file
+// @returns A vector of strings from the matching region of the bed file
 std::vector<std::string> tabix_query(
     const std::string& region,
     htsFile* bedFile, tbx_t* tbx
