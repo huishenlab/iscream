@@ -21,10 +21,6 @@ test_that("query_chroms", {
   )
 })
 
-gr <- GenomicRanges::GRanges(regions)
-gr.meta <- GenomicRanges::GRanges(regions)
-GenomicRanges::values(gr.meta) <- data.frame(meta = c("s1", "s2", "s3"))
-
 # testing data
 tabix_df_result <- list.files(extdata, pattern = "tabix_dataframe.test", full.names = T)
 tabix_df_result_bismark <- list.files(extdata, pattern = "tabix_dataframe_bismark.test", full.names = T)
@@ -39,18 +35,6 @@ test_tabix_dataframe <- function(htslib = FALSE) {
     fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))
   )
   expect_equal(
-    tabix(biscuit_tabix_beds[1], gr, aligner = "biscuit"),
-    fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric")) |>
-      GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = TRUE, keep.extra.columns = TRUE)
-  )
-  expect_equal(
-    tabix(biscuit_tabix_beds[1], gr.meta, aligner = "biscuit"),
-    fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))[,
-      meta := c(rep("s1", 3), rep("s2", 2), rep("s3", 2))
-    ] |>
-      GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = TRUE, keep.extra.columns = TRUE)
-  )
-  expect_equal(
     tabix(biscuit_tabix_beds[1], regions.dt, aligner = "biscuit"),
     fread(tabix_df_result, colClasses = c("character", "numeric", "numeric", "numeric", "numeric"))
   )
@@ -61,13 +45,6 @@ test_tabix_dataframe <- function(htslib = FALSE) {
   expect_equal(
     tabix(bismark_tabix_beds[1], regions, aligner = 'bismark'),
     fread(tabix_df_result_bismark, colClasses = c("character", "numeric", "numeric", "numeric", "numeric", "numeric"))
-  )
-  expect_equal(
-    tabix(bismark_tabix_beds[1], gr.meta, aligner = 'bismark', zero_based = FALSE),
-    fread(tabix_df_result_bismark, colClasses = c("character", "numeric", "numeric", "numeric", "numeric", "numeric"))[,
-      meta := c(rep("s1", 3), rep("s2", 2), rep("s3", 2))
-    ] |>
-      GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = FALSE, keep.extra.columns = TRUE)
   )
   # empty
   expect_warning(
@@ -187,20 +164,17 @@ test_that("tabix_gr", {
 test_that("tabix multi GR(List)", {
   grl <- GenomicRanges::GRangesList(
     lapply(seq_len(length(biscuit_tabix_beds)), function(bed) {
-      res <- tabix(biscuit_tabix_beds[bed], gr)
+      res <- tabix_gr(biscuit_tabix_beds[bed], gr)
       GenomicRanges::mcols(res)$file <- letters[bed]
       res
     })
   )
   names(grl) <- c(letters[1:4])
 
-  res <- tabix(biscuit_tabix_beds, gr)
+  res <- tabix_gr(biscuit_tabix_beds, gr)
   expect_s4_class(res, "CompressedGRangesList")
   expect_equal(names(res), letters[1:4])
   expect_equal(res, grl)
-
-  res <- tabix(biscuit_tabix_beds, gr, grlist = FALSE)
-  expect_s4_class(res, "GRanges")
 })
 
 # test colnames
