@@ -2,6 +2,8 @@
 % Please edit documentation in R/make_mat.R
 \name{make_mat}
 \alias{make_mat}
+\alias{make_mat_se}
+\alias{make_mat_gr}
 \title{Make a matrix from a numeric column of BED files}
 \usage{
 make_mat(
@@ -11,8 +13,26 @@ make_mat(
   mat_name = "value",
   sparse = FALSE,
   prealloc = 10000,
-  make_se = TRUE,
-  make_gr = FALSE,
+  nthreads = NULL
+)
+
+make_mat_se(
+  bedfiles,
+  regions,
+  column,
+  mat_name = "value",
+  sparse = FALSE,
+  prealloc = 10000,
+  nthreads = NULL
+)
+
+make_mat_gr(
+  bedfiles,
+  regions,
+  column,
+  mat_name = "value",
+  sparse = FALSE,
+  prealloc = 10000,
   nthreads = NULL
 )
 }
@@ -31,23 +51,19 @@ make_mat(
 number of loci are approximately known, this can reduce runtime as fewer
 resizes need to be made.}
 
-\item{make_se}{Whether to return a SummarizedExperiment (default)}
-
-\item{make_gr}{Whether to return a GenomicRanges}
-
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
 }
 \value{
 \itemize{
-\item If \code{SummarizedExperiment} is available, a RangedSummarizedExperiment
-\item If \code{make_gr = TRUE} and \code{GenomicRanges} is available, a \code{GRanges} object,
-\item Otherwise, a named list of
+\item \code{make_mat()}: A named list of
 \itemize{
 \item the matrix with the value of interest
 \item a character vector of chromosomes and numeric vector of base positions
 \item a character vector of the input sample BED file names
 }
+\item \code{make_mat_gr()}: if \code{GenomicRanges} is available, a \code{GRanges}
+\item \code{make_mat_se()}: if \code{SummarizedExperiment} is available, a \code{RangedSummarizedExperiment}
 }
 }
 \description{

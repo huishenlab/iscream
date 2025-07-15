@@ -12,20 +12,16 @@
 #' @param prealloc The number of rows to initialize the matrices with. If the
 #' number of loci are approximately known, this can reduce runtime as fewer
 #' resizes need to be made.
-#' @param make_se Whether to return a SummarizedExperiment (default)
-#' @param make_gr Whether to return a GenomicRanges
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
 #' @returns
-#' - If `SummarizedExperiment` is available, a RangedSummarizedExperiment
-#'
-#' - If `make_gr = TRUE` and `GenomicRanges` is available, a `GRanges` object,
-#'
-#' - Otherwise, a named list of
+#' - `make_mat()`: A named list of
 #'   - the matrix with the value of interest
 #'   - a character vector of chromosomes and numeric vector of base positions
 #'   - a character vector of the input sample BED file names
+#' - `make_mat_gr()`: if `GenomicRanges` is available, a `GRanges`
+#' - `make_mat_se()`: if `SummarizedExperiment` is available, a `RangedSummarizedExperiment`
 #'
 #' @details
 #' The input regions may be string vector in the form "chr:start-end"
@@ -54,8 +50,6 @@ make_mat <- function(
   mat_name = "value",
   sparse = FALSE,
   prealloc = 10000,
-  make_se = TRUE,
-  make_gr = FALSE,
   nthreads = NULL
 ) {
   if (column < 4) {
@@ -82,17 +76,45 @@ make_mat <- function(
     nthreads = n_threads
   )
 
-  if (make_gr & requireNamespace("GenomicRanges", quietly = TRUE)) {
-    gr <- getGR(mat$chr, mat$pos)
-    GenomicRanges::mcols(gr) <- mat$M
-    gr
-  } else if (make_se & requireNamespace("SummarizedExperiment", quietly = TRUE)) {
-    matlist <- list(mat$M)
+  names(mat)[which(names(mat) == "M")] <- mat_name
+  mat
+}
+
+#' @rdname make_mat
+#' @export
+make_mat_se <- function(
+  bedfiles,
+  regions,
+  column,
+  mat_name = "value",
+  sparse = FALSE,
+  prealloc = 10000,
+  nthreads = NULL
+) {
+  mat <- make_mat(bedfiles, regions, column, mat_name, sparse, prealloc, nthreads)
+  if (requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    matlist <- list(mat[[mat_name]])
     names(matlist) <- mat_name
     gr <- getGR(mat$chr, mat$pos)
     SummarizedExperiment::SummarizedExperiment(assays = matlist, rowRanges = gr)
-  } else {
-    names(mat)[which(names(mat) == "M")] <- mat_name
-    mat
+  }
+}
+
+#' @rdname make_mat
+#' @export
+make_mat_gr <- function(
+  bedfiles,
+  regions,
+  column,
+  mat_name = "value",
+  sparse = FALSE,
+  prealloc = 10000,
+  nthreads = NULL
+) {
+  mat <- make_mat(bedfiles, regions, column, mat_name, sparse, prealloc, nthreads)
+  if (requireNamespace("GenomicRanges", quietly = TRUE)) {
+    gr <- getGR(mat$chr, mat$pos)
+    GenomicRanges::mcols(gr) <- mat[[mat_name]]
+    gr
   }
 }
