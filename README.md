@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/huishenlab/iscream/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/huishenlab/iscream/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check-bioc](https://github.com/huishenlab/iscream/actions/workflows/check-bioc.yml/badge.svg)](https://github.com/huishenlab/iscream/actions/workflows/check-bioc.yml)
 [![Codecov test coverage](https://codecov.io/gh/huishenlab/iscream/graph/badge.svg)](https://app.codecov.io/gh/huishenlab/iscream)
 <!-- badges: end -->
 
