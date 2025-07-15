@@ -33,34 +33,26 @@ can also be turned into `GRanges`.
 
 ### From `tabix` queries
 
-`tabix_gr()` returns a `GenomicRanges` object along with any attached metadata.
-The `regions` parameter can be a string vector, a data frame or a `GRanges`
-object.
+`tabix_gr()` returns a `GenomicRanges` object. The `regions` parameter can be a
+string vector, a data frame or a `GRanges` object. If given a `GRanges` object
+with metadata, those columns will be preserved in the output.
+
 
 ```{r tabix_gr}
-tabix_gr(bedfiles[1], regions)
-```
-
-The `data.table` output of `tabix()` can also be piped into `GRanges`, but may
-not preserve me
-
-```{r tabix}
-tabix(bedfiles[1], regions) |> GRanges()
-```
-
-If the input is already a `GRanges` object, `tabix()` will also return a
-`GRanges` object along with any attached metadata. With multiple input files, it
-returns a `GRangesList`. `tabix()` uses `findOverlaps()` to join input metadata
-with the queried data.
-
-```{r tabixr}
 gr <- GRanges(regions)
 values(gr) <- DataFrame(
     gene = c("gene1", "gene2", "gene3"),
     some_metadata = c("s1", "s2", "s3")
 )
 gr
-tabix(bedfiles, gr)
+tabix_gr(bedfiles[1], regions)
+```
+
+The `data.table` output of `tabix()` can also be piped into `GRanges`, but may
+not preserve metadata.
+
+```{r tabix}
+tabix(bedfiles[1], regions) |> GRanges()
 ```
 
 If the input BED file is not zero-based (e.g. Bismark coverage files), set
