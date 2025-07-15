@@ -22,7 +22,7 @@
 
 on:
   push:
-    branches: [bioc]
+    branches: [dev, bioc]
     paths-ignore:
       - '**/README.md'
       - '**.nix'

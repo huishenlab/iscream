@@ -1,22 +1,23 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
-on:
-  push:
-    branches: [main, master, dev]
-    paths-ignore:
-      - '**/README.md'
-      - '**.nix'
-      - '**.toml'
-      - 'flake.lock'
-      - '.gitignore'
-      - 'codecov.yml'
-      - 'Makefile'
-  pull_request:
-    branches: [main, master]
-
+on: workflow_dispatch
+  # push:
+  #   branches: [main, master, dev]
+  #   paths-ignore:
+  #     - '**/README.md'
+  #     - '**.nix'
+  #     - '**.toml'
+  #     - 'flake.lock'
+  #     - '.gitignore'
+  #     - 'codecov.yml'
+  #     - 'Makefile'
+  # pull_request:
+  #   branches: [main, master]
+  #
 name: R-CMD-check
 
 jobs:
+  if: false
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
 
