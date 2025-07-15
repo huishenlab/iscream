@@ -6,7 +6,6 @@ tabix_gr <- function(
   aligner = NULL,
   col.names = NULL,
   zero_based = TRUE,
-  raw = FALSE,
   nthreads = NULL
 ) {
   result <- tabix(

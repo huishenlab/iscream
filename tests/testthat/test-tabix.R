@@ -222,20 +222,20 @@ tabix_raw_res <- list(
 
 test_that("tabix raw list", {
   expect_equal(
-    tabix_raw(biscuit_tabix_beds[3], regions, raw = T),
+    tabix_raw(biscuit_tabix_beds[3], regions),
     tabix_raw_res
   )
 })
 
 
 multi_tabix_raw <- lapply(biscuit_tabix_beds, function(i) {
-  tabix_raw(i, regions, raw = T)
+  tabix_raw(i, regions)
 })
 names(multi_tabix_raw) = tools::file_path_sans_ext(basename(biscuit_tabix_beds), compression = TRUE)
 
 test_that("tabix multi query raw", {
   expect_equal(
-    tabix_raw(biscuit_tabix_beds, regions, raw = T),
+    tabix_raw(biscuit_tabix_beds, regions),
     multi_tabix_raw
   )
 })

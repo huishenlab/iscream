@@ -21,18 +21,10 @@ tabix_gr(
   aligner = NULL,
   col.names = NULL,
   zero_based = TRUE,
-  raw = FALSE,
   nthreads = NULL
 )
 
-tabix_raw(
-  bedfiles,
-  regions,
-  col.names = NULL,
-  zero_based = TRUE,
-  raw = FALSE,
-  nthreads = NULL
-)
+tabix_raw(bedfiles, regions, nthreads = NULL)
 }
 \arguments{
 \item{bedfiles}{The bedfiles to be queried}
@@ -106,5 +98,5 @@ bedfiles <- system.file("extdata", package = "iscream") |>
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 tabix(bedfiles, regions, col.names = c("beta", "coverage"))
 tabix_gr(bedfiles, regions, col.names = c("beta", "coverage"))
-tabix_raw(bedfiles, regions, col.names = c("beta", "coverage"))
+tabix_raw(bedfiles, regions)
 }
