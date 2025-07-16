@@ -27,10 +27,8 @@ regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 library(GenomicRanges)
 ```
 
-`GRanges` objects can be used as the input regions to all of iscream's querying
-functions. `tabix_gr()` and `make_mat_gr()` return `GRanges` objects. The
-outputs of of `tabix()` and `make_mat()`, `make_bsseq_mat()` can also be turned
-into `GRanges`.
+`GRanges` objects can be used as the input regions to all of iscream's functions
+and can be returned by `tabix_gr()` and `make_mat_gr()`.
 
 ### From `tabix` queries
 
@@ -64,13 +62,15 @@ If the input BED file is not zero-based (e.g. Bismark coverage files), set
 `zero_based = FALSE` in the `tabix()` call to get the correct conversion from
 data frame to GenomicRanges.
 
-### From `summarize_regions`
+### From `summarize_regions()`
 
-`summarize_regions` returns a data frame with a feature column identifying each
-summary row's genomic region.
+`summarize_regions()` returns a data frame with a feature column identifying
+each summary row's genomic region.
 
-If the regions don't have names (see `?summarize_regions`), pass the `feature`
-column with the genomic regions as the GRanges input regions:
+If the region features are not named (see `?summarize_regions`), pass the
+`feature` column with the genomic regions as the GRanges input regions. Here,
+since the `regions` vector is named, using `unname` will cause the `feature`
+column to populate with regions strings:
 
 ```{r summarize_meth_regions}
 (summary <- summarize_meth_regions(
