@@ -8,23 +8,19 @@
 #' @param columns A vector of indices of the numeric columns to be summarized
 #' @param col_names A vector of names to use for `columns` in the output
 #' @param fun Function(s) to apply over the region. See details.
-#' @param feature_col If the input is a dataframe, the column to use as the
-#' feature label instead of the genomic region string
+#' @param feature_col Column name of the input `regions` data frame containing
+#' a name for each genomic region. Set only if the using a data frame as the
+#' input regions format. See details.
 #' @param set_region_rownames Use the region strings as the returned data
 #' frame's rownames. Can be useful if you have a named regions and want both
-#' the regions strings rownames and the feature names.
+#' the regions strings rownames and the feature names. See details.
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
 #' @details
-#' The input regions may be string vector in the form "chr:start-end"
-#' or a GRanges object. If a data frame is provided, they must have "chr",
-#' "start", and "end" columns. If the string vector and GenomicRanges inputs
-#' are named, the names will be used to describe each feature in the output
-#' dataframe. If input dataframes have a feature column, set `feature_col` to
-#' that column name to populate the output's feature column.
 #'
-#' Supported `fun` arguments are given below.
+#' ## Supported `fun` functions
+#'
 #' - Sum: `"sum"`
 #' - Mean: `"mean"`
 #' - Median: `"median"`
@@ -38,6 +34,18 @@
 #' The summarizing computations are backed by the Armadillo library. See
 #' <https://arma.sourceforge.net/docs.html#stats_fns> for futher details on the
 #' supported functions
+#'
+#' ## Using feature identifiers
+#'
+#' `regions` may be string vector in the form "chr:start-end", a GRanges
+#' object or a data frame with "chr", "start", and "end" columns. The `feature`
+#' column of the output will contain a "chr:start-end" identifier for each
+#' summarized region. To use other identifiers, like a gene name for a region
+#' instead of the coordinates, set the names of the vector or GRanges to those
+#' identifiers. These names will be used instead of the genomic region string
+#' to describe each feature in the output dataframe. If `regions` is a data
+#' frame make an additional column with the identifiers and pass that column
+#' name to `feature_col`. See examples.
 #'
 #' @returns A data.frame
 #'
@@ -55,6 +63,8 @@
 #' # make a vector of regions
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 #' summarize_regions(bedfiles, regions, columns = c(4, 5), col_names = c("beta", "cov"))
+#'
+#' # select functions
 #' summarize_regions(
 #'   bedfiles,
 #'   regions,
@@ -62,8 +72,35 @@
 #'   columns = c(4, 5),
 #'   col_names = c("beta", "cov")
 #' )
+#'
+#' # add names to the regions
 #' names(regions) <- c("A", "B", "C")
-#' summarize_regions(bedfiles, regions, fun = "sum", columns = 5, col_names = "coverage")
+#' summarize_regions(
+#'   bedfiles,
+#'   regions,
+#'   fun = "sum",
+#'   columns = 5,
+#'   col_names = "coverage"
+#' )
+#'
+#' # using `feature_col`
+#' library(data.table)
+#'
+#' # convert string vector to a data.table
+#' regions_df <- data.table::as.data.table(regions) |>
+#' _[, tstrsplit(regions, ":|-", fixed = FALSE, names = c("chr", "start", "end"))] |>
+#' _[, start := as.integer(start)] |>
+#' _[, feature := LETTERS[.I]][]
+#' regions_df
+#'
+#' summarize_regions(
+#'   bedfiles,
+#'   regions_df,
+#'   fun = "sum",
+#'   columns = 5,
+#'   col_names = "coverage",
+#'   feature_col = "feature"
+#' )
 summarize_regions <- function(
   bedfiles,
   regions,
