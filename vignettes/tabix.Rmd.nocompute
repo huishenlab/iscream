@@ -29,8 +29,6 @@ profiles tutorial](./TSS.Rmd) and mouse promoter regions. Running it requires
 downloading 18MB of BED files and tabix indices from this Zenodo record:
 <https://zenodo.org/records/14733834>
 
-<details>
-<summary>Downloading data</summary>
 ```{r download_data, eval = FALSE}
 methscan_zip_path <- tempfile("methscan")
 methscan_dir <- tempdir()
@@ -40,7 +38,6 @@ download.file(
 )
 unzip(methscan_zip_path, exdir = methscan_dir)
 ```
-</details>
 
 iscream normally uses htslib to query BED files and store the data in memory.
 However, iscream's `tabix()` function can use the tabix executable to make tabix
