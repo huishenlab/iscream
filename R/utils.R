@@ -36,19 +36,12 @@ verify_aligner_or_stop <- function(aligner) {
 #'   get_granges_string(GenomicRanges::GRanges(c("chr1:1-10", "chr2:15-20")))
 #' }
 get_granges_string <- function(gr, sep = c(":", "-")) {
-  if (requireNamespace("GenomicRanges", quietly = TRUE)) {
-    region_str <- paste0(
-      as.character(x = GenomicRanges::seqnames(x = gr)),
-      sep[[1]],
-      GenomicRanges::start(x = gr),
-      sep[[2]],
-      GenomicRanges::end(x = gr)
-    )
-    names(region_str) <- names(gr)
-    return(region_str)
-  } else {
+  if (!requireNamespace("GenomicRanges", quietly = TRUE)) {
     stop("The 'GenomicRanges' package must be installed for this functionality")
   }
+  region_str <- as.character(gr)
+  names(region_str) <- names(gr)
+  region_str
 }
 
 #' DataFrame to region strings
