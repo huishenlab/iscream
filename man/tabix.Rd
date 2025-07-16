@@ -66,7 +66,7 @@ allocate memory and store it during the query
 \item \emph{iscream's} tabix implementation, based on the \emph{tabix} executable using
 \emph{htslib}, but slower on large queries since it stores the records as they
 are found instead of writing to a file. However it's able to store each
-regions records independently instead of in a single file and is used in
+region's records independently instead of in a single file and is used in
 \code{make_mat()}, \code{make_bsseq_mat()}, and \code{summarize_regions()}.
 }
 
@@ -79,9 +79,9 @@ implementation. To use only \emph{iscream's} tabix implementation, set
 
 \subsection{Input region formats}{
 
-The input regions may be string vector in the form "chr:start-end", a
-dataframe with "chr", "start" and "end" columns or a \code{GRanges} object. Input
-regions must be 1-based.
+The input regions formats may be string vector in the form "chr:start-end",
+a dataframe with "chr", "start" and "end" columns or a \code{GRanges} object.
+Input regions must be 1-based.
 }
 }
 \examples{

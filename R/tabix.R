@@ -22,7 +22,7 @@
 #' - *iscream's* tabix implementation, based on the *tabix* executable using
 #' *htslib*, but slower on large queries since it stores the records as they
 #' are found instead of writing to a file. However it's able to store each
-#' regions records independently instead of in a single file and is used in
+#' region's records independently instead of in a single file and is used in
 #' `make_mat()`, `make_bsseq_mat()`, and `summarize_regions()`.
 #'
 #' When *iscream* is attached, it checks that the *tabix* executable is
@@ -33,9 +33,9 @@
 #' `options("tabix.method" = "htslib")`.
 #'
 #' ## Input region formats
-#' The input regions may be string vector in the form "chr:start-end", a
-#' dataframe with "chr", "start" and "end" columns or a `GRanges` object. Input
-#' regions must be 1-based.
+#' The input regions formats may be string vector in the form "chr:start-end",
+#' a dataframe with "chr", "start" and "end" columns or a `GRanges` object.
+#' Input regions must be 1-based.
 #'
 #' @importFrom data.table as.data.table tstrsplit set := rbindlist fread fwrite setnames
 #' @importFrom parallel mclapply
