@@ -24,13 +24,7 @@ void Cpp_set_log_level(const std::string &name) {
     spdlog::set_level(spdlog::level::from_str(name));
 }
 
-//' Get the current log level
-//'
-//' Can handle all of spdlogs levels, but iscream functions only supports
-//' "info" and "debug"
-//' @returns The current logging level as a string
-//' @examples
-//' get_log_level()
+//' @rdname set_log_level
 //'
 //' @export
 // [[Rcpp::export]]

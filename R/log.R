@@ -1,4 +1,4 @@
-#' Set logging level
+#' Set and get logging level
 #'
 #' @param level The logging verbosity level to use
 #' - `"info"`: the default that gives provides basic information about the
@@ -7,12 +7,15 @@
 #' a region, filename parsing etc. This mode cannot be used on more than one
 #' thread as R cannot output messages from multiple threads without crashing.
 #' - `"off"`: no logging
-#' @returns None; sets the log level to the provided level
+#' @returns
+#'  - `set_log_level()`: None; sets the log level to the provided level
+#'  - `get_log_level()`: The current logging level as a string
 #'
 #' @export
 #'
 #' @examples
 #' set_log_level("info")
+#' get_log_level()
 set_log_level <- function(level = "info") {
   n_threads <- get_threads()["use_threads"]
   validate_log_level(level, n_threads)

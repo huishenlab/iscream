@@ -56,13 +56,7 @@ Cpp_set_log_level <- function(name) {
     invisible(.Call(`_iscream_Cpp_set_log_level`, name))
 }
 
-#' Get the current log level
-#'
-#' Can handle all of spdlogs levels, but iscream functions only supports
-#' "info" and "debug"
-#' @returns The current logging level as a string
-#' @examples
-#' get_log_level()
+#' @rdname set_log_level
 #'
 #' @export
 get_log_level <- function() {
