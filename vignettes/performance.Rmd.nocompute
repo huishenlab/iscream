@@ -46,7 +46,7 @@ download.file(
 )
 ```
 
-100 human cell WGBS data from the snmC-seq2 [@luo2018a] dataset:
+Select 100 human cell WGBS data from the snmC-seq2 [@luo2018a] dataset:
 
 ```{r}
 bedfiles <- list.files(
@@ -82,8 +82,8 @@ library(iscream)
 
 Queries are parallelized across the input BED files. While this reduces
 runtime, it increases memory usage as data from multiple files are loaded into
-memory at the same time. For more information on multithreading and its
-considerations see `?set_threads()`.
+memory at the same time. For more information on multithreading see
+`?set_threads()`.
 
 ### `tabix()`
 
@@ -94,10 +94,10 @@ doesn't show progression, but a progress bar is in development.
 
 iscream has two `tabix()` implementations, one using the command line `tabix`
 executable and the other using the htslib API. The command line tool is faster
-as it can stream to a file and for reading in R while the htslib API stores the
-strings in memory and is slower. iscream will look for the tabix executable on
-startup and will only fall back to the htslip API if the executable is not
-found. See `?tabix()` details for more information.
+as it can stream to a file which can be read from R while the htslib API stores
+the strings in memory and is slower. iscream will look for the tabix executable
+on startup and will only fall back to the htslip API if the executable is not
+found. See `?tabix` details for more information.
 
 ```{r}
 qt <- system.time(
@@ -145,19 +145,19 @@ found in every file.
 Preallocating the number of rows, however, can drastically reduce runtime.
 Since we got 45 million loci/CpGs from all the BED files with the tabix query
 above, we can expect approximately between 5 and 10 million unique loci as
-single-cell data has lower coverage than bulk. We already have the tabix query
-so we can get the unique CpG count here and use it to preallocate the matrix,
-reducing the number of matrix resizes. We'll add 100,000 extra on top of the
-existing count to be safe since every avoided resize cuts off at least a couple
-seconds from the runtime. Making tabix queries can be a relatively quick way to
-approximate the CpG count of a dataset. If you haven't done a tabix query of
-the full dataset, you can approximate how many CpGs to expect based on CpG
-counts in one file and the coverage of your WGBS method. Here we make a matrix
-of the beta-values in the 4th column:
+single-cell WGBS data has lower coverage than bulk. We already have the tabix
+query so we can get the unique CpG count here and use it to preallocate the
+matrix, reducing the number of matrix resizes. We'll add 100,000 extra rows on
+top of the existing count to be safe since every avoided resize cuts off at
+least a couple seconds from the runtime. Making tabix queries can be a
+relatively quick way to approximate the CpG count of a dataset. If you haven't
+done a tabix query of the full dataset, you can approximate how many CpGs to
+expect based on CpG counts in one file and the coverage of your WGBS method.
+Here we make a matrix of the beta-values in the 4th column:
 
 ```{r}
 cpg.count <- tbx_query$start |> unique() |> length()
-qt <- system.time(meth_mat <- make_mat(
+qt <- system.time(meth_mat <- make_mat_se(
   bedfiles,
   regions,
   column = 4,
