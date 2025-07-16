@@ -10,7 +10,7 @@ set_threads(n_threads)
 \item{n_threads}{The number of threads to use}
 }
 \value{
-NULL. Sets the \code{iscream.threads} option to the requested number of
+None. Sets the \code{iscream.threads} option to the requested number of
 threads if available
 }
 \description{
@@ -47,10 +47,9 @@ in your \code{.Rprofile} See \code{help('Rprofile')} for information on startup 
 
 Functions currently using multithreading:
 \itemize{
-\item \code{tabix()}
+\item \code{tabix()}, \code{tabix_gr()}
 \item \code{query_chroms()}
-\item \code{make_mat()}
-\item \code{make_mat()}, \code{make_bsseq_mat()}
+\item \code{make_mat()}, \code{make_mat_se()}, \code{make_mat_gr()}, \code{make_bsseq_mat()}
 \item \code{summarize_regions()}, \code{summarize_meth_regions()}
 }
 }
