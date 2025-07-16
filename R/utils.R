@@ -19,15 +19,7 @@ verify_aligner_or_stop <- function(aligner) {
 
 #' GRanges to region strings
 #'
-#' Convert GRanges object to a vector of strings
-#'
-#' This function was adapted from
-#' [stuart-lab/signac](https://github.com/stuart-lab/signac/blob/0b33b1154f9a610897d1efad2c0065081c4e7132/R/utilities.R#L732C1-L756C2).
-#'
 #' @param gr A GRanges object
-#' @param sep Vector of separators to use for genomic string. First element is
-#' used to separate chromosome and coordinates, second separator is used to
-#' separate start and end coordinates.
 #' @returns A character vector
 #'
 #' @export
@@ -35,7 +27,7 @@ verify_aligner_or_stop <- function(aligner) {
 #' if (requireNamespace("GenomicRanges", quietly = TRUE)) {
 #'   get_granges_string(GenomicRanges::GRanges(c("chr1:1-10", "chr2:15-20")))
 #' }
-get_granges_string <- function(gr, sep = c(":", "-")) {
+get_granges_string <- function(gr) {
   if (!requireNamespace("GenomicRanges", quietly = TRUE)) {
     stop("The 'GenomicRanges' package must be installed for this functionality")
   }
