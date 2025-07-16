@@ -33,7 +33,7 @@ matrix. Defaults to M-value. Set \code{mval=FALSE} to get beta value matrix.}
 ("dgCMatrix"). Set this \code{TRUE} only for scWGBS data}
 
 \item{prealloc}{The number of rows to initialize the matrices with. If the
-number of methyltion loci are approximately known, this can reduce runtime
+number of methylation loci are approximately known, this can reduce runtime
 as fewer resizes need to be made.}
 
 \item{nthreads}{Set number of threads to use overriding the
