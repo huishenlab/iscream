@@ -159,6 +159,7 @@ test_that("tabix_gr", {
     ] |>
       GenomicRanges::makeGRangesFromDataFrame(starts.in.df.are.0based = FALSE, keep.extra.columns = TRUE)
   )
+  expect_error(suppressWarnings(tabix_gr(biscuit_tabix_beds[1], "chrM:1-10")))
 })
 
 test_that("tabix multi GR(List)", {
