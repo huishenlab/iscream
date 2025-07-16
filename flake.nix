@@ -36,6 +36,8 @@
         BiocVersion
         covr
         devtools
+        DT
+        htmltools
         lobstr
         pkgdown
         rhub
