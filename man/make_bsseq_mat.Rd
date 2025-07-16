@@ -18,8 +18,7 @@ make_bsseq_mat(
 \arguments{
 \item{bedfiles}{A vector of BED file paths}
 
-\item{regions}{A vector, data frame or GenomicRanges of genomic regions. See
-details.}
+\item{regions}{A vector, data frame or GenomicRanges of genomic regions. See details.}
 
 \item{aligner}{The aligner used to produce the BED files - one of "biscuit",
 "bismark", "bsbolt".}
@@ -29,12 +28,11 @@ matrix. Defaults to M-value. Set \code{mval=FALSE} to get beta value matrix.}
 
 \item{merged}{Whether the input strands have been merged/collapsed}
 
-\item{sparse}{Whether to return M and coverage matrices as sparse matrices
-("dgCMatrix"). Set this \code{TRUE} only for scWGBS data}
+\item{sparse}{Whether to return a sparse matrix}
 
 \item{prealloc}{The number of rows to initialize the matrices with. If the
-number of methylation loci are approximately known, this can reduce runtime
-as fewer resizes need to be made.}
+number of loci are approximately known, this can reduce runtime as fewer
+resizes need to be made.}
 
 \item{nthreads}{Set the number of threads to use. Overrides the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
@@ -58,14 +56,15 @@ a BSseq object: \code{do.call(BSseq, make_bsseq_mat(...))}.
 The input regions may be string vector in the form "chr:start-end"
 or a GRanges object. If a data frame is provided, they must have "chr",
 "start", and "end" columns.
-\subsection{Bitpacking limits}{
+}
+\section{Bitpacking limits}{
 
 If the coverage values exceed 32,767, the upper limit of a 16-bit signed
 integer, it will be capped at the limit. Beta values will also be capped
 similarly, but any such values would be a bug in the aligner that produced
 the data.
 }
-}
+
 \examples{
 bedfiles <- system.file("extdata", package = "iscream") |>
   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)

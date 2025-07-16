@@ -4,33 +4,24 @@
 #' their genomic positions. Parallelized across files using threads from the
 #' `"iscream.threads"` option. The output of `make_bsseq_mat` may be used to create
 #' a BSseq object: `do.call(BSseq, make_bsseq_mat(...))`.
-#' @param bedfiles A vector of BED file paths
-#' @param regions A vector, data frame or GenomicRanges of genomic regions. See
-#' details.
+#'
+#' @inheritParams make_mat
+#'
 #' @param aligner The aligner used to produce the BED files - one of "biscuit",
 #' "bismark", "bsbolt".
 #' @param mval Whether to return M-values or beta-values with the coverage
 #' matrix. Defaults to M-value. Set `mval=FALSE` to get beta value matrix.
 #' @param merged Whether the input strands have been merged/collapsed
-#' @param sparse Whether to return M and coverage matrices as sparse matrices
-#' ("dgCMatrix"). Set this `TRUE` only for scWGBS data
-#' @param prealloc The number of rows to initialize the matrices with. If the
-#' number of methylation loci are approximately known, this can reduce runtime
-#' as fewer resizes need to be made.
-#' @param nthreads Set the number of threads to use. Overrides the
-#' `"iscream.threads"` option. See `?set_threads` for more information.
+#'
 #' @returns A named list of
 #' - coverage and either a beta- or M-value matrix
 #' - a character vector of chromosomes and numeric vector of corresponding CpG
 #' base positions
 #' - a character vector of the input sample names
 #'
-#' @details
-#' The input regions may be string vector in the form "chr:start-end"
-#' or a GRanges object. If a data frame is provided, they must have "chr",
-#' "start", and "end" columns.
+#' @inherit make_mat details
 #'
-#' ### Bitpacking limits
+#' @section Bitpacking limits:
 #' If the coverage values exceed 32,767, the upper limit of a 16-bit signed
 #' integer, it will be capped at the limit. Beta values will also be capped
 #' similarly, but any such values would be a bug in the aligner that produced
