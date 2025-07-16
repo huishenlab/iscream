@@ -67,9 +67,9 @@ resizes need to be made.}
 }
 \description{
 Queries the provided regions and produces a matrix along with genomic
-positions that can be returned as a \code{RangedSummarizedExperiment} (if
-SummarizedExperiment is installed). Parallelized across files using threads
-from the \code{"iscream.threads"} option.
+positions as a named list (\code{make_mat()}), a \code{RangedSummarizedExperiment}
+(\code{make_mat_se()}), \code{GRanges} (\code{make_mat_gr()}). Parallelized across files
+using threads from the \code{"iscream.threads"} option.
 }
 \details{
 The input regions may be string vector in the form "chr:start-end"

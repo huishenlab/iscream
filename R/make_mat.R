@@ -1,9 +1,9 @@
 #' Make a matrix from a numeric column of BED files
 #'
 #' Queries the provided regions and produces a matrix along with genomic
-#' positions that can be returned as a `RangedSummarizedExperiment` (if
-#' SummarizedExperiment is installed). Parallelized across files using threads
-#' from the `"iscream.threads"` option.
+#' positions as a named list (`make_mat()`), a `RangedSummarizedExperiment`
+#' (`make_mat_se()`), `GRanges` (`make_mat_gr()`). Parallelized across files
+#' using threads from the `"iscream.threads"` option.
 #' @param bedfiles A vector of bedfile paths
 #' @param regions A vector, data frame or GenomicRanges of genomic regions. See details.
 #' @param column The index of the data column needed for the matrix
