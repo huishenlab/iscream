@@ -36,7 +36,7 @@ matrix. Defaults to M-value. Set \code{mval=FALSE} to get beta value matrix.}
 number of methylation loci are approximately known, this can reduce runtime
 as fewer resizes need to be made.}
 
-\item{nthreads}{Set number of threads to use overriding the
+\item{nthreads}{Set the number of threads to use. Overrides the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
 }
 \value{

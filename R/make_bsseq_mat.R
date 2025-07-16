@@ -17,7 +17,7 @@
 #' @param prealloc The number of rows to initialize the matrices with. If the
 #' number of methylation loci are approximately known, this can reduce runtime
 #' as fewer resizes need to be made.
-#' @param nthreads Set number of threads to use overriding the
+#' @param nthreads Set the number of threads to use. Overrides the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #' @returns A named list of
 #' - coverage and either a beta- or M-value matrix

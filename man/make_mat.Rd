@@ -50,7 +50,7 @@ make_mat_gr(
 number of loci are approximately known, this can reduce runtime as fewer
 resizes need to be made.}
 
-\item{nthreads}{Set number of threads to use overriding the
+\item{nthreads}{Set the number of threads to use. Overrides the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
 }
 \value{
