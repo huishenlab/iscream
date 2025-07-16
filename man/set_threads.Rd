@@ -47,7 +47,7 @@ in your \code{.Rprofile} See \code{help('Rprofile')} for information on startup 
 
 Functions currently using multithreading:
 \itemize{
-\item \code{tabix()}, \code{tabix_gr()}
+\item \code{tabix()}, \verb{tabix_gr(), 'tabix_raw()}
 \item \code{query_chroms()}
 \item \code{make_mat()}, \code{make_mat_se()}, \code{make_mat_gr()}, \code{make_bsseq_mat()}
 \item \code{summarize_regions()}, \code{summarize_meth_regions()}

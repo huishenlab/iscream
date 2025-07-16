@@ -73,7 +73,7 @@ get_threads <- function() {
 #' in your `.Rprofile` See `help('Rprofile')` for information on startup options.
 #'
 #' Functions currently using multithreading:
-#' - `tabix()`, `tabix_gr()`
+#' - `tabix()`, `tabix_gr(), 'tabix_raw()`
 #' - `query_chroms()`
 #' - `make_mat()`, `make_mat_se()`, `make_mat_gr()`, `make_bsseq_mat()`
 #' - `summarize_regions()`, `summarize_meth_regions()`
