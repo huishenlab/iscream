@@ -28,14 +28,12 @@ produce the plot involves three steps:
 
 - summarizing and plotting
 
-The first two steps are run on the command line with *methscan* while the third
-is done in R.
-
 Although *iscream* is not designed to run analyses on full genomes, it can be
 used to explore regions such as TSS flanking regions, gene bodies, or DMRs found
 using tools like *methscan* more efficiently. For example, using iscream,
-producing the plot of TSS methylation profiles can be done in R directly from
-tabixed BED files for both single-cell and bulk data.
+all the steps above can be done in R directly from tabixed BED files for both
+single-cell and bulk data. With *methscan* the first two steps are run on the
+command line while the third is done in R.
 
 ## Setup
 
@@ -106,10 +104,11 @@ head(tss.query)
 
 ### Summarize average methylation profile around TSS
 
-Given the CpG level methylation data frame, we now join the queried data based
-on CpGs that fall within the TSS flanking regions to get the CpGs 2kb around the
-TSS. We can also set a new `position` column relative to the TSS (using rounded
-values as in the *methscan* tutorial):
+Given the CpG level methylation data frame, we now
+[join](https://rdatatable.gitlab.io/data.table/library/data.table/doc/datatable-joins.html)
+the queried data based on CpGs that fall within the TSS flanking regions to get
+the CpGs 2kb around the TSS. We can also set a new `position` column relative
+to the TSS (using rounded values as in the *methscan* tutorial):
 
 ```{r}
 # join
@@ -118,7 +117,7 @@ tss.profile <- tss.regions[tss.query, .(
     start,
     position = round(start - tss, -1L),
     methylation.percentage,
-    sample
+    file
   ),
   on = .(chr, tss.start <= start, tss.end >= end)
 ] |> unique()
@@ -126,7 +125,7 @@ tss.profile <- tss.regions[tss.query, .(
 # get mean methylation by relative position and cell
 tss.summary <- tss.profile[,
   .(meth_frac = mean(methylation.percentage/100)),
-  by = .(position, sample)
+  by = .(position, file)
 ]
 
 query_runtime <- timetaken(query_runtime.start)
@@ -143,7 +142,7 @@ tss.plot <- ggplot(tss.summary, aes(x = position / 1000, y = meth_frac)) +
     limits=c(0, 1), breaks=c(0, .5, 1)
   ) +
   geom_line(linewidth = .1) +
-  facet_wrap(~sample) +
+  facet_wrap(~file) +
   labs(x = "position relative to TSS [kb]", y = "DNA methylation")
 
 total_runtime <- timetaken(start_time)
@@ -159,10 +158,10 @@ generating the TSS methylation profiles alone took 11 seconds.
 ## Using `summarize_regions`
 
 A similar analysis can be done using the `summarize_regions()` function if you
-only need to see the distribution of beta means by sample, rather than means by
-relative position per sample.
+only need to see the distribution of beta means by file, rather than means by
+relative position per file
 
-```{r summarize_regions, warning=FALSE, message=FALSE, dpi=300, fig.width=10, fig.height=8, fig.align="center", fig.cap="TSS distribution by sample"}
+```{r summarize_regions, warning=FALSE, message=FALSE, dpi=300, fig.width=10, fig.height=8, fig.align="center", fig.cap="TSS distribution by file"}
 library("ggridges")
 tss.means <- summarize_meth_regions(
   bedfiles,
@@ -178,9 +177,9 @@ ggplot(tss.means, aes(x = beta.mean, y = file, fill = after_stat(x))) +
   theme_classic()
 ```
 
-For per-sample means you could collapse the means within samples:
+For per-file means you could collapse the means within file:
 
-```{r, dpi=300, fig.width=10, fig.height=8, fig.align="center", fig.cap="Mean TSS by sample"}
+```{r, dpi=300, fig.width=10, fig.height=8, fig.align="center", fig.cap="Mean TSS by file"}
 
 tss.means[, .(beta.mean = mean(beta.mean, na.rm = TRUE)), by = file] |>
   ggplot(
