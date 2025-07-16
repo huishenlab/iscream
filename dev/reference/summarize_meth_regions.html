@@ -5,8 +5,8 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Summarize CpGs methylation information over genomic regions — summarize_meth_regions"><meta name="description" content='Run summarizing functions on the CpGs in bedfiles across genomic regions.
-Parallelized across files using threads from the "iscream.threads" option.'><meta property="og:description" content='Run summarizing functions on the CpGs in bedfiles across genomic regions.
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Summarize CpGs methylation information over genomic regions — summarize_meth_regions"><meta name="description" content='Run summarizing functions on the CpGs in BED files across genomic regions.
+Parallelized across files using threads from the "iscream.threads" option.'><meta property="og:description" content='Run summarizing functions on the CpGs in BED files across genomic regions.
 Parallelized across files using threads from the "iscream.threads" option.'><meta property="og:image" content="https://huishenlab.github.io/iscream/logo.png"><meta name="robots" content="noindex"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
@@ -57,7 +57,7 @@ Parallelized across files using threads from the "iscream.threads" option.'><met
     </div>
 
     <div class="ref-description section level2">
-    <p>Run summarizing functions on the CpGs in bedfiles across genomic regions.
+    <p>Run summarizing functions on the CpGs in BED files across genomic regions.
 Parallelized across files using threads from the <code>"iscream.threads"</code> option.</p>
     </div>
 
@@ -80,7 +80,7 @@ Parallelized across files using threads from the <code>"iscream.threads"</code> 
 
 
 <dl><dt id="arg-bedfiles">bedfiles<a class="anchor" aria-label="anchor" href="#arg-bedfiles"></a></dt>
-<dd><p>A vector of bedfile paths</p></dd>
+<dd><p>A vector of BED file paths</p></dd>
 
 
 <dt id="arg-regions">regions<a class="anchor" aria-label="anchor" href="#arg-regions"></a></dt>
@@ -98,8 +98,9 @@ details.</p></dd>
 
 
 <dt id="arg-feature-col">feature_col<a class="anchor" aria-label="anchor" href="#arg-feature-col"></a></dt>
-<dd><p>If the input is a dataframe, the column to use as the
-feature label instead of the genomic region string</p></dd>
+<dd><p>Column name of the input <code>regions</code> data frame containing
+a name for each genomic region. Set only if the using a data frame as the
+input regions format. See details.</p></dd>
 
 
 <dt id="arg-mval">mval<a class="anchor" aria-label="anchor" href="#arg-mval"></a></dt>
@@ -110,7 +111,7 @@ or use the beta value when applying the function.</p></dd>
 <dt id="arg-set-region-rownames">set_region_rownames<a class="anchor" aria-label="anchor" href="#arg-set-region-rownames"></a></dt>
 <dd><p>Use the region strings as the returned data
 frame's rownames. Can be useful if you have a named regions and want both
-the regions strings rownames and the feature names.</p></dd>
+the regions strings rownames and the feature names. See details.</p></dd>
 
 
 <dt id="arg-nthreads">nthreads<a class="anchor" aria-label="anchor" href="#arg-nthreads"></a></dt>
@@ -123,15 +124,9 @@ the regions strings rownames and the feature names.</p></dd>
     <p>A data.frame</p>
     </div>
     <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The input regions may be string vector in the form "chr:start-end"
-or a GRanges object. If a data frame is provided, they must have "chr",
-"start", and "end" columns. If the string vector and GenomicRanges inputs
-are named, the names will be used to describe each feature in the output
-dataframe. If input dataframes have a feature column, set <code>feature_col</code> to
-that column name to populate the output's feature column.</p>
-<p>Supported <code>fun</code> arguments are given below. For each of these functions,
-setting <code>mval = FALSE</code> will use the beta values instead of the M value:</p><ul><li><p>Sum: <code>"sum"</code></p></li>
+    <h2 id="supported-functions">Supported functions<a class="anchor" aria-label="anchor" href="#supported-functions"></a></h2>
+
+<ul><li><p>Sum: <code>"sum"</code></p></li>
 <li><p>Mean: <code>"mean"</code></p></li>
 <li><p>Median: <code>"median"</code></p></li>
 <li><p>Standard deviation: <code>"stddev"</code></p></li>
@@ -139,70 +134,37 @@ setting <code>mval = FALSE</code> will use the beta values instead of the M valu
 <li><p>Minimum: <code>"min"</code></p></li>
 <li><p>Maximum: <code>"max"</code></p></li>
 <li><p>Range: <code>"range"</code></p></li>
-<li><p>No. of CpGs in the region: <code>"cpg_count"</code></p></li>
+<li><p>No. of records in the region: <code>"count"</code></p></li>
 </ul><p>The summarizing computations are backed by the Armadillo library. See
 <a href="https://arma.sourceforge.net/docs.html#stats_fns" class="external-link">https://arma.sourceforge.net/docs.html#stats_fns</a> for futher details on the
 supported functions</p>
     </div>
+    <div class="section level2">
+    <h2 id="using-feature-identifiers">Using feature identifiers<a class="anchor" aria-label="anchor" href="#using-feature-identifiers"></a></h2>
+    <p><code>regions</code> may be string vector in the form "chr:start-end", a GRanges
+object or a data frame with "chr", "start", and "end" columns. The <code>feature</code>
+column of the output will contain a "chr:start-end" identifier for each
+summarized region. To use other identifiers, like a gene name for a region
+instead of the coordinates, set the names of the vector or GRanges to those
+identifiers. These names will be used instead of the genomic region string
+to describe each feature in the output dataframe. If <code>regions</code> is a data
+frame make an additional column with the identifiers and pass that column
+name to <code>feature_col</code>. See examples.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">bedfiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"iscream"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># also see examples from ?summarize_regions</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">bedfiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"iscream"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"[a|b|c|d].bed.gz$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># examine the bedfiles</span></span></span>
-<span class="r-in"><span><span class="va">colnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"beta"</span>, <span class="st">"coverage"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">i</span>, col.names <span class="op">=</span> <span class="va">colnames</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr  | start| end| beta| coverage|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|-----:|---:|----:|--------:|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     0|   2|  1.0|        1|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     2|   4|  1.0|        1|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     4|   6|  0.0|        2|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     6|   8|  0.0|        1|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     8|  10|  0.5|        2|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |    10|  12|  1.0|        2|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |    12|  14|  1.0|        3|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr  | start| end| beta| coverage|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|-----:|---:|----:|--------:|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     0|   2|    0|        2|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     4|   6|    1|        2|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     6|   8|    1|        1|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |    10|  12|    0|        2|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |    12|  14|    1|        1|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr  | start| end| beta| coverage|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|-----:|---:|----:|--------:|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     2|   4|    1|        2|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     6|   8|    0|        2|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     8|  10|    1|        1|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr  | start| end| beta| coverage|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |:----|-----:|---:|----:|--------:|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     0|   2|  1.0|        1|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     2|   4|  1.0|        2|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     6|   8|  0.0|        1|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |     8|  10|  0.5|        2|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |chr1 |    12|  14|  1.0|        1|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_meth_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:36.636127] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:36.636142] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:36.636145] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:45.193805] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:45.193837] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:45.193841] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       feature file coverage.sum M.sum coverage.mean    M.mean coverage.median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6    a            4     2      1.333333 0.6666667             1.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10    a            3     1      1.500000 0.5000000             1.5</span>
@@ -244,9 +206,9 @@ supported functions</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12     1            1     1              0       0         1</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_meth_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"stddev"</span><span class="op">)</span>, mval <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:36.654425] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:36.654438] [iscream::summarize_regions] [info] using mean, stddev</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:36.654441] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:45.213127] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:45.213144] [iscream::summarize_regions] [info] using mean, stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:45.213148] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    feature file coverage.mean beta.mean coverage.stddev beta.stddev</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        A    a      1.333333 0.6666667       0.5773503   0.5773503</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        B    a      1.500000 0.2500000       0.7071068   0.3535534</span>
@@ -261,9 +223,9 @@ supported functions</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11       B    d      1.500000 0.2500000       0.7071068   0.3535534</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12       C    d      1.000000 1.0000000       0.0000000   0.0000000</span>
 <span class="r-in"><span><span class="fu">summarize_meth_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:36.658492] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:36.658501] [iscream::summarize_regions] [info] using sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:36.658504] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:45.217527] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:45.217539] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:45.217542] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    feature file coverage.sum M.sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        A    a            4     2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        B    a            3     1</span>

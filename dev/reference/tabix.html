@@ -79,7 +79,7 @@
 
 
 <dl><dt id="arg-bedfiles">bedfiles<a class="anchor" aria-label="anchor" href="#arg-bedfiles"></a></dt>
-<dd><p>The bedfiles to be queried</p></dd>
+<dd><p>The BED files to be queried</p></dd>
 
 
 <dt id="arg-regions">regions<a class="anchor" aria-label="anchor" href="#arg-regions"></a></dt>
@@ -135,7 +135,7 @@ allocate memory and store it during the query</p></li>
 <li><p><em>iscream's</em> tabix implementation, based on the <em>tabix</em> executable using
 <em>htslib</em>, but slower on large queries since it stores the records as they
 are found instead of writing to a file. However it's able to store each
-regions records independently instead of in a single file and is used in
+region's records independently instead of in a single file and is used in
 <code><a href="make_mat.html">make_mat()</a></code>, <code><a href="make_bsseq_mat.html">make_bsseq_mat()</a></code>, and <code><a href="summarize_regions.html">summarize_regions()</a></code>.</p></li>
 </ul><p>When <em>iscream</em> is attached, it checks that the <em>tabix</em> executable is
 available with <code><a href="https://rdrr.io/r/base/Sys.which.html" class="external-link">Sys.which()</a></code> and, if available, sets <code>options("tabix.method" = "shell")</code>. <code>tabix()</code> then uses the <em>tabix</em> executable to make queries,
@@ -148,9 +148,9 @@ implementation. To use only <em>iscream's</em> tabix implementation, set
 <h3 id="input-region-formats">Input region formats<a class="anchor" aria-label="anchor" href="#input-region-formats"></a></h3>
 
 
-<p>The input regions may be string vector in the form "chr:start-end", a
-dataframe with "chr", "start" and "end" columns or a <code>GRanges</code> object. Input
-regions must be 1-based.</p>
+<p>The input regions formats may be string vector in the form "chr:start-end",
+a dataframe with "chr", "start" and "end" columns or a <code>GRanges</code> object.
+Input regions must be 1-based.</p>
 </div>
 
     </div>

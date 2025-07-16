@@ -98,14 +98,14 @@ MI<br><small class="dont-index">Source: <a href="https://github.com/huishenlab/i
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>iscream is a BED file querying package that can can retrieve records
-from multiple <a href="https://en.wikipedia.org/wiki/Tabix" class="external-link">tabixed</a>
-BED files based on a input regions of interest. It can make queries like
-tabix, summarize data from loci within the regions of interest and make
-matrices across input files and regions. All operations can be done in
-parallel and return R/Bioconductor data structures.</p>
-<p>iscream was designed to be memory efficient and fast. For more
-information on performance considerations on large datasets see
-<code><a href="../articles/performance.html">vignette("performance")</a></code>.</p>
+within regions of interest from multiple <a href="https://en.wikipedia.org/wiki/Tabix" class="external-link">tabixed</a> BED files. It can
+make queries like tabix, summarize data within regions and make matrices
+across input files and regions. All operations can be done in parallel
+and return R/Bioconductor data structures.</p>
+<p>iscream was designed to be memory efficient and fast on large
+datasets. This vignette demonstrates iscream’s functions on a small
+dataset. For more information on performance considerations on large
+datasets see <code><a href="../articles/performance.html">vignette("performance")</a></code>.</p>
 <div class="section level3">
 <h3 id="loading-iscream">Loading iscream<a class="anchor" aria-label="anchor" href="#loading-iscream"></a>
 </h3>
@@ -126,38 +126,37 @@ following querying functions.</p>
 </div>
 <div class="section level2">
 <h2 id="tabix">
-<code>tabix</code><a class="anchor" aria-label="anchor" href="#tabix"></a>
+<code>tabix()</code><a class="anchor" aria-label="anchor" href="#tabix"></a>
 </h2>
-<p>tabix is a command-line tool that queries loci from compressed BED
+<p>tabix is a command-line tool that queries records from compressed BED
 files. As input it receives the path to a tabixed BED file and one or
-more genomic regions of interest. The regions of interest may be passed
-in the <code>"chr:start-end"</code> format or as a BED file. Given these
-inputs, it prints the loci from the tabixed BED file that fall within
-the regions of interest. This output may be redirected to a file and
-read into R.</p>
+more genomic regions of interest. It queries and prints the records from
+the tabixed BED file that fall within the regions of interest. This
+output may be redirected to a file and read into R.</p>
 <p>iscream’s <code><a href="../reference/tabix.html">tabix()</a></code> function works in a similar way but
 supports multiple files and multiple input formats all in one function.
 It receives a vector of paths to tabixed BED files and regions of
 interest. The input regions may be a vector of
 <code>"chr:start-end"</code> strings, a data frame with
 <code>"chr"</code>, <code>"start"</code>, and <code>"end"</code> columns
-or a <code>GRanges</code> object. It queries the BEDfiles and returns
-the loci as a parsed <em><a href="https://CRAN.R-project.org/package=data.table" class="external-link">data.table</a></em>.
+or a <code>GRanges</code> object. It queries the BED files and returns
+the records as a parsed <em><a href="https://CRAN.R-project.org/package=data.table" class="external-link">data.table</a></em>.
 To get a <code>GRanges</code> object instead, use
 <code>tabix_gr</code>.</p>
 <p>Using iscream eliminates context switching between the shell and R
 for tabix queries since the queries are made in R and the result is an R
 data structure. <em><a href="https://bioconductor.org/packages/3.21/Rsamtools" class="external-link">Rsamtools</a></em>
 is another R package that can query data from BED files, but it only
-supports one file at a time and only accepts <code>GRanges</code> as the
-input regions. See <code><a href="../articles/tabix.html">vignette("tabix")</a></code> for a comparison of
-iscream and Rsamtools.</p>
+supports one file at a time, only accepts <code>GRanges</code> as the
+input regions and does not parse the tab-delimited strings. See
+<code><a href="../articles/tabix.html">vignette("tabix")</a></code> for a comparison of iscream and
+Rsamtools.</p>
 <div class="section level3">
 <h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h3>
 <p>Using <code><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files()</a></code>, you can get the paths to all
 compressed bed files in a directory. These files contain small regions
-from chromosome 1 and Y from the snmC-seq2 methylation data data <span class="citation">(<a href="#ref-luo2018a">Luo et al.
+from chromosome 1 and Y from the snmC-seq2 methylation data <span class="citation">(<a href="#ref-luo2018a">Luo et al.
 2018</a>)</span>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"iscream"</span><span class="op">)</span></span>
@@ -233,29 +232,38 @@ name.</p>
 <span><span class="co">## 74:   chrY 56882345 56882346     1     1  cell4</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="using-granges">Using <code>GRanges</code><a class="anchor" aria-label="anchor" href="#using-granges"></a>
+<h3 id="using-genomicranges">Using <em><a href="https://bioconductor.org/packages/3.21/GenomicRanges" class="external-link">GenomicRanges</a></em><a class="anchor" aria-label="anchor" href="#using-genomicranges"></a>
 </h3>
-<p><code><a href="../reference/tabix.html">tabix()</a></code> accepts <code>GRanges</code> objects as input
-regions. To get <em><a href="https://bioconductor.org/packages/3.21/GenomicRanges" class="external-link">GenomicRanges</a></em>
-objects instead of data frames, use <code>tabix_gr</code> which will
-also preserve any input <code>GRanges</code> metadata.</p>
+<p>Both <code><a href="../reference/tabix.html">tabix()</a></code> and <code><a href="../reference/tabix.html">tabix_gr()</a></code> accept
+<code>GRanges</code> objects as input regions but
+<code><a href="../reference/tabix.html">tabix_gr()</a></code> returns <code>GRanges</code> objects instead of
+data frames. <code>tabix_gr</code> will also preserve any input
+<code>GRanges</code> metadata.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span></span>
 <span><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">gr</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##        chr    start      end    V1    V2   file</span></span>
-<span><span class="co">##     &lt;char&gt;    &lt;int&gt;    &lt;int&gt; &lt;num&gt; &lt;int&gt; &lt;char&gt;</span></span>
-<span><span class="co">##  1:   chr1   184577   184578     0     1  cell1</span></span>
-<span><span class="co">##  2:   chr1   191223   191224     0     1  cell1</span></span>
-<span><span class="co">##  3:   chr1   191264   191265     0     1  cell1</span></span>
-<span><span class="co">##  4:   chr1   191307   191308     0     1  cell1</span></span>
-<span><span class="co">##  5:   chr1   191491   191492     0     1  cell1</span></span>
-<span><span class="co">## ---                                            </span></span>
-<span><span class="co">## 70:   chrY 56880518 56880519     0     1  cell4</span></span>
-<span><span class="co">## 71:   chrY 56880715 56880716     0     2  cell4</span></span>
-<span><span class="co">## 72:   chrY 56880914 56880915     0     2  cell4</span></span>
-<span><span class="co">## 73:   chrY 56881927 56881928     1     1  cell4</span></span>
-<span><span class="co">## 74:   chrY 56882345 56882346     1     1  cell4</span></span></code></pre>
+<span><span class="fu"><a href="../reference/tabix.html">tabix_gr</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">gr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## GRangesList object of length 4:</span></span>
+<span><span class="co">## $cell1</span></span>
+<span><span class="co">## GRanges object with 24 ranges and 3 metadata columns:</span></span>
+<span><span class="co">##        seqnames    ranges strand |        V1        V2        file</span></span>
+<span><span class="co">##           &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;integer&gt; &lt;character&gt;</span></span>
+<span><span class="co">##    [1]     chr1    184578      * |         0         1       cell1</span></span>
+<span><span class="co">##    [2]     chr1    191224      * |         0         1       cell1</span></span>
+<span><span class="co">##    [3]     chr1    191265      * |         0         1       cell1</span></span>
+<span><span class="co">##    [4]     chr1    191308      * |         0         1       cell1</span></span>
+<span><span class="co">##    [5]     chr1    191492      * |         0         1       cell1</span></span>
+<span><span class="co">##    ...      ...       ...    ... .       ...       ...         ...</span></span>
+<span><span class="co">##   [20]     chrY  56879916      * |         1         1       cell1</span></span>
+<span><span class="co">##   [21]     chrY  56879946      * |         1         1       cell1</span></span>
+<span><span class="co">##   [22]     chrY  56881131      * |         1         1       cell1</span></span>
+<span><span class="co">##   [23]     chrY  56881927      * |         1         1       cell1</span></span>
+<span><span class="co">##   [24]     chrY  56882524      * |         0         1       cell1</span></span>
+<span><span class="co">##   -------</span></span>
+<span><span class="co">##   seqinfo: 2 sequences from an unspecified genome; no seqlengths</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ...</span></span>
+<span><span class="co">## &lt;3 more elements&gt;</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="setting-column-names">Setting column names<a class="anchor" aria-label="anchor" href="#setting-column-names"></a>
@@ -365,46 +373,50 @@ Sequencing data, it has the <code>aligner</code> argument for
 automatically setting column names for the BISCUIT <span class="citation">(<a href="#ref-zhou2024">Zhou et al. 2024</a>)</span>,
 Bismark <span class="citation">(<a href="#ref-krueger2011">Krueger and
 Andrews 2011</a>)</span>, and BSBolt <span class="citation">(<a href="#ref-farrell2021">Farrell et al. 2021</a>)</span>.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tabix.html">tabix_gr</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, aligner <span class="op">=</span> <span class="st">"biscuit"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## GRangesList object of length 4:</span></span>
+<span><span class="co">## $cell1</span></span>
+<span><span class="co">## GRanges object with 24 ranges and 3 metadata columns:</span></span>
+<span><span class="co">##        seqnames    ranges strand |      beta  coverage        file</span></span>
+<span><span class="co">##           &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;integer&gt; &lt;character&gt;</span></span>
+<span><span class="co">##    [1]     chr1    184578      * |         0         1       cell1</span></span>
+<span><span class="co">##    [2]     chr1    191224      * |         0         1       cell1</span></span>
+<span><span class="co">##    [3]     chr1    191265      * |         0         1       cell1</span></span>
+<span><span class="co">##    [4]     chr1    191308      * |         0         1       cell1</span></span>
+<span><span class="co">##    [5]     chr1    191492      * |         0         1       cell1</span></span>
+<span><span class="co">##    ...      ...       ...    ... .       ...       ...         ...</span></span>
+<span><span class="co">##   [20]     chrY  56879916      * |         1         1       cell1</span></span>
+<span><span class="co">##   [21]     chrY  56879946      * |         1         1       cell1</span></span>
+<span><span class="co">##   [22]     chrY  56881131      * |         1         1       cell1</span></span>
+<span><span class="co">##   [23]     chrY  56881927      * |         1         1       cell1</span></span>
+<span><span class="co">##   [24]     chrY  56882524      * |         0         1       cell1</span></span>
+<span><span class="co">##   -------</span></span>
+<span><span class="co">##   seqinfo: 2 sequences from an unspecified genome; no seqlengths</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ...</span></span>
+<span><span class="co">## &lt;3 more elements&gt;</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
 <h2 id="summarize_regions">
-<code>summarize_regions</code><a class="anchor" aria-label="anchor" href="#summarize_regions"></a>
+<code>summarize_regions()</code><a class="anchor" aria-label="anchor" href="#summarize_regions"></a>
 </h2>
-<p>Using the same bedfiles and regions, iscream can also summarize the
-data per region. This requires providing the index of the data columns
-you want summarized and their column names. By default, all summarizing
-functions are run on each input column:</p>
-<ul>
-<li>Sum: <code>"sum"</code>
-</li>
-<li>Mean: <code>"mean"</code>
-</li>
-<li>Median: <code>"median"</code>
-</li>
-<li>Standard deviation: <code>"stddev"</code>
-</li>
-<li>Variance: <code>"variance"</code>
-</li>
-<li>Minimum: <code>"min"</code>
-</li>
-<li>Maximum: <code>"max"</code>
-</li>
-<li>Range: <code>"range"</code>
-</li>
-<li>No. of records in the region: <code>"count"</code>
-</li>
-</ul>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<p>Using the same BED files and regions, iscream can also summarize the
+data within regions. This requires providing the index of the data
+columns you want summarized and the column names for the output. All
+summarizing functions are run on each input column by default - see
+<code><a href="../reference/summarize_regions.html">?summarize_regions</a></code> for supported functions.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/summarize_regions.html">summarize_regions</a></span><span class="op">(</span></span>
 <span>  <span class="va">bedfiles</span>,</span>
 <span>  <span class="va">regions</span>,</span>
 <span>  columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,</span>
 <span>  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"coverage"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [13:22:54.826035] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
-<span><span class="co">## [13:22:54.826079] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span></span>
-<span><span class="co">## [13:22:54.826083] [iscream::summarize_regions] [info] with columns 4, 5 as beta, coverage</span></span></code></pre>
+<pre><code><span><span class="co">## [18:55:05.101385] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
+<span><span class="co">## [18:55:05.101431] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span></span>
+<span><span class="co">## [18:55:05.101436] [iscream::summarize_regions] [info] with columns 4, 5 as beta, coverage</span></span></code></pre>
 <pre><code><span><span class="co">##                  feature  file beta.sum coverage.sum beta.mean coverage.mean</span></span>
 <span><span class="co">## 1     chr1:184577-680065 cell1      2.0            9 0.2222222      1.000000</span></span>
 <span><span class="co">## 2 chrY:56877780-56882524 cell1      6.0           17 0.4000000      1.133333</span></span>
@@ -443,8 +455,9 @@ functions are run on each input column:</p>
 <span><span class="co">## 8              1    20</span></span></code></pre>
 <p>The <code>feature</code> column here contains the genomic region
 coordinates, but can be set to something more informational if you have
-named regions. You can also select function with <code>fun</code>:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+names for the regions. You can also select the functions applied with
+<code>fun</code>:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R1"</span>, <span class="st">"R2"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/summarize_regions.html">summarize_regions</a></span><span class="op">(</span></span>
 <span>  <span class="va">bedfiles</span>,</span>
@@ -453,9 +466,9 @@ named regions. You can also select function with <code>fun</code>:</p>
 <span>  columns <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  col_names <span class="op">=</span> <span class="st">"coverage"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [13:22:54.916300] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
-<span><span class="co">## [13:22:54.916321] [iscream::summarize_regions] [info] using mean, sum</span></span>
-<span><span class="co">## [13:22:54.916325] [iscream::summarize_regions] [info] with columns 5 as coverage</span></span></code></pre>
+<pre><code><span><span class="co">## [18:55:05.194567] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
+<span><span class="co">## [18:55:05.194595] [iscream::summarize_regions] [info] using mean, sum</span></span>
+<span><span class="co">## [18:55:05.194600] [iscream::summarize_regions] [info] with columns 5 as coverage</span></span></code></pre>
 <pre><code><span><span class="co">##   feature  file coverage.mean coverage.sum</span></span>
 <span><span class="co">## 1      R1 cell1      1.000000            9</span></span>
 <span><span class="co">## 2      R2 cell1      1.133333           17</span></span>
@@ -471,15 +484,16 @@ named regions. You can also select function with <code>fun</code>:</p>
 <p>For WGBS data specifically, you can use
 <code><a href="../reference/summarize_meth_regions.html">summarize_meth_regions()</a></code>, which takes the
 <code>aligner</code> argument to correctly parse the columns.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/summarize_meth_regions.html">summarize_meth_regions</a></span><span class="op">(</span></span>
 <span>  <span class="va">bedfiles</span>,</span>
 <span>  <span class="va">regions</span>,</span>
+<span>  aligner <span class="op">=</span> <span class="st">"biscuit"</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"sum"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [13:22:54.986145] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
-<span><span class="co">## [13:22:54.986169] [iscream::summarize_regions] [info] using mean, sum</span></span>
-<span><span class="co">## [13:22:54.986173] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
+<pre><code><span><span class="co">## [18:55:05.264112] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
+<span><span class="co">## [18:55:05.264139] [iscream::summarize_regions] [info] using mean, sum</span></span>
+<span><span class="co">## [18:55:05.264143] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
 <pre><code><span><span class="co">##   feature  file coverage.mean    M.mean coverage.sum M.sum</span></span>
 <span><span class="co">## 1      R1 cell1      1.000000 0.2222222            9     2</span></span>
 <span><span class="co">## 2      R2 cell1      1.133333 0.4000000           17     6</span></span>
@@ -493,23 +507,22 @@ named regions. You can also select function with <code>fun</code>:</p>
 </div>
 <div class="section level2">
 <h2 id="make_mat">
-<code>make_mat</code><a class="anchor" aria-label="anchor" href="#make_mat"></a>
+<code>make_mat()</code><a class="anchor" aria-label="anchor" href="#make_mat"></a>
 </h2>
-<p><code>make_mat</code> makes a matrix where every row is a locus found
-in at least one input file and the columns are the input files. It
+<p><code><a href="../reference/make_mat.html">make_mat()</a></code> makes a matrix where every row is a locus
+found in at least one input file and the columns are the input files. It
 returns a named list of the matrix, coordinates, and file names you can
-use to make other data structures. <code><a href="../reference/make_mat.html">make_mat_se()</a></code> returns a
-<em><a href="https://bioconductor.org/packages/3.21/RangedSummarizedExperiment" class="external-link">RangedSummarizedExperiment</a></em>,
-and <code><a href="../reference/make_mat.html">make_mat_gr()</a></code> returns a <code>GRanges</code>
-object.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+use for analysis or other data structures. <code><a href="../reference/make_mat.html">make_mat_se()</a></code>
+returns a <code>RangedSummarizedExperiment</code>, and
+<code><a href="../reference/make_mat.html">make_mat_gr()</a></code> returns a <code>GRanges</code> object.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mat.html">make_mat_se</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, column <span class="op">=</span> <span class="fl">4</span>, mat_name <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [13:22:57.352016] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [18:55:07.578845] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [13:22:57.352563] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [13:22:57.352634] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [13:22:57.352640] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
+<span><span class="co">## [18:55:07.579410] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [18:55:07.579472] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [18:55:07.579478] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
 <pre><code><span><span class="co">## class: RangedSummarizedExperiment </span></span>
 <span><span class="co">## dim: 62 4 </span></span>
 <span><span class="co">## metadata(0):</span></span>
@@ -518,62 +531,62 @@ object.</p>
 <span><span class="co">## rowData names(0):</span></span>
 <span><span class="co">## colnames(4): cell1 cell2 cell3 cell4</span></span>
 <span><span class="co">## colData names(0):</span></span></code></pre>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##       cell1 cell2 cell3 cell4</span></span>
-<span><span class="co">##  [1,]     0     0     0     0</span></span>
-<span><span class="co">##  [2,]     0     0     0     0</span></span>
-<span><span class="co">##  [3,]     0     0     0     0</span></span>
-<span><span class="co">##  [4,]     0     0     0     1</span></span>
-<span><span class="co">##  [5,]     0     0     0     1</span></span>
-<span><span class="co">##  [6,]     0     0     0     0</span></span>
-<span><span class="co">##  [7,]     0     0     0     0</span></span>
-<span><span class="co">##  [8,]     1     0     0     0</span></span>
-<span><span class="co">##  [9,]     1     0     0     0</span></span>
-<span><span class="co">## [10,]     0     0     0     0</span></span></code></pre>
+<span><span class="co">##  [1,]     0     0   1.0     0</span></span>
+<span><span class="co">##  [2,]     0     0   0.5     0</span></span>
+<span><span class="co">##  [3,]     0     0   1.0     0</span></span>
+<span><span class="co">##  [4,]     0     0   1.0     0</span></span>
+<span><span class="co">##  [5,]     0     0   1.0     0</span></span>
+<span><span class="co">##  [6,]     0     0   0.0     0</span></span>
+<span><span class="co">##  [7,]     0     0   0.0     0</span></span>
+<span><span class="co">##  [8,]     0     0   0.5     0</span></span>
+<span><span class="co">##  [9,]     0     0   0.0     0</span></span>
+<span><span class="co">## [10,]     0     0   0.0     0</span></span></code></pre>
 <p>If you have sparse data, you can save memory with
 <code>sparse = TRUE</code>, but only for <code><a href="../reference/make_mat.html">make_mat()</a></code> and
 <code><a href="../reference/make_mat.html">make_mat_se()</a></code>.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mat.html">make_mat</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, column <span class="op">=</span> <span class="fl">4</span>, mat_name <span class="op">=</span> <span class="st">"beta"</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [13:22:57.474235] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## [13:22:57.474808] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [13:22:57.474858] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [13:22:57.474869] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mat.html">make_mat</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, column <span class="op">=</span> <span class="fl">4</span>, mat_name <span class="op">=</span> <span class="st">"beta"</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [18:55:07.699044] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## [18:55:07.699578] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [18:55:07.699614] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [18:55:07.699628] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mat</span><span class="op">$</span><span class="va">beta</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 10 x 4 sparse Matrix of class "dgCMatrix"</span></span>
 <span><span class="co">##       cell1 cell2 cell3 cell4</span></span>
-<span><span class="co">##  [1,]     .     .     .     .</span></span>
-<span><span class="co">##  [2,]     .     .     .     .</span></span>
-<span><span class="co">##  [3,]     .     .     .     .</span></span>
-<span><span class="co">##  [4,]     .     .     .     1</span></span>
-<span><span class="co">##  [5,]     .     .     .     1</span></span>
-<span><span class="co">##  [6,]     .     .     .     .</span></span>
-<span><span class="co">##  [7,]     .     .     .     .</span></span>
-<span><span class="co">##  [8,]     1     .     .     .</span></span>
-<span><span class="co">##  [9,]     1     .     .     .</span></span>
-<span><span class="co">## [10,]     .     .     .     .</span></span></code></pre>
+<span><span class="co">##  [1,]     .     .   1.0     .</span></span>
+<span><span class="co">##  [2,]     .     .   0.5     .</span></span>
+<span><span class="co">##  [3,]     .     .   1.0     .</span></span>
+<span><span class="co">##  [4,]     .     .   1.0     .</span></span>
+<span><span class="co">##  [5,]     .     .   1.0     .</span></span>
+<span><span class="co">##  [6,]     .     .   .       .</span></span>
+<span><span class="co">##  [7,]     .     .   .       .</span></span>
+<span><span class="co">##  [8,]     .     .   0.5     .</span></span>
+<span><span class="co">##  [9,]     .     .   .       .</span></span>
+<span><span class="co">## [10,]     .     .   .       .</span></span></code></pre>
 <div class="section level3">
 <h3 id="wgbs-bed-files-2">WGBS BED files<a class="anchor" aria-label="anchor" href="#wgbs-bed-files-2"></a>
 </h3>
 <p>For a <em><a href="https://bioconductor.org/packages/3.21/BSseq" class="external-link">BSseq</a></em>
 compatible object, use <code>make_meth_mat</code> which returns a list
 of BSseq inputs. To make the <code>BSseq</code> object run</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meth_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mat.html">make_mat</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">BSseq</span>, <span class="va">meth_mat</span><span class="op">)</span></span></code></pre></div>
 <p>For more information on the supported Bioconductor data structures
-see <em><a href="https://bioconductor.org/packages/3.21/iscream/vignettes/data_structures" class="external-link">iscream</a></em>.
-An example workflow using iscream to examine transcription start site
-methylation is at <em><a href="https://bioconductor.org/packages/3.21/iscream/vignettes/TSS" class="external-link">iscream</a></em>.</p>
+see <code><a href="../articles/data_structures.html">vignette("data_structures")</a></code>. An example workflow using
+iscream to examine transcription start site methylation is at
+<code><a href="../articles/TSS.html">vignette("TSS")</a></code>.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.5.1 (2025-06-13)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>

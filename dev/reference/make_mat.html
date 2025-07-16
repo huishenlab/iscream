@@ -6,12 +6,12 @@
     }
   };
 </script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Make a matrix from a numeric column of BED files — make_mat"><meta name="description" content='Queries the provided regions and produces a matrix along with genomic
-positions that can be returned as a RangedSummarizedExperiment (if
-SummarizedExperiment is installed). Parallelized across files using threads
-from the "iscream.threads" option.'><meta property="og:description" content='Queries the provided regions and produces a matrix along with genomic
-positions that can be returned as a RangedSummarizedExperiment (if
-SummarizedExperiment is installed). Parallelized across files using threads
-from the "iscream.threads" option.'><meta property="og:image" content="https://huishenlab.github.io/iscream/logo.png"><meta name="robots" content="noindex"></head><body>
+positions as a named list (make_mat()), a RangedSummarizedExperiment
+(make_mat_se()), GRanges (make_mat_gr()). Parallelized across files
+using threads from the "iscream.threads" option.'><meta property="og:description" content='Queries the provided regions and produces a matrix along with genomic
+positions as a named list (make_mat()), a RangedSummarizedExperiment
+(make_mat_se()), GRanges (make_mat_gr()). Parallelized across files
+using threads from the "iscream.threads" option.'><meta property="og:image" content="https://huishenlab.github.io/iscream/logo.png"><meta name="robots" content="noindex"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -62,9 +62,9 @@ from the "iscream.threads" option.'><meta property="og:image" content="https://h
 
     <div class="ref-description section level2">
     <p>Queries the provided regions and produces a matrix along with genomic
-positions that can be returned as a <code>RangedSummarizedExperiment</code> (if
-SummarizedExperiment is installed). Parallelized across files using threads
-from the <code>"iscream.threads"</code> option.</p>
+positions as a named list (<code>make_mat()</code>), a <code>RangedSummarizedExperiment</code>
+(<code>make_mat_se()</code>), <code>GRanges</code> (<code>make_mat_gr()</code>). Parallelized across files
+using threads from the <code>"iscream.threads"</code> option.</p>
     </div>
 
     <div class="section level2">
@@ -104,7 +104,7 @@ from the <code>"iscream.threads"</code> option.</p>
 
 
 <dl><dt id="arg-bedfiles">bedfiles<a class="anchor" aria-label="anchor" href="#arg-bedfiles"></a></dt>
-<dd><p>A vector of bedfile paths</p></dd>
+<dd><p>A vector of BED file paths</p></dd>
 
 
 <dt id="arg-regions">regions<a class="anchor" aria-label="anchor" href="#arg-regions"></a></dt>
@@ -130,7 +130,7 @@ resizes need to be made.</p></dd>
 
 
 <dt id="arg-nthreads">nthreads<a class="anchor" aria-label="anchor" href="#arg-nthreads"></a></dt>
-<dd><p>Set number of threads to use overriding the
+<dd><p>Set the number of threads to use. Overrides the
 <code>"iscream.threads"</code> option. See <code><a href="set_threads.html">?set_threads</a></code> for more information.</p></dd>
 
 </dl></div>
@@ -207,11 +207,11 @@ or a GRanges object. If a data frame is provided, they must have "chr",
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># make matrix of beta values</span></span></span>
 <span class="r-in"><span><span class="fu">make_mat</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, column <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:35.723133] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:44.266645] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:35.723479] [iscream::query_all] [info] Creating metadata vectors</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:35.723510] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:35.723515] [iscream::query_all] [info] Creating dense matrix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:44.267013] [iscream::query_all] [info] Creating metadata vectors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:44.267048] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:44.267052] [iscream::query_all] [info] Creating dense matrix</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        a b c   d</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1.0 0 0 1.0</span>

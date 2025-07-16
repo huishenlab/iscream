@@ -86,12 +86,11 @@ a BSseq object: <code>do.call(BSseq, make_bsseq_mat(...))</code>.</p>
 
 
 <dl><dt id="arg-bedfiles">bedfiles<a class="anchor" aria-label="anchor" href="#arg-bedfiles"></a></dt>
-<dd><p>A vector of bedfile paths</p></dd>
+<dd><p>A vector of BED file paths</p></dd>
 
 
 <dt id="arg-regions">regions<a class="anchor" aria-label="anchor" href="#arg-regions"></a></dt>
-<dd><p>A vector, data frame or GenomicRanges of genomic regions. See
-details.</p></dd>
+<dd><p>A vector, data frame or GenomicRanges of genomic regions. See details.</p></dd>
 
 
 <dt id="arg-aligner">aligner<a class="anchor" aria-label="anchor" href="#arg-aligner"></a></dt>
@@ -109,18 +108,17 @@ matrix. Defaults to M-value. Set <code>mval=FALSE</code> to get beta value matri
 
 
 <dt id="arg-sparse">sparse<a class="anchor" aria-label="anchor" href="#arg-sparse"></a></dt>
-<dd><p>Whether to return M and coverage matrices as sparse matrices
-("dgCMatrix"). Set this <code>TRUE</code> only for scWGBS data</p></dd>
+<dd><p>Whether to return a sparse matrix</p></dd>
 
 
 <dt id="arg-prealloc">prealloc<a class="anchor" aria-label="anchor" href="#arg-prealloc"></a></dt>
 <dd><p>The number of rows to initialize the matrices with. If the
-number of methyltion loci are approximately known, this can reduce runtime
-as fewer resizes need to be made.</p></dd>
+number of loci are approximately known, this can reduce runtime as fewer
+resizes need to be made.</p></dd>
 
 
 <dt id="arg-nthreads">nthreads<a class="anchor" aria-label="anchor" href="#arg-nthreads"></a></dt>
-<dd><p>Set number of threads to use overriding the
+<dd><p>Set the number of threads to use. Overrides the
 <code>"iscream.threads"</code> option. See <code><a href="set_threads.html">?set_threads</a></code> for more information.</p></dd>
 
 </dl></div>
@@ -135,23 +133,23 @@ base positions</p></li>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The input regions may be string vector in the form "chr:start-end"
 or a GRanges object. If a data frame is provided, they must have "chr",
-"start", and "end" columns.</p><div class="section">
-<h3 id="bitpacking-limits">Bitpacking limits<a class="anchor" aria-label="anchor" href="#bitpacking-limits"></a></h3>
+"start", and "end" columns.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="bitpacking-limits">Bitpacking limits<a class="anchor" aria-label="anchor" href="#bitpacking-limits"></a></h2>
 
 
 <p>If the coverage values exceed 32,767, the upper limit of a 16-bit signed
 integer, it will be capped at the limit. Beta values will also be capped
 similarly, but any such values would be a bug in the aligner that produced
 the data.</p>
-</div>
-
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">bedfiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"iscream"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"[a|b|c|d].bed.gz$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># examine the bedfiles</span></span></span>
+<span class="r-in"><span><span class="co"># examine the BED files</span></span></span>
 <span class="r-in"><span><span class="va">colnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"beta"</span>, <span class="st">"coverage"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">i</span>, col.names <span class="op">=</span> <span class="va">colnames</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
@@ -202,11 +200,11 @@ the data.</p>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">make_bsseq_mat</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:33.240927] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:41.113514] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:33.241381] [iscream::query_all] [info] Creating metadata vectors</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:33.241435] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13:22:33.241442] [iscream::query_all] [info] Creating dense matrix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:41.113941] [iscream::query_all] [info] Creating metadata vectors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:41.114009] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:54:41.114017] [iscream::query_all] [info] Creating dense matrix</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $M</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      a b c d</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1 0 0 1</span>
