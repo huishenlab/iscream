@@ -109,7 +109,7 @@
 <li>conda: <code>bioconda::htslib</code>
 </li>
 </ul>
-<p>or built manually: <a href="https://www.htslib.org/download/" class="external-link uri">https://www.htslib.org/download/</a>. We recommend installing htslib with libdeflate support for optimal performance - see <a href="https://huishenlab.github.io/iscream/articles/htslib.html"><code>vignette("htslib")</code></a> for more information.</p>
+<p>or built manually: <a href="https://www.htslib.org/download/" class="external-link uri">https://www.htslib.org/download/</a>. <em>iscream</em> can use <em>Rhtslib</em> as the htslib source but we recommend installing htslib with libdeflate support for optimal performance - see <a href="https://huishenlab.github.io/iscream/articles/htslib.html"><code>vignette("htslib")</code></a> for more information.</p>
 <p>The header files may also be found among your HPC modules - make sure the <code>PKG_CONFIG_PATH</code> environment variable includes the <code>pkgconfig</code> location for your installation of <em>htslib</em>. You can verify that the <em>htslib</em> development libraries are installed with <code>pkg-config</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># set path if necessary</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">PKG_CONFIG_PATH</span><span class="op">=</span>[path <span class="va">to</span> <span class="va">htslib</span> <span class="va">installation</span>]</span>
