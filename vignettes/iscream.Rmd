@@ -23,14 +23,16 @@ library(BiocStyle)
 ## Introduction
 
 iscream is a BED file querying package that can can retrieve records from
-multiple [tabixed](https://en.wikipedia.org/wiki/Tabix) BED files based on a
+multiple [tabixed](https://en.wikipedia.org/wiki/Tabix) BED files based on
 input regions of interest. It can make queries like tabix, summarize data from
 loci within the regions of interest and make matrices across input files and
 regions. All operations can be done in parallel and return R/Bioconductor data
 structures.
 
-iscream was designed to be memory efficient and fast. For more information on
-performance considerations on large datasets see `vignette("performance")`.
+iscream was designed to be memory efficient and fast on large datasets. This
+vignette demonstrates iscream's functions on a small dataset. For more
+information on performance considerations on large datasets see
+`vignette("performance")`.
 
 ### Loading iscream
 
@@ -44,35 +46,34 @@ use. This is configurable with either `set_threads()` or by setting
 `option("iscream.threads")`, which can be done in your `.Rprofile` to set it on
 startup. Once loaded you use the following querying functions.
 
-## `tabix`
+## `tabix()`
 
 tabix is a command-line tool that queries loci from compressed BED files. As
 input it receives the path to a tabixed BED file and one or more genomic regions
-of interest. The regions of interest may be passed in the `"chr:start-end"`
-format or as a BED file. Given these inputs, it prints the loci from the tabixed
-BED file that fall within the regions of interest. This output may be redirected
-to a file and read into R.
+of interest. It queries and prints the loci from the tabixed BED file that fall
+within the regions of interest. This output may be redirected to a file and read
+into R.
 
 iscream's `tabix()` function works in a similar way but supports multiple files
 and multiple input formats all in one function. It receives a vector of paths to
 tabixed BED files and regions of interest. The input regions may be a vector of
 `"chr:start-end"` strings, a data frame with `"chr"`, `"start"`, and `"end"`
-columns or a `GRanges` object. It queries the BEDfiles and returns the loci as a
-parsed `r CRANpkg("data.table")`. To get a `GRanges` object instead, use
+columns or a `GRanges` object. It queries the BED files and returns the loci as
+a parsed `r CRANpkg("data.table")`. To get a `GRanges` object instead, use
 `tabix_gr`.
 
 Using iscream eliminates context switching between the shell and R for tabix
 queries since the queries are made in R and the result is an R data structure.
 `r Biocpkg("Rsamtools")` is another R package that can query data from BED
-files, but it only supports one file at a time and only accepts `GRanges` as the
-input regions. See `vignette("tabix")` for a comparison of iscream and
-Rsamtools.
+files, but it only supports one file at a time, only accepts `GRanges` as the
+input regions and does not parse the tab-delimited strings. See
+`vignette("tabix")` for a comparison of iscream and Rsamtools.
 
 ### Setup
 
 Using `list.files()`, you can get the paths to all compressed bed files in a
 directory. These files contain small regions from chromosome 1 and Y from the
-snmC-seq2 methylation data data [@luo2018a].
+snmC-seq2 methylation data [@luo2018a].
 
 ```{r load_data}
 data_dir <- system.file("extdata", package = "iscream")
@@ -111,16 +112,16 @@ With multiple files, the output contains a column for the file name.
 tabix(bedfiles, regions)
 ```
 
-### Using `GRanges`
+### Using `r Biocpkg("GenomicRanges")`
 
-`tabix()` accepts `GRanges` objects as input regions. To get `r Biocpkg("GenomicRanges")`
-objects instead of data frames, use `tabix_gr` which will also preserve any
-input `GRanges` metadata.
+Both `tabix()` and `tabix_gr()` accept `GRanges` objects as input regions but
+`tabix_gr()` returns `GRanges` objects instead of data frames. `tabix_gr` will
+also preserve any input `GRanges` metadata.
 
 ```{r tabix_gr, message=FALSE}
 library(GenomicRanges)
 gr <- GRanges(regions)
-tabix(bedfiles, gr)
+tabix_gr(bedfiles, gr)
 ```
 
 ### Setting column names
@@ -147,22 +148,17 @@ Since iscream was originally developed to read Whole Genome Bisulfite Sequencing
 data, it has the `aligner` argument for automatically setting column names for
 the BISCUIT [@zhou2024], Bismark [@krueger2011], and BSBolt [@farrell2021].
 
-## `summarize_regions`
+```{r tabix_wgbs}
+tabix_gr(bedfiles, regions, aligner = "biscuit")
+```
 
-Using the same bedfiles and regions, iscream can also summarize the data per
-region. This requires providing the index of the data columns you want
-summarized and their column names. By default, all summarizing functions are run
-on each input column:
+## `summarize_regions()`
 
-- Sum: `"sum"`
-- Mean: `"mean"`
-- Median: `"median"`
-- Standard deviation: `"stddev"`
-- Variance: `"variance"`
-- Minimum: `"min"`
-- Maximum: `"max"`
-- Range: `"range"`
-- No. of records in the region: `"count"`
+Using the same bedfiles and regions, iscream can also summarize the data within
+regions. This requires providing the index of the data columns you want
+summarized and the column names for the output. All summarizing functions are
+run on each input column by default - see `?summarize_regions` for supported
+functions.
 
 ```{r summary}
 summarize_regions(
@@ -174,8 +170,8 @@ summarize_regions(
 ```
 
 The `feature` column here contains the genomic region coordinates, but can be
-set to something more informational if you have named regions. You can also
-select function with `fun`:
+set to something more informational if you have names for the regions. You can
+also select the functions applied with `fun`:
 
 
 ```{r summary_named}
@@ -198,18 +194,19 @@ the `aligner` argument to correctly parse the columns.
 summarize_meth_regions(
   bedfiles,
   regions,
+  aligner = "biscuit",
   fun = c("mean", "sum")
 )
 ```
 
 
-## `make_mat`
+## `make_mat()`
 
-`make_mat` makes a matrix where every row is a locus found in at least one input
+`make_mat()` makes a matrix where every row is a locus found in at least one input
 file and the columns are the input files. It returns a named list of the matrix,
-coordinates, and file names you can use to make other data structures.
-`make_mat_se()` returns a `r Biocpkg("RangedSummarizedExperiment")`, and
-`make_mat_gr()` returns a `GRanges` object.
+coordinates, and file names you can use for analysis or other data structures.
+`make_mat_se()` returns a `RangedSummarizedExperiment`, and `make_mat_gr()`
+returns a `GRanges` object.
 
 ```{r make_mat, message=FALSE}
 library(SummarizedExperiment)
@@ -236,9 +233,8 @@ do.call(BSseq, meth_mat)
 ```
 
 For more information on the supported Bioconductor data structures see
-`r Biocpkg("iscream", "data_structures")`. An example workflow using
-iscream to examine transcription start site methylation is at
-`r Biocpkg("iscream", "TSS")`.
+`vignette("data_structures")`. An example workflow using iscream to examine
+transcription start site methylation is at `vignette("TSS")`.
 
 ## Session info
 
