@@ -22,12 +22,11 @@ library(BiocStyle)
 
 ## Introduction
 
-iscream is a BED file querying package that can can retrieve records from
-multiple [tabixed](https://en.wikipedia.org/wiki/Tabix) BED files based on
-input regions of interest. It can make queries like tabix, summarize data from
-loci within the regions of interest and make matrices across input files and
-regions. All operations can be done in parallel and return R/Bioconductor data
-structures.
+iscream is a BED file querying package that can can retrieve records within
+regions of interest from multiple [tabixed](https://en.wikipedia.org/wiki/Tabix)
+BED files. It can make queries like tabix, summarize data within regions and
+make matrices across input files and regions. All operations can be done in
+parallel and return R/Bioconductor data structures.
 
 iscream was designed to be memory efficient and fast on large datasets. This
 vignette demonstrates iscream's functions on a small dataset. For more
@@ -48,18 +47,18 @@ startup. Once loaded you use the following querying functions.
 
 ## `tabix()`
 
-tabix is a command-line tool that queries loci from compressed BED files. As
+tabix is a command-line tool that queries records from compressed BED files. As
 input it receives the path to a tabixed BED file and one or more genomic regions
-of interest. It queries and prints the loci from the tabixed BED file that fall
-within the regions of interest. This output may be redirected to a file and read
-into R.
+of interest. It queries and prints the records from the tabixed BED file that
+fall within the regions of interest. This output may be redirected to a file and
+read into R.
 
 iscream's `tabix()` function works in a similar way but supports multiple files
 and multiple input formats all in one function. It receives a vector of paths to
 tabixed BED files and regions of interest. The input regions may be a vector of
 `"chr:start-end"` strings, a data frame with `"chr"`, `"start"`, and `"end"`
-columns or a `GRanges` object. It queries the BED files and returns the loci as
-a parsed `r CRANpkg("data.table")`. To get a `GRanges` object instead, use
+columns or a `GRanges` object. It queries the BED files and returns the records
+as a parsed `r CRANpkg("data.table")`. To get a `GRanges` object instead, use
 `tabix_gr`.
 
 Using iscream eliminates context switching between the shell and R for tabix
@@ -154,7 +153,7 @@ tabix_gr(bedfiles, regions, aligner = "biscuit")
 
 ## `summarize_regions()`
 
-Using the same bedfiles and regions, iscream can also summarize the data within
+Using the same BED files and regions, iscream can also summarize the data within
 regions. This requires providing the index of the data columns you want
 summarized and the column names for the output. All summarizing functions are
 run on each input column by default - see `?summarize_regions` for supported
