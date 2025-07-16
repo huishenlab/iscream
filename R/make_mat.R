@@ -92,13 +92,14 @@ make_mat_se <- function(
   prealloc = 10000,
   nthreads = NULL
 ) {
-  mat <- make_mat(bedfiles, regions, column, mat_name, sparse, prealloc, nthreads)
-  if (requireNamespace("SummarizedExperiment", quietly = TRUE)) {
-    matlist <- list(mat[[mat_name]])
-    names(matlist) <- mat_name
-    gr <- getGR(mat$chr, mat$pos)
-    SummarizedExperiment::SummarizedExperiment(assays = matlist, rowRanges = gr)
+  if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    stop("The 'SummarizedExperiment' package must be installed for this functionality")
   }
+  mat <- make_mat(bedfiles, regions, column, mat_name, sparse, prealloc, nthreads)
+  matlist <- list(mat[[mat_name]])
+  names(matlist) <- mat_name
+  gr <- getGR(mat$chr, mat$pos)
+  SummarizedExperiment::SummarizedExperiment(assays = matlist, rowRanges = gr)
 }
 
 #' @rdname make_mat
@@ -111,6 +112,9 @@ make_mat_gr <- function(
   prealloc = 10000,
   nthreads = NULL
 ) {
+  if (!requireNamespace("GenomicRanges", quietly = TRUE)) {
+    stop("The 'GenomicRanges' package must be installed for this functionality")
+  }
   mat <- make_mat(
     bedfiles,
     regions,
@@ -120,9 +124,7 @@ make_mat_gr <- function(
     prealloc,
     nthreads
   )
-  if (requireNamespace("GenomicRanges", quietly = TRUE)) {
-    gr <- getGR(mat$chr, mat$pos)
-    GenomicRanges::mcols(gr) <- mat[[mat_name]]
-    gr
-  }
+  gr <- getGR(mat$chr, mat$pos)
+  GenomicRanges::mcols(gr) <- mat[[mat_name]]
+  gr
 }

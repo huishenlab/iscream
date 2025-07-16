@@ -10,6 +10,9 @@ tabix_gr <- function(
   zero_based = TRUE,
   nthreads = NULL
 ) {
+  if (!requireNamespace("GenomicRanges", quietly = TRUE)) {
+    stop("The 'GenomicRanges' package must be installed for this functionality")
+  }
   result <- tabix(
     bedfiles,
     regions,
