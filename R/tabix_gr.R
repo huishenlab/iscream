@@ -20,6 +20,9 @@ tabix_gr <- function(
     col.names,
     nthreads
   )
+  if (is.null(result)) {
+    stop("No records found")
+  }
   result.gr <- GenomicRanges::makeGRangesFromDataFrame(
     result,
     starts.in.df.are.0based = zero_based,
