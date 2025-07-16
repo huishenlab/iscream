@@ -25,7 +25,7 @@ void Cpp_set_log_level(const std::string &name) {
 }
 
 //' @rdname set_log_level
-//'
+//' @order 2
 //' @export
 // [[Rcpp::export]]
 std::string get_log_level() {

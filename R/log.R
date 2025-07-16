@@ -12,6 +12,7 @@
 #'  - `get_log_level()`: The current logging level as a string
 #'
 #' @export
+#' @order 1
 #'
 #' @examples
 #' set_log_level("info")

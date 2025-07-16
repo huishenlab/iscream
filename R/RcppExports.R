@@ -57,7 +57,7 @@ Cpp_set_log_level <- function(name) {
 }
 
 #' @rdname set_log_level
-#'
+#' @order 2
 #' @export
 get_log_level <- function() {
     .Call(`_iscream_get_log_level`)
