@@ -19,7 +19,7 @@
 #'
 #' @details
 #'
-#' ## Supported `fun` functions
+#' # Supported functions
 #'
 #' - Sum: `"sum"`
 #' - Mean: `"mean"`
@@ -35,7 +35,7 @@
 #' <https://arma.sourceforge.net/docs.html#stats_fns> for futher details on the
 #' supported functions
 #'
-#' ## Using feature identifiers
+#' # Using feature identifiers
 #'
 #' `regions` may be string vector in the form "chr:start-end", a GRanges
 #' object or a data frame with "chr", "start", and "end" columns. The `feature`

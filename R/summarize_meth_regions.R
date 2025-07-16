@@ -2,45 +2,17 @@
 #'
 #' Run summarizing functions on the CpGs in BED files across genomic regions.
 #' Parallelized across files using threads from the `"iscream.threads"` option.
-#' @param bedfiles A vector of BED file paths
-#' @param regions A vector, data frame or GenomicRanges of genomic regions. See
-#' details.
+#'
+#' @inheritParams summarize_regions
+#'
 #' @param aligner The aligner used to produce the BED files - one of "biscuit",
 #' "bismark", "bsbolt".
-#' @param feature_col If the input is a dataframe, the column to use as the
-#' feature label instead of the genomic region string
-#' @param fun Function(s) to apply over the region. See details.
 #' @param mval Whether to calculate the M value (coverage \eqn{\times \beta})
 #' or use the beta value when applying the function.
-#' @param set_region_rownames Use the region strings as the returned data
-#' frame's rownames. Can be useful if you have a named regions and want both
-#' the regions strings rownames and the feature names.
-#' @param nthreads Set number of threads to use overriding the
-#' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
-#' @details
-#' The input regions may be string vector in the form "chr:start-end"
-#' or a GRanges object. If a data frame is provided, they must have "chr",
-#' "start", and "end" columns. If the string vector and GenomicRanges inputs
-#' are named, the names will be used to describe each feature in the output
-#' dataframe. If input dataframes have a feature column, set `feature_col` to
-#' that column name to populate the output's feature column.
+#' @inheritSection summarize_regions Supported functions
 #'
-#' Supported `fun` arguments are given below. For each of these functions,
-#' setting `mval = FALSE` will use the beta values instead of the M value:
-#' - Sum: `"sum"`
-#' - Mean: `"mean"`
-#' - Median: `"median"`
-#' - Standard deviation: `"stddev"`
-#' - Variance: `"variance"`
-#' - Minimum: `"min"`
-#' - Maximum: `"max"`
-#' - Range: `"range"`
-#' - No. of CpGs in the region: `"cpg_count"`
-#'
-#' The summarizing computations are backed by the Armadillo library. See
-#' <https://arma.sourceforge.net/docs.html#stats_fns> for futher details on the
-#' supported functions
+#' @inheritSection summarize_regions Using feature identifiers
 #'
 #' @importFrom methods is
 #'
@@ -49,11 +21,10 @@
 #' @export
 #'
 #' @examples
+#' # also see examples from ?summarize_regions
+#'
 #' bedfiles <- system.file("extdata", package = "iscream") |>
 #'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
-#' # examine the BED files
-#' colnames <- c("chr", "start", "end", "beta", "coverage")
-#' lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 #'
 #' # make a vector of regions
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")

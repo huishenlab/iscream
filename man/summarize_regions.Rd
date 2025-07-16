@@ -45,8 +45,7 @@ A data.frame
 Run summarizing functions on BED file records across genomic regions.
 Parallelized across files using threads from the \code{"iscream.threads"} option.
 }
-\details{
-\subsection{Supported \code{fun} functions}{
+\section{Supported functions}{
 \itemize{
 \item Sum: \code{"sum"}
 \item Mean: \code{"mean"}
@@ -64,8 +63,7 @@ The summarizing computations are backed by the Armadillo library. See
 supported functions
 }
 
-\subsection{Using feature identifiers}{
-
+\section{Using feature identifiers}{
 \code{regions} may be string vector in the form "chr:start-end", a GRanges
 object or a data frame with "chr", "start", and "end" columns. The \code{feature}
 column of the output will contain a "chr:start-end" identifier for each
@@ -76,7 +74,7 @@ to describe each feature in the output dataframe. If \code{regions} is a data
 frame make an additional column with the identifiers and pass that column
 name to \code{feature_col}. See examples.
 }
-}
+
 \examples{
 bedfiles <- system.file("extdata", package = "iscream") |>
   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
