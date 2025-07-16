@@ -2,22 +2,22 @@
 % Please edit documentation in R/verify_files.R
 \name{verify_filetype}
 \alias{verify_filetype}
-\title{Verify that the input bedfiles are of the type specified by the input aligner}
+\title{Verify that the input BED files are of the type specified by the input aligner}
 \usage{
 verify_filetype(bedfiles, aligner, stop_on_error = FALSE)
 }
 \arguments{
-\item{bedfiles}{A vector of bedfile paths}
+\item{bedfiles}{A vector of BED file paths}
 
 \item{aligner}{The aligner chosen}
 
 \item{stop_on_error}{Whether to warn or stop on aligner-filename mismatch}
 }
 \value{
-TRUE if all input bedfiles have an associated tabix index file.
+TRUE if all input BED files have an associated tabix index file.
 FALSE if not
 }
 \description{
-Verify that the input bedfiles are of the type specified by the input aligner
+Verify that the input BED files are of the type specified by the input aligner
 }
 \keyword{internal}

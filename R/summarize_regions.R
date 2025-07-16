@@ -1,8 +1,8 @@
 #' Summarize information over genomic regions from any BED file
 #'
-#' Run summarizing functions on bedfile records across genomic regions.
+#' Run summarizing functions on BED file records across genomic regions.
 #' Parallelized across files using threads from the `"iscream.threads"` option.
-#' @param bedfiles A vector of bedfile paths
+#' @param bedfiles A vector of BED file paths
 #' @param regions A vector, data frame or GenomicRanges of genomic regions. See
 #' details.
 #' @param columns A vector of indices of the numeric columns to be summarized

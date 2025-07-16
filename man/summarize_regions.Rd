@@ -16,7 +16,7 @@ summarize_regions(
 )
 }
 \arguments{
-\item{bedfiles}{A vector of bedfile paths}
+\item{bedfiles}{A vector of BED file paths}
 
 \item{regions}{A vector, data frame or GenomicRanges of genomic regions. See
 details.}
@@ -41,7 +41,7 @@ the regions strings rownames and the feature names.}
 A data.frame
 }
 \description{
-Run summarizing functions on bedfile records across genomic regions.
+Run summarizing functions on BED file records across genomic regions.
 Parallelized across files using threads from the \code{"iscream.threads"} option.
 }
 \details{

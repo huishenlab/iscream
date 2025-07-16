@@ -1,5 +1,5 @@
 #' Query records from tabixed BED files
-#' @param bedfiles The bedfiles to be queried
+#' @param bedfiles The BED files to be queried
 #' @param regions A vector, data frame or GenomicRanges of genomic regions. See
 #' details.
 #' @param aligner The aligner used to produce the BED files - one of "biscuit",

@@ -7,7 +7,7 @@
 query_chroms(bedfiles, nthreads = NULL)
 }
 \arguments{
-\item{bedfiles}{The vector of bedfile paths}
+\item{bedfiles}{The vector of BED file paths}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}

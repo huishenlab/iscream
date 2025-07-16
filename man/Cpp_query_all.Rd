@@ -16,7 +16,7 @@ Cpp_query_all(
 )
 }
 \arguments{
-\item{bedfiles}{A vector of bedfiles}
+\item{bedfiles}{A vector of BED files}
 
 \item{regions}{A vector of regions}
 

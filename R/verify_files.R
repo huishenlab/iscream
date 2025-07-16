@@ -2,7 +2,7 @@
 #'
 #' @param files_vec A vector of file paths
 #' @param error_file_prefix Error message prefix for 'Bedfile' vs 'Tabix file'
-#' @returns TRUE if all input bedfiles have an associated tabix index file.
+#' @returns TRUE if all input BED files have an associated tabix index file.
 #' FALSE if not
 #'
 #' @keywords internal
@@ -14,11 +14,11 @@ check_files_exist <- function(files_vec, error_file_prefix = "Bedfile") {
   }
 }
 
-#' Verify that bedfiles are tabixed
+#' Verify that BED files are tabixed
 #'
-#' @param bedfiles A vector of bedfile paths
+#' @param bedfiles A vector of BED file paths
 #' @param verify_tabix Whether to verify the presence of tabix files
-#' @returns TRUE if all input bedfiles have an associated tabix index file.
+#' @returns TRUE if all input BED files have an associated tabix index file.
 #' FALSE if not
 #'
 #' @keywords internal
@@ -30,15 +30,15 @@ verify_files_or_stop <- function(bedfiles, verify_tabix = TRUE) {
   }
 }
 
-#' Verify that the input bedfiles are of the type specified by the input aligner
+#' Verify that the input BED files are of the type specified by the input aligner
 #'
-#' @param bedfiles A vector of bedfile paths
+#' @param bedfiles A vector of BED file paths
 #' @param aligner The aligner chosen
 #' @param stop_on_error Whether to warn or stop on aligner-filename mismatch
 #'
 #' @importFrom stringfish sf_grepl
 #'
-#' @returns TRUE if all input bedfiles have an associated tabix index file.
+#' @returns TRUE if all input BED files have an associated tabix index file.
 #' FALSE if not
 #'
 #' @keywords internal

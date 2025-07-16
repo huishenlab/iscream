@@ -20,7 +20,7 @@ tabix_gr(
 tabix_raw(bedfiles, regions, nthreads = NULL)
 }
 \arguments{
-\item{bedfiles}{The bedfiles to be queried}
+\item{bedfiles}{The BED files to be queried}
 
 \item{regions}{A vector, data frame or GenomicRanges of genomic regions. See
 details.}

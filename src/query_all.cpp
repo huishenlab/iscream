@@ -255,7 +255,7 @@ int QueryAll<Mat>::bitpack(const float beta_val, const float cov_val) {
 }
 
 //' Query all CpG info into M and coverage matrices
-//' @param bedfiles A vector of bedfiles
+//' @param bedfiles A vector of BED files
 //' @param regions A vector of regions
 //' @param aligner The aligner used to make the WGBS BED files, only for
 //' `make_bsseq_mat`

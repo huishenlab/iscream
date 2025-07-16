@@ -151,7 +151,7 @@ tss.plot
 ```
 
 
-Total runtime, from getting the bedfiles and regions to making the query,
+Total runtime, from getting the BED files and regions to making the query,
 calculating the summaries and plotting: `r total_runtime`. With methscan,
 generating the TSS methylation profiles alone took 11 seconds.
 

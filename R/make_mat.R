@@ -4,7 +4,7 @@
 #' positions as a named list (`make_mat()`), a `RangedSummarizedExperiment`
 #' (`make_mat_se()`), `GRanges` (`make_mat_gr()`). Parallelized across files
 #' using threads from the `"iscream.threads"` option.
-#' @param bedfiles A vector of bedfile paths
+#' @param bedfiles A vector of BED file paths
 #' @param regions A vector, data frame or GenomicRanges of genomic regions. See details.
 #' @param column The index of the data column needed for the matrix
 #' @param mat_name What to name the matrix in the returned object

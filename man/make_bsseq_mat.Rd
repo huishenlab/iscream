@@ -16,7 +16,7 @@ make_bsseq_mat(
 )
 }
 \arguments{
-\item{bedfiles}{A vector of bedfile paths}
+\item{bedfiles}{A vector of BED file paths}
 
 \item{regions}{A vector, data frame or GenomicRanges of genomic regions. See
 details.}
@@ -69,7 +69,7 @@ the data.
 \examples{
 bedfiles <- system.file("extdata", package = "iscream") |>
   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
-# examine the bedfiles
+# examine the BED files
 colnames <- c("chr", "start", "end", "beta", "coverage")
 lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 

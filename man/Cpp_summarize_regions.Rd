@@ -17,7 +17,7 @@ Cpp_summarize_regions(
 )
 }
 \arguments{
-\item{bedfiles}{A vector of bedfile paths}
+\item{bedfiles}{A vector of BED file paths}
 
 \item{regions}{A vector of genomic regions}
 

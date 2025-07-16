@@ -16,7 +16,7 @@ summarize_meth_regions(
 )
 }
 \arguments{
-\item{bedfiles}{A vector of bedfile paths}
+\item{bedfiles}{A vector of BED file paths}
 
 \item{regions}{A vector, data frame or GenomicRanges of genomic regions. See
 details.}
@@ -43,7 +43,7 @@ the regions strings rownames and the feature names.}
 A data.frame
 }
 \description{
-Run summarizing functions on the CpGs in bedfiles across genomic regions.
+Run summarizing functions on the CpGs in BED files across genomic regions.
 Parallelized across files using threads from the \code{"iscream.threads"} option.
 }
 \details{
@@ -75,7 +75,7 @@ supported functions
 \examples{
 bedfiles <- system.file("extdata", package = "iscream") |>
   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
-# examine the bedfiles
+# examine the BED files
 colnames <- c("chr", "start", "end", "beta", "coverage")
 lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 

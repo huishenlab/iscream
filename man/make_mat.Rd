@@ -36,7 +36,7 @@ make_mat_gr(
 )
 }
 \arguments{
-\item{bedfiles}{A vector of bedfile paths}
+\item{bedfiles}{A vector of BED file paths}
 
 \item{regions}{A vector, data frame or GenomicRanges of genomic regions. See details.}
 

@@ -155,7 +155,7 @@ double summarize(const StatFunction func, const arma::vec& data_vec) {
 //'
 //' This function should be called from `summarize_regions()` since there are few
 //' sanity checks on the C++ side.
-//' @param bedfiles A vector of bedfile paths
+//' @param bedfiles A vector of BED file paths
 //' @param regions A vector of genomic regions
 //' @param fun_vec Vector of the armadillo-supported stats functions to apply over the
 //' CpGs in the ' regions: `"sum"`, `"mean"`, `"median"`, `"stddev"`,

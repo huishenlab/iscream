@@ -93,7 +93,7 @@ scan_tabix <- function(bedfile, regions) {
 }
 
 #' Query all CpG info into M and coverage matrices
-#' @param bedfiles A vector of bedfiles
+#' @param bedfiles A vector of BED files
 #' @param regions A vector of regions
 #' @param aligner The aligner used to make the WGBS BED files, only for
 #' `make_bsseq_mat`
@@ -114,7 +114,7 @@ Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, pr
 #'
 #' This function should be called from `summarize_regions()` since there are few
 #' sanity checks on the C++ side.
-#' @param bedfiles A vector of bedfile paths
+#' @param bedfiles A vector of BED file paths
 #' @param regions A vector of genomic regions
 #' @param fun_vec Vector of the armadillo-supported stats functions to apply over the
 #' CpGs in the ' regions: `"sum"`, `"mean"`, `"median"`, `"stddev"`,

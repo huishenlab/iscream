@@ -4,7 +4,7 @@
 #' their genomic positions. Parallelized across files using threads from the
 #' `"iscream.threads"` option. The output of `make_bsseq_mat` may be used to create
 #' a BSseq object: `do.call(BSseq, make_bsseq_mat(...))`.
-#' @param bedfiles A vector of bedfile paths
+#' @param bedfiles A vector of BED file paths
 #' @param regions A vector, data frame or GenomicRanges of genomic regions. See
 #' details.
 #' @param aligner The aligner used to produce the BED files - one of "biscuit",
@@ -43,7 +43,7 @@
 #' @examples
 #' bedfiles <- system.file("extdata", package = "iscream") |>
 #'   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
-#' # examine the bedfiles
+#' # examine the BED files
 #' colnames <- c("chr", "start", "end", "beta", "coverage")
 #' lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 #'

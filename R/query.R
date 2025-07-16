@@ -1,5 +1,5 @@
 #' Query the chromosomes or seqnames from a vector of BED files
-#' @param bedfiles The vector of bedfile paths
+#' @param bedfiles The vector of BED file paths
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #' @returns A vector of seqnames

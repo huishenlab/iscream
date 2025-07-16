@@ -12,7 +12,7 @@ check_files_exist(files_vec, error_file_prefix = "Bedfile")
 \item{error_file_prefix}{Error message prefix for 'Bedfile' vs 'Tabix file'}
 }
 \value{
-TRUE if all input bedfiles have an associated tabix index file.
+TRUE if all input BED files have an associated tabix index file.
 FALSE if not
 }
 \description{
