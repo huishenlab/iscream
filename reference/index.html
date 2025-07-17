@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,12 +25,14 @@
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/data_structures.html">Getting other data structures from iscream</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/performance.html">Improving iscream performance</a></li>
+    <li><a class="dropdown-item" href="../articles/data_structures.html">iscream compatible data structures</a></li>
     <li><a class="dropdown-item" href="../articles/TSS.html">Plotting TSS methylation profiles</a></li>
     <li><a class="dropdown-item" href="../articles/tabix.html">iscream vs Rsamtools::scanTabix</a></li>
     <li><a class="dropdown-item" href="../articles/htslib.html">Getting htslib headers</a></li>
     <li><a class="dropdown-item" href="../articles/manuscript_data.html">Manuscript data availabiliy</a></li>
   </ul></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/huishenlab/iscream/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -69,10 +71,10 @@
 
       <dl><dt>
 
-          <code><a href="tabix.html">tabix()</a></code>
+          <code><a href="tabix.html">tabix()</a></code> <code><a href="tabix.html">tabix_gr()</a></code> <code><a href="tabix.html">tabix_raw()</a></code>
 
         </dt>
-        <dd>Query lines from a tabixed BED file</dd>
+        <dd>Query records from tabixed BED files</dd>
       </dl><dl><dt>
 
           <code><a href="query_chroms.html">query_chroms()</a></code>
@@ -87,7 +89,7 @@
         <dd>Summarize information over genomic regions from any BED file</dd>
       </dl><dl><dt>
 
-          <code><a href="make_mat.html">make_mat()</a></code>
+          <code><a href="make_mat.html">make_mat()</a></code> <code><a href="make_mat.html">make_mat_se()</a></code> <code><a href="make_mat.html">make_mat_gr()</a></code>
 
         </dt>
         <dd>Make a matrix from a numeric column of BED files</dd>
@@ -173,16 +175,10 @@
 
       <dl><dt>
 
-          <code><a href="get_log_level.html">get_log_level()</a></code>
+          <code><a href="set_log_level.html">set_log_level()</a></code> <code><a href="set_log_level.html">get_log_level()</a></code>
 
         </dt>
-        <dd>Get the current log level</dd>
-      </dl><dl><dt>
-
-          <code><a href="set_log_level.html">set_log_level()</a></code>
-
-        </dt>
-        <dd>Set logging level</dd>
+        <dd>Set and get logging level</dd>
       </dl></div><div class="section level2">
 
       <h3 id="htslib">htslib<a class="anchor" aria-label="anchor" href="#htslib"></a></h3>

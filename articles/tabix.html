@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,13 +46,15 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/data_structures.html">Getting other data structures from iscream</a></li>
+<li><a class="dropdown-item" href="../articles/performance.html">Improving iscream performance</a></li>
+    <li><a class="dropdown-item" href="../articles/data_structures.html">iscream compatible data structures</a></li>
     <li><a class="dropdown-item" href="../articles/TSS.html">Plotting TSS methylation profiles</a></li>
     <li><a class="dropdown-item" href="../articles/tabix.html">iscream vs Rsamtools::scanTabix</a></li>
     <li><a class="dropdown-item" href="../articles/htslib.html">Getting htslib headers</a></li>
     <li><a class="dropdown-item" href="../articles/manuscript_data.html">Manuscript data availabiliy</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -95,9 +97,7 @@ the methscan dataset.</p>
 <a href="./TSS.Rmd">Plotting TSS profiles tutorial</a> and mouse
 promoter regions. Running it requires downloading 18MB of BED files and
 tabix indices from this Zenodo record: <a href="https://zenodo.org/records/14733834" class="external-link uri">https://zenodo.org/records/14733834</a></p>
-<details><summary>
-Downloading data
-</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">methscan_zip_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"methscan"</span><span class="op">)</span></span>
 <span><span class="va">methscan_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span></span>
@@ -105,7 +105,7 @@ Downloading data
 <span>    destfile <span class="op">=</span> <span class="va">methscan_zip_path</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">methscan_zip_path</span>, exdir <span class="op">=</span> <span class="va">methscan_dir</span><span class="op">)</span></span></code></pre></div>
-</details><p>iscream normally uses htslib to query BED files and store the data in
+<p>iscream normally uses htslib to query BED files and store the data in
 memory. However, iscream’s <code>tabix</code> function can use the tabix
 executable to make tabix queries because the shell program’s
 stream-to-file approach is faster than allocating and storing strings in
@@ -261,10 +261,10 @@ returns the raw strings, but each input file is a list of it’s own.
 <div class="section level2">
 <h2 id="parsing-records-into-a-data-frame">Parsing records into a data frame<a class="anchor" aria-label="anchor" href="#parsing-records-into-a-data-frame"></a>
 </h2>
-<p>A parsed data frame is more useful than a list of raw strings - drop
-the <code>raw</code> argument in <code>tabix</code>. For
-<code>scanTabix</code>, this function parses the list of strings to make
-a similar data frame:</p>
+<p>A parsed data frame is more useful than a list of raw strings - use
+<code><a href="../reference/tabix.html">tabix()</a></code> instead of <code><a href="../reference/tabix.html">tabix_raw()</a></code>. For
+<code>scanTabix</code>, this custom function parses the list of strings
+to make a similar data frame:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rtbx</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">bed</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">q</span> <span class="op">&lt;-</span> <span class="fu">scanTabix</span><span class="op">(</span><span class="va">bed</span>, param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">mouse_promoters</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
