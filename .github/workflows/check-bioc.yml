@@ -22,9 +22,8 @@
 
 on:
   push:
-    branches: [dev, bioc]
+    branches: [main, dev, bioc]
     paths-ignore:
-      - '**/README.md'
       - '**.nix'
       - '**.toml'
       - 'flake.lock'
