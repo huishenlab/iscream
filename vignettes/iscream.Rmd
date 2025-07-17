@@ -28,6 +28,14 @@ BED files. It can make queries like tabix, summarize data within regions and
 make matrices across input files and regions. All operations can be done in
 parallel and return R/Bioconductor data structures.
 
+iscream may be installed from https://bioconductor.org with
+
+```{r install, eval=FALSE}
+if (!require("BiocManager"))
+    install.packages("BiocManager")
+BiocManager::install("iscream")
+```
+
 iscream was designed to be memory efficient and fast on large datasets. This
 vignette demonstrates iscream's functions on a small dataset. For more
 information on performance considerations on large datasets see
