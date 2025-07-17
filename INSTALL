@@ -2,5 +2,6 @@ iscream depends on htslib header files and uses Rhtslib as the source by
 default. However, using htslib from other sources can improve its performance.
 See https://huishenlab.github.io/iscream/dev/articles/htslib.html.
 
-Ubuntu: libhts-dev, tabix
-MacOS with brew: htslib
+Ubuntu: sudo apt-get install -y libhts-dev tabix
+Fedora/RHEL: sudo dnf install -y htslib-devel
+MacOS with brew: brew install htslib
