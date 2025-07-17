@@ -1,3 +1,3 @@
-# 0.99.0
+# iscream 0.99.0
 
 - Pre-release
