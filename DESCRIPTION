@@ -10,7 +10,7 @@ Description: Make fast and memory efficient BED file queries, summaries and
              matrices.
 URL: https://huishenlab.github.io/iscream/, https://github.com/huishenlab/iscream/
 BugReports: https://github.com/huishenlab/iscream/issues/
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
