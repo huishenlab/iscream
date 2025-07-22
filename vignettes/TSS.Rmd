@@ -169,7 +169,7 @@ tss.summary <- tss.profile[,
 query_runtime <- timetaken(query_runtime.start)
 ```
 
-Time to make the query and compute the summary: 2.422s elapsed (5.090s cpu).
+Time to make the query and compute the summary: 2.444s elapsed (5.262s cpu).
 
 ### Plot average methylation profiles around the TSS
 
@@ -196,7 +196,7 @@ tss.plot
 
 
 Total runtime, from getting the BED files and regions to making the query,
-calculating the summaries and plotting: 2.467s elapsed (5.133s cpu). With methscan,
+calculating the summaries and plotting: 2.489s elapsed (5.307s cpu). With methscan,
 generating the TSS methylation profiles alone took 11 seconds.
 
 ## Using `summarize_regions`
@@ -218,9 +218,9 @@ tss.means <- summarize_meth_regions(
 ```
 
 ```
-## [10:29:11.229447] [iscream::summarize_regions] [info] Summarizing 21622 regions from 30 bedfiles
-## [10:29:11.229464] [iscream::summarize_regions] [info] using mean
-## [10:29:11.229468] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta
+## [11:28:24.770899] [iscream::summarize_regions] [info] Summarizing 21622 regions from 30 bedfiles
+## [11:28:24.770922] [iscream::summarize_regions] [info] using mean
+## [11:28:24.770925] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta
 ```
 
 ``` r
