@@ -138,9 +138,9 @@ The `make_mat()` function queries and stores every genomic location within the
 input regions across input files. Unlike `summarize_regions()` the output
 matrix dimensions are unknown at runtime. Although usually quite fast, if the
 number of records falling into the input regions are large and there are few
-overlaps files, this can take a long time. Here, gene bodies are large and the
-final matrix can contain millions of CpG loci. Further, with sparse data,
-chances are new loci are found in every file.
+overlaps between files, this can take a long time. Here, gene bodies are large
+and the final matrix can contain millions of CpG loci. Further, with sparse
+data, chances are new loci are found in every file.
 
 Preallocating the number of rows, however, can drastically reduce runtime.
 Since we got 45 million loci/CpGs from all the BED files with the tabix query
