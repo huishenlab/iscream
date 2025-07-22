@@ -249,9 +249,9 @@ location within the input regions across input files. Unlike
 <code><a href="../reference/summarize_regions.html">summarize_regions()</a></code> the output matrix dimensions are
 unknown at runtime. Although usually quite fast, if the number of
 records falling into the input regions are large and there are few
-overlaps files, this can take a long time. Here, gene bodies are large
-and the final matrix can contain millions of CpG loci. Further, with
-sparse data, chances are new loci are found in every file.</p>
+overlaps between files, this can take a long time. Here, gene bodies are
+large and the final matrix can contain millions of CpG loci. Further,
+with sparse data, chances are new loci are found in every file.</p>
 <p>Preallocating the number of rows, however, can drastically reduce
 runtime. Since we got 45 million loci/CpGs from all the BED files with
 the tabix query above, we can expect approximately between 5 and 10
