@@ -186,9 +186,9 @@ strings:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [14:35:25.922264] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [14:35:25.922293] [iscream::summarize_regions] [info] using sum, mean</span></span>
-<span><span class="co">## [14:35:25.922297] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
+<pre><code><span><span class="co">## [15:44:02.768797] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [15:44:02.768831] [iscream::summarize_regions] [info] using sum, mean</span></span>
+<span><span class="co">## [15:44:02.768836] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
 <pre><code><span><span class="co">##       feature file coverage.sum M.sum coverage.mean    M.mean</span></span>
 <span><span class="co">## 1    chr1:1-6    a            4     2      1.333333 0.6666667</span></span>
 <span><span class="co">## 2   chr1:7-10    a            3     1      1.500000 0.5000000</span></span>
@@ -245,9 +245,9 @@ regions.</p>
 <span>  set_region_rownames <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [14:35:26.040036] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
-<span><span class="co">## [14:35:26.040058] [iscream::summarize_regions] [info] using sum, mean</span></span>
-<span><span class="co">## [14:35:26.040062] [iscream::summarize_regions] [info] with columns 4 as V1</span></span></code></pre>
+<pre><code><span><span class="co">## [15:44:02.888432] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span></span>
+<span><span class="co">## [15:44:02.888459] [iscream::summarize_regions] [info] using sum, mean</span></span>
+<span><span class="co">## [15:44:02.888463] [iscream::summarize_regions] [info] with columns 4 as V1</span></span></code></pre>
 <pre><code><span><span class="co">##            feature file V1.sum   V1.mean</span></span>
 <span><span class="co">## chr1:1-6         A    a    2.0 0.6666667</span></span>
 <span><span class="co">## chr1:7-10        B    a    0.5 0.2500000</span></span>
@@ -300,11 +300,11 @@ regions.</p>
 dense matrices.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_mat.html">make_mat_gr</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, column <span class="op">=</span> <span class="fl">4</span>, mat_name <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [14:35:26.151511] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [15:44:03.001394] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [14:35:26.151842] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [14:35:26.151906] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [14:35:26.151911] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
+<span><span class="co">## [15:44:03.001738] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [15:44:03.001776] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [15:44:03.001779] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
 <pre><code><span><span class="co">## GRanges object with 7 ranges and 4 metadata columns:</span></span>
 <span><span class="co">##       seqnames    ranges strand |         a         b         c         d</span></span>
 <span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;</span></span>
@@ -330,11 +330,11 @@ matrices.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_mat.html">make_mat_se</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, column <span class="op">=</span> <span class="fl">4</span>, mat_name <span class="op">=</span> <span class="st">"beta"</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
 <span><span class="co">## 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</span></span></code></pre>
-<pre><code><span><span class="co">## [14:35:28.965524] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [15:44:05.904303] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [14:35:28.965897] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [14:35:28.965925] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [14:35:28.965931] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
+<span><span class="co">## [15:44:05.904689] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [15:44:05.904713] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [15:44:05.904720] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
 <pre><code><span><span class="co">## class: RangedSummarizedExperiment </span></span>
 <span><span class="co">## dim: 7 4 </span></span>
 <span><span class="co">## metadata(0):</span></span>
