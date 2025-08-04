@@ -28,6 +28,7 @@ Imports:
     Matrix,
     data.table,
     methods,
+    pbapply,
     parallelly,
     stringfish
 Suggests:
