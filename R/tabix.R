@@ -39,6 +39,7 @@
 #'
 #' @importFrom data.table as.data.table tstrsplit set := rbindlist fread fwrite setnames
 #' @importFrom parallel mclapply
+#' @importFrom pbapply pblapply pboptions
 #' @importFrom tools file_path_sans_ext
 #' @importFrom stats setNames
 #' @importFrom methods is
@@ -76,6 +77,7 @@ tabix <- function(
   }
 
   # make the query
+  pboptions(char = "*", min_time = 2)
   if (getOption("tabix.method") == "htslib") {
     input_regions <- get_string_input_regions(regions)
     result <- tabix.htslib(bedfiles, input_regions, nthreads)
@@ -112,7 +114,7 @@ tabix.shell <- function(bedfiles, regions_df, nthreads) {
     return(tabix.shell.single(bedfiles, regions_df))
   }
 
-  mclapply(
+  pblapply(
     bedfiles,
     function(bedfile) {
       tbx_query <- tabix.shell.single(bedfile, regions_df)
@@ -120,7 +122,7 @@ tabix.shell <- function(bedfiles, regions_df, nthreads) {
         tbx_query[, file := file_path_sans_ext(basename(bedfile), compression = TRUE)]
       }
     },
-    mc.cores = .get_threads(nthreads)
+    cl = .get_threads(nthreads)
   ) |>
     rbindlist()
 }
