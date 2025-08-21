@@ -1,6 +1,6 @@
 Package: iscream
 Title: Fast and memory efficient package to make BED file queries, summaries and matrices
-Version: 0.99.3
+Version: 0.99.4
 Authors@R: c(
     person("James", "Eapen", email = "james.eapen@vai.org", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-6016-3598")),
     person("Jacob", "Morrison", email = "jacob.morrison@vai.org", role = c("aut"), comment = c(ORCID = "0000-0001-8592-4744")),
