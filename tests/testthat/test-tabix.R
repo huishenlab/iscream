@@ -1,4 +1,6 @@
 library(data.table)
+tabix_installed <- Sys.which("tabix") != ""
+options("tabix.method" = "htslib")
 
 # input data
 extdata <- system.file("extdata", package = "iscream")
@@ -26,9 +28,9 @@ tabix_df_result <- list.files(extdata, pattern = "tabix_dataframe.test", full.na
 tabix_df_result_bismark <- list.files(extdata, pattern = "tabix_dataframe_bismark.test", full.names = T)
 
 # test dataframe output
-test_tabix_dataframe <- function(htslib = FALSE) {
-  if (htslib) {
-    options("tabix.method" = "htslib")
+test_tabix_dataframe <- function(shell = FALSE) {
+  if (shell) {
+    options("tabix.method" = "shell")
   }
   expect_equal(
     tabix(biscuit_tabix_beds[1], regions, aligner = "biscuit"),
@@ -51,19 +53,20 @@ test_tabix_dataframe <- function(htslib = FALSE) {
     tabix(chrom_beds[2], regions),
     "No records found"
   )
-  options("tabix.method" = "shell")
 }
 
 test_that("tabix dataframe with shell", {
-  test_tabix_dataframe(htslib = FALSE)
-})
-test_that("tabix dataframe with htslib", {
-  test_tabix_dataframe(htslib = TRUE)
+  skip_if_not(tabix_installed)
+  test_tabix_dataframe(shell = TRUE)
 })
 
-test_multi_tabix_dataframe <- function(htslib = FALSE) {
-  if (htslib) {
-    options("tabix.method" = "htslib")
+test_that("tabix dataframe with htslib", {
+  test_tabix_dataframe(shell = FALSE)
+})
+
+test_multi_tabix_dataframe <- function(shell = FALSE) {
+  if (shell) {
+    options("tabix.method" = "shell")
   }
   multi_tabix <- lapply(biscuit_tabix_beds, function(i) {
     tabix(i, regions)[,
@@ -110,15 +113,15 @@ test_multi_tabix_dataframe <- function(htslib = FALSE) {
     suppressWarnings(tabix(biscuit_tabix_beds, regions.missing_in_3)),
     tabix(biscuit_tabix_beds[-3], regions.missing_in_3)
   )
-  options("tabix.method" = "shell")
 }
 
 test_that("tabix multi query with shell", {
-  test_multi_tabix_dataframe(htslib = FALSE)
+  skip_if_not(tabix_installed)
+  test_multi_tabix_dataframe(shell = TRUE)
 })
 
 test_that("tabix multi query with htslib", {
-  test_multi_tabix_dataframe(htslib = TRUE)
+  test_multi_tabix_dataframe(shell = FALSE)
 })
 
 gr.meta <- GenomicRanges::GRanges(regions)
