@@ -143,27 +143,23 @@ tabix.shell.single <- function(bedfile, regions_df) {
 
 tabix.htslib <- function(bedfiles, input_regions, nthreads) {
   if (length(bedfiles) == 1) {
-    result <- tabix.htslib.single(
-      bedfile = bedfiles,
-      regions = input_regions
-    )
-  } else {
-    dt_list <- pblapply(
-      bedfiles,
-      function(file) {
-        tbx_query <- tabix.htslib.single(
-          bedfile = file,
-          regions = input_regions
-        )
-        if (!is.null(tbx_query)) {
-          tbx_query[, file := file_path_sans_ext(basename(file), compression = TRUE)]
-        }
-        return(tbx_query)
-      },
-      cl = .get_threads(nthreads)
-    )
-    result <- rbindlist(dt_list)
+    return(tabix.htslib.single(bedfile = bedfiles, regions = input_regions))
   }
+  dt_list <- pblapply(
+    bedfiles,
+    function(file) {
+      tbx_query <- tabix.htslib.single(
+        bedfile = file,
+        regions = input_regions
+      )
+      if (!is.null(tbx_query)) {
+        tbx_query[, file := file_path_sans_ext(basename(file), compression = TRUE)]
+      }
+      return(tbx_query)
+    },
+    cl = .get_threads(nthreads)
+  )
+  rbindlist(dt_list)
 }
 
 tabix.htslib.single <- function(bedfile, regions) {
