@@ -61,6 +61,7 @@ test_that("tabix dataframe with shell", {
 })
 
 test_that("tabix dataframe with htslib", {
+  options("tabix.method" = "htslib")
   test_tabix_dataframe(shell = FALSE)
 })
 
@@ -121,6 +122,7 @@ test_that("tabix multi query with shell", {
 })
 
 test_that("tabix multi query with htslib", {
+  options("tabix.method" = "htslib")
   test_multi_tabix_dataframe(shell = FALSE)
 })
 
