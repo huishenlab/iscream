@@ -89,35 +89,35 @@
           buildInputs = rDeps ++ rDevDeps ++ sysDeps ++ sysDevDeps;
           inputsFrom = pkgs.lib.singleton iscream;
           packages = pkgs.lib.singleton rvenv;
-        };
-        shellHook = ''
-          export I_R=${pkgs.R}/lib/R/include/
-          export I_RCPP=${pkgs.rPackages.Rcpp}/library/Rcpp/include/
-          export I_ARMA=${pkgs.rPackages.RcppArmadillo}/library/RcppArmadillo/include/
-          export I_PROGRESS=${pkgs.rPackages.RcppProgress}/library/RcppProgress/include/
-          export I_LOG=${pkgs.rPackages.RcppSpdlog}/library/RcppSpdlog/include/
-          export I_STRINGFISH=${pkgs.rPackages.stringfish}/library/stringfish/include/
+          shellHook = ''
+            export I_R=${pkgs.R}/lib/R/include/
+            export I_RCPP=${pkgs.rPackages.Rcpp}/library/Rcpp/include/
+            export I_ARMA=${pkgs.rPackages.RcppArmadillo}/library/RcppArmadillo/include/
+            export I_PROGRESS=${pkgs.rPackages.RcppProgress}/library/RcppProgress/include/
+            export I_LOG=${pkgs.rPackages.RcppSpdlog}/library/RcppSpdlog/include/
+            export I_STRINGFISH=${pkgs.rPackages.stringfish}/library/stringfish/include/
 
-          export I_HTSLIB=${pkgs.htslib}/include/
-          export L_HTSLIB=${pkgs.htslib}/lib/libhts.a
-          export L_CURL=${pkgs.curl.out}/lib/libcurl.so
+            export I_HTSLIB=${pkgs.htslib}/include/
+            export L_HTSLIB=${pkgs.htslib}/lib/libhts.a
+            export L_CURL=${pkgs.curl.out}/lib/libcurl.so
 
-          mkdir -p "$HOME/.R"
-          export R_LIBS_USER="$HOME/.R"
+            mkdir -p "$HOME/.R"
+            export R_LIBS_USER="$HOME/.R"
 
-          cat > .ccls << EOF
-          clang
-          %c -std=c11
-          %cpp -std=c++2a
-          -I$I_R
-          -I$I_RCPP
-          -I$I_ARMA
-          -I$I_HTSLIB
-          -I$I_CLOCK
-          -I$I_PROGRESS
-          -I$I_LOG
-          -I$I_STRINGFISH
-          EOF
-        '';
-       });
+            cat > .ccls << EOF
+            clang
+            %c -std=c11
+            %cpp -std=c++2a
+            -I$I_R
+            -I$I_RCPP
+            -I$I_ARMA
+            -I$I_HTSLIB
+            -I$I_CLOCK
+            -I$I_PROGRESS
+            -I$I_LOG
+            -I$I_STRINGFISH
+            EOF
+            '';
+      };
+    });
 }
