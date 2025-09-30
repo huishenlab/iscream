@@ -23,7 +23,7 @@
 #' *htslib*, but slower on large queries since it stores the records as they
 #' are found instead of writing to a file. However it's able to store each
 #' region's records independently instead of in a single file and is used in
-#' `make_mat()`, `make_bsseq_mat()`, and `summarize_regions()`.
+#' `make_mat()`, `make_mat_bsseq()`, and `summarize_regions()`.
 #'
 #' When *iscream* is attached, it checks that the *tabix* executable is
 #' available with `Sys.which()` and, if available, sets `options("tabix.method"

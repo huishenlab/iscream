@@ -258,7 +258,7 @@ int QueryAll<Mat>::bitpack(const float beta_val, const float cov_val) {
 //' @param bedfiles A vector of BED files
 //' @param regions A vector of regions
 //' @param aligner The aligner used to make the WGBS BED files, only for
-//' `make_bsseq_mat`
+//' `make_mat_bsseq`
 //' @param valInd The index of the data column needed for the matrix, for `make_mat`
 //' @param merged Whether the input strands have been merged/collapsed
 //' @param prealloc The number of rows to initialize the matrices with
