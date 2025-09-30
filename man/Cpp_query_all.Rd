@@ -21,7 +21,7 @@ Cpp_query_all(
 \item{regions}{A vector of regions}
 
 \item{aligner}{The aligner used to make the WGBS BED files, only for
-\code{make_bsseq_mat}}
+\code{make_mat_bsseq}}
 
 \item{valInd}{The index of the data column needed for the matrix, for \code{make_mat}}
 

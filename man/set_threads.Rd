@@ -49,7 +49,7 @@ Functions currently using multithreading:
 \itemize{
 \item \code{tabix()}, \verb{tabix_gr(), 'tabix_raw()}
 \item \code{query_chroms()}
-\item \code{make_mat()}, \code{make_mat_se()}, \code{make_mat_gr()}, \code{make_bsseq_mat()}
+\item \code{make_mat()}, \code{make_mat_se()}, \code{make_mat_gr()}, \code{make_mat_bsseq()}
 \item \code{summarize_regions()}, \code{summarize_meth_regions()}
 }
 }
