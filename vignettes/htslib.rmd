@@ -1,6 +1,8 @@
 ---
 title: "Getting htslib headers"
-output: rmarkdown::html_vignette
+output:
+  BiocStyle::html_document:
+    toc_float: true
 vignette: >
   %\VignetteIndexEntry{Getting htslib headers}
   %\VignetteEngine{knitr::rmarkdown}
@@ -131,4 +133,10 @@ You should get something like
 
 ```
 -I/home/user/iscream/.pixi/envs/default/include -L/home/user/iscream/.pixi/envs/default/lib -lhts
+```
+
+## Session info
+
+```{r si}
+sessionInfo()
 ```
