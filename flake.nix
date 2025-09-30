@@ -58,6 +58,7 @@
       });
       sysDeps = with pkgs; [
         R
+        gcc
         htslib
         pkg-config
       ];
