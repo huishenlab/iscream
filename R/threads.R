@@ -75,7 +75,7 @@ get_threads <- function() {
 #' Functions currently using multithreading:
 #' - `tabix()`, `tabix_gr(), 'tabix_raw()`
 #' - `query_chroms()`
-#' - `make_mat()`, `make_mat_se()`, `make_mat_gr()`, `make_bsseq_mat()`
+#' - `make_mat()`, `make_mat_se()`, `make_mat_gr()`, `make_mat_bsseq()`
 #' - `summarize_regions()`, `summarize_meth_regions()`
 #'
 #' @export

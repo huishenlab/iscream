@@ -2,8 +2,8 @@
 #'
 #' Queries the provided regions and produces M/beta and Coverage matrices and
 #' their genomic positions. Parallelized across files using threads from the
-#' `"iscream.threads"` option. The output of `make_bsseq_mat` may be used to create
-#' a BSseq object: `do.call(BSseq, make_bsseq_mat(...))`.
+#' `"iscream.threads"` option. The output of `make_mat_bsseq` may be used to create
+#' a BSseq object: `do.call(BSseq, make_mat_bsseq(...))`.
 #'
 #' @inheritParams make_mat
 #'
@@ -40,13 +40,13 @@
 #'
 #' # make a vector of regions
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
-#' make_bsseq_mat(bedfiles, regions)
+#' make_mat_bsseq(bedfiles, regions)
 #' # for BSseq object run
 #' \dontrun{
 #' library(bsseq)
-#' do.call(BSseq, make_bsseq_mat(bedfiles, regions))
+#' do.call(BSseq, make_mat_bsseq(bedfiles, regions))
 #' }
-make_bsseq_mat <- function(
+make_mat_bsseq <- function(
   bedfiles,
   regions,
   aligner = "biscuit",

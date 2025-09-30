@@ -48,20 +48,20 @@ exp_seq <- rep("chr1", 7)
 
 set_threads(1)
 
-biscuit_bs_MC <- make_bsseq_mat(biscuit_bedfiles, regions, prealloc = 2)
-bismark_bs_MC <- make_bsseq_mat(bismark_bedfiles, regions, aligner = "bismark")
+biscuit_bs_MC <- make_mat_bsseq(biscuit_bedfiles, regions, prealloc = 2)
+bismark_bs_MC <- make_mat_bsseq(bismark_bedfiles, regions, aligner = "bismark")
 
-biscuit_bs_MC_sp <- make_bsseq_mat(biscuit_bedfiles, regions, sparse = T)
-bismark_bs_MC_sp <- make_bsseq_mat(bismark_bedfiles, regions, sparse = T, aligner = "bismark")
+biscuit_bs_MC_sp <- make_mat_bsseq(biscuit_bedfiles, regions, sparse = T)
+bismark_bs_MC_sp <- make_mat_bsseq(bismark_bedfiles, regions, sparse = T, aligner = "bismark")
 
-biscuit_bs_MC_GR <- make_bsseq_mat(biscuit_bedfiles, gr, prealloc = 2)
-biscuit_bs_MC_df <- make_bsseq_mat(biscuit_bedfiles, regions.dt, prealloc = 2)
+biscuit_bs_MC_GR <- make_mat_bsseq(biscuit_bedfiles, gr, prealloc = 2)
+biscuit_bs_MC_df <- make_mat_bsseq(biscuit_bedfiles, regions.dt, prealloc = 2)
 
-biscuit_bs_bC <- make_bsseq_mat(biscuit_bedfiles, regions, sparse = F, mval = F)
-bismark_bs_bC <- make_bsseq_mat(bismark_bedfiles, regions, sparse = F, aligner = "bismark", mval = F)
+biscuit_bs_bC <- make_mat_bsseq(biscuit_bedfiles, regions, sparse = F, mval = F)
+bismark_bs_bC <- make_mat_bsseq(bismark_bedfiles, regions, sparse = F, aligner = "bismark", mval = F)
 
-biscuit_bs_bC_sp <- make_bsseq_mat(biscuit_bedfiles, regions, sparse = T, mval = F)
-bismark_bs_bC_sp <- make_bsseq_mat(bismark_bedfiles, regions, sparse = T, aligner = "bismark", mval = F)
+biscuit_bs_bC_sp <- make_mat_bsseq(biscuit_bedfiles, regions, sparse = T, mval = F)
+bismark_bs_bC_sp <- make_mat_bsseq(bismark_bedfiles, regions, sparse = T, aligner = "bismark", mval = F)
 
 biscuit_b <- make_mat(biscuit_bedfiles, regions, column = 4, mat_name = "beta")
 bismark_M <- make_mat(bismark_bedfiles, regions, column = 4, mat_name = "M")

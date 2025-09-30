@@ -235,7 +235,7 @@ For a `r Biocpkg("BSseq")` compatible object, use `make_meth_mat` which returns
 a list of BSseq inputs. To make the `BSseq` object run
 
 ```{r, eval=FALSE}
-meth_mat <- make_mat(bedfiles, regions)
+meth_mat <- make_mat_bsseq(bedfiles, regions)
 do.call(BSseq, meth_mat)
 ```
 
