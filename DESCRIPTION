@@ -1,13 +1,16 @@
 Package: iscream
-Title: Fast and memory efficient package to make BED file queries, summaries and matrices
+Title: Make fast and memory efficient BED file queries, summaries and matrices
 Version: 0.99.5
 Authors@R: c(
     person("James", "Eapen", email = "james.eapen@vai.org", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-6016-3598")),
     person("Jacob", "Morrison", email = "jacob.morrison@vai.org", role = c("aut"), comment = c(ORCID = "0000-0001-8592-4744")),
     person("Nathan", "Spix", role = c("ctb")),
     person("Hui", "Shen", email = "hui.shen@vai.org", role = c("aut", "ths", "fnd"), comment = c(ORCID = "0000-0001-9767-4084")))
-Description: Make fast and memory efficient BED file queries, summaries and
-             matrices.
+Description: BED files store ranged genomic data that can be queried even when
+             the files are compressed. iscream can query data from BED files and return them
+             in muliple formats: parsed records or their summary statistics as data frames
+             or GenomicRanges objects, and matrices as matrix, GenomicRanges, or
+             SummarizedExperiment objects.
 URL: https://huishenlab.github.io/iscream/, https://github.com/huishenlab/iscream/
 BugReports: https://github.com/huishenlab/iscream/issues/
 License: MIT + file LICENSE
