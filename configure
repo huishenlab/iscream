@@ -32,6 +32,9 @@ checkHtsVersion() {
 
 echo "*** Configuring for package installation..."
 
+# Linux or MacOS
+PLATFORM="$(uname)"
+
 # Library settings
 PKG_CONFIG_NAME="htslib"
 PKG_DEB_NAME="libhts-dev"
@@ -91,10 +94,16 @@ CC=`${R_HOME}/bin/R CMD config CC`
 CFLAGS=`${R_HOME}/bin/R CMD config CFLAGS`
 CPPFLAGS=`${R_HOME}/bin/R CMD config CPPFLAGS`
 
-echo "**** Checking GCC and htslib versions"
-checkGCCVersion "$CC" 9.4
+if $(echo $CC | grep -q "clang"); then
+    echo "**** Using clang"
+    $CC --version | sed 's/^/     /'
+else
+    echo "**** Checking GCC version"
+    checkGCCVersion "$CC" 9.4
+fi
 
 if [ -z "$RHTSLIB_CFLAGS" ] && command -v tabix > /dev/null; then
+    echo "**** Checking htslib version"
     checkHtsVersion 1.17
 else
     echo "     WARNING: Could not find tabix to check for mimium htslib version - make sure its >= 1.17"
@@ -124,11 +133,17 @@ sed -e "s|@cflags@|$PKG_CFLAGS|" -e "s|@libs@|$PKG_LIBS|" src/Makevars.in > src/
 # Notes
 echo "**** Checking if htslib was compiled with libdeflate"
 
+if [ "$PLATFORM" == "Darwin" ]; then
+    LDD="otool -L"
+else
+    LDD="ldd"
+fi
+
 if [ -n "$RHTSLIB_LIBS" ]; then
     echo "     NOTE: iscream queries may be slower with Rhtslib than with htslib compiled with libdeflate"
     echo "     See <https://huishenlab.github.io/iscream/articles/htslib.html> for more information"
 elif htsloc=$(which tabix) || htsloc=$(ldconfig -p | grep libhts.so | tail -n1 | cut -f 4 -d ' '); then
-    if ldd "$htsloc" | grep -q 'libdeflate'; then
+    if $LDD "$htsloc" | grep -q 'libdeflate'; then
         echo "     htslib compiled with libdeflate!"
     else
         echo "     NOTE: htslib not compiled with libdeflate - iscream querys may be slower without libdeflate"
