@@ -32,10 +32,10 @@ unzip(methscan_zip_path, exdir = methscan_dir)
 ```
 
 iscream normally uses htslib to query BED files and store the data in memory.
-However, iscream's `tabix` function can use the tabix executable to make tabix
+However, iscream's `tabix()` function can use the tabix executable to make tabix
 queries because the shell program's stream-to-file approach is faster than
 allocating and storing strings in memory. By default, the `"tabix.method"`
-option is set to "shell" and iscream's `tabix` will look for the tabix
+option is set to "shell" and iscream's `tabix()` will look for the tabix
 executable, falling back to using htslib only if it's not found. Here, the
 `"tabix.method"` option is set to "htslib" to make fair comparisons between
 Rsamtools and iscream since `scanTabix` does not use the executable, but stores
@@ -82,14 +82,14 @@ mouse_promoters.gr <- GRanges(mouse_promoters)
 
 # One file
 
-`tabix` with `raw = TRUE` and `scanTabix` produce a list of unparsed or raw
-strings. The result of both are identical.
+`tabix_raw()` and `scanTabix` produce a list of unparsed or raw strings. The
+result of both are identical.
 
 
 ``` r
 bench_1_raw <- microbenchmark(
   `rsamtools 1 file raw` = rq <- scanTabix(methscan_files[1], param = mouse_promoters.gr),
-  `iscream 1 file raw` = iq <- tabix(methscan_files[1], mouse_promoters, raw = TRUE),
+  `iscream 1 file raw` = iq <- tabix_raw(methscan_files[1], mouse_promoters),
   times = 3
 )
 bench_1_raw
@@ -170,14 +170,14 @@ all.equal(iq, rq)
 
 # Multiple files
 
-`tabix` can also take multiple files in the same call. It returns the raw
-strings, but each input file is a list of it's own. `scanTabix` does not support
-this.
+`tabix()` can also take multiple files in the same call. It returns the raw
+strings, but each input file is a list of it's own. `scanTabix()` does not
+support this.
 
 
 ``` r
 bench_30_raw <- microbenchmark(
-  `iscream 30 files raw` = iq <- tabix(methscan_files, mouse_promoters, raw = TRUE),
+  `iscream 30 files raw` = iq <- tabix_raw(methscan_files, mouse_promoters),
   times = 3
 )
 bench_30_raw
@@ -345,8 +345,8 @@ autoplot(bench_1_df)
 
 # Multiple files as data frame
 
-We can try to query multiple BED files using Rsamtools with this function that 8
-cores like iscream does:
+We can try to query multiple BED files using Rsamtools with this function that
+8 cores like iscream does:
 
 
 ``` r
@@ -364,8 +364,8 @@ partbx <- function(bedfiles) {
 }
 
 bench_30_df <- microbenchmark(
-  `rsamtools 30 file data frame` = rq <- partbx(methscan_files[1]),
-  `iscream 30 file data frame` = iq <- tabix(methscan_files[1], mouse_promoters, col.names = c("beta", "M", "U")),
+  `rsamtools 30 file data frame` = rq <- partbx(methscan_files),
+  `iscream 30 file data frame` = iq <- tabix(methscan_files, mouse_promoters, col.names = c("beta", "M", "U")),
   times = 3
 )
 bench_30_df
