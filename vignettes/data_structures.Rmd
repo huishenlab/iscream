@@ -120,6 +120,7 @@ handle sparse matrices:
 
 ```{r, eval=FALSE}
 library(bsseq)
+mats <- make_mat_bsseq(bedfiles, regions, sparse = FALSE)
 do.call(BSseq, mats)
 ```
 
