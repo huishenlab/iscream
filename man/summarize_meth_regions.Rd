@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarize_meth_regions.R
 \name{summarize_meth_regions}
 \alias{summarize_meth_regions}
-\title{Summarize CpGs  methylation information over genomic regions}
+\title{Summarize methylation information over genomic regions}
 \usage{
 summarize_meth_regions(
   bedfiles,
@@ -44,7 +44,7 @@ the regions strings rownames and the feature names. See details.}
 A data.frame
 }
 \description{
-Run summarizing functions on the CpGs in BED files across genomic regions.
+Run summarizing functions on the loci in BED files across genomic regions.
 Parallelized across files using threads from the \code{"iscream.threads"} option.
 }
 \section{Supported functions}{

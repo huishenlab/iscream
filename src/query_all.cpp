@@ -253,7 +253,7 @@ int QueryAll<Mat>::bitpack(const float beta_val, const float cov_val) {
     return(betap + (cov << 16));
 }
 
-//' Query all CpG info into M and coverage matrices
+//' Query all methylation info into M and coverage matrices
 //' @param bedfiles A vector of BED files
 //' @param regions A vector of regions
 //' @param aligner The aligner used to make the WGBS BED files, only for

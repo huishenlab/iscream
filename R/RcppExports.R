@@ -92,7 +92,7 @@ scan_tabix <- function(bedfile, regions) {
     .Call(`_iscream_scan_tabix`, bedfile, regions)
 }
 
-#' Query all CpG info into M and coverage matrices
+#' Query all methylation info into M and coverage matrices
 #' @param bedfiles A vector of BED files
 #' @param regions A vector of regions
 #' @param aligner The aligner used to make the WGBS BED files, only for
