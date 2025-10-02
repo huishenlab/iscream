@@ -44,8 +44,9 @@ the regions strings rownames and the feature names. See details.}
 A data.frame
 }
 \description{
-Run summarizing functions on the loci in BED files across genomic regions.
-Parallelized across files using threads from the \code{"iscream.threads"} option.
+Run summarizing functions on the CpG/CpH loci in BED files across genomic
+regions. Parallelized across files using threads from the
+\code{"iscream.threads"} option.
 }
 \section{Supported functions}{
 \itemize{
