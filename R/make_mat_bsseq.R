@@ -22,10 +22,16 @@
 #' @inherit make_mat details
 #'
 #' @section Bitpacking limits:
-#' If the coverage values exceed 32,767, the upper limit of a 16-bit signed
-#' integer, it will be capped at the limit. Beta values will also be capped
-#' similarly, but any such values would be a bug in the aligner that produced
-#' the data.
+#' `make_mat_bsseq()` makes two matrices: M-value (or beta-value) and coverage.
+#' For speed and memory efficiency these two values are bitpacked during matrix
+#' creation so that only one matrix needs to be populated and resized. This
+#' matrix is unpacked into the two required matrices only after the matrix
+#' dimensions are known after querying all input files. The two values are
+#' packed using the INT16 type, which has an upper limit of 32,767, into one
+#' INT32. If the coverage values exceed 32,767, the upper limit of a 16-bit
+#' signed integer, it will be capped at the limit. Beta values will also be
+#' capped similarly, but any such beta values would indicate a bug in the
+#' aligner that produced the data.
 #'
 #' @importFrom Matrix drop0
 #' @importFrom methods is
