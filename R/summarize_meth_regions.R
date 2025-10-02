@@ -1,6 +1,6 @@
-#' Summarize CpGs  methylation information over genomic regions
+#' Summarize methylation information over genomic regions
 #'
-#' Run summarizing functions on the CpGs in BED files across genomic regions.
+#' Run summarizing functions on the loci in BED files across genomic regions.
 #' Parallelized across files using threads from the `"iscream.threads"` option.
 #'
 #' @inheritParams summarize_regions
