@@ -183,11 +183,9 @@ tss.means[, .(beta.mean = mean(beta.mean, na.rm = TRUE)), by = file] |>
   ggplot(
     aes(
       x = reorder(file, beta.mean),
-      y = beta.mean,
-      fill = beta.mean)
+      y = beta.mean)
     ) +
   geom_bar(stat = 'identity') +
-  scale_fill_viridis_c() +
   theme_classic() +
   coord_flip() +
   labs(x = "Sample")
