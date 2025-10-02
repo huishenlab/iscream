@@ -48,10 +48,8 @@
 #' regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 #' make_mat_bsseq(bedfiles, regions)
 #' # for BSseq object run
-#' \donttest{
-#'   if (!requireNamespace("bsseq", quietly = TRUE)) {
-#'     do.call(BSseq, make_mat_bsseq(bedfiles, regions))
-#'   }
+#' if (!requireNamespace("bsseq", quietly = TRUE)) {
+#'   do.call(BSseq, make_mat_bsseq(bedfiles, regions))
 #' }
 make_mat_bsseq <- function(
   bedfiles,
