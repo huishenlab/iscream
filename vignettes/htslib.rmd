@@ -44,7 +44,7 @@ library("ggplot2")
 
 ```{r, echo=FALSE, dpi=300, fig.width=6, fig.height=4, fig.align="center", fig.cap="Effect of htslib v1.18 source on iscream's 'make_mat()' runtime from one bulk WGBS BED file"}
 data_dir <- system.file("extdata", package = "iscream")
-df <- read.csv(paste0(data_dir, "/htslib.csv"))
+df <- read.csv(file.path(data_dir, "htslib.csv"))
 ggplot(df, aes(x = regions, y = time, color = source)) +
   geom_point(alpha = 0.8) +
   stat_summary(
