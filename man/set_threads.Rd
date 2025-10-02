@@ -23,7 +23,7 @@ as many threads as are available to you on your system to varying degrees of
 performance improvements. The \code{get_threads()} function uses
 \code{parallelly::availableCores()} to report the number of available threads.
 Although OpenMP can detect the number of available cores, on high
-preformance computers (HPCs) with resource allocating job schedulers like
+performance computers (HPCs) with resource allocating job schedulers like
 SLURM, OpenMP may detect all available threads across the HPC and not limit
 itself to the cores that were allocated to you by the scheduler. If your
 system administrator has not set up any limits, this may result in your job
@@ -47,7 +47,7 @@ in your \code{.Rprofile} See \code{help('Rprofile')} for information on startup 
 
 Functions currently using multithreading:
 \itemize{
-\item \code{tabix()}, \verb{tabix_gr(), 'tabix_raw()}
+\item \code{tabix()}, \code{tabix_gr()}, \code{tabix_raw()}
 \item \code{query_chroms()}
 \item \code{make_mat()}, \code{make_mat_se()}, \code{make_mat_gr()}, \code{make_mat_bsseq()}
 \item \code{summarize_regions()}, \code{summarize_meth_regions()}
