@@ -23,10 +23,13 @@
       ];
 
       Suggests = with pkgs.rPackages; [
+        BiocFileCache
         BiocStyle
         GenomicRanges
         ggplot2
         ggridges
+        microbenchmark
+        Rsamtools
         SummarizedExperiment
       ];
 
