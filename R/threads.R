@@ -50,7 +50,7 @@ get_threads <- function() {
 #' performance improvements. The `get_threads()` function uses
 #' `parallelly::availableCores()` to report the number of available threads.
 #' Although OpenMP can detect the number of available cores, on high
-#' preformance computers (HPCs) with resource allocating job schedulers like
+#' performance computers (HPCs) with resource allocating job schedulers like
 #' SLURM, OpenMP may detect all available threads across the HPC and not limit
 #' itself to the cores that were allocated to you by the scheduler. If your
 #' system administrator has not set up any limits, this may result in your job
@@ -73,7 +73,7 @@ get_threads <- function() {
 #' in your `.Rprofile` See `help('Rprofile')` for information on startup options.
 #'
 #' Functions currently using multithreading:
-#' - `tabix()`, `tabix_gr(), 'tabix_raw()`
+#' - `tabix()`, `tabix_gr()`, `tabix_raw()`
 #' - `query_chroms()`
 #' - `make_mat()`, `make_mat_se()`, `make_mat_gr()`, `make_mat_bsseq()`
 #' - `summarize_regions()`, `summarize_meth_regions()`
