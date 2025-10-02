@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{Cpp_query_all}
 \alias{Cpp_query_all}
-\title{Query all CpG info into M and coverage matrices}
+\title{Query all methylation info into M and coverage matrices}
 \usage{
 Cpp_query_all(
   bedfiles,
@@ -36,6 +36,6 @@ Cpp_query_all(
 A list of one or two matrices, chromosome, position, and filename vectors
 }
 \description{
-Query all CpG info into M and coverage matrices
+Query all methylation info into M and coverage matrices
 }
 \keyword{internal}
