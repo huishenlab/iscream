@@ -1,9 +1,10 @@
 #' Make M/beta and coverage matrices from WGBS BED files
 #'
-#' Queries the provided regions and produces M/beta and Coverage matrices and
-#' their genomic positions. Parallelized across files using threads from the
-#' `"iscream.threads"` option. The output of `make_mat_bsseq` may be used to create
-#' a BSseq object: `do.call(BSseq, make_mat_bsseq(...))`.
+#' Queries the CpG/CpH loci from provided regions and produces M/beta and
+#' coverage matrices with their genomic positions. Parallelized across files
+#' using threads from the `"iscream.threads"` option. The output of
+#' `make_mat_bsseq` may be used to create a BSseq object: `do.call(BSseq,
+#' make_mat_bsseq(...))`.
 #'
 #' @inheritParams make_mat
 #'

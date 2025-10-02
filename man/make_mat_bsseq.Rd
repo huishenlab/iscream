@@ -47,10 +47,10 @@ base positions
 }
 }
 \description{
-Queries the provided regions and produces M/beta and Coverage matrices and
-their genomic positions. Parallelized across files using threads from the
-\code{"iscream.threads"} option. The output of \code{make_mat_bsseq} may be used to create
-a BSseq object: \code{do.call(BSseq, make_mat_bsseq(...))}.
+Queries the CpG/CpH loci from provided regions and produces M/beta and
+coverage matrices with their genomic positions. Parallelized across files
+using threads from the \code{"iscream.threads"} option. The output of
+\code{make_mat_bsseq} may be used to create a BSseq object: \code{do.call(BSseq, make_mat_bsseq(...))}.
 }
 \details{
 The input regions may be string vector in the form "chr:start-end"
