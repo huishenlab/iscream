@@ -58,7 +58,7 @@ Here we'll be using 5000 gene body regions as the input:
 library(data.table)
 regions <- fread(
   genes_file,
-  col.names = c("chr", "start", "end", "gene")
+  col.names = c("chr", "start", "end")
 )[1:5000]
 head(regions)
 ```
