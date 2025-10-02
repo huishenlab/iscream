@@ -73,7 +73,7 @@ methscan_files <- list.files(
   full.names = T,
   pattern = "*.cov.gz$"
 )
-mouse_promoters <- fread(paste0(data_dir, "/mouse_promoters.bed"), col.names = c("chr", "start", "end"))
+mouse_promoters <- fread(file.path(data_dir, "mouse_promoters.bed"), col.names = c("chr", "start", "end"))
 mouse_promoters.gr <- GRanges(mouse_promoters)
 ```
 

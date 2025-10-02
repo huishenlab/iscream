@@ -4,7 +4,7 @@ options("tabix.method" = "htslib")
 
 # input data
 extdata <- system.file("extdata", package = "iscream")
-chrom_beds <- list.files(paste0(extdata, "/test_chroms"), pattern = "*.bed.gz$", full.names = T)
+chrom_beds <- list.files(file.path(extdata, "test_chroms"), pattern = "*.bed.gz$", full.names = T)
 biscuit_tabix_beds <- list.files(extdata, pattern = "[a|b|c|d].bed.gz$", full.names = T)
 bismark_tabix_beds <- list.files(extdata, pattern = "[a|b|c|d].cov.gz$", full.names = T)
 mergecg_bed <- list.files(extdata, pattern = "*_mergecg.bed.gz$", full.names = T)
