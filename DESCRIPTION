@@ -37,12 +37,15 @@ Imports:
 Suggests:
     BiocFileCache,
     BiocStyle,
-    knitr,
+    bsseq,
     ggplot2,
     ggridges,
+    knitr,
+    microbenchmark,
     rmarkdown,
     GenomicRanges,
     IRanges,
+    Rsamtools,
     SummarizedExperiment,
     S4Vectors,
     testthat (>= 3.0.0)
