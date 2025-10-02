@@ -34,6 +34,7 @@ Imports:
     parallelly,
     stringfish
 Suggests:
+    BiocFileCache,
     BiocStyle,
     knitr,
     ggplot2,
