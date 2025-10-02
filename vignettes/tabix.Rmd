@@ -21,14 +21,14 @@ profiles tutorial](./TSS.Rmd) and mouse promoter regions. Running it requires
 downloading 18MB of BED files and tabix indices from this Zenodo record:
 <https://zenodo.org/records/14733834>
 
+
 ``` r
-methscan_zip_path <- tempfile("methscan")
-methscan_dir <- tempdir()
-download.file(
-    "https://zenodo.org/records/14733834/files/methscan_data.zip",
-    destfile = methscan_zip_path
-)
-unzip(methscan_zip_path, exdir = methscan_dir)
+library("BiocFileCache") |> suppressPackageStartupMessages()
+cachedir <- BiocFileCache()
+methscan_zip_path <- bfcrpath(cachedir, "https://zenodo.org/records/14733834/files/methscan_data.zip")
+methscan_unzip <- file.path(tempdir(), "methscan")
+unzip(methscan_zip_path, exdir = methscan_unzip)
+methscan_dir <- file.path(methscan_unzip, "scbs_tutorial_data")
 ```
 
 iscream normally uses htslib to query BED files and store the data in memory.
@@ -71,11 +71,11 @@ library(ggplot2)
 
 ``` r
 methscan_files <- list.files(
-  data_dir,
+  methscan_dir,
   full.names = T,
   pattern = "*.cov.gz$"
 )
-mouse_promoters <- fread(file.path(data_dir, "mouse_promoters.bed"), col.names = c("chr", "start", "end"))
+mouse_promoters <- fread(file.path(methscan_dir, "mouse_promoters.bed"), col.names = c("chr", "start", "end"))
 mouse_promoters.gr <- GRanges(mouse_promoters)
 ```
 

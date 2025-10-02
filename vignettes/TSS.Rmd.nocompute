@@ -50,22 +50,20 @@ Running this vignette requires downloading 18MB of BED files and tabix indices
 from this Zenodo record: <https://zenodo.org/records/14733834>
 
 ```{r download_data}
-methscan_zip_path <- tempfile("methscan")
-methscan_dir <- tempdir()
-download.file(
-    "https://zenodo.org/records/14733834/files/methscan_data.zip",
-    destfile = methscan_zip_path
-)
-unzip(methscan_zip_path, exdir = methscan_dir)
+library("BiocFileCache") |> suppressPackageStartupMessages()
+cachedir <- BiocFileCache()
+methscan_zip_path <- bfcrpath(cachedir, "https://zenodo.org/records/14733834/files/methscan_data.zip")
+methscan_unzip <- file.path(tempdir(), "methscan")
+unzip(methscan_zip_path, exdir = methscan_unzip)
+methscan_dir <- file.path(methscan_unzip, "scbs_tutorial_data")
 start_time = proc.time()
 ```
 
 First, we generate a list of the BED file paths:
 
 ```{r}
-data_dir <- file.path(methscan_dir, "scbs_tutorial_data")
 bedfiles <- list.files(
-    data_dir,
+    methscan_dir,
     pattern = "*.cov.gz$",
     full.names = TRUE
 )
@@ -80,7 +78,7 @@ the start sites.
 
 ```{r}
 tss.regions <- fread(
-    file.path(data_dir, "Mus_musculus.GRCm38.102_TSS.bed"), drop = c(3, 5, 6)
+    file.path(methscan_dir, "Mus_musculus.GRCm38.102_TSS.bed"), drop = c(3, 5, 6)
 )
 colnames(tss.regions) <- c("chr", "tss", "geneID")
 head(tss.regions)
