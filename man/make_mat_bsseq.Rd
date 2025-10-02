@@ -82,8 +82,9 @@ lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 make_mat_bsseq(bedfiles, regions)
 # for BSseq object run
-\dontrun{
-library(bsseq)
-do.call(BSseq, make_mat_bsseq(bedfiles, regions))
+\donttest{
+  if (!requireNamespace("bsseq", quietly = TRUE)) {
+    do.call(BSseq, make_mat_bsseq(bedfiles, regions))
+  }
 }
 }
