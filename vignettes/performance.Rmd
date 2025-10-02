@@ -27,25 +27,19 @@ record: <https://zenodo.org/records/14733834>.
 
 
 ``` r
-snmc_zip_path <- tempfile("snmcseq2")
-snmc_dir <- tempdir()
-download.file(
-    "https://zenodo.org/records/14733834/files/sc_beds.zip",
-    destfile = snmc_zip_path
-)
-unzip(snmc_zip_path, exdir = snmcseq2_dir)
-
-genes_file <- tempfile("genes")
-download.file(
-    "https://zenodo.org/records/14733834/files/genes.bed",
-    destfile = genes_file
-)
+library("BiocFileCache")
+cachedir <- BiocFileCache()
+snmc_zip_path <- bfcrpath(cachedir, "https://zenodo.org/records/14733834/files/sc_beds.zip")
+snmc_unzip <- file.path(tempdir(), "sc_beds")
+unzip(snmc_zip_path, exdir = snmc_unzip)
+genes_file <- bfcrpath(cachedir, "https://zenodo.org/records/14733834/files/genes.bed")
 ```
 
 Select 100 human cell WGBS data from the snmC-seq2 [@luo2018a] dataset:
 
 
 ``` r
+snmc_dir <- file.path(snmc_unzip, "sc_biscuit")
 bedfiles <- list.files(
   snmc_dir,
   pattern = "*.bed.gz$",
