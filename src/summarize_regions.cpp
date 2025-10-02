@@ -224,7 +224,6 @@ Rcpp::DataFrame Cpp_summarize_regions(
             std::string bedfile_name = bedfiles[bedfile_n];
             std::filesystem::path bed_path = bedfile_name;
             cpgs_in_file = query_intervals(bedfile_name.c_str(), regions_vec);
-            int empty_cpg_count = 0;
 
             int row_count = bedfile_n * regions_vec.size();
             std::string bedfile_prefix = bed_path.stem().stem();
@@ -256,7 +255,6 @@ Rcpp::DataFrame Cpp_summarize_regions(
                 }
 
                 row_count++;
-                empty_cpg_count += interval.cpgs_in_interval.size();
             }
             // TODO: thread-safe way to warn when no cpgs are found in interval.
             // Lots of warnings from multiple threads cause stack overflow
