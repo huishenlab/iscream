@@ -56,17 +56,17 @@ Here we'll be using 5000 gene body regions as the input:
 library(data.table)
 regions <- fread(
   genes_file,
-  col.names = c("chr", "start", "end", "gene")
+  col.names = c("chr", "start", "end")
 )[1:5000]
 head(regions)
-#>       chr    start      end   gene
-#>    <char>    <int>    <int> <char>
-#> 1:   chr1  1471764  1497848 ATAD3B
-#> 2:   chr1  3069167  3438621 PRDM16
-#> 3:   chr1  2403963  2413797  PEX10
-#> 4:   chr1 10472287 10630758  PEX14
-#> 5:   chr1  2425979  2505532  PLCH2
-#> 6:   chr1  9292893  9369532  SPSB1
+#>       chr    start      end
+#>    <char>    <int>    <int>
+#> 1:   chr1  1471764  1497848
+#> 2:   chr1  3069167  3438621
+#> 3:   chr1  2403963  2413797
+#> 4:   chr1 10472287 10630758
+#> 5:   chr1  2425979  2505532
+#> 6:   chr1  9292893  9369532
 ```
 
 ## Multithreading
