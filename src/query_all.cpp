@@ -108,7 +108,6 @@ QueryAll<Mat>::QueryAll(
     spdlog::debug("Populated seqnames, samplenames vectors in {} s", sw);
 
     sw.reset();
-    int n_rows = bitmat.n_rows;
     if (bitmat.n_rows > mapsize) {
         int diff_rows = bitmat.n_rows - mapsize;
         spdlog::info("{} loci found - {} extra rows allocated with {} resizes", mapsize, diff_rows, resize_count);
