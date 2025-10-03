@@ -226,7 +226,7 @@ Rcpp::DataFrame Cpp_summarize_regions(
             cpgs_in_file = query_intervals(bedfile_name.c_str(), regions_vec);
 
             int row_count = bedfile_n * regions_vec.size();
-            std::string bedfile_prefix = bed_path.stem().stem();
+            std::string bedfile_prefix = bed_path.stem().stem().string();
             spdlog::debug("Got {} as sample name from {}", bedfile_prefix, bedfile_name);
 
             for (RegionQuery interval : cpgs_in_file) {
