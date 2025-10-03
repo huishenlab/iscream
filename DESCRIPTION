@@ -53,6 +53,5 @@ Suggests:
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 NeedsCompilation: yes
-OS_type: unix
-SystemRequirements: htslib: htslib-devel (rpm) or libhts-dev (deb) & tabix: htslib-tools (rpm) or tabix (deb)
+SystemRequirements: htslib: htslib-devel (rpm) or libhts-dev (deb) & tabix: htslib-tools (rpm) or tabix (deb) & GNU make
 biocViews: DataImport, Software, Sequencing, SingleCell, DNAMethylation
