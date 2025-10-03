@@ -15,7 +15,7 @@ you have available see ?get_threads().'><meta property="og:image" content="https
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.4</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +86,7 @@ as many threads as are available to you on your system to varying degrees of
 performance improvements. The <code><a href="get_threads.html">get_threads()</a></code> function uses
 <code><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">parallelly::availableCores()</a></code> to report the number of available threads.
 Although OpenMP can detect the number of available cores, on high
-preformance computers (HPCs) with resource allocating job schedulers like
+performance computers (HPCs) with resource allocating job schedulers like
 SLURM, OpenMP may detect all available threads across the HPC and not limit
 itself to the cores that were allocated to you by the scheduler. If your
 system administrator has not set up any limits, this may result in your job
@@ -104,9 +104,9 @@ available threads but it may not reliably report hyperthreading ('system' or
 <code>set_threads()</code> in every session, put</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">iscream.threads =</span> [n_threads])</span></code></pre><p></p></div>
 <p>in your <code>.Rprofile</code> See <code><a href="https://rdrr.io/r/base/Startup.html" class="external-link">help('Rprofile')</a></code> for information on startup options.</p>
-<p>Functions currently using multithreading:</p><ul><li><p><code><a href="tabix.html">tabix()</a></code>, <code>tabix_gr(), 'tabix_raw()</code></p></li>
+<p>Functions currently using multithreading:</p><ul><li><p><code><a href="tabix.html">tabix()</a></code>, <code><a href="tabix.html">tabix_gr()</a></code>, <code><a href="tabix.html">tabix_raw()</a></code></p></li>
 <li><p><code><a href="query_chroms.html">query_chroms()</a></code></p></li>
-<li><p><code><a href="make_mat.html">make_mat()</a></code>, <code><a href="make_mat.html">make_mat_se()</a></code>, <code><a href="make_mat.html">make_mat_gr()</a></code>, <code><a href="make_bsseq_mat.html">make_bsseq_mat()</a></code></p></li>
+<li><p><code><a href="make_mat.html">make_mat()</a></code>, <code><a href="make_mat.html">make_mat_se()</a></code>, <code><a href="make_mat.html">make_mat_gr()</a></code>, <code><a href="make_mat_bsseq.html">make_mat_bsseq()</a></code></p></li>
 <li><p><code><a href="summarize_regions.html">summarize_regions()</a></code>, <code><a href="summarize_meth_regions.html">summarize_meth_regions()</a></code></p></li>
 </ul></div>
 
@@ -115,9 +115,10 @@ available threads but it may not reliably report hyperthreading ('system' or
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="op">(</span><span class="va">ncores</span> <span class="op">&lt;-</span> <span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">availableCores</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> system </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      4 </span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="fu">set_threads</span><span class="op">(</span><span class="va">ncores</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> iscream now using 4 of 4 available threads.</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
