@@ -82,7 +82,7 @@ get_threads <- function() {
 #'
 #' @examples
 #' (ncores <- parallelly::availableCores())
-#' \dontrun{
+#' \donttest{
 #' set_threads(ncores)
 #' }
 set_threads <- function(n_threads) {
