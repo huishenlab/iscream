@@ -17,7 +17,7 @@ BugReports: https://github.com/huishenlab/iscream/issues/
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Depends:
   R (>= 4.5)
 LinkingTo:
@@ -33,7 +33,8 @@ Imports:
     data.table,
     methods,
     parallelly,
-    stringfish
+    stringfish,
+    BiocParallel
 Suggests:
     BiocFileCache,
     BiocStyle,
