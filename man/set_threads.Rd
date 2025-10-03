@@ -55,7 +55,7 @@ Functions currently using multithreading:
 }
 \examples{
 (ncores <- parallelly::availableCores())
-\dontrun{
+\donttest{
 set_threads(ncores)
 }
 }
