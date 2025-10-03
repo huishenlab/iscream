@@ -6,7 +6,14 @@
 \alias{tabix_raw}
 \title{Query records from tabixed BED files}
 \usage{
-tabix(bedfiles, regions, aligner = NULL, col.names = NULL, nthreads = NULL)
+tabix(
+  bedfiles,
+  regions,
+  aligner = NULL,
+  col.names = NULL,
+  nthreads = NULL,
+  BPPARAM = NULL
+)
 
 tabix_gr(
   bedfiles,
@@ -14,10 +21,11 @@ tabix_gr(
   aligner = NULL,
   col.names = NULL,
   zero_based = TRUE,
-  nthreads = NULL
+  nthreads = NULL,
+  BPPARAM = NULL
 )
 
-tabix_raw(bedfiles, regions, nthreads = NULL)
+tabix_raw(bedfiles, regions, nthreads = NULL, BPPARAM = NULL)
 }
 \arguments{
 \item{bedfiles}{The BED files to be queried}
@@ -35,6 +43,11 @@ is not from the supported aligners or is a general BED file.}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
+
+\item{BPPARAM}{Configure the \code{BiocParallel} backend (default
+\code{MulticoreParam} using \code{workers} = \code{"iscream.threads"} option). Takes
+precedence over \code{nthreads} if both are passed. See
+\code{?BiocParallel::BiocParallelParam} for more information.}
 
 \item{zero_based}{Whether the input BED file has a zero-based start column -
 used when coverting the result data frame to GenomicRanges.}

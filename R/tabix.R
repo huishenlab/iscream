@@ -10,6 +10,10 @@
 #' is not from the supported aligners or is a general BED file.
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
+#' @param BPPARAM Configure the `BiocParallel` backend (default
+#' `MulticoreParam` using `workers` = `"iscream.threads"` option). Takes
+#' precedence over `nthreads` if both are passed. See
+#' `?BiocParallel::BiocParallelParam` for more information.
 #'
 #' @details
 #'
@@ -38,7 +42,7 @@
 #' Input regions must be 1-based.
 #'
 #' @importFrom data.table as.data.table tstrsplit set := rbindlist fread fwrite setnames
-#' @importFrom parallel mclapply
+#' @importFrom BiocParallel bplapply MulticoreParam bpworkers
 #' @importFrom tools file_path_sans_ext
 #' @importFrom stats setNames
 #' @importFrom methods is
@@ -67,7 +71,8 @@ tabix <- function(
   regions,
   aligner = NULL,
   col.names = NULL,
-  nthreads = NULL
+  nthreads = NULL,
+  BPPARAM = NULL
 ) {
   verify_files_or_stop(bedfiles)
   if (!is.null(aligner)) {
@@ -75,13 +80,18 @@ tabix <- function(
     verify_filetype(bedfiles, aligner)
   }
 
+  nthreads <- .get_threads(nthreads)
+  bpparam <- BPPARAM %||% MulticoreParam(workers = nthreads, progressbar = TRUE)
+  nworkers <- bpworkers(bpparam)
+  check_thread_count(nworkers)
+
   # make the query
   if (getOption("tabix.method") == "htslib") {
     input_regions <- get_string_input_regions(regions)
-    result <- tabix.htslib(bedfiles, input_regions, nthreads)
+    result <- tabix.htslib(bedfiles, input_regions, bpparam)
   } else {
     regions_df <- get_df_input_regions(regions)
-    result <- tabix.shell(bedfiles, regions_df, nthreads)
+    result <- tabix.shell(bedfiles, regions_df, bpparam)
   }
 
   # single-file empties returns null, multi file returns a non-null empty data.table
@@ -107,12 +117,12 @@ tabix <- function(
   result
 }
 
-tabix.shell <- function(bedfiles, regions_df, nthreads) {
+tabix.shell <- function(bedfiles, regions_df, bpparam) {
   if (length(bedfiles) == 1) {
     return(tabix.shell.single(bedfiles, regions_df))
   }
 
-  mclapply(
+  bplapply(
     bedfiles,
     function(bedfile) {
       tbx_query <- tabix.shell.single(bedfile, regions_df)
@@ -120,7 +130,7 @@ tabix.shell <- function(bedfiles, regions_df, nthreads) {
         tbx_query[, file := file_path_sans_ext(basename(bedfile), compression = TRUE)]
       }
     },
-    mc.cores = .get_threads(nthreads)
+    BPPARAM = bpparam
   ) |>
     rbindlist()
 }
@@ -140,14 +150,14 @@ tabix.shell.single <- function(bedfile, regions_df) {
   result
 }
 
-tabix.htslib <- function(bedfiles, input_regions, nthreads) {
+tabix.htslib <- function(bedfiles, input_regions, bpparam) {
   if (length(bedfiles) == 1) {
     result <- tabix.htslib.single(
       bedfile = bedfiles,
       regions = input_regions
     )
   } else {
-    dt_list <- mclapply(
+    dt_list <- bplapply(
       bedfiles,
       function(file) {
         tbx_query <- tabix.htslib.single(
@@ -159,7 +169,7 @@ tabix.htslib <- function(bedfiles, input_regions, nthreads) {
         }
         return(tbx_query)
       },
-      mc.cores = .get_threads(nthreads)
+      BPPARAM = bpparam
     )
     result <- rbindlist(dt_list)
   }
@@ -173,19 +183,6 @@ tabix.htslib.single <- function(bedfile, regions) {
   }
 
   lines_dt[, tstrsplit(lines, "\t", fixed = TRUE, type.convert = TRUE)]
-}
-
-run_scan_tabix <- function(bedfiles, input_regions, nthreads) {
-  if (length(bedfiles) == 1) {
-    return(scan_tabix(bedfiles, input_regions))
-  } else {
-    bedline_list <- mclapply(bedfiles, scan_tabix, input_regions, mc.cores = .get_threads(nthreads)) |>
-      setNames(
-        nm = file_path_sans_ext(basename(bedfiles), compression = TRUE),
-        object = _
-      )
-    return(bedline_list)
-  }
 }
 
 # helpers

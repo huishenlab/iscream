@@ -8,7 +8,8 @@ tabix_gr <- function(
   aligner = NULL,
   col.names = NULL,
   zero_based = TRUE,
-  nthreads = NULL
+  nthreads = NULL,
+  BPPARAM = NULL
 ) {
   if (!requireNamespace("GenomicRanges", quietly = TRUE)) {
     stop("The 'GenomicRanges' package must be installed for this functionality")
@@ -18,7 +19,8 @@ tabix_gr <- function(
     regions,
     aligner,
     col.names,
-    nthreads
+    nthreads,
+    BPPARAM
   )
   if (is.null(result)) {
     stop("No records found")
