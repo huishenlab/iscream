@@ -37,6 +37,7 @@
         BiocCheck
         BiocManager
         BiocVersion
+        bsseq
         covr
         devtools
         DT
@@ -53,7 +54,6 @@
 
       Bioc = with pkgs.rPackages; [
         biscuiteer
-        bsseq
       ];
 
       htslib = pkgs.htslib.overrideAttrs (finalAttrs: previousAttrs: {
