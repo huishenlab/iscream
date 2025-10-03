@@ -1,3 +1,7 @@
-PKG_CPPFLAGS=@cflags@
-PKG_LIBS=@libs@ $(SHLIB_OPENMP_CXXFLAGS)
-PKG_CXXFLAGS=$(SHLIB_OPENMP_CXXFLAGS)
+RHTSLIB_LIBS=$(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e \
+    'Rhtslib::pkgconfig("PKG_LIBS")')
+RHTSLIB_CPPFLAGS=$(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e \
+    'Rhtslib::pkgconfig("PKG_CPPFLAGS")')
+
+PKG_LIBS=$(RHTSLIB_LIBS)
+PKG_CPPFLAGS=$(RHTSLIB_CPPFLAGS)
