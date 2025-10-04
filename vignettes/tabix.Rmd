@@ -97,16 +97,26 @@ bench_1_raw
 
 ```
 ## Unit: milliseconds
-##                  expr        min         lq      mean     median         uq
-##  rsamtools 1 file raw 1826.82051 1967.86772 2215.0109 2108.91493 2409.10609
-##    iscream 1 file raw   78.92343   79.86577   83.4658   80.80811   85.73699
+##                  expr        min         lq       mean     median         uq
+##  rsamtools 1 file raw 2058.93989 2064.65614 2114.46048 2070.37240 2142.22078
+##    iscream 1 file raw   77.67272   80.20395   81.12257   82.73518   82.84749
 ##         max neval
-##  2709.29725     3
-##    90.66587     3
+##  2214.06916     3
+##    82.95981     3
 ```
 
 ``` r
 autoplot(bench_1_raw)
+```
+
+```
+## Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
+## ℹ Please use tidy evaluation idioms with `aes()`.
+## ℹ See also `vignette("ggplot2-in-packages")` for more information.
+## ℹ The deprecated feature was likely used in the microbenchmark package.
+##   Please report the issue at <https://github.com/joshuaulrich/microbenchmark/issues/>.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
 ```
 
 <div class="figure" style="text-align: center">
@@ -176,7 +186,7 @@ bench_30_raw
 ```
 ## Unit: seconds
 ##                  expr      min       lq     mean   median       uq      max
-##  iscream 30 files raw 1.993962 2.015125 2.129326 2.036288 2.197008 2.357727
+##  iscream 30 files raw 1.758214 1.875702 2.061496 1.993191 2.213138 2.433085
 ##  neval
 ##      3
 ```
@@ -241,6 +251,7 @@ scanTabix(methscan_files, param = GRanges(mouse_promoters))
 A parsed data frame is more useful than a list of raw strings - use `tabix()`
 instead of `tabix_raw()`. For `scanTabix`, this custom function parses the list
 of strings to make a similar data frame:
+
 
 ``` r
 rtbx <- function(bed) {
@@ -315,12 +326,12 @@ bench_1_df
 
 ```
 ## Unit: milliseconds
-##                         expr       min        lq      mean    median        uq
-##  rsamtools 1 file data frame 2984.2747 3060.8480 3159.9506 3137.4213 3247.7886
-##    iscream 1 file data frame  143.3846  147.2966  161.2119  151.2086  170.1255
+##                         expr       min        lq      mean   median        uq
+##  rsamtools 1 file data frame 2011.4551 2233.9409 2698.4112 2456.427 3041.8892
+##    iscream 1 file data frame  137.4999  139.2765  143.6715  141.053  146.7572
 ##        max neval
-##  3358.1559     3
-##   189.0425     3
+##  3627.3517     3
+##   152.4614     3
 ```
 
 ``` r
@@ -361,13 +372,13 @@ bench_30_df
 ```
 
 ```
-## Unit: milliseconds
-##                          expr        min         lq       mean     median
-##  rsamtools 30 file data frame 25345.3997 26556.0112 28790.6806 27766.6228
-##    iscream 30 file data frame   137.4796   139.6301   144.6862   141.7806
-##          uq        max neval
-##  30513.3211 33260.0193     3
-##    148.2894   154.7983     3
+## Unit: seconds
+##                          expr       min        lq      mean   median        uq
+##  rsamtools 30 file data frame 25.998420 27.379231 28.280409 28.76004 29.421403
+##    iscream 30 file data frame  1.084235  1.401823  1.628902  1.71941  1.901235
+##       max neval
+##  30.08276     3
+##   2.08306     3
 ```
 
 ``` r
@@ -436,12 +447,12 @@ sessionInfo()
 ```
 
 ```
-## R version 4.4.3 (2025-02-28)
+## R version 4.5.1 (2025-06-13)
 ## Platform: x86_64-pc-linux-gnu
-## Running under: Ubuntu 24.04.2 LTS
+## Running under: Ubuntu 24.04.3 LTS
 ## 
 ## Matrix products: default
-## BLAS/LAPACK: /nix/store/6kknwpcf8fl7ihkkxmdb6p764kdn443n-blas-3/lib/libblas.so.3;  LAPACK version 3.12.0
+## BLAS/LAPACK: /nix/store/g5b7qnbhjmiac5q4jb5yvahy6pysd88g-blas-3/lib/libblas.so.3;  LAPACK version 3.12.0
 ## 
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -459,25 +470,30 @@ sessionInfo()
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] ggplot2_3.5.1         microbenchmark_1.4.10 Rsamtools_2.22.0     
-##  [4] Biostrings_2.74.1     XVector_0.46.0        GenomicRanges_1.58.0 
-##  [7] GenomeInfoDb_1.42.3   IRanges_2.40.1        S4Vectors_0.44.0     
-## [10] BiocGenerics_0.52.0   data.table_1.17.0     iscream_0.1.0.9000   
+##  [1] ggplot2_4.0.0        microbenchmark_1.5.0 Rsamtools_2.25.3    
+##  [4] Biostrings_2.77.2    XVector_0.49.1       GenomicRanges_1.61.5
+##  [7] Seqinfo_0.99.2       IRanges_2.43.5       S4Vectors_0.47.4    
+## [10] BiocGenerics_0.55.1  generics_0.1.4       data.table_1.17.8   
+## [13] iscream_0.99.5       BiocFileCache_2.99.6 dbplyr_2.5.1        
+## [16] colorout_1.3-3      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Matrix_1.7-2            gtable_0.3.5            jsonlite_1.8.8         
-##  [4] highr_0.11              compiler_4.4.3          crayon_1.5.3           
-##  [7] Rcpp_1.0.14             bitops_1.0-9            scales_1.3.0           
-## [10] BiocParallel_1.40.0     lattice_0.22-6          R6_2.5.1               
-## [13] labeling_0.4.3          knitr_1.47              tibble_3.2.1           
-## [16] munsell_0.5.1           stringfish_0.16.0       GenomeInfoDbData_1.2.13
-## [19] pillar_1.10.1           rlang_1.1.4             xfun_0.51              
-## [22] RcppParallel_5.1.10     cli_3.6.3               withr_3.0.0            
-## [25] magrittr_2.0.3          zlibbioc_1.52.0         grid_4.4.3             
-## [28] lifecycle_1.0.4         vctrs_0.6.5             evaluate_0.24.0        
-## [31] glue_1.7.0              farver_2.1.2            codetools_0.2-20       
-## [34] colorspace_2.1-1        parallelly_1.42.0       httr_1.4.7             
-## [37] pkgconfig_2.0.3         tools_4.4.3             UCSC.utils_1.2.0
+##  [1] rappdirs_0.3.3        bitops_1.0-9          RSQLite_2.4.3        
+##  [4] lattice_0.22-7        magrittr_2.0.4        RColorBrewer_1.1-3   
+##  [7] evaluate_1.0.5        grid_4.5.1            fastmap_1.2.0        
+## [10] blob_1.2.4            Matrix_1.7-4          DBI_1.2.3            
+## [13] purrr_1.1.0           scales_1.4.0          codetools_0.2-20     
+## [16] httr2_1.2.1           cli_3.6.5             rlang_1.1.6          
+## [19] crayon_1.5.3          parallelly_1.45.1     bit64_4.6.0-1        
+## [22] withr_3.0.2           cachem_1.1.0          tools_4.5.1          
+## [25] BiocParallel_1.43.4   memoise_2.0.1         dplyr_1.1.4          
+## [28] filelock_1.0.3        curl_7.0.0            vctrs_0.6.5          
+## [31] R6_2.6.1              lifecycle_1.0.4       stringfish_0.17.0    
+## [34] bit_4.6.0             pkgconfig_2.0.3       gtable_0.3.6         
+## [37] RcppParallel_5.1.11-1 pillar_1.11.1         glue_1.8.0           
+## [40] Rcpp_1.1.0            xfun_0.53             tibble_3.3.0         
+## [43] tidyselect_1.2.1      knitr_1.50            farver_2.1.2         
+## [46] labeling_0.4.3        compiler_4.5.1        S7_0.2.0
 ```
 
 <!-- vim: set filetype=rmd: -->
