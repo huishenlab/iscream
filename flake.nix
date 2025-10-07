@@ -20,6 +20,7 @@
         data_table
         Matrix
         parallelly
+        pbapply
       ];
 
       Suggests = with pkgs.rPackages; [
