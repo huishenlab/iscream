@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,15 +101,23 @@ within regions of interest from multiple <a href="https://en.wikipedia.org/wiki/
 make queries like tabix, summarize data within regions and make matrices
 across input files and regions. All operations can be done in parallel
 and return R/Bioconductor data structures.</p>
+<p>iscream was designed to be memory efficient and fast on large
+datasets. This vignette demonstrates iscream’s functions on a small
+dataset. For more information on performance and considerations on
+larger real datasets see <code><a href="../articles/performance.html">vignette("performance")</a></code>.</p>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>iscream may be installed from <a href="https://bioconductor.org" class="external-link uri">https://bioconductor.org</a> with</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.github.io/BiocManager/" class="external-link">"BiocManager"</a></span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"iscream"</span><span class="op">)</span></span></code></pre></div>
-<p>iscream was designed to be memory efficient and fast on large
-datasets. This vignette demonstrates iscream’s functions on a small
-dataset. For more information on performance considerations on large
-datasets see <code><a href="../articles/performance.html">vignette("performance")</a></code>.</p>
+<p>Although iscream will compile using <code>Rhtslib</code>, it will
+perform best if compiled against <a href="https://www.htslib.org/download/" class="external-link">htslib</a> which has itself been
+compiled with <code>libdeflate</code>. See
+<code><a href="../articles/htslib.html">vignette("htslib")</a></code> for more information.</p>
 <div class="section level3">
 <h3 id="loading-iscream">Loading iscream<a class="anchor" aria-label="anchor" href="#loading-iscream"></a>
 </h3>
@@ -243,7 +251,9 @@ name.</p>
 data frames. <code>tabix_gr</code> will also preserve any input
 <code>GRanges</code> metadata.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">"GenomicRanges"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"The 'GenomicRanges' package must be installed for this functionality"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/tabix.html">tabix_gr</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">gr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## GRangesList object of length 4:</span></span>
@@ -417,9 +427,9 @@ summarizing functions are run on each input column by default - see
 <span>  columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,</span>
 <span>  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"coverage"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [00:44:01.988290] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
-<span><span class="co">## [00:44:01.988347] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span></span>
-<span><span class="co">## [00:44:01.988351] [iscream::summarize_regions] [info] with columns 4, 5 as beta, coverage</span></span></code></pre>
+<pre><code><span><span class="co">## [17:34:51.883025] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
+<span><span class="co">## [17:34:51.883070] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span></span>
+<span><span class="co">## [17:34:51.883074] [iscream::summarize_regions] [info] with columns 4, 5 as beta, coverage</span></span></code></pre>
 <pre><code><span><span class="co">##                  feature  file beta.sum coverage.sum beta.mean coverage.mean</span></span>
 <span><span class="co">## 1     chr1:184577-680065 cell1      2.0            9 0.2222222      1.000000</span></span>
 <span><span class="co">## 2 chrY:56877780-56882524 cell1      6.0           17 0.4000000      1.133333</span></span>
@@ -469,9 +479,9 @@ names for the regions. You can also select the functions applied with
 <span>  columns <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  col_names <span class="op">=</span> <span class="st">"coverage"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [00:44:02.076928] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
-<span><span class="co">## [00:44:02.076949] [iscream::summarize_regions] [info] using mean, sum</span></span>
-<span><span class="co">## [00:44:02.076953] [iscream::summarize_regions] [info] with columns 5 as coverage</span></span></code></pre>
+<pre><code><span><span class="co">## [17:34:51.971728] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
+<span><span class="co">## [17:34:51.971751] [iscream::summarize_regions] [info] using mean, sum</span></span>
+<span><span class="co">## [17:34:51.971756] [iscream::summarize_regions] [info] with columns 5 as coverage</span></span></code></pre>
 <pre><code><span><span class="co">##   feature  file coverage.mean coverage.sum</span></span>
 <span><span class="co">## 1      R1 cell1      1.000000            9</span></span>
 <span><span class="co">## 2      R2 cell1      1.133333           17</span></span>
@@ -494,9 +504,9 @@ names for the regions. You can also select the functions applied with
 <span>  aligner <span class="op">=</span> <span class="st">"biscuit"</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"sum"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [00:44:02.148206] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
-<span><span class="co">## [00:44:02.148231] [iscream::summarize_regions] [info] using mean, sum</span></span>
-<span><span class="co">## [00:44:02.148235] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
+<pre><code><span><span class="co">## [17:34:52.041918] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
+<span><span class="co">## [17:34:52.041945] [iscream::summarize_regions] [info] using mean, sum</span></span>
+<span><span class="co">## [17:34:52.041950] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
 <pre><code><span><span class="co">##   feature  file coverage.mean    M.mean coverage.sum M.sum</span></span>
 <span><span class="co">## 1      R1 cell1      1.000000 0.2222222            9     2</span></span>
 <span><span class="co">## 2      R2 cell1      1.133333 0.4000000           17     6</span></span>
@@ -519,13 +529,15 @@ use for analysis or other data structures. <code><a href="../reference/make_mat.
 returns a <code>RangedSummarizedExperiment</code>, and
 <code><a href="../reference/make_mat.html">make_mat_gr()</a></code> returns a <code>GRanges</code> object.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">"SummarizedExperiment"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"The 'SummarizedExperiment' package must be installed for this functionality"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span><span class="op">(</span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mat.html">make_mat_se</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, column <span class="op">=</span> <span class="fl">4</span>, mat_name <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [00:44:04.392041] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [17:34:54.331844] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [00:44:04.392609] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [00:44:04.392670] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [00:44:04.392675] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
+<span><span class="co">## [17:34:54.332476] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [17:34:54.332534] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [17:34:54.332539] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
 <pre><code><span><span class="co">## class: RangedSummarizedExperiment </span></span>
 <span><span class="co">## dim: 62 4 </span></span>
 <span><span class="co">## metadata(0):</span></span>
@@ -552,11 +564,11 @@ returns a <code>RangedSummarizedExperiment</code>, and
 <code><a href="../reference/make_mat.html">make_mat_se()</a></code>.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mat.html">make_mat</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, column <span class="op">=</span> <span class="fl">4</span>, mat_name <span class="op">=</span> <span class="st">"beta"</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [00:44:04.514630] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [17:34:54.456778] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [00:44:04.515168] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [00:44:04.515203] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [00:44:04.515214] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
+<span><span class="co">## [17:34:54.457250] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [17:34:54.457308] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [17:34:54.457323] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mat</span><span class="op">$</span><span class="va">beta</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 10 x 4 sparse Matrix of class "dgCMatrix"</span></span>
@@ -578,13 +590,23 @@ returns a <code>RangedSummarizedExperiment</code>, and
 compatible object, use <code>make_meth_mat</code> which returns a list
 of BSseq inputs. To make the <code>BSseq</code> object run</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">meth_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mat.html">make_mat</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">BSseq</span>, <span class="va">meth_mat</span><span class="op">)</span></span></code></pre></div>
-<p>For more information on the supported Bioconductor data structures
-see <code><a href="../articles/data_structures.html">vignette("data_structures")</a></code>. An example workflow using
-iscream to examine transcription start site methylation is at
-<code><a href="../articles/TSS.html">vignette("TSS")</a></code>.</p>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/kasperdanielhansen/bsseq" class="external-link">"bsseq"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">meth_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mat_bsseq.html">make_mat_bsseq</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">BSseq</span>, <span class="va">meth_mat</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 </div>
+</div>
+<div class="section level2">
+<h2 id="further-reading">Further reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
+</h2>
+<p>While this vignette used a toy dataset,
+<code><a href="../articles/performance.html">vignette("performance")</a></code> has tips on getting the best
+performance from iscream using a real and larger dataset with 100 files.
+<code><a href="../articles/TSS.html">vignette("TSS")</a></code> is an example of iscream’s application to
+examine methylation around transcription start site on another real
+dataset. For more information on the supported Bioconductor data
+structures and conversions see
+<code><a href="../articles/data_structures.html">vignette("data_structures")</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
@@ -617,25 +639,26 @@ iscream to examine transcription start site methylation is at
 <span><span class="co">##  [3] MatrixGenerics_1.20.0       matrixStats_1.5.0          </span></span>
 <span><span class="co">##  [5] GenomicRanges_1.60.0        GenomeInfoDb_1.44.3        </span></span>
 <span><span class="co">##  [7] IRanges_2.42.0              S4Vectors_0.46.0           </span></span>
-<span><span class="co">##  [9] BiocGenerics_0.54.0         generics_0.1.4             </span></span>
-<span><span class="co">## [11] iscream_0.99.5              BiocStyle_2.36.0           </span></span>
+<span><span class="co">##  [9] BiocGenerics_0.54.1         generics_0.1.4             </span></span>
+<span><span class="co">## [11] iscream_0.99.7              BiocStyle_2.36.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] sass_0.4.10             SparseArray_1.8.1       lattice_0.22-7         </span></span>
 <span><span class="co">##  [4] digest_0.6.37           evaluate_1.0.5          grid_4.5.1             </span></span>
-<span><span class="co">##  [7] bookdown_0.44           fastmap_1.2.0           jsonlite_2.0.0         </span></span>
+<span><span class="co">##  [7] bookdown_0.45           fastmap_1.2.0           jsonlite_2.0.0         </span></span>
 <span><span class="co">## [10] Matrix_1.7-3            BiocManager_1.30.26     httr_1.4.7             </span></span>
-<span><span class="co">## [13] UCSC.utils_1.4.0        textshaping_1.0.3       jquerylib_0.1.4        </span></span>
-<span><span class="co">## [16] abind_1.4-8             cli_3.6.5               rlang_1.1.6            </span></span>
-<span><span class="co">## [19] crayon_1.5.3            XVector_0.48.0          parallelly_1.45.1      </span></span>
-<span><span class="co">## [22] DelayedArray_0.34.1     cachem_1.1.0            yaml_2.3.10            </span></span>
-<span><span class="co">## [25] S4Arrays_1.8.1          tools_4.5.1             parallel_4.5.1         </span></span>
-<span><span class="co">## [28] GenomeInfoDbData_1.2.14 R6_2.6.1                lifecycle_1.0.4        </span></span>
-<span><span class="co">## [31] fs_1.6.6                stringfish_0.17.0       ragg_1.5.0             </span></span>
-<span><span class="co">## [34] desc_1.4.3              pkgdown_2.1.3           RcppParallel_5.1.11-1  </span></span>
-<span><span class="co">## [37] bslib_0.9.0             data.table_1.17.8       Rcpp_1.1.0             </span></span>
-<span><span class="co">## [40] systemfonts_1.3.1       xfun_0.53               knitr_1.50             </span></span>
-<span><span class="co">## [43] htmltools_0.5.8.1       rmarkdown_2.30          compiler_4.5.1</span></span></code></pre>
+<span><span class="co">## [13] UCSC.utils_1.4.0        pbapply_1.7-4           textshaping_1.0.4      </span></span>
+<span><span class="co">## [16] jquerylib_0.1.4         abind_1.4-8             cli_3.6.5              </span></span>
+<span><span class="co">## [19] crayon_1.5.3            rlang_1.1.6             XVector_0.48.0         </span></span>
+<span><span class="co">## [22] parallelly_1.45.1       DelayedArray_0.34.1     cachem_1.1.0           </span></span>
+<span><span class="co">## [25] yaml_2.3.10             S4Arrays_1.8.1          tools_4.5.1            </span></span>
+<span><span class="co">## [28] parallel_4.5.1          GenomeInfoDbData_1.2.14 R6_2.6.1               </span></span>
+<span><span class="co">## [31] lifecycle_1.0.4         fs_1.6.6                stringfish_0.17.0      </span></span>
+<span><span class="co">## [34] ragg_1.5.0              desc_1.4.3              pkgdown_2.1.3          </span></span>
+<span><span class="co">## [37] RcppParallel_5.1.11-1   bslib_0.9.0             data.table_1.17.8      </span></span>
+<span><span class="co">## [40] Rcpp_1.1.0              systemfonts_1.3.1       xfun_0.53              </span></span>
+<span><span class="co">## [43] knitr_1.50              htmltools_0.5.8.1       rmarkdown_2.30         </span></span>
+<span><span class="co">## [46] compiler_4.5.1</span></span></code></pre>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

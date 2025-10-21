@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,19 +98,18 @@ the methscan dataset.</p>
 promoter regions. Running it requires downloading 18MB of BED files and
 tabix indices from this Zenodo record: <a href="https://zenodo.org/records/14733834" class="external-link uri">https://zenodo.org/records/14733834</a></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">methscan_zip_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"methscan"</span><span class="op">)</span></span>
-<span><span class="va">methscan_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span></span>
-<span>    <span class="st">"https://zenodo.org/records/14733834/files/methscan_data.zip"</span>,</span>
-<span>    destfile <span class="op">=</span> <span class="va">methscan_zip_path</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">methscan_zip_path</span>, exdir <span class="op">=</span> <span class="va">methscan_dir</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"BiocFileCache"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">cachedir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">BiocFileCache</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">methscan_zip_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">bfcrpath</a></span><span class="op">(</span><span class="va">cachedir</span>, <span class="st">"https://zenodo.org/records/14733834/files/methscan_data.zip"</span><span class="op">)</span></span>
+<span><span class="va">methscan_unzip</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"methscan"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">methscan_zip_path</span>, exdir <span class="op">=</span> <span class="va">methscan_unzip</span><span class="op">)</span></span>
+<span><span class="va">methscan_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">methscan_unzip</span>, <span class="st">"scbs_tutorial_data"</span><span class="op">)</span></span></code></pre></div>
 <p>iscream normally uses htslib to query BED files and store the data in
-memory. However, iscream’s <code>tabix</code> function can use the tabix
-executable to make tabix queries because the shell program’s
+memory. However, iscream’s <code><a href="../reference/tabix.html">tabix()</a></code> function can use the
+tabix executable to make tabix queries because the shell program’s
 stream-to-file approach is faster than allocating and storing strings in
 memory. By default, the <code>"tabix.method"</code> option is set to
-“shell” and iscream’s <code>tabix</code> will look for the tabix
+“shell” and iscream’s <code><a href="../reference/tabix.html">tabix()</a></code> will look for the tabix
 executable, falling back to using htslib only if it’s not found. Here,
 the <code>"tabix.method"</code> option is set to “htslib” to make fair
 comparisons between Rsamtools and iscream since <code>scanTabix</code>
@@ -127,28 +126,27 @@ frames and GRanges.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">Rsamtools</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Rsamtools" class="external-link">Rsamtools</a></span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/joshuaulrich/microbenchmark/" class="external-link">microbenchmark</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">methscan_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span></span>
-<span>  <span class="va">data_dir</span>,</span>
+<span>  <span class="va">methscan_dir</span>,</span>
 <span>  full.names <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  pattern <span class="op">=</span> <span class="st">"*.cov.gz$"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">mouse_promoters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="st">"/mouse_promoters.bed"</span><span class="op">)</span>, col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"start"</span>, <span class="st">"end"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">mouse_promoters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">methscan_dir</span>, <span class="st">"mouse_promoters.bed"</span><span class="op">)</span>, col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"start"</span>, <span class="st">"end"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">mouse_promoters.gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">mouse_promoters</span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="one-file">One file<a class="anchor" aria-label="anchor" href="#one-file"></a>
 </h2>
-<p><code>tabix</code> with <code>raw = TRUE</code> and
-<code>scanTabix</code> produce a list of unparsed or raw strings. The
-result of both are identical.</p>
+<p><code><a href="../reference/tabix.html">tabix_raw()</a></code> and <code>scanTabix</code> produce a list of
+unparsed or raw strings. The result of both are identical.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bench_1_raw</span> <span class="op">&lt;-</span> <span class="fu">microbenchmark</span><span class="op">(</span></span>
-<span>  `rsamtools 1 file raw` <span class="op">=</span> <span class="va">rq</span> <span class="op">&lt;-</span> <span class="fu">scanTabix</span><span class="op">(</span><span class="va">methscan_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, param <span class="op">=</span> <span class="va">mouse_promoters.gr</span><span class="op">)</span>,</span>
-<span>  `iscream 1 file raw` <span class="op">=</span> <span class="va">iq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">methscan_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">mouse_promoters</span>, raw <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">bench_1_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
+<span>  `rsamtools 1 file raw` <span class="op">=</span> <span class="va">rq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rsamtools/man/scanTabix.html" class="external-link">scanTabix</a></span><span class="op">(</span><span class="va">methscan_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, param <span class="op">=</span> <span class="va">mouse_promoters.gr</span><span class="op">)</span>,</span>
+<span>  `iscream 1 file raw` <span class="op">=</span> <span class="va">iq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tabix.html">tabix_raw</a></span><span class="op">(</span><span class="va">methscan_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">mouse_promoters</span><span class="op">)</span>,</span>
 <span>  times <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">bench_1_raw</span></span></code></pre></div>
@@ -210,12 +208,12 @@ tabix vs scanTabix raw string output on 1 file
 <div class="section level2">
 <h2 id="multiple-files">Multiple files<a class="anchor" aria-label="anchor" href="#multiple-files"></a>
 </h2>
-<p><code>tabix</code> can also take multiple files in the same call. It
-returns the raw strings, but each input file is a list of it’s own.
-<code>scanTabix</code> does not support this.</p>
+<p><code><a href="../reference/tabix.html">tabix()</a></code> can also take multiple files in the same call.
+It returns the raw strings, but each input file is a list of it’s own.
+<code><a href="https://rdrr.io/pkg/Rsamtools/man/scanTabix.html" class="external-link">scanTabix()</a></code> does not support this.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bench_30_raw</span> <span class="op">&lt;-</span> <span class="fu">microbenchmark</span><span class="op">(</span></span>
-<span>  `iscream 30 files raw` <span class="op">=</span> <span class="va">iq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">methscan_files</span>, <span class="va">mouse_promoters</span>, raw <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">bench_30_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
+<span>  `iscream 30 files raw` <span class="op">=</span> <span class="va">iq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tabix.html">tabix_raw</a></span><span class="op">(</span><span class="va">methscan_files</span>, <span class="va">mouse_promoters</span><span class="op">)</span>,</span>
 <span>  times <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">bench_30_raw</span></span></code></pre></div>
@@ -262,7 +260,7 @@ returns the raw strings, but each input file is a list of it’s own.
 <span><span class="co">## [8] "1\t4807940\t4807940\t0.000000\t0\t1"  </span></span>
 <span><span class="co">## [9] "1\t4807950\t4807950\t0.000000\t0\t1"</span></span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">scanTabix</span><span class="op">(</span><span class="va">methscan_files</span>, param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">mouse_promoters</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Rsamtools/man/scanTabix.html" class="external-link">scanTabix</a></span><span class="op">(</span><span class="va">methscan_files</span>, param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">mouse_promoters</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Error in h(simpleError(msg, call)): error in evaluating the argument 'file' in selecting a method for function 'scanTabix': 'file' must be length 1</span></span></code></pre>
 </div>
 <div class="section level2">
@@ -274,7 +272,7 @@ returns the raw strings, but each input file is a list of it’s own.
 to make a similar data frame:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rtbx</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">bed</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">q</span> <span class="op">&lt;-</span> <span class="fu">scanTabix</span><span class="op">(</span><span class="va">bed</span>, param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">mouse_promoters</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="va">q</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rsamtools/man/scanTabix.html" class="external-link">scanTabix</a></span><span class="op">(</span><span class="va">bed</span>, param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span><span class="va">mouse_promoters</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">strsplit</span>, split <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/funprog.html" class="external-link">Filter</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">0</span>, x <span class="op">=</span> <span class="va">_</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unlist.html" class="external-link">unlist</a></span><span class="op">(</span>recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -284,7 +282,7 @@ to make a similar data frame:</p>
 <span>  <span class="va">q</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="va">bench_1_df</span> <span class="op">&lt;-</span> <span class="fu">microbenchmark</span><span class="op">(</span></span>
+<span><span class="va">bench_1_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
 <span>  `rsamtools 1 file data frame` <span class="op">=</span> <span class="va">rq</span> <span class="op">&lt;-</span> <span class="fu">rtbx</span><span class="op">(</span><span class="va">methscan_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  `iscream 1 file data frame` <span class="op">=</span> <span class="va">iq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">methscan_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">mouse_promoters</span><span class="op">)</span>,</span>
 <span>  times <span class="op">=</span> <span class="fl">3</span></span>
@@ -358,9 +356,9 @@ function that 8 cores like iscream does:</p>
 <span>    <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="va">bench_30_df</span> <span class="op">&lt;-</span> <span class="fu">microbenchmark</span><span class="op">(</span></span>
-<span>  `rsamtools 30 file data frame` <span class="op">=</span> <span class="va">rq</span> <span class="op">&lt;-</span> <span class="fu">partbx</span><span class="op">(</span><span class="va">methscan_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>  `iscream 30 file data frame` <span class="op">=</span> <span class="va">iq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">methscan_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">mouse_promoters</span>, col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"M"</span>, <span class="st">"U"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span><span class="va">bench_30_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
+<span>  `rsamtools 30 file data frame` <span class="op">=</span> <span class="va">rq</span> <span class="op">&lt;-</span> <span class="fu">partbx</span><span class="op">(</span><span class="va">methscan_files</span><span class="op">)</span>,</span>
+<span>  `iscream 30 file data frame` <span class="op">=</span> <span class="va">iq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tabix.html">tabix</a></span><span class="op">(</span><span class="va">methscan_files</span>, <span class="va">mouse_promoters</span>, col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"M"</span>, <span class="st">"U"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  times <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">bench_30_df</span></span></code></pre></div>
