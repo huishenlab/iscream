@@ -126,8 +126,9 @@ test_that("tabix multi query with htslib", {
   test_multi_tabix_dataframe(shell = FALSE)
 })
 
-gr.meta <- GenomicRanges::GRanges(regions)
-GenomicRanges::values(gr.meta) <- data.frame(meta = c("s1", "s2", "s3"))
+suppressPackageStartupMessages(library(GenomicRanges))
+gr.meta <- GRanges(regions)
+values(gr.meta) <- data.frame(meta = c("s1", "s2", "s3"))
 
 test_that("tabix_gr", {
   # gr input

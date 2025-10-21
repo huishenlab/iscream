@@ -257,6 +257,11 @@ test_that("matrix row,colnames,sampleNames", {
   lapply(results[1], test_dims, exp_dims)
 })
 
+suppressPackageStartupMessages({
+  library(GenomicRanges)
+  library(SummarizedExperiment)
+})
+
 test_that("SE, GR", {
   grmat <- make_mat_gr(biscuit_bedfiles, regions, column = 4, mat_name = "beta")
   expect_equal(class(grmat)[1], "GRanges")
