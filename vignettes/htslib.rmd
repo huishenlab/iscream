@@ -39,7 +39,9 @@ and check that `libdeflate=yes`.
 
 
 ```{r, echo=FALSE, error=FALSE}
-library("ggplot2")
+if (!require("ggplot2", quietly = TRUE)) {
+  stop("The 'ggplot2' package must be installed for this functionality")
+}
 ```
 
 ```{r, echo=FALSE, dpi=300, fig.width=6, fig.height=4, fig.align="center", fig.cap="Effect of htslib v1.18 source on iscream's 'make_mat()' runtime from one bulk WGBS BED file"}

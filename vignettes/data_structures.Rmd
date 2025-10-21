@@ -24,7 +24,9 @@ regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 ## `r Biocpkg("GenomicRanges")`
 
 ```{r gr, message=FALSE}
-library(GenomicRanges)
+if (!require("GenomicRanges", quietly = TRUE)) {
+  stop("The 'GenomicRanges' package must be installed for this functionality")
+}
 ```
 
 `GRanges` objects can be used as the input regions to all of iscream's functions
@@ -110,6 +112,9 @@ make_mat_gr(bedfiles, regions, column = 4, mat_name = "beta")
 matrices.
 
 ```{r mat_se}
+if (!require("SummarizedExperiment", quietly = TRUE)) {
+  stop("The 'SummarizedExperiment' package must be installed for this functionality")
+}
 make_mat_se(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
 ```
 
@@ -118,8 +123,10 @@ make_mat_se(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
 A `r Biocpkg("bsseq")` object is a type of SummarizedExperiment, but it cannot
 handle sparse matrices:
 
-```{r, eval=FALSE}
-library(bsseq)
+```{r}
+if (!require("bsseq", quietly = TRUE)) {
+  stop("The 'bsseq' package must be installed for this functionality")
+}
 mats <- make_mat_bsseq(bedfiles, regions, sparse = FALSE)
 do.call(BSseq, mats)
 ```

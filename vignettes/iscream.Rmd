@@ -17,7 +17,6 @@ link-citations: yes
 
 ```{r setup, include=FALSE}
 options("datatable.print.nrows" = 50)
-library(BiocStyle)
 ```
 
 ## Introduction
@@ -132,7 +131,9 @@ Both `tabix()` and `tabix_gr()` accept `GRanges` objects as input regions but
 also preserve any input `GRanges` metadata.
 
 ```{r tabix_gr, message=FALSE}
-library(GenomicRanges)
+if (!require("GenomicRanges", quietly = TRUE)) {
+  stop("The 'GenomicRanges' package must be installed for this functionality")
+}
 gr <- GRanges(regions)
 tabix_gr(bedfiles, gr)
 ```
@@ -222,7 +223,9 @@ coordinates, and file names you can use for analysis or other data structures.
 returns a `GRanges` object.
 
 ```{r make_mat, message=FALSE}
-library(SummarizedExperiment)
+if (!require("SummarizedExperiment", quietly = TRUE)) {
+  stop("The 'SummarizedExperiment' package must be installed for this functionality")
+}
 (mat <- make_mat_se(bedfiles, regions, column = 4, mat_name = "beta"))
 head(assay(mat), 10)
 ```
@@ -241,7 +244,7 @@ For a `r Biocpkg("BSseq")` compatible object, use `make_meth_mat` which returns
 a list of BSseq inputs. To make the `BSseq` object run
 
 ```{r, eval=FALSE}
-if (require("bsseq")) {
+if (require("bsseq", quietly = TRUE)) {
   meth_mat <- make_mat_bsseq(bedfiles, regions)
   do.call(BSseq, meth_mat)
 }
