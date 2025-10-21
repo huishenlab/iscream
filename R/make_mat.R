@@ -95,6 +95,7 @@ make_mat_se <- function(
   if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
     stop("The 'SummarizedExperiment' package must be installed for this functionality")
   }
+  is_package_loaded("SummarizedExperiment", "make_mat_se", fail = TRUE)
   mat <- make_mat(bedfiles, regions, column, mat_name, sparse, prealloc, nthreads)
   matlist <- list(mat[[mat_name]])
   names(matlist) <- mat_name
@@ -115,6 +116,7 @@ make_mat_gr <- function(
   if (!requireNamespace("GenomicRanges", quietly = TRUE)) {
     stop("The 'GenomicRanges' package must be installed for this functionality")
   }
+  is_package_loaded("GenomicRanges", "make_mat_gr", fail = TRUE)
   mat <- make_mat(
     bedfiles,
     regions,

@@ -89,6 +89,8 @@ bedfiles <- system.file("extdata", package = "iscream") |>
   list.files(pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 tabix(bedfiles, regions, col.names = c("beta", "coverage"))
-tabix_gr(bedfiles, regions, col.names = c("beta", "coverage"))
+if (require("GenomicRanges", quietly = TRUE)) {
+  tabix_gr(bedfiles, regions, col.names = c("beta", "coverage"))
+}
 tabix_raw(bedfiles, regions)
 }

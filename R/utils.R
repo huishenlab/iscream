@@ -78,3 +78,17 @@ getGR <- function(chr, pos) {
     GenomicRanges::GRanges(chr, IRanges::IRanges(pos, pos, width = 1))
   }
 }
+
+# Check if package is loaded
+# https://github.com/HenrikBengtsson/R.utils/blob/74def095eaa244e355d05fdf790ee6393dad1d99/R/isPackageLoaded.R#L33-L43
+is_package_loaded <- function(package, caller, fail) {
+  loaded_packages <- gsub("package:", "", search())
+  if (package %in% loaded_packages) {
+    return(TRUE)
+  }
+  if (fail) {
+    msg <- sprintf("Please load the '%s' package to use '%s' output", package, caller)
+    stop(msg)
+  }
+  FALSE
+}

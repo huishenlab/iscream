@@ -13,6 +13,7 @@ tabix_gr <- function(
   if (!requireNamespace("GenomicRanges", quietly = TRUE)) {
     stop("The 'GenomicRanges' package must be installed for this functionality")
   }
+  is_package_loaded("GenomicRanges", "tabix_gr", fail = TRUE)
   result <- tabix(
     bedfiles,
     regions,
