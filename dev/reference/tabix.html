@@ -148,9 +148,13 @@ implementation. To use only <em>iscream's</em> tabix implementation, set
 <h3 id="input-region-formats">Input region formats<a class="anchor" aria-label="anchor" href="#input-region-formats"></a></h3>
 
 
-<p>The input regions formats may be string vector in the form "chr:start-end",
+<p>The input regions format may be string vector in the form "chr:start-end",
 a dataframe with "chr", "start" and "end" columns or a <code>GRanges</code> object.
-Input regions must be 1-based.</p>
+Input regions must be 1-based. When using <code>"htslib"</code> as the query method, if
+the input <code>GRanges</code> object of regions contains any single locus regions
+where the start and end positions are the same, iscream will notify that
+such regions were found and fixed as <code>chr:start</code> format strings are invalid
+for the htslib API (see <code><a href="get_granges_string.html">?get_granges_string</a></code>).</p>
 </div>
 
     </div>
