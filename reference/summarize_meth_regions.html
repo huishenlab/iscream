@@ -165,9 +165,9 @@ name to <code>feature_col</code>. See examples.</p>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_meth_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:34:28.480650] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:34:28.480673] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:34:28.480677] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:33:37.500627] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:33:37.500652] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:33:37.500656] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       feature file coverage.sum M.sum coverage.mean    M.mean coverage.median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6    a            4     2      1.333333 0.6666667             1.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10    a            3     1      1.500000 0.5000000             1.5</span>
@@ -209,9 +209,9 @@ name to <code>feature_col</code>. See examples.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12     1            1     1              0       0         1</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_meth_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"stddev"</span><span class="op">)</span>, mval <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:34:28.501811] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:34:28.501824] [iscream::summarize_regions] [info] using mean, stddev</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:34:28.501827] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:33:37.521812] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:33:37.521824] [iscream::summarize_regions] [info] using mean, stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:33:37.521827] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    feature file coverage.mean beta.mean coverage.stddev beta.stddev</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        A    a      1.333333 0.6666667       0.5773503   0.5773503</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        B    a      1.500000 0.2500000       0.7071068   0.3535534</span>
@@ -226,9 +226,9 @@ name to <code>feature_col</code>. See examples.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11       B    d      1.500000 0.2500000       0.7071068   0.3535534</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12       C    d      1.000000 1.0000000       0.0000000   0.0000000</span>
 <span class="r-in"><span><span class="fu">summarize_meth_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:34:28.507009] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:34:28.507019] [iscream::summarize_regions] [info] using sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:34:28.507022] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:33:37.526900] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:33:37.526909] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:33:37.526913] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    feature file coverage.sum M.sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        A    a            4     2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        B    a            3     1</span>
