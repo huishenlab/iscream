@@ -33,9 +33,13 @@
 #' `options("tabix.method" = "htslib")`.
 #'
 #' ## Input region formats
-#' The input regions formats may be string vector in the form "chr:start-end",
+#' The input regions format may be string vector in the form "chr:start-end",
 #' a dataframe with "chr", "start" and "end" columns or a `GRanges` object.
-#' Input regions must be 1-based.
+#' Input regions must be 1-based. When using `"htslib"` as the query method, if
+#' the input `GRanges` object of regions contains any single locus regions
+#' where the start and end positions are the same, iscream will notify that
+#' such regions were found and fixed as `chr:start` format strings are invalid
+#' for the htslib API (see `?get_granges_string`).
 #'
 #' @importFrom data.table as.data.table tstrsplit set := rbindlist fread fwrite setnames
 #' @importFrom pbapply pblapply pboptions

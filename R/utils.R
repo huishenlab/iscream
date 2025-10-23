@@ -19,6 +19,11 @@ verify_aligner_or_stop <- function(aligner) {
 
 #' GRanges to region strings
 #'
+#' Coerces GenomicRanges to `chr:start-end` strings with `as.character`. If any
+#' regions have the same start and end, `as.character` returns `chr:start`
+#' strings which are invalid for the htslib API. These are corrected to
+#' `chr:start-start`.
+#'
 #' @param gr A GRanges object
 #' @returns A character vector
 #'
@@ -32,6 +37,13 @@ get_granges_string <- function(gr) {
     stop("The 'GenomicRanges' package must be installed for this functionality")
   }
   region_str <- as.character(gr)
+  singles <- which(GenomicRanges::width(gr) == 1)
+  single_count <- length(singles)
+  if (single_count > 0) {
+    region_str[singles] <- gsub(":([0-9]+)", ":\\1-\\1", region_str[singles])
+    message("Corrected ", single_count, " invalid 'chr:start' region strings to 'chr:start-start'")
+  }
+
   names(region_str) <- names(gr)
   region_str
 }

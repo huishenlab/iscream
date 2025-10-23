@@ -79,9 +79,13 @@ implementation. To use only \emph{iscream's} tabix implementation, set
 
 \subsection{Input region formats}{
 
-The input regions formats may be string vector in the form "chr:start-end",
+The input regions format may be string vector in the form "chr:start-end",
 a dataframe with "chr", "start" and "end" columns or a \code{GRanges} object.
-Input regions must be 1-based.
+Input regions must be 1-based. When using \code{"htslib"} as the query method, if
+the input \code{GRanges} object of regions contains any single locus regions
+where the start and end positions are the same, iscream will notify that
+such regions were found and fixed as \code{chr:start} format strings are invalid
+for the htslib API (see \code{?get_granges_string}).
 }
 }
 \examples{

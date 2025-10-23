@@ -13,7 +13,10 @@ get_granges_string(gr)
 A character vector
 }
 \description{
-GRanges to region strings
+Coerces GenomicRanges to \code{chr:start-end} strings with \code{as.character}. If any
+regions have the same start and end, \code{as.character} returns \code{chr:start}
+strings which are invalid for the htslib API. These are corrected to
+\code{chr:start-start}.
 }
 \examples{
 if (requireNamespace("GenomicRanges", quietly = TRUE)) {
