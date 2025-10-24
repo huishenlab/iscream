@@ -243,7 +243,7 @@ head(mat$beta, 10)
 For a `r Biocpkg("BSseq")` compatible object, use `make_meth_mat` which returns
 a list of BSseq inputs. To make the `BSseq` object run
 
-```{r, eval=FALSE}
+```{r, message=FALSE}
 if (require("bsseq", quietly = TRUE)) {
   meth_mat <- make_mat_bsseq(bedfiles, regions)
   do.call(BSseq, meth_mat)

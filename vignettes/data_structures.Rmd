@@ -111,7 +111,7 @@ make_mat_gr(bedfiles, regions, column = 4, mat_name = "beta")
 `make_mat_se()` returns a `RangedSummarizedExperiment` for both sparse and dense
 matrices.
 
-```{r mat_se}
+```{r mat_se, message=FALSE}
 if (!require("SummarizedExperiment", quietly = TRUE)) {
   stop("The 'SummarizedExperiment' package must be installed for this functionality")
 }
@@ -123,7 +123,7 @@ make_mat_se(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
 A `r Biocpkg("bsseq")` object is a type of SummarizedExperiment, but it cannot
 handle sparse matrices:
 
-```{r}
+```{r, message=FALSE}
 if (!require("bsseq", quietly = TRUE)) {
   stop("The 'bsseq' package must be installed for this functionality")
 }
