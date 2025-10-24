@@ -64,7 +64,7 @@ library(data.table)
 library(GenomicRanges) |> suppressPackageStartupMessages()
 library(Rsamtools) |> suppressPackageStartupMessages()
 library(microbenchmark)
-library(parallel)
+library(pbapply)
 library(ggplot2)
 ```
 
@@ -97,12 +97,12 @@ bench_1_raw
 
 ```
 ## Unit: milliseconds
-##                  expr        min         lq       mean     median         uq
-##  rsamtools 1 file raw 2058.93989 2064.65614 2114.46048 2070.37240 2142.22078
-##    iscream 1 file raw   77.67272   80.20395   81.12257   82.73518   82.84749
+##                  expr        min         lq      mean     median         uq
+##  rsamtools 1 file raw 2760.55888 2765.35353 2769.3114 2770.14819 2773.68760
+##    iscream 1 file raw   79.47893   80.34265   84.7329   81.20637   87.35989
 ##         max neval
-##  2214.06916     3
-##    82.95981     3
+##  2777.22701     3
+##    93.51341     3
 ```
 
 ``` r
@@ -186,7 +186,7 @@ bench_30_raw
 ```
 ## Unit: seconds
 ##                  expr      min       lq     mean   median       uq      max
-##  iscream 30 files raw 1.758214 1.875702 2.061496 1.993191 2.213138 2.433085
+##  iscream 30 files raw 1.346655 1.559583 1.859358 1.772512 2.115709 2.458907
 ##  neval
 ##      3
 ```
@@ -326,12 +326,12 @@ bench_1_df
 
 ```
 ## Unit: milliseconds
-##                         expr       min        lq      mean   median        uq
-##  rsamtools 1 file data frame 2011.4551 2233.9409 2698.4112 2456.427 3041.8892
-##    iscream 1 file data frame  137.4999  139.2765  143.6715  141.053  146.7572
+##                         expr       min       lq      mean    median        uq
+##  rsamtools 1 file data frame 2169.4535 2229.954 2641.8171 2290.4544 2877.9989
+##    iscream 1 file data frame  132.9694  134.259  141.7589  135.5487  146.1537
 ##        max neval
-##  3627.3517     3
-##   152.4614     3
+##  3465.5434     3
+##   156.7588     3
 ```
 
 ``` r
@@ -351,14 +351,14 @@ We can try to query multiple BED files using Rsamtools with this function that
 
 ``` r
 partbx <- function(bedfiles) {
-  mclapply(
+  pblapply(
     methscan_files,
     function(bed) {
       query <- rtbx(bed)[, file := tools::file_path_sans_ext(basename(bed), compression = TRUE)][]
       setnames(query, c("chr", "start", "end", "beta", "M", "U", "file"))
       query
     },
-    mc.cores = 8
+    cl = 8
   ) |>
     rbindlist()
 }
@@ -374,11 +374,11 @@ bench_30_df
 ```
 ## Unit: seconds
 ##                          expr       min        lq      mean   median        uq
-##  rsamtools 30 file data frame 25.998420 27.379231 28.280409 28.76004 29.421403
-##    iscream 30 file data frame  1.084235  1.401823  1.628902  1.71941  1.901235
-##       max neval
-##  30.08276     3
-##   2.08306     3
+##  rsamtools 30 file data frame 24.823254 26.949417 28.924390 29.07558 30.974959
+##    iscream 30 file data frame  1.074239  1.389884  1.660032  1.70553  1.952928
+##        max neval
+##  32.874338     3
+##   2.200326     3
 ```
 
 ``` r
@@ -403,14 +403,8 @@ bench.dt <- as.data.table(bench_all)[, .(
   files      = fifelse(grepl("1", expr), 1, 30),
   data.frame = fifelse(grepl("raw", expr), FALSE, TRUE)
 )][,
-  package := paste(package, fifelse(data.frame, "df", "raw"))
+  `data structure` := fifelse(data.frame, "data.frame", "raw-strings")
 ]
-
-plt <- ggplot(bench.dt, aes(x = package, y = time, color = as.factor(files))) +
-    geom_boxplot() +
-    labs(x = "Package and return type") +
-    scale_color_discrete(name = "File count") +
-    theme_minimal()
 ```
 
 
@@ -418,26 +412,19 @@ plt <- ggplot(bench.dt, aes(x = package, y = time, color = as.factor(files))) +
 
 
 ``` r
-plt + labs(y = "Runtime (milliseconds)")
+ggplot(bench.dt, aes(x = as.factor(files), y = time / 1000, color = as.factor(package))) +
+  geom_boxplot(position = position_dodge(preserve = "single")) +
+  scale_color_discrete(name = "Package") +
+  scale_y_continuous(limits = c(0, 35), breaks = scales::extended_breaks(10)) +
+  facet_wrap(~ `data structure`, labeller = "label_both") +
+  labs(x = "File count", y = "Runtime (seconds)") +
+  theme_bw()
 ```
 
 <div class="figure" style="text-align: center">
 <img src="figure/all-1.png" alt="Comparing all benchmarked iscream and Rsamtools querying runtimes"  />
 <p class="caption">Comparing all benchmarked iscream and Rsamtools querying runtimes</p>
 </div>
-
-### Runtime log scale
-
-
-``` r
-plt + scale_y_log10() + labs(y = "log10 Runtime (milliseconds)")
-```
-
-<div class="figure" style="text-align: center">
-<img src="figure/all_log-1.png" alt="log10 scaled runtime of all benchmarks run"  />
-<p class="caption">log10 scaled runtime of all benchmarks run</p>
-</div>
-
 
 ## Session info
 
@@ -466,16 +453,16 @@ sessionInfo()
 ## tzcode source: system (glibc)
 ## 
 ## attached base packages:
-## [1] parallel  stats4    stats     graphics  grDevices utils     datasets 
-## [8] methods   base     
+## [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
 ## 
 ## other attached packages:
-##  [1] ggplot2_4.0.0        microbenchmark_1.5.0 Rsamtools_2.25.3    
-##  [4] Biostrings_2.77.2    XVector_0.49.1       GenomicRanges_1.61.5
-##  [7] Seqinfo_0.99.2       IRanges_2.43.5       S4Vectors_0.47.4    
-## [10] BiocGenerics_0.55.1  generics_0.1.4       data.table_1.17.8   
-## [13] iscream_0.99.5       BiocFileCache_2.99.6 dbplyr_2.5.1        
-## [16] colorout_1.3-3      
+##  [1] ggplot2_4.0.0        pbapply_1.7-4        microbenchmark_1.5.0
+##  [4] Rsamtools_2.25.3     Biostrings_2.77.2    XVector_0.49.1      
+##  [7] GenomicRanges_1.61.5 Seqinfo_0.99.2       IRanges_2.43.5      
+## [10] S4Vectors_0.47.4     BiocGenerics_0.55.1  generics_0.1.4      
+## [13] data.table_1.17.8    iscream_0.99.7       BiocFileCache_2.99.6
+## [16] dbplyr_2.5.1        
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] rappdirs_0.3.3        bitops_1.0-9          RSQLite_2.4.3        
@@ -486,14 +473,15 @@ sessionInfo()
 ## [16] httr2_1.2.1           cli_3.6.5             rlang_1.1.6          
 ## [19] crayon_1.5.3          parallelly_1.45.1     bit64_4.6.0-1        
 ## [22] withr_3.0.2           cachem_1.1.0          tools_4.5.1          
-## [25] BiocParallel_1.43.4   memoise_2.0.1         dplyr_1.1.4          
-## [28] filelock_1.0.3        curl_7.0.0            vctrs_0.6.5          
-## [31] R6_2.6.1              lifecycle_1.0.4       stringfish_0.17.0    
-## [34] bit_4.6.0             pkgconfig_2.0.3       gtable_0.3.6         
-## [37] RcppParallel_5.1.11-1 pillar_1.11.1         glue_1.8.0           
-## [40] Rcpp_1.1.0            xfun_0.53             tibble_3.3.0         
-## [43] tidyselect_1.2.1      knitr_1.50            farver_2.1.2         
-## [46] labeling_0.4.3        compiler_4.5.1        S7_0.2.0
+## [25] parallel_4.5.1        BiocParallel_1.43.4   memoise_2.0.1        
+## [28] dplyr_1.1.4           filelock_1.0.3        curl_7.0.0           
+## [31] vctrs_0.6.5           R6_2.6.1              lifecycle_1.0.4      
+## [34] stringfish_0.17.0     bit_4.6.0             pkgconfig_2.0.3      
+## [37] gtable_0.3.6          RcppParallel_5.1.11-1 pillar_1.11.1        
+## [40] glue_1.8.0            Rcpp_1.1.0            xfun_0.53            
+## [43] tibble_3.3.0          tidyselect_1.2.1      knitr_1.50           
+## [46] farver_2.1.2          labeling_0.4.3        compiler_4.5.1       
+## [49] S7_0.2.0
 ```
 
 <!-- vim: set filetype=rmd: -->

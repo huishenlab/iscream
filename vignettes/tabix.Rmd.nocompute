@@ -61,7 +61,7 @@ library(data.table)
 library(GenomicRanges) |> suppressPackageStartupMessages()
 library(Rsamtools) |> suppressPackageStartupMessages()
 library(microbenchmark)
-library(parallel)
+library(pbapply)
 library(ggplot2)
 ```
 
@@ -154,14 +154,14 @@ We can try to query multiple BED files using Rsamtools with this function that
 
 ```{r bench_30_df, fig.cap="tabix vs scanTabix parsed data frame from 30 files", dpi=300}
 partbx <- function(bedfiles) {
-  mclapply(
+  pblapply(
     methscan_files,
     function(bed) {
       query <- rtbx(bed)[, file := tools::file_path_sans_ext(basename(bed), compression = TRUE)][]
       setnames(query, c("chr", "start", "end", "beta", "M", "U", "file"))
       query
     },
-    mc.cores = 8
+    cl = 8
   ) |>
     rbindlist()
 }
@@ -187,29 +187,22 @@ bench.dt <- as.data.table(bench_all)[, .(
   files      = fifelse(grepl("1", expr), 1, 30),
   data.frame = fifelse(grepl("raw", expr), FALSE, TRUE)
 )][,
-  package := paste(package, fifelse(data.frame, "df", "raw"))
+  `data structure` := fifelse(data.frame, "data.frame", "raw-strings")
 ]
-
-plt <- ggplot(bench.dt, aes(x = package, y = time, color = as.factor(files))) +
-    geom_boxplot() +
-    labs(x = "Package and return type") +
-    scale_color_discrete(name = "File count") +
-    theme_minimal()
 ```
 
 
 ### Runtime
 
 ```{r all, fig.cap="Comparing all benchmarked iscream and Rsamtools querying runtimes", dpi=300}
-plt + labs(y = "Runtime (milliseconds)")
+ggplot(bench.dt, aes(x = as.factor(files), y = time / 1000, color = as.factor(package))) +
+  geom_boxplot(position = position_dodge(preserve = "single")) +
+  scale_color_discrete(name = "Package") +
+  scale_y_continuous(limits = c(0, 35), breaks = scales::extended_breaks(10)) +
+  facet_wrap(~ `data structure`, labeller = "label_both") +
+  labs(x = "File count", y = "Runtime (seconds)") +
+  theme_bw()
 ```
-
-### Runtime log scale
-
-```{r all_log, fig.cap="log10 scaled runtime of all benchmarks run", dpi=300}
-plt + scale_y_log10() + labs(y = "log10 Runtime (milliseconds)")
-```
-
 
 ## Session info
 
