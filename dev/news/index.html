@@ -54,10 +54,71 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.99.0" id="iscream-0990">iscream 0.99.0<a class="anchor" aria-label="anchor" href="#iscream-0990"></a></h2>
-<ul><li>Pre-release</li>
+<h2 class="pkg-version" data-toc-text="0.99.9" id="iscream-0999">iscream 0.99.9<a class="anchor" aria-label="anchor" href="#iscream-0999"></a></h2>
+<p>DOCUMENTATION</p>
+<ul><li><p>Vignettes suppress long startup messages</p></li>
+<li><p>Updated run-times and plots in tabix vs Rsamtools vignette</p></li>
 </ul></div>
-  </main></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.8" id="iscream-0998">iscream 0.99.8<a class="anchor" aria-label="anchor" href="#iscream-0998"></a></h2>
+<p>BUG FIXES</p>
+<ul><li>For <code><a href="../reference/tabix.html">tabix()</a></code>, converting GRanges inputs of width 1 now returns them as <code>chr:start-start</code> instead of <code>chr:start</code> which was invalid for the htslib API and caused a block of records to be returned instead of just the locus.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.7" id="iscream-0997">iscream 0.99.7<a class="anchor" aria-label="anchor" href="#iscream-0997"></a></h2>
+<p>BREAKING CHANGES</p>
+<ul><li>Functions that return GenomicRanges or SummarizedExperiment will fail if those packages are not loaded so that users don’t receive objects they can’t interact with</li>
+</ul><p>DOCUMENTATION</p>
+<ul><li>
+<code>bsseq</code> creation now runs for the <code>make_mat_bsseq</code> example</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.6" id="iscream-0996">iscream 0.99.6<a class="anchor" aria-label="anchor" href="#iscream-0996"></a></h2>
+<p>BREAKING CHANGES</p>
+<ul><li>
+<code>make_bsseq_mat</code> changed to <code>make_mat_bsseq</code> for consistency with other matrix creating functions</li>
+</ul><p>BUG FIXES</p>
+<ul><li><p>Fixed MacOS and clang issues (version checking, using the correct linkage tools) in configuration script</p></li>
+<li><p>Explicitly coerce path to string for bedfile prefix extraction in <code>Cpp_summarize_regions</code></p></li>
+</ul><p>ENHANCEMENTS</p>
+<ul><li><p>Added windows as supported platform but without multithreading support</p></li>
+<li><p><code>pbapply</code> progress bar added to <code><a href="../reference/tabix.html">tabix()</a></code> functions</p></li>
+</ul><p>INTERNAL</p>
+<ul><li><p>Explicitly return result from <code>tabix.single</code> helper function.</p></li>
+<li><p>Removed unused C++ variables</p></li>
+<li><p><code>file.path</code> used instead of pasting paths</p></li>
+</ul><p>DOCUMENTATION</p>
+<ul><li><p><code>bsseq</code> added to Suggests to run in examples and vignettes</p></li>
+<li><p>Changed all <code>\dontrun</code> to <code>\donttest</code></p></li>
+<li><p>All vignettes set to BiocStyle</p></li>
+<li><p>BiocFileCache now used for all vignette file downloads</p></li>
+<li><p>Reading the genes file in the “performance” vignette fixed to read only three columns</p></li>
+<li><p>Added more information on bitpacking limits for <code>make_mat_bsseq</code></p></li>
+<li><p>Allowed creation of BSseq objects in data structures vignette</p></li>
+<li><p>Package description updated to add information about methylation support</p></li>
+<li><p>Replaced all references to CpG with more general methylation</p></li>
+<li><p>Added CpH as supported in documentation</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.5" id="iscream-0995">iscream 0.99.5<a class="anchor" aria-label="anchor" href="#iscream-0995"></a></h2>
+<p>INTERNAL</p>
+<ul><li>tabix executable-dependent tests are skipped if tabix is not installed</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.4" id="iscream-0994">iscream 0.99.4<a class="anchor" aria-label="anchor" href="#iscream-0994"></a></h2>
+<ul><li>tabix executable added to <code>SystemRequirements</code>
+</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.1" id="iscream-0991">iscream 0.99.1<a class="anchor" aria-label="anchor" href="#iscream-0991"></a></h2>
+<ul><li>Updated LICENSE files for R CMD check</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.99.0" id="iscream-0990">iscream 0.99.0<a class="anchor" aria-label="anchor" href="#iscream-0990"></a></h2>
+<ul><li>Pre-release for manuscript and Bioconductor review</li>
+</ul></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
