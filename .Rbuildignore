@@ -20,4 +20,3 @@ flake.*
 ^codecov\.yml$
 air.toml
 vignettes/*.nocompute
-vignettes/figure

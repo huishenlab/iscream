@@ -120,7 +120,7 @@ autoplot(bench_1_raw)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="figure/bench_1_raw-1.png" alt="tabix vs scanTabix raw string output on 1 file"  />
+<img src="../man/figures/bench_1_raw-1.png" alt="tabix vs scanTabix raw string output on 1 file"  />
 <p class="caption">tabix vs scanTabix raw string output on 1 file</p>
 </div>
 
@@ -339,7 +339,7 @@ autoplot(bench_1_df)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="figure/bench_1_df-1.png" alt="tabix vs scanTabix parsed data frame from 1 file"  />
+<img src="../man/figures/bench_1_df-1.png" alt="tabix vs scanTabix parsed data frame from 1 file"  />
 <p class="caption">tabix vs scanTabix parsed data frame from 1 file</p>
 </div>
 
@@ -386,7 +386,7 @@ autoplot(bench_30_df)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="figure/bench_30_df-1.png" alt="tabix vs scanTabix parsed data frame from 30 files"  />
+<img src="../man/figures/bench_30_df-1.png" alt="tabix vs scanTabix parsed data frame from 30 files"  />
 <p class="caption">tabix vs scanTabix parsed data frame from 30 files</p>
 </div>
 
@@ -421,8 +421,13 @@ ggplot(bench.dt, aes(x = as.factor(files), y = time / 1000, color = as.factor(pa
   theme_bw()
 ```
 
+```
+## Warning: Removed 1 row containing non-finite outside the scale range
+## (`stat_boxplot()`).
+```
+
 <div class="figure" style="text-align: center">
-<img src="figure/all-1.png" alt="Comparing all benchmarked iscream and Rsamtools querying runtimes"  />
+<img src="../man/figures/all-1.png" alt="Comparing all benchmarked iscream and Rsamtools querying runtimes"  />
 <p class="caption">Comparing all benchmarked iscream and Rsamtools querying runtimes</p>
 </div>
 
@@ -461,7 +466,7 @@ sessionInfo()
 ##  [4] Rsamtools_2.25.3     Biostrings_2.77.2    XVector_0.49.1      
 ##  [7] GenomicRanges_1.61.5 Seqinfo_0.99.2       IRanges_2.43.5      
 ## [10] S4Vectors_0.47.4     BiocGenerics_0.55.1  generics_0.1.4      
-## [13] data.table_1.17.8    iscream_0.99.7       BiocFileCache_2.99.6
+## [13] data.table_1.17.8    iscream_0.99.9       BiocFileCache_2.99.6
 ## [16] dbplyr_2.5.1        
 ## 
 ## loaded via a namespace (and not attached):

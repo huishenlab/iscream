@@ -13,9 +13,10 @@ link-citations: yes
 ```{r, include=FALSE}
 knitr::opts_chunk$set(
   error = TRUE,
-    fig.width = 10,
-    fig.height = 8,
-    fig.align = "center"
+  fig.path = "../man/figures/",
+  fig.width = 10,
+  fig.height = 8,
+  fig.align = "center"
 )
 ```
 

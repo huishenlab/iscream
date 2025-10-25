@@ -10,6 +10,11 @@ vignette: >
 #bibliography: refs.bib
 link-citations: yes
 ---
+
+```{r opts, echo = FALSE}
+knitr::opts_chunk$set(fig.path = "../man/figures/")
+```
+
 The workflow here shows how *iscream* can be used to quickly explore methylation
 profiles of given genomic regions. *iscream's* tabix querying functionality can
 be used to plot methylation profiles around transcription start sites (TSS).
