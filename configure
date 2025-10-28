@@ -6,27 +6,32 @@
 # INCLUDE_DIR and LIB_DIR manually via e.g:
 # R CMD INSTALL --configure-vars='INCLUDE_DIR=/.../include LIB_DIR=/.../lib'
 
+version_greater_equal() {
+    printf '%s\n%s\n' "$2" "$1" | sort --check=quiet --version-sort
+}
+
 checkGCCVersion() {
-    version=$($1 -dumpfullversion | cut -f 1-2 -d .)
-    if awk "BEGIN {exit !($version < $2)}"; then
+    version=$($1 -dumpfullversion)
+    if version_greater_equal "$version" "$2"; then
+      echo "     $CC version $version meets minimum requirements!"
+    else
       echo "------------------------- ANTICONF ERROR ---------------------------"
       echo "Configuration failed because $1 version $version does not meet the minimum version requirement $2 "
       echo "--------------------------------------------------------------------"
       exit 1;
-    else
-      echo "     $CC version meets minimum requirements!"
     fi
 }
 
 checkHtsVersion() {
-    if awk "BEGIN {exit !($version < $1)}"; then
-    version=$(pkg-config --modversion htslib | cut -f 1-2 -d .)
+    version=$(pkg-config --modversion htslib)
+
+    if version_greater_equal "$version" "$1"; then
+      echo "     htslib version $version meets minimum requirements!"
+    else
       echo "------------------------- ANTICONF ERROR ---------------------------"
       echo "Configuration failed because htslib version $version does not meet the minimum version requirement $1"
       echo "--------------------------------------------------------------------"
       exit 1;
-    else
-      echo "     htslib version meets minimum requirements!"
     fi
 }
 
