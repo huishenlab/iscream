@@ -19,8 +19,8 @@ checkGCCVersion() {
 }
 
 checkHtsVersion() {
-    version=$(tabix --version | sed -E '1!d' | cut -f 3 -d ' ' | cut -f 1-2 -d .)
     if awk "BEGIN {exit !($version < $1)}"; then
+    version=$(pkg-config --modversion htslib | cut -f 1-2 -d .)
       echo "------------------------- ANTICONF ERROR ---------------------------"
       echo "Configuration failed because htslib version $version does not meet the minimum version requirement $1"
       echo "--------------------------------------------------------------------"
@@ -102,11 +102,11 @@ else
     checkGCCVersion "$CC" 9.4
 fi
 
-if [ -z "$RHTSLIB_CFLAGS" ] && command -v tabix > /dev/null; then
+if [ -z "$RHTSLIB_CFLAGS" ] && command -v pkg-config > /dev/null; then
     echo "**** Checking htslib version"
     checkHtsVersion 1.17
 else
-    echo "     WARNING: Could not find tabix to check for minimum htslib version - make sure its >= 1.17"
+    echo "     WARNING: Could not find pkg-config to check for minimum htslib version - make sure its >= 1.17"
 fi
 
 # For debugging
