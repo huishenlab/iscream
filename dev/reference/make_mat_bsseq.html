@@ -19,7 +19,7 @@ make_mat_bsseq may be used to create a BSseq object: do.call(BSseq, make_mat_bss
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.11</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -206,11 +206,11 @@ aligner that produced the data.</p>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu">make_mat_bsseq</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:15:35.573523] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:23:35.380900] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:15:35.573922] [iscream::query_all] [info] Creating metadata vectors</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:15:35.573949] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:15:35.573953] [iscream::query_all] [info] Creating dense matrix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:23:35.381266] [iscream::query_all] [info] Creating metadata vectors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:23:35.381296] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:23:35.381301] [iscream::query_all] [info] Creating dense matrix</span>
 <span class="r-in"><span><span class="co"># for BSseq object run</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"bsseq"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">bsseq</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/bsseq/man/BSseq.html" class="external-link">BSseq</a></span>, <span class="va">mat</span><span class="op">)</span></span></span>
