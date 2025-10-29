@@ -3,6 +3,13 @@
 <!-- badges: start -->
 [![R-CMD-check-bioc](https://github.com/huishenlab/iscream/actions/workflows/check-bioc.yml/badge.svg)](https://github.com/huishenlab/iscream/actions/workflows/check-bioc.yml)
 [![Codecov test coverage](https://codecov.io/gh/huishenlab/iscream/graph/badge.svg)](https://app.codecov.io/gh/huishenlab/iscream)
+[![Bioc release status](http://www.bioconductor.org/shields/build/release/bioc/iscream.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/iscream)
+[![Bioc devel status](http://www.bioconductor.org/shields/build/devel/bioc/iscream.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/iscream)
+[![Bioc downloads rank](https://bioconductor.org/shields/downloads/release/iscream.svg)](http://bioconductor.org/packages/stats/bioc/iscream/)
+[![Bioc support](https://bioconductor.org/shields/posts/iscream.svg)](https://support.bioconductor.org/tag/iscream)
+[![Bioc history](https://bioconductor.org/shields/years-in-bioc/iscream.svg)](https://bioconductor.org/packages/release/bioc/html/iscream.html#since)
+[![Bioc last commit](https://bioconductor.org/shields/lastcommit/devel/bioc/iscream.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/iscream/)
+[![Bioc dependencies](https://bioconductor.org/shields/dependencies/release/iscream.svg)](https://bioconductor.org/packages/release/bioc/html/iscream.html#since)
 <!-- badges: end -->
 
 iscream aims to efficiently read data from any BED file into formats usable by
