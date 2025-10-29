@@ -107,11 +107,9 @@ else
     checkGCCVersion "$CC" 9.4
 fi
 
-if [ -z "$RHTSLIB_CFLAGS" ] && command -v pkg-config > /dev/null; then
+if [ -z "$RHTSLIB_CFLAGS" ]; then
     echo "**** Checking htslib version"
     checkHtsVersion 1.17
-else
-    echo "     WARNING: Could not find pkg-config to check for minimum htslib version - make sure its >= 1.17"
 fi
 
 # For debugging
