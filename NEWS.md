@@ -1,3 +1,16 @@
+# iscream 1.1.2
+
+- Fix typo in error message from thread count checks
+
+# iscream 1.1.1
+
+- Fix configure to correctly check htslib version when rhtslib is not used and
+  not issue spurious warnings
+
+# iscream 1.0.0
+
+- First Bioconductor release
+
 # iscream 0.99.9
 
 DOCUMENTATION
