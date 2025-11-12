@@ -120,6 +120,6 @@ check_thread_count <- function(
     msg,
     " system has only ",
     avail_threads,
-    " threads. See parallelly::availableCores(which = 'all') for more informaion on available resources"
+    " threads. See parallelly::availableCores(which = 'all') for more information on available resources"
   )
 }
