@@ -33,7 +33,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.1</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,7 +117,7 @@ libdeflate, run</p>
 <span><span class="co">#&gt; build=configure libcurl=yes S3=yes GCS=yes libdeflate=yes lzma=yes bzip2=yes plugins=no htscodecs=1.6.1</span></span></code></pre></div>
 <p>and check that <code>libdeflate=yes</code>.</p>
 <div class="figure" style="text-align: center">
-<img src="htslib_files/figure-html/unnamed-chunk-2-1.png" alt="Effect of htslib v1.18 source on iscream's 'make_mat()' runtime from one bulk WGBS BED file" width="1800"><p class="caption">
+<img src="htslib_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" alt="Effect of htslib v1.18 source on iscream's 'make_mat()' runtime from one bulk WGBS BED file" width="1800"><p class="caption">
 Effect of htslib v1.18 source on iscream’s ‘make_mat()’ runtime from one
 bulk WGBS BED file
 </p>
@@ -176,7 +176,7 @@ run</p>
 </h2>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R version 4.5.1 (2025-06-13)</span></span>
+<pre><code><span><span class="co">## R version 4.5.2 (2025-10-31)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">## Running under: Ubuntu 24.04.3 LTS</span></span>
 <span><span class="co">## </span></span>
@@ -197,23 +197,23 @@ run</p>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] ggplot2_4.0.0    BiocStyle_2.36.0</span></span>
+<span><span class="co">## [1] ggplot2_4.0.0    BiocStyle_2.38.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] gtable_0.3.6        jsonlite_2.0.0      dplyr_1.1.4        </span></span>
-<span><span class="co">##  [4] compiler_4.5.1      BiocManager_1.30.26 tidyselect_1.2.1   </span></span>
+<span><span class="co">##  [4] compiler_4.5.2      BiocManager_1.30.26 tidyselect_1.2.1   </span></span>
 <span><span class="co">##  [7] jquerylib_0.1.4     systemfonts_1.3.1   scales_1.4.0       </span></span>
 <span><span class="co">## [10] textshaping_1.0.4   yaml_2.3.10         fastmap_1.2.0      </span></span>
 <span><span class="co">## [13] R6_2.6.1            labeling_0.4.3      generics_0.1.4     </span></span>
 <span><span class="co">## [16] knitr_1.50          tibble_3.3.0        bookdown_0.45      </span></span>
 <span><span class="co">## [19] desc_1.4.3          bslib_0.9.0         pillar_1.11.1      </span></span>
 <span><span class="co">## [22] RColorBrewer_1.1-3  rlang_1.1.6         cachem_1.1.0       </span></span>
-<span><span class="co">## [25] xfun_0.53           fs_1.6.6            sass_0.4.10        </span></span>
-<span><span class="co">## [28] S7_0.2.0            cli_3.6.5           pkgdown_2.1.3      </span></span>
-<span><span class="co">## [31] withr_3.0.2         magrittr_2.0.4      digest_0.6.37      </span></span>
-<span><span class="co">## [34] grid_4.5.1          lifecycle_1.0.4     vctrs_0.6.5        </span></span>
+<span><span class="co">## [25] xfun_0.54           fs_1.6.6            sass_0.4.10        </span></span>
+<span><span class="co">## [28] S7_0.2.0            cli_3.6.5           pkgdown_2.2.0      </span></span>
+<span><span class="co">## [31] withr_3.0.2         magrittr_2.0.4      digest_0.6.38      </span></span>
+<span><span class="co">## [34] grid_4.5.2          lifecycle_1.0.4     vctrs_0.6.5        </span></span>
 <span><span class="co">## [37] evaluate_1.0.5      glue_1.8.0          farver_2.1.2       </span></span>
-<span><span class="co">## [40] ragg_1.5.0          rmarkdown_2.30      tools_4.5.1        </span></span>
+<span><span class="co">## [40] ragg_1.5.0          rmarkdown_2.30      tools_4.5.2        </span></span>
 <span><span class="co">## [43] pkgconfig_2.0.3     htmltools_0.5.8.1</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -227,7 +227,7 @@ run</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

@@ -15,7 +15,7 @@ Parallelized across files using threads from the "iscream.threads" option.'><met
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.1</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -205,9 +205,9 @@ name to <code>feature_col</code>. See examples.</p>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"cov"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:35:16.201147] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:35:16.201163] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:35:16.201166] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:40:00.285775] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:40:00.285790] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:40:00.285794] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       feature file beta.sum cov.sum beta.mean cov.mean beta.median cov.median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6    a      2.0       4 0.6666667 1.333333        1.00        1.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10    a      0.5       3 0.2500000 1.500000        0.25        1.5</span>
@@ -256,9 +256,9 @@ name to <code>feature_col</code>. See examples.</p>
 <span class="r-in"><span>  columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"cov"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:35:16.223007] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:35:16.223022] [iscream::summarize_regions] [info] using mean, stddev</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:35:16.223025] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:40:00.305708] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:40:00.305721] [iscream::summarize_regions] [info] using mean, stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:40:00.305724] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       feature file beta.mean cov.mean beta.stddev cov.stddev</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6    a 0.6666667 1.333333   0.5773503  0.5773503</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10    a 0.2500000 1.500000   0.3535534  0.7071068</span>
@@ -282,9 +282,9 @@ name to <code>feature_col</code>. See examples.</p>
 <span class="r-in"><span>  columns <span class="op">=</span> <span class="fl">5</span>,</span></span>
 <span class="r-in"><span>  col_names <span class="op">=</span> <span class="st">"coverage"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:35:16.229429] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:35:16.229444] [iscream::summarize_regions] [info] using sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:35:16.229447] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:40:00.312894] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:40:00.312908] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:40:00.312911] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    feature file coverage.sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        A    a            4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        B    a            3</span>
@@ -322,9 +322,9 @@ name to <code>feature_col</code>. See examples.</p>
 <span class="r-in"><span>  col_names <span class="op">=</span> <span class="st">"coverage"</span>,</span></span>
 <span class="r-in"><span>  feature_col <span class="op">=</span> <span class="st">"feature"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:35:16.250805] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:35:16.250823] [iscream::summarize_regions] [info] using sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:35:16.250827] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:40:00.332404] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:40:00.332417] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20:40:00.332420] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    feature file coverage.sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        A    a            4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        B    a            3</span>
@@ -349,7 +349,7 @@ name to <code>feature_col</code>. See examples.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
