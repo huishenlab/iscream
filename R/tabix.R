@@ -2,12 +2,12 @@
 #' @param bedfiles The BED files to be queried
 #' @param regions A vector, data frame or GenomicRanges of genomic regions. See
 #' details.
-#' @param aligner The aligner used to produce the BED files - one of "biscuit",
-#' "bismark", "bsbolt". Will set the result data.table's column names based on
-#' this argument.
+#' @param aligner The bisulfite aligner used to produce the BED files - one of
+#' "biscuit", "bismark", "bsbolt". Will set the result data.table's column
+#' names based on this argument.
 #' @param col.names A vector of column names for the data columns of the
-#' result.table, not including "chr", "start", and "end". Set if your BED file
-#' is not from the supported aligners or is a general BED file.
+#' result, not including "chr", "start", and "end". Set for non-WGBS BED files
+#' or WGBS BED files not from the supported aligners.
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
