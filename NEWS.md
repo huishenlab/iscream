@@ -1,5 +1,10 @@
 # iscream 1.1.2
 
+- Document how to make use of strand information with `tabix()`
+- Improve wording of `tabix()`'s' `aligner` and `col.names` documentation
+
+# iscream 1.1.2
+
 - Fix typo in error message from thread count checks
 
 # iscream 1.1.1
