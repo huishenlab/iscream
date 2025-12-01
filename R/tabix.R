@@ -7,7 +7,9 @@
 #' names based on this argument.
 #' @param col.names A vector of column names for the data columns of the
 #' result, not including "chr", "start", and "end". Set for non-WGBS BED files
-#' or WGBS BED files not from the supported aligners.
+#' or WGBS BED files not from the supported aligners. If the BED files have a
+#' strand column, use "strand" and `tabix_gr` will use it in the output GRanges
+#' object.
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'

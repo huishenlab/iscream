@@ -31,7 +31,9 @@ names based on this argument.}
 
 \item{col.names}{A vector of column names for the data columns of the
 result, not including "chr", "start", and "end". Set for non-WGBS BED files
-or WGBS BED files not from the supported aligners.}
+or WGBS BED files not from the supported aligners. If the BED files have a
+strand column, use "strand" and \code{tabix_gr} will use it in the output GRanges
+object.}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
