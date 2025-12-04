@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,15 +88,17 @@ details.</p></dd>
 
 
 <dt id="arg-aligner">aligner<a class="anchor" aria-label="anchor" href="#arg-aligner"></a></dt>
-<dd><p>The aligner used to produce the BED files - one of "biscuit",
-"bismark", "bsbolt". Will set the result data.table's column names based on
-this argument.</p></dd>
+<dd><p>The bisulfite aligner used to produce the BED files - one of
+"biscuit", "bismark", "bsbolt". Will set the result data.table's column
+names based on this argument.</p></dd>
 
 
 <dt id="arg-col-names">col.names<a class="anchor" aria-label="anchor" href="#arg-col-names"></a></dt>
 <dd><p>A vector of column names for the data columns of the
-result.table, not including "chr", "start", and "end". Set if your BED file
-is not from the supported aligners or is a general BED file.</p></dd>
+result, not including "chr", "start", and "end". Set for non-WGBS BED files
+or WGBS BED files not from the supported aligners. If the BED files have a
+strand column, use "strand" and <code>tabix_gr</code> will use it in the output GRanges
+object.</p></dd>
 
 
 <dt id="arg-nthreads">nthreads<a class="anchor" aria-label="anchor" href="#arg-nthreads"></a></dt>

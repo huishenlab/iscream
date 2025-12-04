@@ -2,6 +2,14 @@
 
 ## iscream 1.1.2
 
+- Document how to make use of strand information with
+  [`tabix()`](https://huishenlab.github.io/iscream/dev/reference/tabix.md)
+- Improve wording of
+  [`tabix()`](https://huishenlab.github.io/iscream/dev/reference/tabix.md)‘s’
+  `aligner` and `col.names` documentation
+
+## iscream 1.1.2
+
 - Fix typo in error message from thread count checks
 
 ## iscream 1.1.1

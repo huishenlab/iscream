@@ -31,15 +31,17 @@ tabix_raw(bedfiles, regions, nthreads = NULL)
 
 - aligner:
 
-  The aligner used to produce the BED files - one of "biscuit",
-  "bismark", "bsbolt". Will set the result data.table's column names
-  based on this argument.
+  The bisulfite aligner used to produce the BED files - one of
+  "biscuit", "bismark", "bsbolt". Will set the result data.table's
+  column names based on this argument.
 
 - col.names:
 
-  A vector of column names for the data columns of the result.table, not
-  including "chr", "start", and "end". Set if your BED file is not from
-  the supported aligners or is a general BED file.
+  A vector of column names for the data columns of the result, not
+  including "chr", "start", and "end". Set for non-WGBS BED files or
+  WGBS BED files not from the supported aligners. If the BED files have
+  a strand column, use "strand" and `tabix_gr` will use it in the output
+  GRanges object.
 
 - nthreads:
 
