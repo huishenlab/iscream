@@ -50,10 +50,8 @@ get_granges_string <- function(gr, feature_col = NULL) {
 #' (df <- data.frame(chr = c("chr1", "chr2"), start = c(1, 5), end = c(4, 10)))
 #' get_df_string(df)
 get_df_string <- function(regions_df, feature_col = NULL) {
-  colnames.check <- colnames(regions_df)[seq_len(3)]
-  stopifnot(
-    "colnames must be 'chr', 'start' and 'end'" = colnames.check == c("chr", "start", "end")
-  )
+  validate_region_df(regions_df)
+  colnames(regions_df)[1] <- "chr"
   chr <- start <- end <- NULL
   regions.dt <- setDT(regions_df)
   regions <- regions.dt[, paste0(chr, ":", start, "-", end)]
@@ -61,6 +59,14 @@ get_df_string <- function(regions_df, feature_col = NULL) {
     names(regions) <- regions_df[[feature_col]]
   }
   return(regions)
+}
+
+validate_region_df <- function(df) {
+  names_check <- colnames(df)[seq_len(3)]
+  chr <- colnames(df)[1] == "chr" || colnames(df)[1] == "seqnames"
+  start <- colnames(df)[2] == "start"
+  end <- colnames(df)[3] == "end"
+  stopifnot("colnames must be 'chr', 'start' and 'end'" = chr && start && end)
 }
 
 get_df_from_string <- function(regions) {
