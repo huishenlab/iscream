@@ -114,10 +114,10 @@ summarize_regions <- function(
   supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "count")
 
   fun_to_use <- validate_summary_function(fun, supported_funcs)
+  verify_files_or_stop(bedfiles, verify_tabix = TRUE)
 
   col_names <- col_names %||% paste0("V", seq_len(length(columns)))
 
-  verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   if (is(regions, "GRanges")) {
     regions <- get_granges_string(regions)
   } else if ("data.frame" %in% class(regions)) {
