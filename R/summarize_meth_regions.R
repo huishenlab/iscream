@@ -45,19 +45,7 @@ summarize_meth_regions <- function(
 ) {
   supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "count")
 
-  if (length(fun) > 1) {
-    if ("all" %in% fun) {
-      stop("'all' can't be used with other summary funcions")
-    }
-    stopifnot("Selected function not supported" = all(fun %in% supported_funcs))
-    fun_to_use <- fun
-  } else {
-    stopifnot("Selected function not supported" = fun %in% c(supported_funcs, "all"))
-    fun_to_use <- supported_funcs
-    if (fun != "all") {
-      fun_to_use <- fun
-    }
-  }
+  fun_to_use <- validate_summary_function(fun, supported_funcs)
 
   if (aligner != "general") {
     col_names <- c("coverage", ifelse(mval, "M", "beta"))
