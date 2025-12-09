@@ -56,11 +56,8 @@ summarize_meth_regions <- function(
   verify_aligner_or_stop(aligner)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   verify_filetype(bedfiles, aligner, stop_on_error = TRUE)
-  if (is(regions, "GRanges")) {
-    regions <- get_granges_string(regions)
-  } else if ("data.frame" %in% class(regions)) {
-    regions <- get_df_string(regions, feature_col)
-  }
+
+  regions <- get_named_regions(regions, feature_col)
 
   n_threads <- .get_threads(nthreads)
   validate_log_level(n_threads = n_threads)
