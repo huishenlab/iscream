@@ -57,7 +57,7 @@ summarize_meth_regions <- function(
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   verify_filetype(bedfiles, aligner, stop_on_error = TRUE)
 
-  regions <- get_named_regions(regions, feature_col)
+  regions <- get_string_input_regions(regions, feature_col)
 
   n_threads <- .get_threads(nthreads)
   validate_log_level(n_threads = n_threads)

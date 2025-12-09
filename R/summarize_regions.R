@@ -117,7 +117,7 @@ summarize_regions <- function(
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
 
   col_names <- col_names %||% paste0("V", seq_len(length(columns)))
-  regions <- get_named_regions(regions, feature_col)
+  regions <- get_string_input_regions(regions, feature_col)
   if (is(regions, "GRanges")) {
     regions <- get_granges_string(regions)
   } else if ("data.frame" %in% class(regions)) {
@@ -167,16 +167,4 @@ validate_summary_function <- function(fun, supported_funcs) {
     }
   }
   fun_to_use
-}
-
-#' Return region strings from GRanges or data.frame region inputs
-#' @keywords internal
-get_named_regions <- function(regions, feature_col) {
-  if (is(regions, "GRanges")) {
-    get_granges_string(regions, feature_col)
-  } else if (is(regions, "data.frame")) {
-    get_df_string(regions, feature_col)
-  } else {
-    regions
-  }
 }
