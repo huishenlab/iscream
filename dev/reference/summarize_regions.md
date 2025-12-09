@@ -72,6 +72,10 @@ A data.frame
 
 - Median: `"median"`
 
+- Mod: `"mode"`
+
+- Anti-mode: `"antimode"`
+
 - Standard deviation: `"stddev"`
 
 - Variance: `"variance"`
@@ -82,9 +86,15 @@ A data.frame
 
 - Range: `"range"`
 
+- First element: `"first"`
+
+- Last element: `"last"`
+
 - No. of records in the region: `"count"`
 
-The summarizing computations are backed by the Armadillo library. See
+- No. of records in the region with unique data values: `"count_unique"`
+
+Most summarizing computations are backed by the Armadillo library. See
 <https://arma.sourceforge.net/docs.html#stats_fns> for futher details on
 the supported functions
 
@@ -156,9 +166,9 @@ lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 # make a vector of regions
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 summarize_regions(bedfiles, regions, columns = c(4, 5), col_names = c("beta", "cov"))
-#> [17:58:26.277144] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [17:58:26.277159] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count
-#> [17:58:26.277163] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov
+#> [16:30:42.335044] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [16:30:42.335059] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, range, first, last, count_unique, count
+#> [16:30:42.335063] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov
 #>       feature file beta.sum cov.sum beta.mean cov.mean beta.median cov.median
 #> 1    chr1:1-6    a      2.0       4 0.6666667 1.333333        1.00        1.0
 #> 2   chr1:7-10    a      0.5       3 0.2500000 1.500000        0.25        1.5
@@ -172,32 +182,58 @@ summarize_regions(bedfiles, regions, columns = c(4, 5), col_names = c("beta", "c
 #> 10   chr1:1-6    d      2.0       3 1.0000000 1.500000        1.00        1.5
 #> 11  chr1:7-10    d      0.5       3 0.2500000 1.500000        0.25        1.5
 #> 12 chr1:11-14    d      1.0       1 1.0000000 1.000000        1.00        1.0
-#>    beta.stddev cov.stddev beta.variance cov.variance beta.min cov.min beta.max
-#> 1    0.5773503  0.5773503     0.3333333    0.3333333        0       1      1.0
-#> 2    0.3535534  0.7071068     0.1250000    0.5000000        0       1      0.5
-#> 3    0.0000000  0.7071068     0.0000000    0.5000000        1       2      1.0
-#> 4    0.7071068  0.0000000     0.5000000    0.0000000        0       2      1.0
-#> 5    0.0000000  0.0000000     0.0000000    0.0000000        1       1      1.0
-#> 6    0.7071068  0.7071068     0.5000000    0.5000000        0       1      1.0
-#> 7    0.0000000  0.0000000     0.0000000    0.0000000        1       2      1.0
-#> 8    0.7071068  0.7071068     0.5000000    0.5000000        0       1      1.0
-#> 9           NA         NA            NA           NA       NA      NA       NA
-#> 10   0.0000000  0.7071068     0.0000000    0.5000000        1       1      1.0
-#> 11   0.3535534  0.7071068     0.1250000    0.5000000        0       1      0.5
-#> 12   0.0000000  0.0000000     0.0000000    0.0000000        1       1      1.0
-#>    cov.max beta.range cov.range count
-#> 1        2        1.0         1     3
-#> 2        2        0.5         1     2
-#> 3        3        0.0         1     2
-#> 4        2        1.0         0     2
-#> 5        1        0.0         0     1
-#> 6        2        1.0         1     2
-#> 7        2        0.0         0     1
-#> 8        2        1.0         1     2
-#> 9       NA         NA        NA    NA
-#> 10       2        0.0         1     2
-#> 11       2        0.5         1     2
-#> 12       1        0.0         0     1
+#>    beta.mode cov.mode beta.antimode cov.antimode beta.stddev cov.stddev
+#> 1        1.0        1           0.0            2   0.5773503  0.5773503
+#> 2        0.5        2           0.5            2   0.3535534  0.7071068
+#> 3        1.0        3           1.0            3   0.0000000  0.7071068
+#> 4        1.0        2           1.0            2   0.7071068  0.0000000
+#> 5        1.0        1           1.0            1   0.0000000  0.0000000
+#> 6        1.0        1           1.0            1   0.7071068  0.7071068
+#> 7        1.0        2           1.0            2   0.0000000  0.0000000
+#> 8        1.0        1           1.0            1   0.7071068  0.7071068
+#> 9         NA       NA            NA           NA          NA         NA
+#> 10       1.0        2           1.0            2   0.0000000  0.7071068
+#> 11       0.5        2           0.5            2   0.3535534  0.7071068
+#> 12       1.0        1           1.0            1   0.0000000  0.0000000
+#>    beta.variance cov.variance beta.min cov.min beta.max cov.max beta.range
+#> 1      0.3333333    0.3333333        0       1      1.0       2        1.0
+#> 2      0.1250000    0.5000000        0       1      0.5       2        0.5
+#> 3      0.0000000    0.5000000        1       2      1.0       3        0.0
+#> 4      0.5000000    0.0000000        0       2      1.0       2        1.0
+#> 5      0.0000000    0.0000000        1       1      1.0       1        0.0
+#> 6      0.5000000    0.5000000        0       1      1.0       2        1.0
+#> 7      0.0000000    0.0000000        1       2      1.0       2        0.0
+#> 8      0.5000000    0.5000000        0       1      1.0       2        1.0
+#> 9             NA           NA       NA      NA       NA      NA         NA
+#> 10     0.0000000    0.5000000        1       1      1.0       2        0.0
+#> 11     0.1250000    0.5000000        0       1      0.5       2        0.5
+#> 12     0.0000000    0.0000000        1       1      1.0       1        0.0
+#>    cov.range beta.first cov.first beta.last cov.last beta.count_unique
+#> 1          1          1         1       0.0        2                 2
+#> 2          1          0         1       0.5        2                 2
+#> 3          1          1         2       1.0        3                 1
+#> 4          0          0         2       1.0        2                 2
+#> 5          0          1         1       1.0        1                 1
+#> 6          1          0         2       1.0        1                 2
+#> 7          0          1         2       1.0        2                 1
+#> 8          1          0         2       1.0        1                 2
+#> 9         NA         NA        NA        NA       NA                NA
+#> 10         1          1         1       1.0        2                 1
+#> 11         1          0         1       0.5        2                 2
+#> 12         0          1         1       1.0        1                 1
+#>    cov.count_unique count
+#> 1                 2     3
+#> 2                 2     2
+#> 3                 2     2
+#> 4                 1     2
+#> 5                 1     1
+#> 6                 2     2
+#> 7                 1     1
+#> 8                 2     2
+#> 9                NA    NA
+#> 10                2     2
+#> 11                2     2
+#> 12                1     1
 
 # select functions
 summarize_regions(
@@ -207,9 +243,9 @@ summarize_regions(
   columns = c(4, 5),
   col_names = c("beta", "cov")
 )
-#> [17:58:26.298177] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [17:58:26.298192] [iscream::summarize_regions] [info] using mean, stddev
-#> [17:58:26.298196] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov
+#> [16:30:42.363269] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [16:30:42.363285] [iscream::summarize_regions] [info] using mean, stddev
+#> [16:30:42.363289] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov
 #>       feature file beta.mean cov.mean beta.stddev cov.stddev
 #> 1    chr1:1-6    a 0.6666667 1.333333   0.5773503  0.5773503
 #> 2   chr1:7-10    a 0.2500000 1.500000   0.3535534  0.7071068
@@ -233,9 +269,9 @@ summarize_regions(
   columns = 5,
   col_names = "coverage"
 )
-#> [17:58:26.304604] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [17:58:26.304618] [iscream::summarize_regions] [info] using sum
-#> [17:58:26.304622] [iscream::summarize_regions] [info] with columns 5 as coverage
+#> [16:30:42.368323] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [16:30:42.368337] [iscream::summarize_regions] [info] using sum
+#> [16:30:42.368340] [iscream::summarize_regions] [info] with columns 5 as coverage
 #>    feature file coverage.sum
 #> 1        A    a            4
 #> 2        B    a            3
@@ -273,9 +309,9 @@ summarize_regions(
   col_names = "coverage",
   feature_col = "feature"
 )
-#> [17:58:26.326406] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [17:58:26.326426] [iscream::summarize_regions] [info] using sum
-#> [17:58:26.326430] [iscream::summarize_regions] [info] with columns 5 as coverage
+#> [16:30:42.385955] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [16:30:42.385972] [iscream::summarize_regions] [info] using sum
+#> [16:30:42.385975] [iscream::summarize_regions] [info] with columns 5 as coverage
 #>    feature file coverage.sum
 #> 1        A    a            4
 #> 2        B    a            3

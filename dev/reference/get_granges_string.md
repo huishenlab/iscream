@@ -8,7 +8,7 @@ corrected to `chr:start-start`.
 ## Usage
 
 ``` r
-get_granges_string(gr)
+get_granges_string(gr, feature_col = NULL)
 ```
 
 ## Arguments

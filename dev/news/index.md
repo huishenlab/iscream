@@ -1,6 +1,26 @@
 # Changelog
 
-## iscream 1.1.2
+## iscream 1.1.5
+
+- [`get_granges_string()`](https://huishenlab.github.io/iscream/dev/reference/get_granges_string.md)
+  can now extract names from its `mcols` using a `feature_col` argument
+  as in
+  [`get_df_string()`](https://huishenlab.github.io/iscream/dev/reference/get_df_string.md) -
+  names were previously pulled only from
+  [`names()`](https://rdrr.io/r/base/names.html). This means GRanges
+  inputs to
+  [`summarize_regions()`](https://huishenlab.github.io/iscream/dev/reference/summarize_regions.md)
+  can have the `feature_col` in its `mcols` rather than just as its
+  names.
+
+- Refactored `summarize_regions` to collect similar validation and
+  regions parsing functions
+
+## iscream 1.1.4
+
+- Reduced the minimum R version from 4.5 to 4.4
+
+## iscream 1.1.3
 
 - Document how to make use of strand information with
   [`tabix()`](https://huishenlab.github.io/iscream/dev/reference/tabix.md)

@@ -15,7 +15,7 @@ Parallelized across files using threads from the "iscream.threads" option.'><met
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.4</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,13 +127,18 @@ the regions strings rownames and the feature names. See details.</p></dd>
 <ul><li><p>Sum: <code>"sum"</code></p></li>
 <li><p>Mean: <code>"mean"</code></p></li>
 <li><p>Median: <code>"median"</code></p></li>
+<li><p>Mod: <code>"mode"</code></p></li>
+<li><p>Anti-mode: <code>"antimode"</code></p></li>
 <li><p>Standard deviation: <code>"stddev"</code></p></li>
 <li><p>Variance: <code>"variance"</code></p></li>
 <li><p>Minimum: <code>"min"</code></p></li>
 <li><p>Maximum: <code>"max"</code></p></li>
 <li><p>Range: <code>"range"</code></p></li>
+<li><p>First element: <code>"first"</code></p></li>
+<li><p>Last element: <code>"last"</code></p></li>
 <li><p>No. of records in the region: <code>"count"</code></p></li>
-</ul><p>The summarizing computations are backed by the Armadillo library. See
+<li><p>No. of records in the region with unique data values: <code>"count_unique"</code></p></li>
+</ul><p>Most summarizing computations are backed by the Armadillo library. See
 <a href="https://arma.sourceforge.net/docs.html#stats_fns" class="external-link">https://arma.sourceforge.net/docs.html#stats_fns</a> for futher details on the
 supported functions</p>
     </div>
@@ -205,9 +210,9 @@ name to <code>feature_col</code>. See examples.</p>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"cov"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:58:26.277144] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:58:26.277159] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:58:26.277163] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:30:42.335044] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:30:42.335059] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, range, first, last, count_unique, count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:30:42.335063] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       feature file beta.sum cov.sum beta.mean cov.mean beta.median cov.median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6    a      2.0       4 0.6666667 1.333333        1.00        1.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10    a      0.5       3 0.2500000 1.500000        0.25        1.5</span>
@@ -221,32 +226,58 @@ name to <code>feature_col</code>. See examples.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10   chr1:1-6    d      2.0       3 1.0000000 1.500000        1.00        1.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11  chr1:7-10    d      0.5       3 0.2500000 1.500000        0.25        1.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12 chr1:11-14    d      1.0       1 1.0000000 1.000000        1.00        1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    beta.stddev cov.stddev beta.variance cov.variance beta.min cov.min beta.max</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.5773503  0.5773503     0.3333333    0.3333333        0       1      1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    0.3535534  0.7071068     0.1250000    0.5000000        0       1      0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    0.0000000  0.7071068     0.0000000    0.5000000        1       2      1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    0.7071068  0.0000000     0.5000000    0.0000000        0       2      1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    0.0000000  0.0000000     0.0000000    0.0000000        1       1      1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    0.7071068  0.7071068     0.5000000    0.5000000        0       1      1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    0.0000000  0.0000000     0.0000000    0.0000000        1       2      1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    0.7071068  0.7071068     0.5000000    0.5000000        0       1      1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9           NA         NA            NA           NA       NA      NA       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   0.0000000  0.7071068     0.0000000    0.5000000        1       1      1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11   0.3535534  0.7071068     0.1250000    0.5000000        0       1      0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12   0.0000000  0.0000000     0.0000000    0.0000000        1       1      1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    cov.max beta.range cov.range count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        2        1.0         1     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        2        0.5         1     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        3        0.0         1     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        2        1.0         0     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        1        0.0         0     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        2        1.0         1     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        2        0.0         0     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        2        1.0         1     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9       NA         NA        NA    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10       2        0.0         1     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11       2        0.5         1     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12       1        0.0         0     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    beta.mode cov.mode beta.antimode cov.antimode beta.stddev cov.stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1.0        1           0.0            2   0.5773503  0.5773503</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        0.5        2           0.5            2   0.3535534  0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        1.0        3           1.0            3   0.0000000  0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        1.0        2           1.0            2   0.7071068  0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        1.0        1           1.0            1   0.0000000  0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        1.0        1           1.0            1   0.7071068  0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        1.0        2           1.0            2   0.0000000  0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        1.0        1           1.0            1   0.7071068  0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9         NA       NA            NA           NA          NA         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10       1.0        2           1.0            2   0.0000000  0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11       0.5        2           0.5            2   0.3535534  0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12       1.0        1           1.0            1   0.0000000  0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    beta.variance cov.variance beta.min cov.min beta.max cov.max beta.range</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0.3333333    0.3333333        0       1      1.0       2        1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.1250000    0.5000000        0       1      0.5       2        0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.0000000    0.5000000        1       2      1.0       3        0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      0.5000000    0.0000000        0       2      1.0       2        1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.0000000    0.0000000        1       1      1.0       1        0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.5000000    0.5000000        0       1      1.0       2        1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      0.0000000    0.0000000        1       2      1.0       2        0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      0.5000000    0.5000000        0       1      1.0       2        1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9             NA           NA       NA      NA       NA      NA         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     0.0000000    0.5000000        1       1      1.0       2        0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     0.1250000    0.5000000        0       1      0.5       2        0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     0.0000000    0.0000000        1       1      1.0       1        0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    cov.range beta.first cov.first beta.last cov.last beta.count_unique</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          1          1         1       0.0        2                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          1          0         1       0.5        2                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          1          1         2       1.0        3                 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          0          0         2       1.0        2                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          0          1         1       1.0        1                 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6          1          0         2       1.0        1                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7          0          1         2       1.0        2                 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8          1          0         2       1.0        1                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9         NA         NA        NA        NA       NA                NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10         1          1         1       1.0        2                 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11         1          0         1       0.5        2                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12         0          1         1       1.0        1                 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    cov.count_unique count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 2     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                 1     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                 2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                 1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                 2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                NA    NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11                2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                1     1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># select functions</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span></span></span>
@@ -256,9 +287,9 @@ name to <code>feature_col</code>. See examples.</p>
 <span class="r-in"><span>  columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"cov"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:58:26.298177] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:58:26.298192] [iscream::summarize_regions] [info] using mean, stddev</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:58:26.298196] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:30:42.363269] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:30:42.363285] [iscream::summarize_regions] [info] using mean, stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:30:42.363289] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       feature file beta.mean cov.mean beta.stddev cov.stddev</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6    a 0.6666667 1.333333   0.5773503  0.5773503</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10    a 0.2500000 1.500000   0.3535534  0.7071068</span>
@@ -282,9 +313,9 @@ name to <code>feature_col</code>. See examples.</p>
 <span class="r-in"><span>  columns <span class="op">=</span> <span class="fl">5</span>,</span></span>
 <span class="r-in"><span>  col_names <span class="op">=</span> <span class="st">"coverage"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:58:26.304604] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:58:26.304618] [iscream::summarize_regions] [info] using sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:58:26.304622] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:30:42.368323] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:30:42.368337] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:30:42.368340] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    feature file coverage.sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        A    a            4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        B    a            3</span>
@@ -322,9 +353,9 @@ name to <code>feature_col</code>. See examples.</p>
 <span class="r-in"><span>  col_names <span class="op">=</span> <span class="st">"coverage"</span>,</span></span>
 <span class="r-in"><span>  feature_col <span class="op">=</span> <span class="st">"feature"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:58:26.326406] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:58:26.326426] [iscream::summarize_regions] [info] using sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17:58:26.326430] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:30:42.385955] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:30:42.385972] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16:30:42.385975] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    feature file coverage.sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        A    a            4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        B    a            3</span>
