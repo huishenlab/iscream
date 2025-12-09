@@ -96,7 +96,7 @@ get_df_input_regions <- function(regions) {
     regions_df <- as.data.table(regions)[, 1:3]
     colnames(regions_df)[1] <- "chr"
     return(regions_df)
-  } else if ("data.frame" %in% class(regions)) {
+  } else if (is(regions, "data.frame")) {
     regions
   } else {
     get_df_from_string(regions)
