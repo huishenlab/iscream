@@ -17,6 +17,10 @@ get_granges_string(gr, feature_col = NULL)
 
   A GRanges object
 
+- feature_col:
+
+  The `mcols` column to use as the names of the output string vector
+
 ## Value
 
 A character vector
