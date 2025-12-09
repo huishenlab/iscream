@@ -173,7 +173,7 @@ validate_summary_function <- function(fun, supported_funcs) {
 #' @keywords internal
 get_named_regions <- function(regions, feature_col) {
   if (is(regions, "GRanges")) {
-    get_granges_string(regions)
+    get_granges_string(regions, feature_col)
   } else if (is(regions, "data.frame")) {
     get_df_string(regions, feature_col)
   } else {

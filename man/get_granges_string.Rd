@@ -4,10 +4,12 @@
 \alias{get_granges_string}
 \title{GRanges to region strings}
 \usage{
-get_granges_string(gr)
+get_granges_string(gr, feature_col = NULL)
 }
 \arguments{
 \item{gr}{A GRanges object}
+
+\item{feature_col}{The \code{mcols} column to use as the names of the output string vector}
 }
 \value{
 A character vector

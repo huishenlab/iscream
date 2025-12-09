@@ -25,6 +25,7 @@ verify_aligner_or_stop <- function(aligner) {
 #' `chr:start-start`.
 #'
 #' @param gr A GRanges object
+#' @param feature_col The `mcols` column to use as the names of the output string vector
 #' @returns A character vector
 #'
 #' @export
@@ -32,7 +33,7 @@ verify_aligner_or_stop <- function(aligner) {
 #' if (requireNamespace("GenomicRanges", quietly = TRUE)) {
 #'   get_granges_string(GenomicRanges::GRanges(c("chr1:1-10", "chr2:15-20")))
 #' }
-get_granges_string <- function(gr) {
+get_granges_string <- function(gr, feature_col = NULL) {
   if (!requireNamespace("GenomicRanges", quietly = TRUE)) {
     stop("The 'GenomicRanges' package must be installed for this functionality")
   }
@@ -44,7 +45,11 @@ get_granges_string <- function(gr) {
     message("Corrected ", single_count, " invalid 'chr:start' region strings to 'chr:start-start'")
   }
 
-  names(region_str) <- names(gr)
+  if (!is.null(feature_col) && feature_col %in% colnames(GenomicRanges::mcols(gr))) {
+    names(region_str) <- GenomicRanges::mcols(gr)[, feature_col]
+  } else {
+    names(region_str) <- names(gr)
+  }
   region_str
 }
 
