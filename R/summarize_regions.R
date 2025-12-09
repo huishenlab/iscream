@@ -111,21 +111,21 @@ summarize_regions <- function(
   set_region_rownames = FALSE,
   nthreads = NULL
 ) {
-  supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "count")
-
-  fun_to_use <- validate_summary_function(fun, supported_funcs)
+  n_threads <- .get_threads(nthreads)
+  validate_log_level(n_threads = n_threads)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
 
-  col_names <- col_names %||% paste0("V", seq_len(length(columns)))
+  supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "count")
+  fun_to_use <- validate_summary_function(fun, supported_funcs)
+
   regions <- get_string_input_regions(regions, feature_col)
+
+  col_names <- col_names %||% paste0("V", seq_len(length(columns)))
   if (is(regions, "GRanges")) {
     regions <- get_granges_string(regions)
   } else if ("data.frame" %in% class(regions)) {
     regions <- get_df_string(regions, feature_col)
   }
-
-  n_threads <- .get_threads(nthreads)
-  validate_log_level(n_threads = n_threads)
 
   df <- Cpp_summarize_regions(
     bedfiles = bedfiles,
