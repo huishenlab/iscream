@@ -1,4 +1,8 @@
-# iscream 1.1.2
+# iscream 1.1.4
+
+- Reduced the minimum R version from 4.5 to 4.4
+
+# iscream 1.1.3
 
 - Document how to make use of strand information with `tabix()`
 - Improve wording of `tabix()`'s' `aligner` and `col.names` documentation
