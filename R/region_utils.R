@@ -76,3 +76,29 @@ getGR <- function(chr, pos) {
     GenomicRanges::GRanges(chr, IRanges::IRanges(pos, pos, width = 1))
   }
 }
+
+#' Return region strings from GRanges or data.frame region inputs
+#' @keywords internal
+get_string_input_regions <- function(regions, feature_col = NULL) {
+  if (is(regions, "GRanges")) {
+    get_granges_string(regions, feature_col)
+  } else if (is(regions, "data.frame")) {
+    get_df_string(regions, feature_col)
+  } else {
+    regions
+  }
+}
+
+#' Return data.frame from string region inputs to write to disk
+#' @keywords internal
+get_df_input_regions <- function(regions) {
+  if (is(regions, "GRanges")) {
+    regions_df <- as.data.table(regions)[, 1:3]
+    colnames(regions_df)[1] <- "chr"
+    return(regions_df)
+  } else if ("data.frame" %in% class(regions)) {
+    regions
+  } else {
+    get_df_from_string(regions)
+  }
+}

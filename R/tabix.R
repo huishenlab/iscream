@@ -194,29 +194,6 @@ run_scan_tabix <- function(bedfiles, input_regions, nthreads) {
 }
 
 # helpers
-
-get_string_input_regions <- function(regions) {
-  if (is(regions, "GRanges")) {
-    get_granges_string(regions)
-  } else if ("data.frame" %in% class(regions)) {
-    get_df_string(regions)
-  } else {
-    regions
-  }
-}
-
-get_df_input_regions <- function(regions) {
-  if (is(regions, "GRanges")) {
-    regions_df <- as.data.table(regions)[, 1:3]
-    colnames(regions_df)[1] <- "chr"
-    return(regions_df)
-  } else if ("data.frame" %in% class(regions)) {
-    regions
-  } else {
-    get_df_from_string(regions)
-  }
-}
-
 get_meth_colnames <- function(aligner, bedfiles, result, base_colnames) {
   base_colnames <- c("chr", "start", "end")
   biscuit_colnames <- c("beta", "coverage")
