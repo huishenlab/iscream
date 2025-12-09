@@ -1,6 +1,8 @@
 options("iscream.threads" = 1)
 regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 gr <- GenomicRanges::GRanges(regions)
+feature_col <- c("AA", "BB", "CC")
+GenomicRanges::mcols(gr) <- data.frame(feature = feature_col)
 
 regions_single <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14", D = "chr2:5", E = "chrX:3")
 regions_single_res <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14", D = "chr2:5-5", E = "chrX:3-3")
@@ -21,9 +23,22 @@ test_that("Test GRanges to string", {
   str <- get_granges_string(gr)
   expect_equal(str, regions)
   expect_equal(names(str), names(regions))
+
   str <- get_granges_string(gr_single)
   expect_equal(str, regions_single_res)
   expect_equal(names(str), names(regions_single))
+
+  str <- get_granges_string(gr_single, feature_col = "feature")
+  expect_equal(str, regions_single_res)
+  expect_equal(names(str), names(regions_single))
+
+  str <- get_granges_string(gr)
+  expect_equal(str, regions)
+  expect_equal(names(str), names(regions))
+
+  str <- get_granges_string(gr, feature_col = "feature")
+  expect_equal(unname(str), unname(regions))
+  expect_equal(names(str), feature_col)
 })
 
 library(data.table)
@@ -34,9 +49,19 @@ test_that("Test GRanges to string", {
   expect_error(get_df_string(regions.dt))
 })
 
+colnames(regions.dt) <- c("c", "start", "end")
+test_that("Test GRanges to string", {
+  expect_error(get_df_string(regions.dt), "colnames must be 'chr', 'start' and 'end'")
+})
+
+colnames(regions.dt) <- c("chr", "start", "end")
+regions.with_seqnames <- regions.dt
+setnames(regions.with_seqnames, "chr", "seqnames")
+
 colnames(regions.dt) <- c("chr", "start", "end")
 test_that("Test GRanges to string no names", {
   expect_equal(get_df_string(regions.dt), unname(regions))
+  expect_equal(get_df_string(regions.with_seqnames), unname(regions))
 })
 
 regions.dt[, names := names(regions)]
