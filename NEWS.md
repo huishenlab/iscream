@@ -1,3 +1,14 @@
+# iscream 1.1.5
+
+- `get_granges_string()` can now extract names from its `mcols` using a
+  `feature_col` argument as in `get_df_string()` - names were
+  previously pulled only from `names()`. This means GRanges inputs to
+  `summarize_regions()` can have the `feature_col` in its `mcols` rather than
+  just as its names.
+
+- Refactored `summarize_regions` to collect similar validation and regions
+  parsing functions
+
 # iscream 1.1.4
 
 - Reduced the minimum R version from 4.5 to 4.4
