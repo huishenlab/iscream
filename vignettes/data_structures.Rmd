@@ -66,36 +66,18 @@ data frame to GenomicRanges.
 
 ### From `summarize_regions()`
 
-`summarize_regions()` returns a data frame with a feature column identifying
-each summary row's genomic region.
-
-If the region features are not named (see `?summarize_regions`), pass the
-`feature` column with the genomic regions as the GRanges input regions. Here,
-since the `regions` vector is named, using `unname` will cause the `feature`
-column to populate with regions strings:
-
-```{r summarize_meth_regions}
-(summary <- summarize_meth_regions(
-  bedfiles,
-  unname(regions),
-  fun = c("sum", "mean"))
-)
-GRanges(summary$feature, summary = summary[, -1])
-```
-
-If the input regions are named use `set_region_rownames = TRUE` so that the
-genomic regions strings are preserved and use them as the `GRanges` input
-regions.
+`summarize_regions()` returns a data frame with the input `regions` positions
+and summaries of the BED-file data columns.
 
 ```{r summarize_regions}
 (summary <- summarize_regions(
   bedfiles,
   regions,
   column = 4,
-  set_region_rownames = TRUE,
+  col_names = ("data_col"),
   fun = c("sum", "mean"))
 )
-GRanges(rownames(summary), summary = summary)
+GRanges(summary)
 ```
 
 ### From `make_mat`
