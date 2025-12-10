@@ -41,7 +41,7 @@ get_granges_string <- function(gr, feature_col = NULL) {
 #' @param regions_df A data frame with "chr", "start" and "end" columns
 #' @param feature_col The data frame column to use as the names of the output string vector
 #'
-#' @importFrom data.table setDT
+#' @importFrom data.table setDT data.table
 #'
 #' @returns A character vector
 #'
@@ -70,12 +70,21 @@ validate_region_df <- function(df) {
 }
 
 get_df_from_string <- function(regions) {
-  start <- NULL
-  as.data.table(regions)[, tstrsplit(regions, ":|-", fixed = FALSE, names = c("chr", "start", "end"))][,
-    start := as.integer(start)
-  ][,
-    end := as.integer(end)
-  ]
+  start <- end <- NULL
+  tryCatch(
+    {
+      as.data.table(regions)[, tstrsplit(regions, ":|-", fixed = FALSE, names = c("chr", "start", "end"))][,
+        start := as.integer(start)
+      ][,
+        end := as.integer(end)
+      ]
+    },
+    error = function(e) {
+      if (length(unique(grepl(":", regions))) == 1) {
+        return(data.table(chr = regions, start = NA, end = NA))
+      }
+    }
+  )
 }
 
 # Get GRanges from chr and pos vector
