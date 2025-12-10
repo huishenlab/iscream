@@ -1,10 +1,37 @@
 # iscream 1.1.5
 
+BREAKING CHANGES to `summarize_regions()` and `summarize_meth_regions()`:
+
+ - The summary output now has position as chromosome, start, and end columns
+   instead of just a `feature` column with the position string. This allows
+   direct conversion to `GRanges` objects without having to use rownames. It is
+   still possible to use chromosome names as the input query regions ("chr1"),
+   the start and end in those cases will be `NA`.
+
+ - The `feature` column is now populated only if the input regions are named, if
+   a vector, or the `feature_col` argument is set to a column for
+   `data.frame`/`GRanges` inputs.
+
+ - The count column from `summarize_meth_regions()` is now named `count` instead
+   of `cpg_count`.
+
+ - Bug fix: rownames are no longer set for the output using the input region
+   strings as these were repeating and not unique. It was only possible because
+   they were set from the C++ scope instead of R.
+
+ - These functions now return a `data.table` instead of a `data.frame` to allow
+   for faster in-place modifications and consistency with `tabix()` output. Use
+   `data.table::setDF()` to convert to a `data.frame` in-place.
+
+ENHANCEMENTS
+
 - `get_granges_string()` can now extract names from its `mcols` using a
   `feature_col` argument as in `get_df_string()` - names were
   previously pulled only from `names()`. This means GRanges inputs to
   `summarize_regions()` can have the `feature_col` in its `mcols` rather than
   just as its names.
+
+INTERNAL
 
 - Refactored `summarize_regions` to collect similar validation and regions
   parsing functions
