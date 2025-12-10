@@ -50,13 +50,7 @@ summarize_meth_regions <- function(
   fun_to_use <- validate_summary_function(fun, supported_funcs)
 
   regions_str <- get_string_input_regions(regions, feature_col)
-  if (!is(regions, "data.frame")) {
-    regions_df <- get_df_from_string(regions_str)
-  } else {
-    regions_df <- setDT(regions)[,
-      `:=`(start = as.integer(start), end = as.integer(end))
-    ]
-  }
+  regions_df <- get_regions_as_df(regions, regions_str)
 
   if (aligner != "general") {
     col_names <- c("coverage", ifelse(mval, "M", "beta"))

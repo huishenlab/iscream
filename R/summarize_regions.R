@@ -112,13 +112,7 @@ summarize_regions <- function(
   fun_to_use <- validate_summary_function(fun, supported_funcs)
 
   regions_str <- get_string_input_regions(regions, feature_col)
-  if (!is(regions, "data.frame")) {
-    regions_df <- get_df_from_string(regions_str)
-  } else {
-    regions_df <- setDT(regions)[,
-      `:=`(start = as.integer(start), end = as.integer(end))
-    ]
-  }
+  regions_df <- get_regions_as_df(regions, regions_str)
 
   col_names <- col_names %||% paste0("V", seq_len(length(columns)))
 
@@ -161,4 +155,18 @@ validate_summary_function <- function(fun, supported_funcs) {
     }
   }
   fun_to_use
+}
+
+#' Return the input regions as a data frame so the output can have positions as columns
+#' @keywords internal
+get_regions_as_df <- function(regions, regions_str) {
+  start <- end <- NULL
+  if (!is(regions, "data.frame")) {
+    return(get_df_from_string(regions_str))
+  } else if (is(regions, "data.table")) {
+    regions_df <- regions
+  } else {
+    regions_df <- as.data.table(regions)
+  }
+  regions_df[, `:=`(start = as.integer(start), end = as.integer(end))]
 }
