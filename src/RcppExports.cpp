@@ -202,8 +202,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // Cpp_summarize_regions
-Rcpp::DataFrame Cpp_summarize_regions(const std::vector<std::string>& bedfiles, const Rcpp::CharacterVector& regions, const std::vector<std::string>& fun_vec, const std::vector<int>& col_indices, const std::vector<std::string>& col_names, const std::string& aligner, const bool mval, const bool region_rownames, const int nthreads);
-RcppExport SEXP _iscream_Cpp_summarize_regions(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP fun_vecSEXP, SEXP col_indicesSEXP, SEXP col_namesSEXP, SEXP alignerSEXP, SEXP mvalSEXP, SEXP region_rownamesSEXP, SEXP nthreadsSEXP) {
+Rcpp::DataFrame Cpp_summarize_regions(const std::vector<std::string>& bedfiles, const Rcpp::CharacterVector& regions, const std::vector<std::string>& fun_vec, const std::vector<int>& col_indices, const std::vector<std::string>& col_names, const Rcpp::DataFrame& regions_df, const std::string& aligner, const bool mval, const int nthreads);
+RcppExport SEXP _iscream_Cpp_summarize_regions(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP fun_vecSEXP, SEXP col_indicesSEXP, SEXP col_namesSEXP, SEXP regions_dfSEXP, SEXP alignerSEXP, SEXP mvalSEXP, SEXP nthreadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -212,11 +212,11 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::vector<std::string>& >::type fun_vec(fun_vecSEXP);
     Rcpp::traits::input_parameter< const std::vector<int>& >::type col_indices(col_indicesSEXP);
     Rcpp::traits::input_parameter< const std::vector<std::string>& >::type col_names(col_namesSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DataFrame& >::type regions_df(regions_dfSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type aligner(alignerSEXP);
     Rcpp::traits::input_parameter< const bool >::type mval(mvalSEXP);
-    Rcpp::traits::input_parameter< const bool >::type region_rownames(region_rownamesSEXP);
     Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Cpp_summarize_regions(bedfiles, regions, fun_vec, col_indices, col_names, aligner, mval, region_rownames, nthreads));
+    rcpp_result_gen = Rcpp::wrap(Cpp_summarize_regions(bedfiles, regions, fun_vec, col_indices, col_names, regions_df, aligner, mval, nthreads));
     return rcpp_result_gen;
 END_RCPP
 }

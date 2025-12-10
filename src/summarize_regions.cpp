@@ -163,9 +163,6 @@ double summarize(const StatFunction func, const arma::vec& data_vec) {
 //' @param col_indices A vector of genomic regions
 //' @param col_names A vector of genomic regions
 //' @param mval Calculates M values when TRUE, use beta values when FALSE
-//' @param region_rownames Whether to set rownames to the regions strings. Not
-//' necessary if your regions vector is unnamed. If its names, then the "feature"
-//' column is set to the names and the rownames are set to the regions string
 //' @param nthreads Number of cores to use. See details.
 //'
 //' @details
@@ -183,9 +180,9 @@ Rcpp::DataFrame Cpp_summarize_regions(
     const std::vector<std::string>& fun_vec,
     const std::vector<int>& col_indices,
     const std::vector<std::string>& col_names,
+    const Rcpp::DataFrame& regions_df,
     const std::string& aligner,
     const bool mval = false,
-    const bool region_rownames = false,
     const int nthreads = 1
 ) {
 
@@ -207,7 +204,14 @@ Rcpp::DataFrame Cpp_summarize_regions(
 
     spdlog::stopwatch sw;
 
-    Rcpp::CharacterVector feature_col(rowsize, Rcpp::CharacterVector::get_na());
+    Rcpp::CharacterVector chr_in = regions_df[0];
+    Rcpp::IntegerVector start_in = regions_df[1];
+    Rcpp::IntegerVector end_in  = regions_df[2];
+
+    Rcpp::CharacterVector chr_out(rowsize, Rcpp::CharacterVector::get_na());
+    Rcpp::IntegerVector start_out(rowsize, Rcpp::IntegerVector::get_na());
+    Rcpp::IntegerVector end_out(rowsize, Rcpp::IntegerVector::get_na());
+
     Rcpp::CharacterVector sample(rowsize, Rcpp::CharacterVector::get_na());
     std::vector<ComputedFunVecs> computed_vecs = init_result_cols(rowsize, col_indices.size(), fun_vec, mval);
     spdlog::debug("Created vectors for DataFrame with {} rows in {} s", rowsize, sw);
@@ -229,13 +233,18 @@ Rcpp::DataFrame Cpp_summarize_regions(
             std::string bedfile_prefix = bed_path.stem().stem().string();
             spdlog::debug("Got {} as sample name from {}", bedfile_prefix, bedfile_name);
 
+            int regions_iter = 0;
+
             for (RegionQuery interval : cpgs_in_file) {
                 spdlog::debug("Got {} CpGs from {}", interval.cpgs_in_interval.size(), bedfile_name);
-                feature_col[row_count] = interval.interval_str;
+                chr_out[row_count] = chr_in[regions_iter];
+                start_out[row_count] = start_in[regions_iter];
+                end_out[row_count] = end_in[regions_iter];
                 sample[row_count] = bedfile_prefix.c_str();
 
                 if (interval.cpgs_in_interval.size() == 0) {
                     row_count++;
+                    regions_iter++;
                     continue;
                 }
 
@@ -255,6 +264,7 @@ Rcpp::DataFrame Cpp_summarize_regions(
                 }
 
                 row_count++;
+                regions_iter++;
             }
             // TODO: thread-safe way to warn when no cpgs are found in interval.
             // Lots of warnings from multiple threads cause stack overflow
@@ -266,9 +276,15 @@ Rcpp::DataFrame Cpp_summarize_regions(
     sw.reset();
 
     Rcpp::DataFrame result = Rcpp::DataFrame::create(
-        Rcpp::Named("feature") = (regions.hasAttribute("names") ? (Rcpp::CharacterVector) regions.names() : feature_col),
+        Rcpp::Named("chr") = chr_out,
+        Rcpp::Named("start") = start_out,
+        Rcpp::Named("end") = end_out,
         Rcpp::Named("file") = sample
     );
+
+    if (regions.hasAttribute("names")) {
+        result.push_back((Rcpp::CharacterVector) regions.names(), "feature");
+    }
 
     for (int i = 0; i < computed_vecs.size(); i++) {
         ComputedFunVecs vecs = computed_vecs[i];
@@ -278,11 +294,6 @@ Rcpp::DataFrame Cpp_summarize_regions(
         }
     }
     spdlog::debug("Created DataFrame in {} s", sw);
-
-    if (region_rownames) {
-        result.attr("row.names") = feature_col;
-        spdlog::debug("Rownames set");
-    }
 
     return result;
 }

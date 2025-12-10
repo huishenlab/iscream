@@ -11,9 +11,6 @@
 #' @param feature_col Column name of the input `regions` data frame containing
 #' a name for each genomic region. Set only if the using a data frame as the
 #' input regions format. See details.
-#' @param set_region_rownames Use the region strings as the returned data
-#' frame's rownames. Can be useful if you have a named regions and want both
-#' the regions strings rownames and the feature names. See details.
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'
@@ -37,17 +34,14 @@
 #'
 #' # Using feature identifiers
 #'
-#' `regions` may be string vector in the form "chr:start-end", a GRanges
-#' object or a data frame with "chr", "start", and "end" columns. The `feature`
-#' column of the output will contain a "chr:start-end" identifier for each
-#' summarized region. To use other identifiers, like a gene name for a region
-#' instead of the coordinates, set the names of the vector or GRanges to those
-#' identifiers. These names will be used instead of the genomic region string
-#' to describe each feature in the output dataframe. If `regions` is a data
-#' frame make an additional column with the identifiers and pass that column
-#' name to `feature_col`. See examples.
+#' `regions` may be string vector in the form "chr:start-end", a GRanges object
+#' or a data frame with "chr", "start", and "end" columns. If the input
+#' data.frame or GRanges has a column with feature identifiers, like gene names
+#' for a set of gene regions, pass that column's name to `feature_col`. If
+#' `regions` is a vector, set its `names()` to those identifiers. These will be
+#' used to populate a 'feature' column in the summary. See examples.
 #'
-#' @returns A data.frame
+#' @returns A data.table
 #'
 #' @importFrom methods is
 #'
@@ -108,7 +102,6 @@ summarize_regions <- function(
   col_names = NULL,
   fun = "all",
   feature_col = NULL,
-  set_region_rownames = FALSE,
   nthreads = NULL
 ) {
   n_threads <- .get_threads(nthreads)
@@ -118,35 +111,36 @@ summarize_regions <- function(
   supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "count")
   fun_to_use <- validate_summary_function(fun, supported_funcs)
 
-  regions <- get_string_input_regions(regions, feature_col)
+  regions_str <- get_string_input_regions(regions, feature_col)
+  if (!is(regions, "data.frame")) {
+    regions_df <- get_df_from_string(regions_str)
+  } else {
+    regions_df <- setDT(regions)[,
+      `:=`(start = as.integer(start), end = as.integer(end))
+    ]
+  }
 
   col_names <- col_names %||% paste0("V", seq_len(length(columns)))
-  if (is(regions, "GRanges")) {
-    regions <- get_granges_string(regions)
-  } else if ("data.frame" %in% class(regions)) {
-    regions <- get_df_string(regions, feature_col)
-  }
 
   df <- Cpp_summarize_regions(
     bedfiles = bedfiles,
-    regions = regions,
+    regions = regions_str,
     col_indices = columns,
     col_names = col_names,
     fun_vec = fun_to_use,
-    region_rownames = set_region_rownames,
+    regions_df = regions_df,
     aligner = "general",
     mval = FALSE,
     nthreads = n_threads
   )
+  setDT(df)
   df[df == -99] <- NA
-  df
 
-  count_colnames <- paste0(col_names, ".count")
-  if (any(count_colnames %in% colnames(df))) {
-    df <- df[, !(names(df) %in% count_colnames[-1])]
+  if ("count" %in% fun_to_use) {
+    count_colnames <- paste0(col_names, ".count")
+    df[, eval(count_colnames[-1]) := NULL]
+    colnames(df)[which(colnames(df) == count_colnames[1])] <- "count"
   }
-
-  colnames(df)[which(colnames(df) == count_colnames[1])] <- "count"
   df
 }
 

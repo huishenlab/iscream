@@ -10,9 +10,9 @@ Cpp_summarize_regions(
   fun_vec,
   col_indices,
   col_names,
+  regions_df,
   aligner,
   mval = FALSE,
-  region_rownames = FALSE,
   nthreads = 1L
 )
 }
@@ -30,10 +30,6 @@ CpGs in the ' regions: \code{"sum"}, \code{"mean"}, \code{"median"}, \code{"stdd
 \item{col_names}{A vector of genomic regions}
 
 \item{mval}{Calculates M values when TRUE, use beta values when FALSE}
-
-\item{region_rownames}{Whether to set rownames to the regions strings. Not
-necessary if your regions vector is unnamed. If its names, then the "feature"
-column is set to the names and the rownames are set to the regions string}
 
 \item{nthreads}{Number of cores to use. See details.}
 }

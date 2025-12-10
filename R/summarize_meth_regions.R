@@ -17,7 +17,7 @@
 #'
 #' @importFrom methods is
 #'
-#' @returns A data.frame
+#' @returns A data.table
 #'
 #' @export
 #'
@@ -40,7 +40,6 @@ summarize_meth_regions <- function(
   aligner = "biscuit",
   feature_col = NULL,
   mval = TRUE,
-  set_region_rownames = FALSE,
   nthreads = NULL
 ) {
   n_threads <- .get_threads(nthreads)
@@ -50,7 +49,14 @@ summarize_meth_regions <- function(
   supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "count")
   fun_to_use <- validate_summary_function(fun, supported_funcs)
 
-  regions <- get_string_input_regions(regions, feature_col)
+  regions_str <- get_string_input_regions(regions, feature_col)
+  if (!is(regions, "data.frame")) {
+    regions_df <- get_df_from_string(regions_str)
+  } else {
+    regions_df <- setDT(regions)[,
+      `:=`(start = as.integer(start), end = as.integer(end))
+    ]
+  }
 
   if (aligner != "general") {
     col_names <- c("coverage", ifelse(mval, "M", "beta"))
@@ -63,22 +69,22 @@ summarize_meth_regions <- function(
 
   df <- Cpp_summarize_regions(
     bedfiles = bedfiles,
-    regions = regions,
+    regions = regions_str,
     col_indices = c(4, 5),
     col_names = col_names,
     fun_vec = fun_to_use,
+    regions_df = regions_df,
     aligner = aligner,
     mval = mval,
-    region_rownames = set_region_rownames,
     nthreads = n_threads
   )
+  setDT(df)
   df[df == -99] <- NA
 
-  mval_count <- paste0(ifelse(mval, "M", "beta"), ".count")
-  if (mval_count %in% colnames(df)) {
-    df <- df[, !(names(df) %in% "coverage.count")]
+  if ("count" %in% fun_to_use) {
+    count_colnames <- paste0(col_names, ".count")
+    df[, eval(count_colnames[-1]) := NULL]
+    colnames(df)[which(colnames(df) == count_colnames[1])] <- "cpg_count"
   }
-
-  colnames(df)[which(colnames(df) == mval_count)] <- "cpg_count"
   df
 }

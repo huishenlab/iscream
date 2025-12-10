@@ -11,7 +11,6 @@ summarize_meth_regions(
   aligner = "biscuit",
   feature_col = NULL,
   mval = TRUE,
-  set_region_rownames = FALSE,
   nthreads = NULL
 )
 }
@@ -33,15 +32,11 @@ input regions format. See details.}
 \item{mval}{Whether to calculate the M value (coverage \eqn{\times \beta})
 or use the beta value when applying the function.}
 
-\item{set_region_rownames}{Use the region strings as the returned data
-frame's rownames. Can be useful if you have a named regions and want both
-the regions strings rownames and the feature names. See details.}
-
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}
 }
 \value{
-A data.frame
+A data.table
 }
 \description{
 Run summarizing functions on the CpG/CpH loci in BED files across genomic
@@ -67,15 +62,12 @@ supported functions
 }
 
 \section{Using feature identifiers}{
-\code{regions} may be string vector in the form "chr:start-end", a GRanges
-object or a data frame with "chr", "start", and "end" columns. The \code{feature}
-column of the output will contain a "chr:start-end" identifier for each
-summarized region. To use other identifiers, like a gene name for a region
-instead of the coordinates, set the names of the vector or GRanges to those
-identifiers. These names will be used instead of the genomic region string
-to describe each feature in the output dataframe. If \code{regions} is a data
-frame make an additional column with the identifiers and pass that column
-name to \code{feature_col}. See examples.
+\code{regions} may be string vector in the form "chr:start-end", a GRanges object
+or a data frame with "chr", "start", and "end" columns. If the input
+data.frame or GRanges has a column with feature identifiers, like gene names
+for a set of gene regions, pass that column's name to \code{feature_col}. If
+\code{regions} is a vector, set its \code{names()} to those identifiers. These will be
+used to populate a 'feature' column in the summary. See examples.
 }
 
 \examples{

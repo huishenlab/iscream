@@ -73,6 +73,8 @@ get_df_from_string <- function(regions) {
   start <- NULL
   as.data.table(regions)[, tstrsplit(regions, ":|-", fixed = FALSE, names = c("chr", "start", "end"))][,
     start := as.integer(start)
+  ][,
+    end := as.integer(end)
   ]
 }
 
