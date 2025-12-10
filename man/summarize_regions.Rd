@@ -88,7 +88,7 @@ summarize_regions(
 )
 
 # add names to the regions
-names(regions) <- c("A", "B", "C")
+names(regions) <- c("gene1", "gene2", "gene3")
 summarize_regions(
   bedfiles,
   regions,
@@ -103,8 +103,7 @@ library(data.table)
 # convert string vector to a data.table
 regions_df <- data.table::as.data.table(regions) |>
 _[, tstrsplit(regions, ":|-", fixed = FALSE, names = c("chr", "start", "end"))] |>
-_[, start := as.integer(start)] |>
-_[, feature := LETTERS[.I]][]
+_[, feature := names(regions)][]
 regions_df
 
 summarize_regions(
