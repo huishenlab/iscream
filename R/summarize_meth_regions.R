@@ -47,6 +47,8 @@ summarize_meth_regions <- function(
   n_threads <- .get_threads(nthreads)
   validate_log_level(n_threads = n_threads)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
+  verify_aligner_or_stop(aligner)
+  verify_filetype(bedfiles, aligner, stop_on_error = TRUE)
 
   supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "count")
   fun_to_use <- validate_summary_function(fun, supported_funcs)
@@ -57,11 +59,7 @@ summarize_meth_regions <- function(
   if (aligner != "general") {
     col_names <- c("coverage", ifelse(mval, "M", "beta"))
   }
-
   stopifnot("'mval' must be TRUE or FALSE" = mval %in% c(TRUE, FALSE))
-
-  verify_aligner_or_stop(aligner)
-  verify_filetype(bedfiles, aligner, stop_on_error = TRUE)
 
   df <- Cpp_summarize_regions(
     bedfiles = bedfiles,
