@@ -78,7 +78,7 @@ summarize_meth_regions <- function(
   if ("count" %in% fun_to_use) {
     count_colnames <- paste0(col_names, ".count")
     df[, eval(count_colnames[-1]) := NULL]
-    colnames(df)[which(colnames(df) == count_colnames[1])] <- "cpg_count"
+    colnames(df)[which(colnames(df) == count_colnames[1])] <- "count"
   }
   df
 }
