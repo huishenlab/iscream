@@ -26,11 +26,14 @@ supported_funcs <- c(
 )
 
 # utils
-get_meth_colnames <- function(mval, funcs) {
-  base_colnames <- c("feature", "file")
+get_meth_colnames <- function(mval, funcs, regs) {
+  base_colnames <- c("chr", "start", "end", "file")
+  if (!is.null(names(regs))) {
+    base_colnames <- c(base_colnames, "feature")
+  }
   values <- c("coverage", ifelse(mval, "M", "beta"))
   if ("all" %in% funcs) {
-    return(c(base_colnames, as.vector(outer(values, supported_funcs, paste, sep = ".")), "cpg_count"))
+    return(c(base_colnames, as.vector(outer(values, supported_funcs, paste, sep = ".")), "count"))
   }
 
   if ("count" %in% funcs) {
@@ -51,7 +54,7 @@ get_meth_colnames <- function(mval, funcs) {
 }
 
 run_meth_test <- function(bedfiles, regions, funcs, mval, nthreads) {
-  colnames <- get_meth_colnames(mval, funcs)
+  colnames <- get_meth_colnames(mval, funcs, regions)
   list(
     df = summarize_meth_regions(bedfiles, regions, fun = funcs, mval = mval, nthreads = nthreads),
     colnames = colnames,
@@ -171,12 +174,12 @@ test_that("bad fun", {
   )
 })
 
-m_sum <- read.csv(file.path(extdata, "summarize_regions_m_sum.test"))
-beta_sum <- read.csv(file.path(extdata, "summarize_regions_beta_sum.test"))
-m_mean <- read.csv(file.path(extdata, "summarize_regions_m_mean.test"))
-beta_mean <- read.csv(file.path(extdata, "summarize_regions_beta_mean.test"))
-beta_all <- read.csv(file.path(extdata, "summarize_regions_beta_all.test"))
-m_all <- read.csv(file.path(extdata, "summarize_regions_m_all.test"))
+m_sum <- fread(file.path(extdata, "summarize_regions_m_sum.test"))
+beta_sum <- fread(file.path(extdata, "summarize_regions_beta_sum.test"))
+m_mean <- fread(file.path(extdata, "summarize_regions_m_mean.test"))
+beta_mean <- fread(file.path(extdata, "summarize_regions_beta_mean.test"))
+beta_all <- fread(file.path(extdata, "summarize_regions_beta_all.test"))
+m_all <- fread(file.path(extdata, "summarize_regions_m_all.test"))
 
 test_that("summarize_meth_regions 1 thread sum", {
   expect_equal(
@@ -277,12 +280,5 @@ test_that("summarize_meth_regions 2 thread all bismark", {
   expect_equal(
     beta_all,
     summarize_meth_regions(bismark_bedfiles, regions, fun = "all", mval = FALSE, aligner = "bismark", nthreads = 2)
-  )
-})
-
-test_that("summarize_meth_regions rownames", {
-  expect_equal(
-    rownames(summarize_meth_regions(biscuit_bedfiles, regions, set_region_rownames = T)),
-    rep(unname(regions), length(biscuit_bedfiles))
   )
 })

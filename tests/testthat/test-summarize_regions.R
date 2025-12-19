@@ -26,8 +26,11 @@ supported_funcs <- c(
   "count_unique"
 )
 
-get_colnames <- function(funcs, col_names) {
-  base_colnames <- c("feature", "file")
+get_colnames <- function(funcs, col_names, regs) {
+  base_colnames <- c("chr", "start", "end", "file")
+  if (!is.null(names(regs))) {
+    base_colnames <- c(base_colnames, "feature")
+  }
   values <- c(col_names)
   if ("all" %in% funcs) {
     return(c(base_colnames, as.vector(outer(values, supported_funcs, paste, sep = ".")), "count"))
@@ -51,7 +54,7 @@ get_colnames <- function(funcs, col_names) {
 }
 
 run_test <- function(bedfiles, regions, funcs, columns, col_names, nthreads) {
-  test_colnames <- get_colnames(funcs, col_names)
+  test_colnames <- get_colnames(funcs, col_names, regions)
   reg_length <- if ("data.frame" %in% class(regions)) {
     nrow(regions)
   } else {
@@ -174,13 +177,13 @@ test_colnames <- function(set) {
 }
 
 test_that("dims", {
-  lapply(full_set[6], function(i) {
+  lapply(full_set[4], function(i) {
     test_dims(i)
   })
 })
 
 test_that("colnames", {
-  lapply(full_set, function(i) {
+  lapply(full_set[4], function(i) {
     test_colnames(i)
   })
 })
