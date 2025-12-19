@@ -21,21 +21,26 @@
 #' - Sum: `"sum"`
 #' - Mean: `"mean"`
 #' - Median: `"median"`
+#' - Mode: `"mode"`
+#' - Anti-mode: `"antimode"`
 #' - Standard deviation: `"stddev"`
 #' - Variance: `"variance"`
 #' - Minimum: `"min"`
 #' - Maximum: `"max"`
 #' - Range: `"range"`
+#' - First element: `"first"`
+#' - Last element: `"last"`
 #' - No. of records in the region: `"count"`
+#' - No. of records in the region with unique data values: `"count_unique"`
 #'
-#' The summarizing computations are backed by the Armadillo library. See
+#' Most summarizing computations are backed by the Armadillo library. See
 #' <https://arma.sourceforge.net/docs.html#stats_fns> for futher details on the
 #' supported functions
 #'
 #' # Using feature identifiers
 #'
-#' `regions` may be string vector in the form "chr:start-end", a GRanges object
-#' or a data frame with "chr", "start", and "end" columns. If the input
+#' `regions` may be a string vector in the form "chr:start-end", a GRanges
+#' object or a data frame with "chr", "start", and "end" columns. If the input
 #' data.frame or GRanges has a column with feature identifiers, like gene names
 #' for a set of gene regions, pass that column's name to `feature_col`. If
 #' `regions` is a vector, set its `names()` to those identifiers. These will be
@@ -107,7 +112,23 @@ summarize_regions <- function(
   validate_log_level(n_threads = n_threads)
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
 
-  supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "count")
+  supported_funcs <- c(
+    "sum",
+    "mean",
+    "median",
+    "mode",
+    "antimode",
+    "stddev",
+    "variance",
+    "min",
+    "max",
+    "range",
+    "first",
+    "last",
+    "count_unique",
+    "count"
+  )
+
   fun_to_use <- validate_summary_function(fun, supported_funcs)
 
   regions_str <- get_string_input_regions(regions, feature_col)

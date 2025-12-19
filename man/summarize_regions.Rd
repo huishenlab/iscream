@@ -45,22 +45,27 @@ Parallelized across files using threads from the \code{"iscream.threads"} option
 \item Sum: \code{"sum"}
 \item Mean: \code{"mean"}
 \item Median: \code{"median"}
+\item Mode: \code{"mode"}
+\item Anti-mode: \code{"antimode"}
 \item Standard deviation: \code{"stddev"}
 \item Variance: \code{"variance"}
 \item Minimum: \code{"min"}
 \item Maximum: \code{"max"}
 \item Range: \code{"range"}
+\item First element: \code{"first"}
+\item Last element: \code{"last"}
 \item No. of records in the region: \code{"count"}
+\item No. of records in the region with unique data values: \code{"count_unique"}
 }
 
-The summarizing computations are backed by the Armadillo library. See
+Most summarizing computations are backed by the Armadillo library. See
 \url{https://arma.sourceforge.net/docs.html#stats_fns} for futher details on the
 supported functions
 }
 
 \section{Using feature identifiers}{
-\code{regions} may be string vector in the form "chr:start-end", a GRanges object
-or a data frame with "chr", "start", and "end" columns. If the input
+\code{regions} may be a string vector in the form "chr:start-end", a GRanges
+object or a data frame with "chr", "start", and "end" columns. If the input
 data.frame or GRanges has a column with feature identifiers, like gene names
 for a set of gene regions, pass that column's name to \code{feature_col}. If
 \code{regions} is a vector, set its \code{names()} to those identifiers. These will be

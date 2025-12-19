@@ -9,7 +9,22 @@ regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 regions.dt <- as.data.table(regions)[, tstrsplit(regions, ":|-")][, names := names(regions)]
 colnames(regions.dt) <- c("chr", "start", "end", "names")
 gr <- GenomicRanges::GRanges(regions)
-supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range")
+# shouldn't have "count" to test that only one count column is there at the end
+supported_funcs <- c(
+  "sum",
+  "mean",
+  "median",
+  "mode",
+  "antimode",
+  "stddev",
+  "variance",
+  "min",
+  "max",
+  "range",
+  "first",
+  "last",
+  "count_unique"
+)
 
 get_colnames <- function(funcs, col_names) {
   base_colnames <- c("feature", "file")
@@ -29,7 +44,7 @@ get_colnames <- function(funcs, col_names) {
   )
 
   if ("count" %in% funcs) {
-  col_names <- c(col_names, "count")
+    col_names <- c(col_names, "count")
   }
 
   return(col_names)
@@ -40,11 +55,18 @@ run_test <- function(bedfiles, regions, funcs, columns, col_names, nthreads) {
   reg_length <- if ("data.frame" %in% class(regions)) {
     nrow(regions)
   } else {
-      length(regions)
+    length(regions)
   }
 
   list(
-    df = summarize_regions(bedfiles, regions, fun = funcs, columns = columns, col_names = col_names, nthreads = nthreads),
+    df = summarize_regions(
+      bedfiles,
+      regions,
+      fun = funcs,
+      columns = columns,
+      col_names = col_names,
+      nthreads = nthreads
+    ),
     colnames = test_colnames,
     dims = c(length(bedfiles) * reg_length, length(test_colnames))
   )
@@ -123,7 +145,6 @@ regions_gr <- list(run_test(
   nthreads = 1
 ))
 
-
 full_set <- list(
   one_file,
   one_fun,
@@ -146,8 +167,8 @@ test_dims <- function(set) {
 test_colnames <- function(set) {
   lapply(set, function(i) {
     expect_equal(
-      i$colnames,
-      colnames(i$df)
+      colnames(i$df),
+      i$colnames
     )
   })
 }
@@ -176,4 +197,3 @@ test_that("bad fun", {
     summarize_regions(biscuit_bedfiles, regions, fun = c("none", "mean"))
   )
 })
-

@@ -9,7 +9,21 @@ regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 regions.dt <- as.data.table(regions)[, tstrsplit(regions, ":|-")][, names := names(regions)]
 colnames(regions.dt) <- c("chr", "start", "end", "names")
 gr <- GenomicRanges::GRanges(regions)
-supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range")
+supported_funcs <- c(
+  "sum",
+  "mean",
+  "median",
+  "mode",
+  "antimode",
+  "stddev",
+  "variance",
+  "min",
+  "max",
+  "range",
+  "first",
+  "last",
+  "count_unique"
+)
 
 # utils
 get_meth_colnames <- function(mval, funcs) {
@@ -30,7 +44,7 @@ get_meth_colnames <- function(mval, funcs) {
   )
 
   if ("cpg_count" %in% funcs) {
-  col_names <- c(col_names, "cpg_count")
+    col_names <- c(col_names, "cpg_count")
   }
 
   return(col_names)
@@ -239,7 +253,6 @@ test_that("summarize_meth_regions 2 thread all", {
   )
 })
 
-
 test_that("summarize_meth_regions 2 thread all bismark", {
   expect_equal(
     m_all,
@@ -251,7 +264,15 @@ test_that("summarize_meth_regions 2 thread all bismark", {
   )
   expect_equal(
     m_all,
-    summarize_meth_regions(bismark_bedfiles, regions.dt, fun = "all", mval = TRUE, aligner = "bismark", feature_col = "names", nthreads = 2)
+    summarize_meth_regions(
+      bismark_bedfiles,
+      regions.dt,
+      fun = "all",
+      mval = TRUE,
+      aligner = "bismark",
+      feature_col = "names",
+      nthreads = 2
+    )
   )
   expect_equal(
     beta_all,

@@ -50,7 +50,23 @@ summarize_meth_regions <- function(
   verify_aligner_or_stop(aligner)
   verify_filetype(bedfiles, aligner, stop_on_error = TRUE)
 
-  supported_funcs <- c("sum", "mean", "median", "stddev", "variance", "min", "max", "range", "count")
+  supported_funcs <- c(
+    "sum",
+    "mean",
+    "median",
+    "mode",
+    "antimode",
+    "stddev",
+    "variance",
+    "min",
+    "max",
+    "range",
+    "first",
+    "last",
+    "count_unique",
+    "count"
+  )
+
   fun_to_use <- validate_summary_function(fun, supported_funcs)
 
   regions_str <- get_string_input_regions(regions, feature_col)

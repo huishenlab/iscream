@@ -22,12 +22,17 @@ enum StatFunction {
     SUM,
     MEAN,
     MEDIAN,
+    MODE,
+    ANTIMODE,
     STDDEV,
     VARIANCE,
     COUNT,
+    COUNT_UNIQUE,
     MIN,
     MAX,
-    RANGE
+    RANGE,
+    FIRST,
+    LAST,
 };
 
 // get Function enum from input 'fun' argument
@@ -35,13 +40,55 @@ std::unordered_map<std::string, StatFunction> str_to_enum {
     {"sum", SUM},
     {"mean", MEAN},
     {"median", MEDIAN},
+    {"mode", MODE},
+    {"antimode", ANTIMODE},
     {"stddev", STDDEV},
     {"variance", VARIANCE},
     {"count", COUNT},
+    {"count_unique", COUNT_UNIQUE},
     {"min", MIN},
     {"max", MAX},
     {"range", RANGE},
+    {"first", FIRST},
+    {"last", LAST},
 };
+
+std::map<double, int> make_freq_map(const arma::vec& data_vec) {
+    std::map<double, int> freqs;
+    for (double data : data_vec) {
+        freqs[data]++;
+    }
+    return freqs;
+}
+
+double get_mode(const arma::vec& data_vec) {
+    std::map<double, int> freqs = make_freq_map(data_vec);
+
+    double mode = 0;
+    int mode_freq = 0;
+    for (auto itor = freqs.begin(); itor != freqs.end(); itor++) {
+        if (itor->second > mode_freq) {
+            mode = itor->first;
+            mode_freq = itor->second;
+        }
+    }
+    return mode;
+}
+
+double get_antimode(const arma::vec& data_vec) {
+    std::map<double, int> freqs = make_freq_map(data_vec);
+
+    double antimode = 0;
+    int freq = INT_MAX;
+    for (auto itor = freqs.begin(); itor != freqs.end(); itor++) {
+        if (itor->second < freq) {
+            antimode = itor->first;
+            freq = itor->second;
+        }
+    }
+    return antimode;
+}
+
 
 // Input data vectors with length equal to the number of input functions
 typedef std::vector<arma::vec> InputCols;
@@ -133,18 +180,31 @@ double summarize(const StatFunction func, const arma::vec& data_vec) {
             return arma::mean(data_vec);
         case MEDIAN:
             return arma::median(data_vec);
+        case MODE:
+            return get_mode(data_vec);
+        case ANTIMODE:
+            return get_antimode(data_vec);
         case STDDEV:
             return arma::stddev(data_vec);
         case VARIANCE:
             return arma::var(data_vec);
         case COUNT:
             return data_vec.size();
+        case COUNT_UNIQUE:
+            {
+                arma::vec unique = arma::unique(arma::sort(data_vec));
+                return unique.size();
+            }
         case MIN:
             return arma::min(data_vec);
         case MAX:
             return arma::max(data_vec);
         case RANGE:
             return arma::range(data_vec);
+        case FIRST:
+            return data_vec.front();
+        case LAST:
+            return data_vec.back();
         default: // using sum as default since R CMD check won't allow a switch without default
             return arma::sum(data_vec);
     }
