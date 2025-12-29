@@ -60,6 +60,8 @@ summarize_meth_regions <- function(
     "variance",
     "min",
     "max",
+    "absmin",
+    "absmax",
     "range",
     "first",
     "last",

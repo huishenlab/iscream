@@ -51,6 +51,8 @@ Parallelized across files using threads from the \code{"iscream.threads"} option
 \item Variance: \code{"variance"}
 \item Minimum: \code{"min"}
 \item Maximum: \code{"max"}
+\item Minimum of absolute values: \code{"absmin"}
+\item Maximum of absolute values: \code{"absmax"}
 \item Range: \code{"range"}
 \item First element: \code{"first"}
 \item Last element: \code{"last"}

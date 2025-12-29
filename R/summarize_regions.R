@@ -27,6 +27,8 @@
 #' - Variance: `"variance"`
 #' - Minimum: `"min"`
 #' - Maximum: `"max"`
+#' - Minimum of absolute values: `"absmin"`
+#' - Maximum of absolute values: `"absmax"`
 #' - Range: `"range"`
 #' - First element: `"first"`
 #' - Last element: `"last"`
@@ -122,6 +124,8 @@ summarize_regions <- function(
     "variance",
     "min",
     "max",
+    "absmin",
+    "absmax",
     "range",
     "first",
     "last",

@@ -30,6 +30,8 @@ enum StatFunction {
     COUNT_DISTINCT,
     MIN,
     MAX,
+    ABSMIN,
+    ABSMAX,
     RANGE,
     FIRST,
     LAST,
@@ -48,6 +50,8 @@ std::unordered_map<std::string, StatFunction> str_to_enum {
     {"count_distinct", COUNT_DISTINCT},
     {"min", MIN},
     {"max", MAX},
+    {"absmin", ABSMIN},
+    {"absmax", ABSMAX},
     {"range", RANGE},
     {"first", FIRST},
     {"last", LAST},
@@ -199,6 +203,10 @@ double summarize(const StatFunction func, const arma::vec& data_vec) {
             return arma::min(data_vec);
         case MAX:
             return arma::max(data_vec);
+        case ABSMIN:
+            return arma::min(arma::abs(data_vec));
+        case ABSMAX:
+            return arma::max(arma::abs(data_vec));
         case RANGE:
             return arma::range(data_vec);
         case FIRST:
