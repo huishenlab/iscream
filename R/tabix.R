@@ -58,7 +58,6 @@
 #' only one position.
 #' - `tabix_raw()`: A named list of raw strings from the regions in the style
 #' of `Rsamtools::scanTabix`
-
 #'
 #' @export
 #' @examples
@@ -117,14 +116,19 @@ tabix <- function(
 }
 
 tabix.shell <- function(bedfiles, regions_df, nthreads) {
+  query.tmpfile <- tempfile(pattern = "regions", fileext = ".tsv")
+  if (!is.null(regions_df)) {
+    write_bed(regions_df, query.tmpfile)
+  }
+
   if (length(bedfiles) == 1) {
-    return(tabix.shell.single(bedfiles, regions_df))
+    return(tabix.shell.single(bedfiles, regions_df, query.tmpfile))
   }
 
   pblapply(
     bedfiles,
     function(bedfile) {
-      tbx_query <- tabix.shell.single(bedfile, regions_df)
+      tbx_query <- tabix.shell.single(bedfile, regions_df, query.tmpfile)
       if (!is.null(tbx_query)) {
         tbx_query[, file := file_path_sans_ext(basename(bedfile), compression = TRUE)]
       }
@@ -134,15 +138,9 @@ tabix.shell <- function(bedfiles, regions_df, nthreads) {
     rbindlist()
 }
 
-tabix.shell.single <- function(bedfile, regions_df) {
-  query.tmpfile <- tempfile(pattern = "regions", fileext = ".tsv")
-  if (!is.null(regions_df)) {
-    write_bed(regions_df, query.tmpfile)
-  }
-
+tabix.shell.single <- function(bedfile, regions_df, query.tmpfile) {
   cmd <- paste("tabix", bedfile, "-R", query.tmpfile)
   result <- suppressWarnings(fread(cmd = cmd))
-
   if (is_empty(result, bedfile)) {
     return(NULL)
   }
