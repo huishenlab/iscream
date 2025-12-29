@@ -23,7 +23,7 @@ date: 10 July 2025
 
 Running this vignette requires downloading 2GB of single-cell whole genome
 bisulfite sequencing (WGBS) BED files and tabix indices from this Zenodo
-record: <https://zenodo.org/records/14733834>.
+record: <https://zenodo.org/records/18089082>.
 
 
 ``` r

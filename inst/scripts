@@ -30,7 +30,7 @@ which the first and last 25 lines were extracted, compressed and tabixed.
 - cell4.bed.gz, cell4.bed.gz.tbi
 
 The full datasets can be downloaded from this Zenodo record:
-<https://zenodo.org/records/14733834>.
+<https://zenodo.org/records/18089082>.
 
 htslib benchmarking dataset
 ---------------------------

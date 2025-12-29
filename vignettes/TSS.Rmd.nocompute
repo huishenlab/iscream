@@ -52,12 +52,12 @@ library(ggplot2)
 ### Download the data
 
 Running this vignette requires downloading 18MB of BED files and tabix indices
-from this Zenodo record: <https://zenodo.org/records/14733834>
+from this Zenodo record: <https://zenodo.org/records/18089082>.
 
 ```{r download_data}
 library("BiocFileCache") |> suppressPackageStartupMessages()
 cachedir <- BiocFileCache()
-methscan_zip_path <- bfcrpath(cachedir, "https://zenodo.org/records/14733834/files/methscan_data.zip")
+methscan_zip_path <- bfcrpath(cachedir, "https://zenodo.org/records/18089082/files/methscan_data.zip")
 methscan_unzip <- file.path(tempdir(), "methscan")
 unzip(methscan_zip_path, exdir = methscan_unzip)
 methscan_dir <- file.path(methscan_unzip, "scbs_tutorial_data")
