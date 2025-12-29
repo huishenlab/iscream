@@ -15,13 +15,16 @@ BREAKING CHANGES to `summarize_regions()` and `summarize_meth_regions()`:
  - The count column from `summarize_meth_regions()` is now named `count` instead
    of `cpg_count`.
 
- - Bug fix: rownames are no longer set for the output using the input region
-   strings as these were repeating and not unique. It was only possible because
-   they were set from the C++ scope instead of R.
-
  - These functions now return a `data.table` instead of a `data.frame` to allow
    for faster in-place modifications and consistency with `tabix()` output. Use
    `data.table::setDF()` to convert to a `data.frame` in-place.
+
+BUG FIXES
+
+ - Rownames are no longer set for the `summarize_regions` or
+   `summarize_meth_regions` output using the input region strings as these were
+   repeating and not unique. It was only possible because they were set from the
+   C++ scope instead of R.
 
 ENHANCEMENTS
 
@@ -49,9 +52,13 @@ INTERNAL
 
 # iscream 1.1.4
 
+BUG FIX
+
 - Reduced the minimum R version from 4.5 to 4.4
 
 # iscream 1.1.3
+
+DOCUMENTATION
 
 - Document how to make use of strand information with `tabix()`
 - Improve wording of `tabix()`'s' `aligner` and `col.names` documentation
@@ -61,6 +68,8 @@ INTERNAL
 - Fix typo in error message from thread count checks
 
 # iscream 1.1.1
+
+BUG FIXES
 
 - Fix configure to correctly check htslib version when rhtslib is not used and
   not issue spurious warnings
