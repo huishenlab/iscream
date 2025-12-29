@@ -45,10 +45,21 @@ ENHANCEMENTS
   `summarize_regions()` can have the `feature_col` in its `mcols` rather than
   just as its names.
 
+DOCUMENTATION
+
+- Update Zenodo URLs in vignettes to the updated record:
+  <https://zenodo.org/records/18089082>. The `genes.bed` file used in
+  `vignette("performance"`) now contains the gene names that the vignette
+  references.
+
 INTERNAL
 
 - Refactored `summarize_regions` to collect similar validation and regions
   parsing functions
+
+- `tabix()` writes the input regions of interest to disk only once instead of
+  doing it for every file
+
 
 # iscream 1.1.4
 
