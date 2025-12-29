@@ -15,7 +15,7 @@ check:
 	R CMD build . && R CMD check *.tar.gz
 
 cclean:
-	rm -rf iscream_0.0.0.9000.tar.gz iscream.Rcheck
+	rm -rf *.tar.gz iscream.Rcheck
 
 site:
 	R -e "pkgdown::build_site()"
