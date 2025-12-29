@@ -1,5 +1,20 @@
 # Changelog
 
+## iscream 1.1.8
+
+DOCUMENTATION
+
+- Update Zenodo URLs in vignettes to the updated record:
+  <https://zenodo.org/records/18089082>. The `genes.bed` file used in
+  `vignette("performance"`) now contains the gene names that the
+  vignette references.
+
+INTERNAL
+
+- [`tabix()`](https://huishenlab.github.io/iscream/dev/reference/tabix.md)
+  writes the input regions of interest to disk only once instead of
+  doing it for every file
+
 ## iscream 1.1.7
 
 ENHANCEMENTS

@@ -10,15 +10,16 @@ A guide to improving iscream’s runtime and memory efficiency
 
 Running this vignette requires downloading 2GB of single-cell whole
 genome bisulfite sequencing (WGBS) BED files and tabix indices from this
-Zenodo record: <https://zenodo.org/records/14733834>.
+Zenodo record: <https://zenodo.org/records/18089082>.
 
 ``` r
 library("BiocFileCache")
+#> Loading required package: dbplyr
 cachedir <- BiocFileCache()
-snmc_zip_path <- bfcrpath(cachedir, "https://zenodo.org/records/14733834/files/sc_beds.zip")
+snmc_zip_path <- bfcrpath(cachedir, "https://zenodo.org/records/18089082/files/sc_beds.zip")
 snmc_unzip <- file.path(tempdir(), "sc_beds")
 unzip(snmc_zip_path, exdir = snmc_unzip)
-genes_file <- bfcrpath(cachedir, "https://zenodo.org/records/14733834/files/genes.bed")
+genes_file <- bfcrpath(cachedir, "https://zenodo.org/records/18089082/files/genes.bed")
 ```
 
 Select 100 human cell WGBS data from the snmC-seq2 ([Luo et al.
@@ -41,17 +42,17 @@ Here we’ll be using 5000 gene body regions as the input:
 library(data.table)
 regions <- fread(
   genes_file,
-  col.names = c("chr", "start", "end")
+  col.names = c("chr", "start", "end", "gene")
 )[1:5000]
 head(regions)
-#>       chr    start      end
-#>    <char>    <int>    <int>
-#> 1:   chr1  1471764  1497848
-#> 2:   chr1  3069167  3438621
-#> 3:   chr1  2403963  2413797
-#> 4:   chr1 10472287 10630758
-#> 5:   chr1  2425979  2505532
-#> 6:   chr1  9292893  9369532
+#>       chr    start      end   gene
+#>    <char>    <int>    <int> <char>
+#> 1:   chr1  1471764  1497848 ATAD3B
+#> 2:   chr1  3069167  3438621 PRDM16
+#> 3:   chr1  2403963  2413797  PEX10
+#> 4:   chr1 10472287 10630758  PEX14
+#> 5:   chr1  2425979  2505532  PLCH2
+#> 6:   chr1  9292893  9369532  SPSB1
 ```
 
 ## Multithreading
@@ -87,7 +88,7 @@ implementations, one using the command line `tabix` executable and the
 other using the htslib API. The command line tool is faster as it can
 stream to a file which can be read from R while the htslib API stores
 the strings in memory and is slower. iscream will look for the tabix
-executable on startup and will only fall back to the htslip API if the
+executable on startup and will only fall back to the htslib API if the
 executable is not found. See
 [`?tabix`](https://huishenlab.github.io/iscream/dev/reference/tabix.md)
 details for more information.
@@ -112,7 +113,7 @@ tbx_query
 #> 45733379:   chr4 190179754 190179755 0.333        3 bisc_SRR6911723
 ```
 
-On 8 threads, retrieving 45,733,379 records across 100 files took 11.814
+On 8 threads, retrieving 45,733,379 records across 100 files took 11.014
 seconds.
 
 ### `summarize_regions`
@@ -127,32 +128,35 @@ qt <- system.time(
     bedfiles,
     regions,
     columns = 4,
+    fun = c("sum", "mean", "range", "count"),
     col_names = "beta",
     feature_col = "gene"
   )
 )
-#> [10:51:04.214132] [iscream::summarize_regions] [info] Summarizing 5000 regions from 100 bedfiles
-#> [10:51:04.214257] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count
-#> [10:51:04.214269] [iscream::summarize_regions] [info] with columns 4 as beta
+#> [15:00:22.484494] [iscream::summarize_regions] [info] Summarizing 5000 regions from 100 bedfiles
+#> [15:00:22.484628] [iscream::summarize_regions] [info] using sum, mean, range, count
+#> [15:00:22.484635] [iscream::summarize_regions] [info] with columns 4 as beta
 head(summary_query)
-#>   feature            file beta.sum beta.mean beta.median beta.stddev
-#> 1  ATAD3B bisc_SRR6911624   85.000 0.8585859           1   0.3502215
-#> 2  PRDM16 bisc_SRR6911624  723.500 0.5288743           1   0.4976973
-#> 3   PEX10 bisc_SRR6911624   15.000 0.2419355           0   0.4317514
-#> 4   PEX14 bisc_SRR6911624  198.000 0.7764706           1   0.4174294
-#> 5   PLCH2 bisc_SRR6911624  184.333 0.7228745           1   0.4474832
-#> 6   SPSB1 bisc_SRR6911624   64.000 0.8648649           1   0.3442015
-#>   beta.variance beta.min beta.max beta.range count
-#> 1     0.1226551        0        1          1    99
-#> 2     0.2477026        0        1          1  1368
-#> 3     0.1864093        0        1          1    62
-#> 4     0.1742473        0        1          1   255
-#> 5     0.2002412        0        1          1   255
-#> 6     0.1184746        0        1          1    74
+#>       chr    start      end            file feature beta.sum beta.mean
+#>    <char>    <int>    <int>          <char>  <char>    <num>     <num>
+#> 1:   chr1  1471764  1497848 bisc_SRR6911624  ATAD3B   85.000 0.8585859
+#> 2:   chr1  3069167  3438621 bisc_SRR6911624  PRDM16  723.500 0.5288743
+#> 3:   chr1  2403963  2413797 bisc_SRR6911624   PEX10   15.000 0.2419355
+#> 4:   chr1 10472287 10630758 bisc_SRR6911624   PEX14  198.000 0.7764706
+#> 5:   chr1  2425979  2505532 bisc_SRR6911624   PLCH2  184.333 0.7228745
+#> 6:   chr1  9292893  9369532 bisc_SRR6911624   SPSB1   64.000 0.8648649
+#>    beta.range count
+#>         <num> <num>
+#> 1:          1    99
+#> 2:          1  1368
+#> 3:          1    62
+#> 4:          1   255
+#> 5:          1   255
+#> 6:          1    74
 ```
 
 On 8 threads, summarizing the 45,733,379 records across all 100 files
-took 4.948 seconds. As with
+took 4.683 seconds. As with
 [`tabix()`](https://huishenlab.github.io/iscream/dev/reference/tabix.md),
 runtime reduces and memory usage increases with increasing thread
 counts.
@@ -186,6 +190,7 @@ based on CpG counts in one file and the coverage of your WGBS method.
 Here we make a matrix of the beta-values in the 4th column:
 
 ``` r
+suppressPackageStartupMessages(library("SummarizedExperiment"))
 cpg.count <- tbx_query$start |> unique() |> length()
 qt <- system.time(meth_mat <- make_mat_se(
   bedfiles,
@@ -194,11 +199,11 @@ qt <- system.time(meth_mat <- make_mat_se(
   sparse = TRUE,
   prealloc = cpg.count + 1e5
 ))
-#> [10:51:11.215841] [iscream::query_all] [info] Querying 5000 regions from 100 bedfiles
+#> [15:00:32.589487] [iscream::query_all] [info] Querying 5000 regions from 100 bedfiles
 #> 
-#> [10:51:51.998902] [iscream::query_all] [info] Creating metadata vectors
-#> [10:51:52.457885] [iscream::query_all] [info] 7276107 loci found - 16250 extra rows allocated with 0 resizes
-#> [10:51:57.284487] [iscream::query_all] [info] Creating sparse matrix
+#> [15:01:12.454511] [iscream::query_all] [info] Creating metadata vectors
+#> [15:01:12.911981] [iscream::query_all] [info] 7276107 loci found - 16250 extra rows allocated with 0 resizes
+#> [15:01:17.720398] [iscream::query_all] [info] Creating sparse matrix
 meth_mat
 #> class: RangedSummarizedExperiment 
 #> dim: 7276107 100 
@@ -211,7 +216,7 @@ meth_mat
 #> colData names(0):
 ```
 
-Making this 7,276,107 x 100 matrix took 50.429 seconds.
+Making this 7,276,107 x 100 matrix took 45.812 seconds.
 
 ## Session info
 
@@ -225,7 +230,7 @@ sessionInfo()
 #> BLAS/LAPACK: /usr/lib64/libopenblas-r0.3.26.so;  LAPACK version 3.12.0
 #> 
 #> locale:
-#>  [1] LC_CTYPE=C.utf8        LC_NUMERIC=C           LC_TIME=C.UTF-8       
+#>  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
 #>  [4] LC_COLLATE=C.utf8      LC_MONETARY=C.UTF-8    LC_MESSAGES=C.utf8    
 #>  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
 #> [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
@@ -234,30 +239,34 @@ sessionInfo()
 #> tzcode source: internal
 #> 
 #> attached base packages:
-#> [1] stats     graphics  grDevices utils     datasets  methods   base     
+#> [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+#> [8] base     
 #> 
 #> other attached packages:
-#> [1] iscream_0.99.0    data.table_1.17.6
+#>  [1] SummarizedExperiment_1.40.0 Biobase_2.70.0             
+#>  [3] GenomicRanges_1.62.0        Seqinfo_1.0.0              
+#>  [5] IRanges_2.44.0              S4Vectors_0.48.0           
+#>  [7] BiocGenerics_0.56.0         generics_0.1.4             
+#>  [9] MatrixGenerics_1.22.0       matrixStats_1.5.0          
+#> [11] iscream_1.1.6               data.table_1.17.8          
+#> [13] BiocFileCache_3.0.0         dbplyr_2.5.1               
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] crayon_1.5.3                httr_1.4.7                 
-#>  [3] knitr_1.50                  xfun_0.52                  
-#>  [5] UCSC.utils_1.4.0            generics_0.1.4             
-#>  [7] DelayedArray_0.34.1         jsonlite_2.0.0             
-#>  [9] RcppParallel_5.1.10         SummarizedExperiment_1.38.1
-#> [11] S4Vectors_0.46.0            stringfish_0.16.0          
-#> [13] stats4_4.5.0                MatrixGenerics_1.20.0      
-#> [15] Biobase_2.68.0              grid_4.5.0                 
-#> [17] abind_1.4-8                 evaluate_1.0.4             
-#> [19] IRanges_2.42.0              GenomeInfoDb_1.44.0        
-#> [21] compiler_4.5.0              Rcpp_1.1.0                 
-#> [23] XVector_0.48.0              lattice_0.22-7             
-#> [25] R6_2.6.1                    SparseArray_1.8.0          
-#> [27] parallelly_1.45.0           parallel_4.5.0             
-#> [29] GenomeInfoDbData_1.2.14     GenomicRanges_1.60.0       
-#> [31] Matrix_1.7-3                tools_4.5.0                
-#> [33] matrixStats_1.5.0           S4Arrays_1.8.1             
-#> [35] BiocGenerics_0.54.0
+#>  [1] rappdirs_0.3.3        SparseArray_1.10.1    RSQLite_2.4.3        
+#>  [4] lattice_0.22-7        magrittr_2.0.4        evaluate_1.0.5       
+#>  [7] grid_4.5.0            fastmap_1.2.0         blob_1.2.4           
+#> [10] Matrix_1.7-4          DBI_1.2.3             purrr_1.1.0          
+#> [13] pbapply_1.7-4         httr2_1.2.1           abind_1.4-8          
+#> [16] cli_3.6.5             rlang_1.1.6           XVector_0.50.0       
+#> [19] parallelly_1.45.1     bit64_4.6.0-1         DelayedArray_0.36.0  
+#> [22] withr_3.0.2           cachem_1.1.0          S4Arrays_1.10.0      
+#> [25] tools_4.5.0           parallel_4.5.0        memoise_2.0.1        
+#> [28] dplyr_1.1.4           filelock_1.0.3        curl_7.0.0           
+#> [31] vctrs_0.6.5           R6_2.6.1              lifecycle_1.0.4      
+#> [34] stringfish_0.17.0     bit_4.6.0             pkgconfig_2.0.3      
+#> [37] RcppParallel_5.1.11-1 pillar_1.11.1         glue_1.8.0           
+#> [40] Rcpp_1.1.0            xfun_0.54             tibble_3.3.0         
+#> [43] tidyselect_1.2.1      knitr_1.50            compiler_4.5.0
 ```
 
 ## References

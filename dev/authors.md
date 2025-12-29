@@ -19,12 +19,12 @@ Source:
 
 Eapen J, Morrison J, Shen H (2025). *iscream: Make fast and memory
 efficient BED file queries, summaries and matrices*. R package version
-1.1.7, <https://huishenlab.github.io/iscream/>.
+1.1.8, <https://huishenlab.github.io/iscream/>.
 
     @Manual{,
       title = {iscream: Make fast and memory efficient BED file queries, summaries and matrices},
       author = {James Eapen and Jacob Morrison and Hui Shen},
       year = {2025},
-      note = {R package version 1.1.7},
+      note = {R package version 1.1.8},
       url = {https://huishenlab.github.io/iscream/},
     }

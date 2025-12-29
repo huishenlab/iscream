@@ -9,12 +9,12 @@ TSS profiles
 tutorial](https://huishenlab.github.io/iscream/dev/articles/TSS.Rmd) and
 mouse promoter regions. Running it requires downloading 18MB of BED
 files and tabix indices from this Zenodo record:
-<https://zenodo.org/records/14733834>
+<https://zenodo.org/records/18089082>
 
 ``` r
 library("BiocFileCache") |> suppressPackageStartupMessages()
 cachedir <- BiocFileCache()
-methscan_zip_path <- bfcrpath(cachedir, "https://zenodo.org/records/14733834/files/methscan_data.zip")
+methscan_zip_path <- bfcrpath(cachedir, "https://zenodo.org/records/18089082/files/methscan_data.zip")
 methscan_unzip <- file.path(tempdir(), "methscan")
 unzip(methscan_zip_path, exdir = methscan_unzip)
 methscan_dir <- file.path(methscan_unzip, "scbs_tutorial_data")
@@ -310,7 +310,7 @@ tabix vs scanTabix parsed data frame from 1 file
 ## Multiple files as data frame
 
 We can try to query multiple BED files using Rsamtools with this
-function that 8 cores like iscream does:
+function that uses 8 cores like iscream does:
 
 ``` r
 partbx <- function(bedfiles) {
