@@ -26,9 +26,10 @@ details.}
 
 \item{fun}{Function(s) to apply over the region. See details.}
 
-\item{feature_col}{Column name of the input \code{regions} data frame containing
-a name for each genomic region. Set only if the using a data frame as the
-input regions format. See details.}
+\item{feature_col}{Column name of the input \code{regions} data frame or GRanges
+\code{mcols} containing a name for each genomic region. Set only if the using a
+data frame-like object as the input regions format, not for string vectors.
+See details.}
 
 \item{nthreads}{Set number of threads to use overriding the
 \code{"iscream.threads"} option. See \code{?set_threads} for more information.}

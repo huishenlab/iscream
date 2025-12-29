@@ -8,9 +8,10 @@
 #' @param columns A vector of indices of the numeric columns to be summarized
 #' @param col_names A vector of names to use for `columns` in the output
 #' @param fun Function(s) to apply over the region. See details.
-#' @param feature_col Column name of the input `regions` data frame containing
-#' a name for each genomic region. Set only if the using a data frame as the
-#' input regions format. See details.
+#' @param feature_col Column name of the input `regions` data frame or GRanges
+#' `mcols` containing a name for each genomic region. Set only if the using a
+#' data frame-like object as the input regions format, not for string vectors.
+#' See details.
 #' @param nthreads Set number of threads to use overriding the
 #' `"iscream.threads"` option. See `?set_threads` for more information.
 #'

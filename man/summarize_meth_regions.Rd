@@ -25,9 +25,10 @@ details.}
 \item{aligner}{The aligner used to produce the BED files - one of "biscuit",
 "bismark", "bsbolt".}
 
-\item{feature_col}{Column name of the input \code{regions} data frame containing
-a name for each genomic region. Set only if the using a data frame as the
-input regions format. See details.}
+\item{feature_col}{Column name of the input \code{regions} data frame or GRanges
+\code{mcols} containing a name for each genomic region. Set only if the using a
+data frame-like object as the input regions format, not for string vectors.
+See details.}
 
 \item{mval}{Whether to calculate the M value (coverage \eqn{\times \beta})
 or use the beta value when applying the function.}
