@@ -61,10 +61,10 @@
 <li><p>The count column from <code><a href="../reference/summarize_meth_regions.html">summarize_meth_regions()</a></code> is now named <code>count</code> instead of <code>cpg_count</code>.</p></li>
 <li><p>These functions now return a <code>data.table</code> instead of a <code>data.frame</code> to allow for faster in-place modifications and consistency with <code><a href="../reference/tabix.html">tabix()</a></code> output. Use <code><a href="https://rdatatable.gitlab.io/data.table/reference/setDF.html" class="external-link">data.table::setDF()</a></code> to convert to a <code>data.frame</code> in-place.</p></li>
 </ul><p>BUG FIXES</p>
-<ul><li>Rownames are no longer set for the <code>summarize_regions</code> or <code>summarize_meth_regions</code> output using the input region strings as these were repeating and not unique. It was only possible because they were set from the C++ scope instead of R.</li>
+<ul><li>Rownames are no longer set for the <code><a href="../reference/summarize_regions.html">summarize_regions()</a></code> or <code><a href="../reference/summarize_meth_regions.html">summarize_meth_regions()</a></code> output using the input region strings as these were repeating and not unique. It was only possible because they were set from the C++ scope instead of R.</li>
 </ul><p>ENHANCEMENTS</p>
 <ul><li>
-<p><code>summarize_regions</code> and <code>summarize_meth_regions</code> now support the following new functions, inspired by <a href="https://bedtools.readthedocs.io/en/latest/content/tools/map.html" class="external-link"><code>bedtools map</code></a>:</p>
+<p><code><a href="../reference/summarize_regions.html">summarize_regions()</a></code> and <code><a href="../reference/summarize_meth_regions.html">summarize_meth_regions()</a></code> now support the following new functions, inspired by <a href="https://bedtools.readthedocs.io/en/latest/content/tools/map.html" class="external-link"><code>bedtools map</code></a>:</p>
 <ul><li>First element (<code>first</code>)</li>
 <li>Last element (<code>last</code>)</li>
 <li>Anti-mode (<code>antimode</code>)</li>
