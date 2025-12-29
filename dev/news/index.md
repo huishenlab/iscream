@@ -2,6 +2,8 @@
 
 ## iscream 1.1.7
 
+ENHANCEMENTS
+
 - `summarize_regions` and `summarize_meth_regions` now support the
   following new functions, inspired by
   [`bedtools map`](https://bedtools.readthedocs.io/en/latest/content/tools/map.html):
@@ -15,10 +17,10 @@
 
 ## iscream 1.1.6
 
-- BREAKING CHANGES -
-  [`summarize_regions()`](https://huishenlab.github.io/iscream/dev/reference/summarize_regions.md)
-  and
-  [`summarize_meth_regions()`](https://huishenlab.github.io/iscream/dev/reference/summarize_meth_regions.md):
+BREAKING CHANGES -
+[`summarize_regions()`](https://huishenlab.github.io/iscream/dev/reference/summarize_regions.md)
+and
+[`summarize_meth_regions()`](https://huishenlab.github.io/iscream/dev/reference/summarize_meth_regions.md):
 
 - The summary output now has position as chromosome, start, and end
   columns instead of just a `feature` column with the position string.
@@ -35,10 +37,6 @@
   [`summarize_meth_regions()`](https://huishenlab.github.io/iscream/dev/reference/summarize_meth_regions.md)
   is now named `count` instead of `cpg_count`.
 
-- Bug fix: rownames are no longer set for the output using the input
-  region strings as these were repeating and not unique. It was only
-  possible because they were set from the C++ scope instead of R.
-
 - These functions now return a `data.table` instead of a `data.frame` to
   allow for faster in-place modifications and consistency with
   [`tabix()`](https://huishenlab.github.io/iscream/dev/reference/tabix.md)
@@ -46,7 +44,16 @@
   [`data.table::setDF()`](https://rdatatable.gitlab.io/data.table/reference/setDF.html)
   to convert to a `data.frame` in-place.
 
+BUG FIXES
+
+- Rownames are no longer set for the `summarize_regions` or
+  `summarize_meth_regions` output using the input region strings as
+  these were repeating and not unique. It was only possible because they
+  were set from the C++ scope instead of R.
+
 ## iscream 1.1.5
+
+ENHANCEMENTS
 
 - [`get_granges_string()`](https://huishenlab.github.io/iscream/dev/reference/get_granges_string.md)
   can now extract names from its `mcols` using a `feature_col` argument
@@ -59,14 +66,20 @@
   can have the `feature_col` in its `mcols` rather than just as its
   names.
 
+INTERNAL
+
 - Refactored `summarize_regions` to collect similar validation and
   regions parsing functions
 
 ## iscream 1.1.4
 
+BUG FIX
+
 - Reduced the minimum R version from 4.5 to 4.4
 
 ## iscream 1.1.3
+
+DOCUMENTATION
 
 - Document how to make use of strand information with
   [`tabix()`](https://huishenlab.github.io/iscream/dev/reference/tabix.md)
@@ -79,6 +92,8 @@
 - Fix typo in error message from thread count checks
 
 ## iscream 1.1.1
+
+BUG FIXES
 
 - Fix configure to correctly check htslib version when rhtslib is not
   used and not issue spurious warnings
