@@ -114,6 +114,7 @@ qt <- system.time(
     bedfiles,
     regions,
     columns = 4,
+    fun = c("sum", "mean", "range", "count"),
     col_names = "beta",
     feature_col = "gene"
   )
