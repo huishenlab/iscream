@@ -37,13 +37,13 @@ for more information.
 library(iscream)
 ```
 
-    ## iscream using 1 thread by default but parallelly::availableCores() detects 4 possibly available threads. See `?set_threads` for information on multithreading before trying to use more.
+    ## iscream using 1 thread by default but parallelly::availableCores() detects 2 possibly available threads. See `?set_threads` for information on multithreading before trying to use more.
 
 ``` r
 set_threads(2)
 ```
 
-    ## iscream now using 2 of 4 available threads.
+    ## iscream now using 2 of 2 available threads.
 
 On load, iscream will inform the user about the number if threads it is
 set to use. This is configurable with either
@@ -156,6 +156,7 @@ tabix(bedfiles[1], regions)
     ## 23:   chrY 56881926 56881927     1     1
     ## 24:   chrY 56882523 56882524     0     1
     ##        chr    start      end    V1    V2
+    ##     <char>    <int>    <int> <num> <int>
 
 With multiple files, the output contains a column for the file name.
 
@@ -375,64 +376,80 @@ summarize_regions(
 )
 ```
 
-    ## [16:44:52.956255] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
-    ## [16:44:52.956291] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, range, first, last, count_unique, count
-    ## [16:44:52.956297] [iscream::summarize_regions] [info] with columns 4, 5 as beta, coverage
+    ## [18:27:44.802312] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
+    ## [18:27:44.802349] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count
+    ## [18:27:44.802354] [iscream::summarize_regions] [info] with columns 4, 5 as beta, coverage
 
-    ##                  feature  file beta.sum coverage.sum beta.mean coverage.mean
-    ## 1     chr1:184577-680065 cell1      2.0            9 0.2222222      1.000000
-    ## 2 chrY:56877780-56882524 cell1      6.0           17 0.4000000      1.133333
-    ## 3     chr1:184577-680065 cell2       NA           NA        NA            NA
-    ## 4 chrY:56877780-56882524 cell2      6.0           12 0.5000000      1.000000
-    ## 5     chr1:184577-680065 cell3       NA           NA        NA            NA
-    ## 6 chrY:56877780-56882524 cell3      5.0           10 0.6250000      1.250000
-    ## 7     chr1:184577-680065 cell4     10.0           10 1.0000000      1.000000
-    ## 8 chrY:56877780-56882524 cell4      9.5           26 0.4750000      1.300000
-    ##   beta.median coverage.median beta.mode coverage.mode beta.antimode
-    ## 1        0.00               1         0             1           1.0
-    ## 2        0.00               1         0             1           1.0
-    ## 3          NA              NA        NA            NA            NA
-    ## 4        0.50               1         1             1           1.0
-    ## 5          NA              NA        NA            NA            NA
-    ## 6        0.75               1         1             1           0.5
-    ## 7        1.00               1         1             1           1.0
-    ## 8        0.50               1         0             1           0.5
-    ##   coverage.antimode beta.stddev coverage.stddev beta.variance coverage.variance
-    ## 1                 1   0.4409586       0.0000000     0.1944444         0.0000000
-    ## 2                 2   0.5070926       0.3518658     0.2571429         0.1238095
-    ## 3                NA          NA              NA            NA                NA
-    ## 4                 1   0.5222330       0.0000000     0.2727273         0.0000000
-    ## 5                NA          NA              NA            NA                NA
-    ## 6                 2   0.4432026       0.4629100     0.1964286         0.2142857
-    ## 7                 1   0.0000000       0.0000000     0.0000000         0.0000000
-    ## 8                 2   0.4722566       0.4701623     0.2230263         0.2210526
-    ##   beta.min coverage.min beta.max coverage.max beta.range coverage.range
-    ## 1        0            1        1            1          1              0
-    ## 2        0            1        1            2          1              1
-    ## 3       NA           NA       NA           NA         NA             NA
-    ## 4        0            1        1            1          1              0
-    ## 5       NA           NA       NA           NA         NA             NA
-    ## 6        0            1        1            2          1              1
-    ## 7        1            1        1            1          0              0
-    ## 8        0            1        1            2          1              1
-    ##   beta.first coverage.first beta.last coverage.last beta.count_unique
-    ## 1          0              1       1.0             1                 2
-    ## 2          0              1       0.0             1                 2
-    ## 3         NA             NA        NA            NA                NA
-    ## 4          0              1       0.0             1                 2
-    ## 5         NA             NA        NA            NA                NA
-    ## 6          1              1       0.5             2                 3
-    ## 7          1              1       1.0             1                 1
-    ## 8          0              1       1.0             1                 3
-    ##   coverage.count_unique count
-    ## 1                     1     9
-    ## 2                     2    15
-    ## 3                    NA    NA
-    ## 4                     1    12
-    ## 5                    NA    NA
-    ## 6                     2     8
-    ## 7                     1    10
-    ## 8                     2    20
+    ##       chr    start      end   file beta.sum coverage.sum beta.mean
+    ##    <char>    <int>    <int> <char>    <num>        <num>     <num>
+    ## 1:   chr1   184577   680065  cell1      2.0            9 0.2222222
+    ## 2:   chrY 56877780 56882524  cell1      6.0           17 0.4000000
+    ## 3:   chr1   184577   680065  cell2       NA           NA        NA
+    ## 4:   chrY 56877780 56882524  cell2      6.0           12 0.5000000
+    ## 5:   chr1   184577   680065  cell3       NA           NA        NA
+    ## 6:   chrY 56877780 56882524  cell3      5.0           10 0.6250000
+    ## 7:   chr1   184577   680065  cell4     10.0           10 1.0000000
+    ## 8:   chrY 56877780 56882524  cell4      9.5           26 0.4750000
+    ##    coverage.mean beta.median coverage.median beta.mode coverage.mode
+    ##            <num>       <num>           <num>     <num>         <num>
+    ## 1:      1.000000        0.00               1         0             1
+    ## 2:      1.133333        0.00               1         0             1
+    ## 3:            NA          NA              NA        NA            NA
+    ## 4:      1.000000        0.50               1         0             1
+    ## 5:            NA          NA              NA        NA            NA
+    ## 6:      1.250000        0.75               1         1             1
+    ## 7:      1.000000        1.00               1         1             1
+    ## 8:      1.300000        0.50               1         0             1
+    ##    beta.antimode coverage.antimode beta.stddev coverage.stddev beta.variance
+    ##            <num>             <num>       <num>           <num>         <num>
+    ## 1:           1.0                 1   0.4409586       0.0000000     0.1944444
+    ## 2:           1.0                 2   0.5070926       0.3518658     0.2571429
+    ## 3:            NA                NA          NA              NA            NA
+    ## 4:           0.0                 1   0.5222330       0.0000000     0.2727273
+    ## 5:            NA                NA          NA              NA            NA
+    ## 6:           0.0                 2   0.4432026       0.4629100     0.1964286
+    ## 7:           1.0                 1   0.0000000       0.0000000     0.0000000
+    ## 8:           0.5                 2   0.4722566       0.4701623     0.2230263
+    ##    coverage.variance beta.min coverage.min beta.max coverage.max beta.absmin
+    ##                <num>    <num>        <num>    <num>        <num>       <num>
+    ## 1:         0.0000000        0            1        1            1           0
+    ## 2:         0.1238095        0            1        1            2           0
+    ## 3:                NA       NA           NA       NA           NA          NA
+    ## 4:         0.0000000        0            1        1            1           0
+    ## 5:                NA       NA           NA       NA           NA          NA
+    ## 6:         0.2142857        0            1        1            2           0
+    ## 7:         0.0000000        1            1        1            1           1
+    ## 8:         0.2210526        0            1        1            2           0
+    ##    coverage.absmin beta.absmax coverage.absmax beta.range coverage.range
+    ##              <num>       <num>           <num>      <num>          <num>
+    ## 1:               1           1               1          1              0
+    ## 2:               1           1               2          1              1
+    ## 3:              NA          NA              NA         NA             NA
+    ## 4:               1           1               1          1              0
+    ## 5:              NA          NA              NA         NA             NA
+    ## 6:               1           1               2          1              1
+    ## 7:               1           1               1          0              0
+    ## 8:               1           1               2          1              1
+    ##    beta.first coverage.first beta.last coverage.last beta.count_distinct
+    ##         <num>          <num>     <num>         <num>               <num>
+    ## 1:          0              1       1.0             1                   2
+    ## 2:          0              1       0.0             1                   2
+    ## 3:         NA             NA        NA            NA                  NA
+    ## 4:          0              1       0.0             1                   2
+    ## 5:         NA             NA        NA            NA                  NA
+    ## 6:          1              1       0.5             2                   3
+    ## 7:          1              1       1.0             1                   1
+    ## 8:          0              1       1.0             1                   3
+    ##    coverage.count_distinct count
+    ##                      <num> <num>
+    ## 1:                       1     9
+    ## 2:                       2    15
+    ## 3:                      NA    NA
+    ## 4:                       1    12
+    ## 5:                      NA    NA
+    ## 6:                       2     8
+    ## 7:                       1    10
+    ## 8:                       2    20
 
 The `feature` column here contains the genomic region coordinates, but
 can be set to something more informational if you have names for the
@@ -449,19 +466,20 @@ summarize_regions(
 )
 ```
 
-    ## [16:44:53.068651] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
-    ## [16:44:53.068684] [iscream::summarize_regions] [info] using mean, sum
-    ## [16:44:53.068693] [iscream::summarize_regions] [info] with columns 5 as coverage
+    ## [18:27:44.915799] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
+    ## [18:27:44.915822] [iscream::summarize_regions] [info] using mean, sum
+    ## [18:27:44.915826] [iscream::summarize_regions] [info] with columns 5 as coverage
 
-    ##   feature  file coverage.mean coverage.sum
-    ## 1      R1 cell1      1.000000            9
-    ## 2      R2 cell1      1.133333           17
-    ## 3      R1 cell2            NA           NA
-    ## 4      R2 cell2      1.000000           12
-    ## 5      R1 cell3            NA           NA
-    ## 6      R2 cell3      1.250000           10
-    ## 7      R1 cell4      1.000000           10
-    ## 8      R2 cell4      1.300000           26
+    ##       chr    start      end   file feature coverage.mean coverage.sum
+    ##    <char>    <int>    <int> <char>  <char>         <num>        <num>
+    ## 1:   chr1   184577   680065  cell1      R1      1.000000            9
+    ## 2:   chrY 56877780 56882524  cell1      R2      1.133333           17
+    ## 3:   chr1   184577   680065  cell2      R1            NA           NA
+    ## 4:   chrY 56877780 56882524  cell2      R2      1.000000           12
+    ## 5:   chr1   184577   680065  cell3      R1            NA           NA
+    ## 6:   chrY 56877780 56882524  cell3      R2      1.250000           10
+    ## 7:   chr1   184577   680065  cell4      R1      1.000000           10
+    ## 8:   chrY 56877780 56882524  cell4      R2      1.300000           26
 
 ### WGBS BED files
 
@@ -478,19 +496,30 @@ summarize_meth_regions(
 )
 ```
 
-    ## [16:44:53.135755] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
-    ## [16:44:53.135778] [iscream::summarize_regions] [info] using mean, sum
-    ## [16:44:53.135783] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
+    ## [18:27:44.984928] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
+    ## [18:27:44.984952] [iscream::summarize_regions] [info] using mean, sum
+    ## [18:27:44.984956] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
 
-    ##   feature  file coverage.mean    M.mean coverage.sum M.sum
-    ## 1      R1 cell1      1.000000 0.2222222            9     2
-    ## 2      R2 cell1      1.133333 0.4000000           17     6
-    ## 3      R1 cell2            NA        NA           NA    NA
-    ## 4      R2 cell2      1.000000 0.5000000           12     6
-    ## 5      R1 cell3            NA        NA           NA    NA
-    ## 6      R2 cell3      1.250000 0.7500000           10     6
-    ## 7      R1 cell4      1.000000 1.0000000           10    10
-    ## 8      R2 cell4      1.300000 0.6000000           26    12
+    ##       chr    start      end   file feature coverage.mean    M.mean coverage.sum
+    ##    <char>    <int>    <int> <char>  <char>         <num>     <num>        <num>
+    ## 1:   chr1   184577   680065  cell1      R1      1.000000 0.2222222            9
+    ## 2:   chrY 56877780 56882524  cell1      R2      1.133333 0.4000000           17
+    ## 3:   chr1   184577   680065  cell2      R1            NA        NA           NA
+    ## 4:   chrY 56877780 56882524  cell2      R2      1.000000 0.5000000           12
+    ## 5:   chr1   184577   680065  cell3      R1            NA        NA           NA
+    ## 6:   chrY 56877780 56882524  cell3      R2      1.250000 0.7500000           10
+    ## 7:   chr1   184577   680065  cell4      R1      1.000000 1.0000000           10
+    ## 8:   chrY 56877780 56882524  cell4      R2      1.300000 0.6000000           26
+    ##    M.sum
+    ##    <num>
+    ## 1:     2
+    ## 2:     6
+    ## 3:    NA
+    ## 4:     6
+    ## 5:    NA
+    ## 6:     6
+    ## 7:    10
+    ## 8:    12
 
 ## `make_mat()`
 
@@ -511,11 +540,11 @@ if (!require("SummarizedExperiment", quietly = TRUE)) {
 (mat <- make_mat_se(bedfiles, regions, column = 4, mat_name = "beta"))
 ```
 
-    ## [16:44:55.763176] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
+    ## [18:27:47.348569] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
     ## 
-    ## [16:44:55.763690] [iscream::query_all] [info] Creating metadata vectors
-    ## [16:44:55.763746] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
-    ## [16:44:55.763750] [iscream::query_all] [info] Creating dense matrix
+    ## [18:27:47.349115] [iscream::query_all] [info] Creating metadata vectors
+    ## [18:27:47.349170] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
+    ## [18:27:47.349174] [iscream::query_all] [info] Creating dense matrix
 
     ## class: RangedSummarizedExperiment 
     ## dim: 62 4 
@@ -531,16 +560,16 @@ head(assay(mat), 10)
 ```
 
     ##       cell1 cell2 cell3 cell4
-    ##  [1,]     0     0     0     0
-    ##  [2,]     0     0     0     0
-    ##  [3,]     0     0     0     0
-    ##  [4,]     0     0     0     1
-    ##  [5,]     0     0     0     1
-    ##  [6,]     0     0     0     0
-    ##  [7,]     0     0     0     0
-    ##  [8,]     1     0     0     0
-    ##  [9,]     1     0     0     0
-    ## [10,]     0     0     0     0
+    ##  [1,]     0     0   1.0     0
+    ##  [2,]     0     0   0.5     0
+    ##  [3,]     0     0   1.0     0
+    ##  [4,]     0     0   1.0     0
+    ##  [5,]     0     0   1.0     0
+    ##  [6,]     0     0   0.0     0
+    ##  [7,]     0     0   0.0     0
+    ##  [8,]     0     0   0.5     0
+    ##  [9,]     0     0   0.0     0
+    ## [10,]     0     0   0.0     0
 
 If you have sparse data, you can save memory with `sparse = TRUE`, but
 only for
@@ -552,11 +581,11 @@ and
 mat <- make_mat(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
 ```
 
-    ## [16:44:55.881126] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
+    ## [18:27:47.468555] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
     ## 
-    ## [16:44:55.881646] [iscream::query_all] [info] Creating metadata vectors
-    ## [16:44:55.881682] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
-    ## [16:44:55.881692] [iscream::query_all] [info] Creating sparse matrix
+    ## [18:27:47.469054] [iscream::query_all] [info] Creating metadata vectors
+    ## [18:27:47.469093] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
+    ## [18:27:47.469104] [iscream::query_all] [info] Creating sparse matrix
 
 ``` r
 head(mat$beta, 10)
@@ -588,11 +617,11 @@ if (require("bsseq", quietly = TRUE)) {
 }
 ```
 
-    ## [16:44:59.772330] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
+    ## [18:27:51.372587] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
     ## 
-    ## [16:44:59.772796] [iscream::query_all] [info] Creating metadata vectors
-    ## [16:44:59.772834] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
-    ## [16:44:59.772838] [iscream::query_all] [info] Creating dense matrix
+    ## [18:27:51.373095] [iscream::query_all] [info] Creating metadata vectors
+    ## [18:27:51.373132] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
+    ## [18:27:51.373136] [iscream::query_all] [info] Creating dense matrix
 
     ## An object of type 'BSseq' with
     ##   62 methylation loci
@@ -642,10 +671,10 @@ sessionInfo()
     ## other attached packages:
     ##  [1] bsseq_1.46.0                SummarizedExperiment_1.40.0
     ##  [3] Biobase_2.70.0              MatrixGenerics_1.22.0      
-    ##  [5] matrixStats_1.5.0           GenomicRanges_1.62.0       
+    ##  [5] matrixStats_1.5.0           GenomicRanges_1.62.1       
     ##  [7] Seqinfo_1.0.0               IRanges_2.44.0             
     ##  [9] S4Vectors_0.48.0            BiocGenerics_0.56.0        
-    ## [11] generics_0.1.4              iscream_1.1.5              
+    ## [11] generics_0.1.4              iscream_1.1.6              
     ## [13] BiocStyle_2.38.0           
     ## 
     ## loaded via a namespace (and not attached):
@@ -657,8 +686,8 @@ sessionInfo()
     ## [11] lifecycle_1.0.4           statmod_1.5.1            
     ## [13] compiler_4.5.2            rlang_1.1.6              
     ## [15] sass_0.4.10               tools_4.5.2              
-    ## [17] yaml_2.3.11               data.table_1.17.8        
-    ## [19] rtracklayer_1.70.0        knitr_1.50               
+    ## [17] yaml_2.3.12               data.table_1.18.0        
+    ## [19] rtracklayer_1.70.1        knitr_1.51               
     ## [21] S4Arrays_1.10.1           curl_7.0.0               
     ## [23] DelayedArray_0.36.0       RColorBrewer_1.1-3       
     ## [25] abind_1.4-8               BiocParallel_1.44.0      
@@ -678,7 +707,7 @@ sessionInfo()
     ## [53] systemfonts_1.3.1         h5mread_1.2.1            
     ## [55] locfit_1.5-9.12           limma_3.66.0             
     ## [57] jquerylib_0.1.4           glue_1.8.0               
-    ## [59] parallelly_1.45.1         pkgdown_2.2.0            
+    ## [59] parallelly_1.46.0         pkgdown_2.2.0            
     ## [61] codetools_0.2-20          BiocIO_1.20.0            
     ## [63] htmltools_0.5.9           rhdf5filters_1.22.0      
     ## [65] BSgenome_1.78.0           R6_2.6.1                 
@@ -686,8 +715,8 @@ sessionInfo()
     ## [69] evaluate_1.0.5            lattice_0.22-7           
     ## [71] R.methodsS3_1.8.2         Rsamtools_2.26.0         
     ## [73] cigarillo_1.0.0           bslib_0.9.0              
-    ## [75] Rcpp_1.1.0                SparseArray_1.10.6       
-    ## [77] permute_0.9-8             xfun_0.54                
+    ## [75] Rcpp_1.1.0                SparseArray_1.10.8       
+    ## [77] permute_0.9-8             xfun_0.55                
     ## [79] fs_1.6.6
 
 ## References

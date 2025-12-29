@@ -1,5 +1,51 @@
 # Changelog
 
+## iscream 1.1.7
+
+- `summarize_regions` and `summarize_meth_regions` now support the
+  following new functions, inspired by
+  [`bedtools map`](https://bedtools.readthedocs.io/en/latest/content/tools/map.html):
+
+  - First element (`first`)
+  - Last element (`last`)
+  - Anti-mode (`antimode`)
+  - Absolute min (`absmin`)
+  - Absolute max (`absmax`)
+  - Count of unique values (`count_distinct`)
+
+## iscream 1.1.6
+
+- BREAKING CHANGES -
+  [`summarize_regions()`](https://huishenlab.github.io/iscream/dev/reference/summarize_regions.md)
+  and
+  [`summarize_meth_regions()`](https://huishenlab.github.io/iscream/dev/reference/summarize_meth_regions.md):
+
+- The summary output now has position as chromosome, start, and end
+  columns instead of just a `feature` column with the position string.
+  This allows direct conversion to `GRanges` objects without having to
+  use rownames. It is still possible to use chromosome names as the
+  input query regions (“chr1”), the start and end in those cases will be
+  `NA`.
+
+- The `feature` column is now only populated if the input regions are
+  named, if a vector, or the `feature_col` argument is set to a column
+  for `data.frame`/`GRanges` inputs.
+
+- The count column from
+  [`summarize_meth_regions()`](https://huishenlab.github.io/iscream/dev/reference/summarize_meth_regions.md)
+  is now named `count` instead of `cpg_count`.
+
+- Bug fix: rownames are no longer set for the output using the input
+  region strings as these were repeating and not unique. It was only
+  possible because they were set from the C++ scope instead of R.
+
+- These functions now return a `data.table` instead of a `data.frame` to
+  allow for faster in-place modifications and consistency with
+  [`tabix()`](https://huishenlab.github.io/iscream/dev/reference/tabix.md)
+  output. Use
+  [`data.table::setDF()`](https://rdatatable.gitlab.io/data.table/reference/setDF.html)
+  to convert to a `data.frame` in-place.
+
 ## iscream 1.1.5
 
 - [`get_granges_string()`](https://huishenlab.github.io/iscream/dev/reference/get_granges_string.md)

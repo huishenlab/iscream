@@ -13,9 +13,9 @@ Cpp_summarize_regions(
   fun_vec,
   col_indices,
   col_names,
+  regions_df,
   aligner,
   mval = FALSE,
-  region_rownames = FALSE,
   nthreads = 1L
 )
 ```
@@ -47,12 +47,6 @@ Cpp_summarize_regions(
 - mval:
 
   Calculates M values when TRUE, use beta values when FALSE
-
-- region_rownames:
-
-  Whether to set rownames to the regions strings. Not necessary if your
-  regions vector is unnamed. If its names, then the "feature" column is
-  set to the names and the rownames are set to the regions string
 
 - nthreads:
 

@@ -7,7 +7,7 @@ data structures for further analysis.
 library(iscream)
 ```
 
-    ## iscream using 1 thread by default but parallelly::availableCores() detects 4 possibly available threads. See `?set_threads` for information on multithreading before trying to use more.
+    ## iscream using 1 thread by default but parallelly::availableCores() detects 2 possibly available threads. See `?set_threads` for information on multithreading before trying to use more.
 
 ``` r
 data_dir <- system.file("extdata", package = "iscream")
@@ -104,138 +104,69 @@ call to get the correct conversion from data frame to GenomicRanges.
 ### From `summarize_regions()`
 
 [`summarize_regions()`](https://huishenlab.github.io/iscream/dev/reference/summarize_regions.md)
-returns a data frame with a feature column identifying each summary
-row’s genomic region.
-
-If the region features are not named (see
-[`?summarize_regions`](https://huishenlab.github.io/iscream/dev/reference/summarize_regions.md)),
-pass the `feature` column with the genomic regions as the GRanges input
-regions. Here, since the `regions` vector is named, using `unname` will
-cause the `feature` column to populate with regions strings:
-
-``` r
-(summary <- summarize_meth_regions(
-  bedfiles,
-  unname(regions),
-  fun = c("sum", "mean"))
-)
-```
-
-    ## [16:44:37.034615] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-    ## [16:44:37.034645] [iscream::summarize_regions] [info] using sum, mean
-    ## [16:44:37.034649] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
-
-    ##       feature file coverage.sum M.sum coverage.mean    M.mean
-    ## 1    chr1:1-6    a            4     2      1.333333 0.6666667
-    ## 2   chr1:7-10    a            3     1      1.500000 0.5000000
-    ## 3  chr1:11-14    a            5     5      2.500000 2.5000000
-    ## 4    chr1:1-6    b            4     2      2.000000 1.0000000
-    ## 5   chr1:7-10    b            1     1      1.000000 1.0000000
-    ## 6  chr1:11-14    b            3     1      1.500000 0.5000000
-    ## 7    chr1:1-6    c            2     2      2.000000 2.0000000
-    ## 8   chr1:7-10    c            3     1      1.500000 0.5000000
-    ## 9  chr1:11-14    c           NA    NA            NA        NA
-    ## 10   chr1:1-6    d            3     3      1.500000 1.5000000
-    ## 11  chr1:7-10    d            3     1      1.500000 0.5000000
-    ## 12 chr1:11-14    d            1     1      1.000000 1.0000000
-
-``` r
-GRanges(summary$feature, summary = summary[, -1])
-```
-
-    ## GRanges object with 12 ranges and 5 metadata columns:
-    ##        seqnames    ranges strand | summary.file summary.coverage.sum
-    ##           <Rle> <IRanges>  <Rle> |  <character>            <numeric>
-    ##    [1]     chr1       1-6      * |            a                    4
-    ##    [2]     chr1      7-10      * |            a                    3
-    ##    [3]     chr1     11-14      * |            a                    5
-    ##    [4]     chr1       1-6      * |            b                    4
-    ##    [5]     chr1      7-10      * |            b                    1
-    ##    ...      ...       ...    ... .          ...                  ...
-    ##    [8]     chr1      7-10      * |            c                    3
-    ##    [9]     chr1     11-14      * |            c                   NA
-    ##   [10]     chr1       1-6      * |            d                    3
-    ##   [11]     chr1      7-10      * |            d                    3
-    ##   [12]     chr1     11-14      * |            d                    1
-    ##        summary.M.sum summary.coverage.mean summary.M.mean
-    ##            <numeric>             <numeric>      <numeric>
-    ##    [1]             2               1.33333       0.666667
-    ##    [2]             1               1.50000       0.500000
-    ##    [3]             5               2.50000       2.500000
-    ##    [4]             2               2.00000       1.000000
-    ##    [5]             1               1.00000       1.000000
-    ##    ...           ...                   ...            ...
-    ##    [8]             1                   1.5            0.5
-    ##    [9]            NA                    NA             NA
-    ##   [10]             3                   1.5            1.5
-    ##   [11]             1                   1.5            0.5
-    ##   [12]             1                   1.0            1.0
-    ##   -------
-    ##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
-
-If the input regions are named use `set_region_rownames = TRUE` so that
-the genomic regions strings are preserved and use them as the `GRanges`
-input regions.
+returns a data frame with the input `regions` positions and summaries of
+the BED-file data columns.
 
 ``` r
 (summary <- summarize_regions(
   bedfiles,
   regions,
   column = 4,
-  set_region_rownames = TRUE,
+  col_names = ("data_col"),
   fun = c("sum", "mean"))
 )
 ```
 
-    ## [16:44:37.214966] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-    ## [16:44:37.214991] [iscream::summarize_regions] [info] using sum, mean
-    ## [16:44:37.214995] [iscream::summarize_regions] [info] with columns 4 as V1
+    ## [18:27:28.512707] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+    ## [18:27:28.512739] [iscream::summarize_regions] [info] using sum, mean
+    ## [18:27:28.512745] [iscream::summarize_regions] [info] with columns 4 as data_col
 
-    ##            feature file V1.sum   V1.mean
-    ## chr1:1-6         A    a    2.0 0.6666667
-    ## chr1:7-10        B    a    0.5 0.2500000
-    ## chr1:11-14       C    a    2.0 1.0000000
-    ## chr1:1-6         A    b    1.0 0.5000000
-    ## chr1:7-10        B    b    1.0 1.0000000
-    ## chr1:11-14       C    b    1.0 0.5000000
-    ## chr1:1-6         A    c    1.0 1.0000000
-    ## chr1:7-10        B    c    1.0 0.5000000
-    ## chr1:11-14       C    c     NA        NA
-    ## chr1:1-6         A    d    2.0 1.0000000
-    ## chr1:7-10        B    d    0.5 0.2500000
-    ## chr1:11-14       C    d    1.0 1.0000000
+    ##        chr start   end   file feature data_col.sum data_col.mean
+    ##     <char> <int> <int> <char>  <char>        <num>         <num>
+    ##  1:   chr1     1     6      a       A          2.0     0.6666667
+    ##  2:   chr1     7    10      a       B          0.5     0.2500000
+    ##  3:   chr1    11    14      a       C          2.0     1.0000000
+    ##  4:   chr1     1     6      b       A          1.0     0.5000000
+    ##  5:   chr1     7    10      b       B          1.0     1.0000000
+    ##  6:   chr1    11    14      b       C          1.0     0.5000000
+    ##  7:   chr1     1     6      c       A          1.0     1.0000000
+    ##  8:   chr1     7    10      c       B          1.0     0.5000000
+    ##  9:   chr1    11    14      c       C           NA            NA
+    ## 10:   chr1     1     6      d       A          2.0     1.0000000
+    ## 11:   chr1     7    10      d       B          0.5     0.2500000
+    ## 12:   chr1    11    14      d       C          1.0     1.0000000
 
 ``` r
-GRanges(rownames(summary), summary = summary)
+GRanges(summary)
 ```
 
     ## GRanges object with 12 ranges and 4 metadata columns:
-    ##        seqnames    ranges strand | summary.feature summary.file summary.V1.sum
-    ##           <Rle> <IRanges>  <Rle> |     <character>  <character>      <numeric>
-    ##    [1]     chr1       1-6      * |               A            a            2.0
-    ##    [2]     chr1      7-10      * |               B            a            0.5
-    ##    [3]     chr1     11-14      * |               C            a            2.0
-    ##    [4]     chr1       1-6      * |               A            b            1.0
-    ##    [5]     chr1      7-10      * |               B            b            1.0
-    ##    ...      ...       ...    ... .             ...          ...            ...
-    ##    [8]     chr1      7-10      * |               B            c            1.0
-    ##    [9]     chr1     11-14      * |               C            c             NA
-    ##   [10]     chr1       1-6      * |               A            d            2.0
-    ##   [11]     chr1      7-10      * |               B            d            0.5
-    ##   [12]     chr1     11-14      * |               C            d            1.0
-    ##        summary.V1.mean
-    ##              <numeric>
-    ##    [1]        0.666667
-    ##    [2]        0.250000
-    ##    [3]        1.000000
-    ##    [4]        0.500000
-    ##    [5]        1.000000
-    ##    ...             ...
-    ##    [8]            0.50
-    ##    [9]              NA
-    ##   [10]            1.00
-    ##   [11]            0.25
-    ##   [12]            1.00
+    ##        seqnames    ranges strand |        file     feature data_col.sum
+    ##           <Rle> <IRanges>  <Rle> | <character> <character>    <numeric>
+    ##    [1]     chr1       1-6      * |           a           A          2.0
+    ##    [2]     chr1      7-10      * |           a           B          0.5
+    ##    [3]     chr1     11-14      * |           a           C          2.0
+    ##    [4]     chr1       1-6      * |           b           A          1.0
+    ##    [5]     chr1      7-10      * |           b           B          1.0
+    ##    ...      ...       ...    ... .         ...         ...          ...
+    ##    [8]     chr1      7-10      * |           c           B          1.0
+    ##    [9]     chr1     11-14      * |           c           C           NA
+    ##   [10]     chr1       1-6      * |           d           A          2.0
+    ##   [11]     chr1      7-10      * |           d           B          0.5
+    ##   [12]     chr1     11-14      * |           d           C          1.0
+    ##        data_col.mean
+    ##            <numeric>
+    ##    [1]      0.666667
+    ##    [2]      0.250000
+    ##    [3]      1.000000
+    ##    [4]      0.500000
+    ##    [5]      1.000000
+    ##    ...           ...
+    ##    [8]          0.50
+    ##    [9]            NA
+    ##   [10]          1.00
+    ##   [11]          0.25
+    ##   [12]          1.00
     ##   -------
     ##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
 
@@ -248,11 +179,11 @@ returns a `GRanges` object for dense matrices.
 make_mat_gr(bedfiles, regions, column = 4, mat_name = "beta")
 ```
 
-    ## [16:44:37.326616] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [18:27:28.601747] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [16:44:37.327099] [iscream::query_all] [info] Creating metadata vectors
-    ## [16:44:37.327145] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [16:44:37.327150] [iscream::query_all] [info] Creating dense matrix
+    ## [18:27:28.602096] [iscream::query_all] [info] Creating metadata vectors
+    ## [18:27:28.602136] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [18:27:28.602140] [iscream::query_all] [info] Creating dense matrix
 
     ## GRanges object with 7 ranges and 4 metadata columns:
     ##       seqnames    ranges strand |         a         b         c         d
@@ -280,11 +211,11 @@ if (!require("SummarizedExperiment", quietly = TRUE)) {
 make_mat_se(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
 ```
 
-    ## [16:44:39.622180] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [18:27:30.988543] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [16:44:39.622583] [iscream::query_all] [info] Creating metadata vectors
-    ## [16:44:39.622609] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [16:44:39.622615] [iscream::query_all] [info] Creating sparse matrix
+    ## [18:27:30.988955] [iscream::query_all] [info] Creating metadata vectors
+    ## [18:27:30.988980] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [18:27:30.988987] [iscream::query_all] [info] Creating sparse matrix
 
     ## class: RangedSummarizedExperiment 
     ## dim: 7 4 
@@ -307,11 +238,11 @@ if (!require("bsseq", quietly = TRUE)) {
 mats <- make_mat_bsseq(bedfiles, regions, sparse = FALSE)
 ```
 
-    ## [16:44:43.595672] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [18:27:34.882534] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [16:44:43.596048] [iscream::query_all] [info] Creating metadata vectors
-    ## [16:44:43.596072] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [16:44:43.596075] [iscream::query_all] [info] Creating dense matrix
+    ## [18:27:34.882949] [iscream::query_all] [info] Creating metadata vectors
+    ## [18:27:34.882975] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [18:27:34.882978] [iscream::query_all] [info] Creating dense matrix
 
 ``` r
 do.call(BSseq, mats)
@@ -353,10 +284,10 @@ sessionInfo()
     ## other attached packages:
     ##  [1] bsseq_1.46.0                SummarizedExperiment_1.40.0
     ##  [3] Biobase_2.70.0              MatrixGenerics_1.22.0      
-    ##  [5] matrixStats_1.5.0           GenomicRanges_1.62.0       
+    ##  [5] matrixStats_1.5.0           GenomicRanges_1.62.1       
     ##  [7] Seqinfo_1.0.0               IRanges_2.44.0             
     ##  [9] S4Vectors_0.48.0            BiocGenerics_0.56.0        
-    ## [11] generics_0.1.4              iscream_1.1.5              
+    ## [11] generics_0.1.4              iscream_1.1.6              
     ## [13] BiocStyle_2.38.0           
     ## 
     ## loaded via a namespace (and not attached):
@@ -368,8 +299,8 @@ sessionInfo()
     ## [11] lifecycle_1.0.4           statmod_1.5.1            
     ## [13] compiler_4.5.2            rlang_1.1.6              
     ## [15] sass_0.4.10               tools_4.5.2              
-    ## [17] yaml_2.3.11               data.table_1.17.8        
-    ## [19] rtracklayer_1.70.0        knitr_1.50               
+    ## [17] yaml_2.3.12               data.table_1.18.0        
+    ## [19] rtracklayer_1.70.1        knitr_1.51               
     ## [21] S4Arrays_1.10.1           curl_7.0.0               
     ## [23] DelayedArray_0.36.0       RColorBrewer_1.1-3       
     ## [25] abind_1.4-8               BiocParallel_1.44.0      
@@ -389,7 +320,7 @@ sessionInfo()
     ## [53] systemfonts_1.3.1         h5mread_1.2.1            
     ## [55] locfit_1.5-9.12           limma_3.66.0             
     ## [57] jquerylib_0.1.4           glue_1.8.0               
-    ## [59] parallelly_1.45.1         pkgdown_2.2.0            
+    ## [59] parallelly_1.46.0         pkgdown_2.2.0            
     ## [61] codetools_0.2-20          BiocIO_1.20.0            
     ## [63] htmltools_0.5.9           rhdf5filters_1.22.0      
     ## [65] BSgenome_1.78.0           R6_2.6.1                 
@@ -397,6 +328,6 @@ sessionInfo()
     ## [69] evaluate_1.0.5            lattice_0.22-7           
     ## [71] R.methodsS3_1.8.2         Rsamtools_2.26.0         
     ## [73] cigarillo_1.0.0           bslib_0.9.0              
-    ## [75] Rcpp_1.1.0                SparseArray_1.10.6       
-    ## [77] permute_0.9-8             xfun_0.54                
+    ## [75] Rcpp_1.1.0                SparseArray_1.10.8       
+    ## [77] permute_0.9-8             xfun_0.55                
     ## [79] fs_1.6.6

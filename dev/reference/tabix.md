@@ -141,6 +141,7 @@ tabix(bedfiles, regions, col.names = c("beta", "coverage"))
 #> 19:   chr1     8    10   0.5        2      d
 #> 20:   chr1    12    14   1.0        1      d
 #>        chr start   end  beta coverage   file
+#>     <char> <int> <int> <num>    <int> <char>
 if (require("GenomicRanges", quietly = TRUE)) {
   tabix_gr(bedfiles, regions, col.names = c("beta", "coverage"))
 }

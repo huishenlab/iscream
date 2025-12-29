@@ -17,7 +17,7 @@ regions. Parallelized across files using threads from the
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.5</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,6 @@ regions. Parallelized across files using threads from the
 <span>  aligner <span class="op">=</span> <span class="st">"biscuit"</span>,</span>
 <span>  feature_col <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  mval <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  set_region_rownames <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  nthreads <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -111,12 +110,6 @@ input regions format. See details.</p></dd>
 or use the beta value when applying the function.</p></dd>
 
 
-<dt id="arg-set-region-rownames">set_region_rownames<a class="anchor" aria-label="anchor" href="#arg-set-region-rownames"></a></dt>
-<dd><p>Use the region strings as the returned data
-frame's rownames. Can be useful if you have a named regions and want both
-the regions strings rownames and the feature names. See details.</p></dd>
-
-
 <dt id="arg-nthreads">nthreads<a class="anchor" aria-label="anchor" href="#arg-nthreads"></a></dt>
 <dd><p>Set number of threads to use overriding the
 <code>"iscream.threads"</code> option. See <code><a href="set_threads.html">?set_threads</a></code> for more information.</p></dd>
@@ -124,7 +117,7 @@ the regions strings rownames and the feature names. See details.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data.frame</p>
+    <p>A data.table</p>
     </div>
     <div class="section level2">
     <h2 id="supported-functions">Supported functions<a class="anchor" aria-label="anchor" href="#supported-functions"></a></h2>
@@ -132,32 +125,31 @@ the regions strings rownames and the feature names. See details.</p></dd>
 <ul><li><p>Sum: <code>"sum"</code></p></li>
 <li><p>Mean: <code>"mean"</code></p></li>
 <li><p>Median: <code>"median"</code></p></li>
-<li><p>Mod: <code>"mode"</code></p></li>
+<li><p>Mode: <code>"mode"</code></p></li>
 <li><p>Anti-mode: <code>"antimode"</code></p></li>
 <li><p>Standard deviation: <code>"stddev"</code></p></li>
 <li><p>Variance: <code>"variance"</code></p></li>
 <li><p>Minimum: <code>"min"</code></p></li>
 <li><p>Maximum: <code>"max"</code></p></li>
+<li><p>Minimum of absolute values: <code>"absmin"</code></p></li>
+<li><p>Maximum of absolute values: <code>"absmax"</code></p></li>
 <li><p>Range: <code>"range"</code></p></li>
 <li><p>First element: <code>"first"</code></p></li>
 <li><p>Last element: <code>"last"</code></p></li>
 <li><p>No. of records in the region: <code>"count"</code></p></li>
-<li><p>No. of records in the region with unique data values: <code>"count_unique"</code></p></li>
+<li><p>No. of records in the region with unique data values: <code>"count_distinct"</code></p></li>
 </ul><p>Most summarizing computations are backed by the Armadillo library. See
 <a href="https://arma.sourceforge.net/docs.html#stats_fns" class="external-link">https://arma.sourceforge.net/docs.html#stats_fns</a> for futher details on the
 supported functions</p>
     </div>
     <div class="section level2">
     <h2 id="using-feature-identifiers">Using feature identifiers<a class="anchor" aria-label="anchor" href="#using-feature-identifiers"></a></h2>
-    <p><code>regions</code> may be string vector in the form "chr:start-end", a GRanges
-object or a data frame with "chr", "start", and "end" columns. The <code>feature</code>
-column of the output will contain a "chr:start-end" identifier for each
-summarized region. To use other identifiers, like a gene name for a region
-instead of the coordinates, set the names of the vector or GRanges to those
-identifiers. These names will be used instead of the genomic region string
-to describe each feature in the output dataframe. If <code>regions</code> is a data
-frame make an additional column with the identifiers and pass that column
-name to <code>feature_col</code>. See examples.</p>
+    <p><code>regions</code> may be a string vector in the form "chr:start-end", a GRanges
+object or a data frame with "chr", "start", and "end" columns. If the input
+data.frame or GRanges has a column with feature identifiers, like gene names
+for a set of gene regions, pass that column's name to <code>feature_col</code>. If
+<code>regions</code> is a vector, set its <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code> to those identifiers. These will be
+used to populate a 'feature' column in the summary. See examples.</p>
     </div>
 
     <div class="section level2">
@@ -170,109 +162,146 @@ name to <code>feature_col</code>. See examples.</p>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_meth_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:44:29.858147] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:44:29.858169] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, range, first, last, count_unique, count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:44:29.858173] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       feature file coverage.sum M.sum coverage.mean    M.mean coverage.median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    chr1:1-6    a            4     2      1.333333 0.6666667             1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   chr1:7-10    a            3     1      1.500000 0.5000000             1.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  chr1:11-14    a            5     5      2.500000 2.5000000             2.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    chr1:1-6    b            4     2      2.000000 1.0000000             2.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   chr1:7-10    b            1     1      1.000000 1.0000000             1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  chr1:11-14    b            3     1      1.500000 0.5000000             1.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    chr1:1-6    c            2     2      2.000000 2.0000000             2.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   chr1:7-10    c            3     1      1.500000 0.5000000             1.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  chr1:11-14    c           NA    NA            NA        NA              NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   chr1:1-6    d            3     3      1.500000 1.5000000             1.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  chr1:7-10    d            3     1      1.500000 0.5000000             1.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 chr1:11-14    d            1     1      1.000000 1.0000000             1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    M.median coverage.mode M.mode coverage.antimode M.antimode coverage.stddev</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       1.0             1      1                 2          0       0.5773503</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       0.5             2      1                 2          1       0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       2.5             3      3                 3          3       0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       1.0             2      2                 2          2       0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       1.0             1      1                 1          1       0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       0.5             1      1                 1          1       0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7       2.0             2      2                 2          2       0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8       0.5             1      1                 1          1       0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        NA            NA     NA                NA         NA              NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10      1.5             2      2                 2          2       0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11      0.5             2      1                 2          1       0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12      1.0             1      1                 1          1       0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     M.stddev coverage.variance M.variance coverage.min M.min coverage.max M.max</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.5773503         0.3333333  0.3333333            1     0            2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.7071068         0.5000000  0.5000000            1     0            2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.7071068         0.5000000  0.5000000            2     2            3     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  1.4142136         0.0000000  2.0000000            2     0            2     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.0000000         0.0000000  0.0000000            1     1            1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.7071068         0.5000000  0.5000000            1     0            2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.0000000         0.0000000  0.0000000            2     2            2     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.7071068         0.5000000  0.5000000            1     0            2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9         NA                NA         NA           NA    NA           NA    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.7071068         0.5000000  0.5000000            1     1            2     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.7071068         0.5000000  0.5000000            1     0            2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.0000000         0.0000000  0.0000000            1     1            1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    coverage.range M.range coverage.first M.first coverage.last M.last</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1               1       1              1       1             2      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2               1       1              1       0             2      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3               1       1              2       2             3      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4               0       2              2       0             2      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5               0       0              1       1             1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6               1       1              2       0             1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7               0       0              2       2             2      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8               1       1              2       0             1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9              NA      NA             NA      NA            NA     NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10              1       1              1       1             2      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11              1       1              1       0             2      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12              0       0              1       1             1      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    coverage.count_unique M.count_unique cpg_count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                      2              2         3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                      2              2         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                      2              2         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                      1              2         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                      1              1         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                      2              2         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                      1              1         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                      2              2         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                     NA             NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                     2              2         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11                     2              2         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12                     1              1         1</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:27:21.598356] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:27:21.598377] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:27:21.598381] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        chr start   end   file coverage.sum M.sum coverage.mean    M.mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;char&gt;        &lt;num&gt; &lt;num&gt;         &lt;num&gt;     &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   chr1     1     6      a            4     2      1.333333 0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   chr1     7    10      a            3     1      1.500000 0.5000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   chr1    11    14      a            5     5      2.500000 2.5000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   chr1     1     6      b            4     2      2.000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   chr1     7    10      b            1     1      1.000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   chr1    11    14      b            3     1      1.500000 0.5000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   chr1     1     6      c            2     2      2.000000 2.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   chr1     7    10      c            3     1      1.500000 0.5000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   chr1    11    14      c           NA    NA            NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   chr1     1     6      d            3     3      1.500000 1.5000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:   chr1     7    10      d            3     1      1.500000 0.5000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   chr1    11    14      d            1     1      1.000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     coverage.median M.median coverage.mode M.mode coverage.antimode M.antimode</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;num&gt;    &lt;num&gt;         &lt;num&gt;  &lt;num&gt;             &lt;num&gt;      &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:             1.0      1.0             1      1                 2          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:             1.5      0.5             1      0                 1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:             2.5      2.5             2      2                 2          2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:             2.0      1.0             2      0                 2          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:             1.0      1.0             1      1                 1          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:             1.5      0.5             1      0                 1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:             2.0      2.0             2      2                 2          2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:             1.5      0.5             1      0                 1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:              NA       NA            NA     NA                NA         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:             1.5      1.5             1      1                 1          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:             1.5      0.5             1      0                 1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:             1.0      1.0             1      1                 1          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     coverage.stddev  M.stddev coverage.variance M.variance coverage.min M.min</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;num&gt;     &lt;num&gt;             &lt;num&gt;      &lt;num&gt;        &lt;num&gt; &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       0.5773503 0.5773503         0.3333333  0.3333333            1     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       0.7071068 0.7071068         0.5000000  0.5000000            1     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       0.7071068 0.7071068         0.5000000  0.5000000            2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:       0.0000000 1.4142136         0.0000000  2.0000000            2     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:       0.0000000 0.0000000         0.0000000  0.0000000            1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:       0.7071068 0.7071068         0.5000000  0.5000000            1     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       0.0000000 0.0000000         0.0000000  0.0000000            2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       0.7071068 0.7071068         0.5000000  0.5000000            1     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:              NA        NA                NA         NA           NA    NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       0.7071068 0.7071068         0.5000000  0.5000000            1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       0.7071068 0.7071068         0.5000000  0.5000000            1     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:       0.0000000 0.0000000         0.0000000  0.0000000            1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     coverage.max M.max coverage.absmin M.absmin coverage.absmax M.absmax</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;num&gt; &lt;num&gt;           &lt;num&gt;    &lt;num&gt;           &lt;num&gt;    &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:            2     1               1        0               2        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:            2     1               1        0               2        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:            3     3               2        2               3        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:            2     2               2        0               2        2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:            1     1               1        1               1        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:            2     1               1        0               2        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:            2     2               2        2               2        2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:            2     1               1        0               2        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:           NA    NA              NA       NA              NA       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:            2     2               1        1               2        2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:            2     1               1        0               2        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:            1     1               1        1               1        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     coverage.range M.range coverage.first M.first coverage.last M.last</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              &lt;num&gt;   &lt;num&gt;          &lt;num&gt;   &lt;num&gt;         &lt;num&gt;  &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:              1       1              1       1             2      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:              1       1              1       0             2      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:              1       1              2       2             3      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:              0       2              2       0             2      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:              0       0              1       1             1      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:              1       1              2       0             1      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:              0       0              2       2             2      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:              1       1              2       0             1      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:             NA      NA             NA      NA            NA     NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:              1       1              1       1             2      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:              1       1              1       0             2      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:              0       0              1       1             1      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     coverage.count_distinct M.count_distinct count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;num&gt;            &lt;num&gt; &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                       2                2     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                       2                2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                       2                2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                       1                2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                       1                1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:                       2                2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:                       1                1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:                       2                2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                      NA               NA    NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                       2                2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:                       2                2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:                       1                1     1</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># add names to the regions to populate the 'feature' column</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gene1"</span>, <span class="st">"gene2"</span>, <span class="st">"gene3"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_meth_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"stddev"</span><span class="op">)</span>, mval <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:44:29.890085] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:44:29.890097] [iscream::summarize_regions] [info] using mean, stddev</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:44:29.890101] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    feature file coverage.mean beta.mean coverage.stddev beta.stddev</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        A    a      1.333333 0.6666667       0.5773503   0.5773503</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        B    a      1.500000 0.2500000       0.7071068   0.3535534</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        C    a      2.500000 1.0000000       0.7071068   0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        A    b      2.000000 0.5000000       0.0000000   0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        B    b      1.000000 1.0000000       0.0000000   0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        C    b      1.500000 0.5000000       0.7071068   0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        A    c      2.000000 1.0000000       0.0000000   0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        B    c      1.500000 0.5000000       0.7071068   0.7071068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        C    c            NA        NA              NA          NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10       A    d      1.500000 1.0000000       0.7071068   0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11       B    d      1.500000 0.2500000       0.7071068   0.3535534</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12       C    d      1.000000 1.0000000       0.0000000   0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:27:21.650954] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:27:21.650968] [iscream::summarize_regions] [info] using mean, stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:27:21.650972] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        chr start   end   file feature coverage.mean beta.mean coverage.stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;char&gt;  &lt;char&gt;         &lt;num&gt;     &lt;num&gt;           &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   chr1     1     6      a   gene1      1.333333 0.6666667       0.5773503</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   chr1     7    10      a   gene2      1.500000 0.2500000       0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   chr1    11    14      a   gene3      2.500000 1.0000000       0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   chr1     1     6      b   gene1      2.000000 0.5000000       0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   chr1     7    10      b   gene2      1.000000 1.0000000       0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   chr1    11    14      b   gene3      1.500000 0.5000000       0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   chr1     1     6      c   gene1      2.000000 1.0000000       0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   chr1     7    10      c   gene2      1.500000 0.5000000       0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   chr1    11    14      c   gene3            NA        NA              NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   chr1     1     6      d   gene1      1.500000 1.0000000       0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:   chr1     7    10      d   gene2      1.500000 0.2500000       0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   chr1    11    14      d   gene3      1.000000 1.0000000       0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     beta.stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   0.5773503</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   0.3535534</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   0.7071068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:          NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:   0.3535534</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   0.0000000</span>
 <span class="r-in"><span><span class="fu">summarize_meth_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:44:29.895245] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:44:29.895255] [iscream::summarize_regions] [info] using sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:44:29.895258] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    feature file coverage.sum M.sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        A    a            4     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        B    a            3     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        C    a            5     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        A    b            4     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        B    b            1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        C    b            3     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        A    c            2     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        B    c            3     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        C    c           NA    NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10       A    d            3     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11       B    d            3     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12       C    d            1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:27:21.661696] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:27:21.661710] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18:27:21.661713] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        chr start   end   file feature coverage.sum M.sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;char&gt;  &lt;char&gt;        &lt;num&gt; &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   chr1     1     6      a   gene1            4     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   chr1     7    10      a   gene2            3     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   chr1    11    14      a   gene3            5     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   chr1     1     6      b   gene1            4     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   chr1     7    10      b   gene2            1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   chr1    11    14      b   gene3            3     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   chr1     1     6      c   gene1            2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   chr1     7    10      c   gene2            3     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   chr1    11    14      c   gene3           NA    NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:   chr1     1     6      d   gene1            3     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:   chr1     7    10      d   gene2            3     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:   chr1    11    14      d   gene3            1     1</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
