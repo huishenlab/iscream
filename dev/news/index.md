@@ -14,7 +14,7 @@ and
   input query regions (“chr1”), the start and end in those cases will be
   `NA`.
 
-- The `feature` column is now only populated if the input regions are
+- The `feature` column is now populated only if the input regions are
   named, if a vector, or the `feature_col` argument is set to a column
   for `data.frame`/`GRanges` inputs.
 
