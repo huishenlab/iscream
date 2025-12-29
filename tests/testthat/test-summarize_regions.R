@@ -5,6 +5,7 @@ library("data.table")
 extdata <- system.file("extdata", package = "iscream")
 biscuit_bedfiles <- list.files(extdata, pattern = "[a|b|c|d].bed.gz$", full.names = TRUE)
 bismark_bedfiles <- list.files(extdata, pattern = "[a|b|c|d].cov.gz$", full.names = TRUE)
+abs_bedfiles <- list.files(extdata, pattern = "abs.bed.gz$", full.names = TRUE)
 regions <- c(A = "chr1:1-6", B = "chr1:7-10", C = "chr1:11-14")
 regions.dt <- as.data.table(regions)[, tstrsplit(regions, ":|-")][, names := names(regions)]
 colnames(regions.dt) <- c("chr", "start", "end", "names")
@@ -20,6 +21,8 @@ supported_funcs <- c(
   "variance",
   "min",
   "max",
+  "absmin",
+  "absmax",
   "range",
   "first",
   "last",
@@ -186,6 +189,25 @@ test_that("colnames", {
   lapply(full_set[4], function(i) {
     test_colnames(i)
   })
+})
+
+test_that("abs", {
+  expect_equal(
+    summarize_regions(abs_bedfiles, regions, 4, fun = "min")[, V1.min],
+    c(-2, -2, -3)
+  )
+  expect_equal(
+    summarize_regions(abs_bedfiles, regions, 4, fun = "max")[, V1.max],
+    c(1, 1, -2)
+  )
+  expect_equal(
+    summarize_regions(abs_bedfiles, regions, 4, fun = "absmin")[, V1.absmin],
+    c(1, 1, 2)
+  )
+  expect_equal(
+    summarize_regions(abs_bedfiles, regions, 4, fun = "absmax")[, V1.absmax],
+    c(2, 2, 3)
+  )
 })
 
 # error on bad 'fun' arguments

@@ -19,6 +19,8 @@ supported_funcs <- c(
   "variance",
   "min",
   "max",
+  "absmin",
+  "absmax",
   "range",
   "first",
   "last",
