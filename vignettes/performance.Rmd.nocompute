@@ -151,6 +151,7 @@ expect based on CpG counts in one file and the coverage of your WGBS method.
 Here we make a matrix of the beta-values in the 4th column:
 
 ```{r}
+suppressPackageStartupMessages(library("SummarizedExperiment"))
 cpg.count <- tbx_query$start |> unique() |> length()
 qt <- system.time(meth_mat <- make_mat_se(
   bedfiles,
