@@ -346,7 +346,7 @@ autoplot(bench_1_df)
 # Multiple files as data frame
 
 We can try to query multiple BED files using Rsamtools with this function that
-8 cores like iscream does:
+uses 8 cores like iscream does:
 
 
 ``` r

@@ -151,7 +151,7 @@ autoplot(bench_1_df)
 # Multiple files as data frame
 
 We can try to query multiple BED files using Rsamtools with this function that
-8 cores like iscream does:
+uses 8 cores like iscream does:
 
 ```{r bench_30_df, fig.cap="tabix vs scanTabix parsed data frame from 30 files", dpi=300}
 partbx <- function(bedfiles) {
