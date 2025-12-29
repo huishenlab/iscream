@@ -152,11 +152,11 @@ lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 # make matrix of beta values
 make_mat(bedfiles, regions, column = 4)
-#> [21:43:48.472059] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+#> [21:51:18.300040] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
 #> 
-#> [21:43:48.472481] [iscream::query_all] [info] Creating metadata vectors
-#> [21:43:48.472535] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-#> [21:43:48.472541] [iscream::query_all] [info] Creating dense matrix
+#> [21:51:18.300342] [iscream::query_all] [info] Creating metadata vectors
+#> [21:51:18.300395] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+#> [21:51:18.300399] [iscream::query_all] [info] Creating dense matrix
 #> $value
 #>        a b c   d
 #> [1,] 1.0 0 0 1.0

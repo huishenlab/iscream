@@ -49,6 +49,7 @@ ENHANCEMENTS
 
   - First element (`first`)
   - Last element (`last`)
+  - Mode (`mode`)
   - Anti-mode (`antimode`)
   - Absolute min (`absmin`)
   - Absolute max (`absmax`)
