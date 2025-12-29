@@ -25,6 +25,17 @@ BREAKING CHANGES to `summarize_regions()` and `summarize_meth_regions()`:
 
 ENHANCEMENTS
 
+ - `summarize_regions` and `summarize_meth_regions` now support the following
+   new functions, inspired by [`bedtools map`](https://bedtools.readthedocs.io/en/latest/content/tools/map.html):
+
+     * First element (`first`)
+     * Last element (`last`)
+     * Mode (`mode`)
+     * Anti-mode (`antimode`)
+     * Absolute min (`absmin`)
+     * Absolute max (`absmax`)
+     * Count of unique values (`count_distinct`)
+
 - `get_granges_string()` can now extract names from its `mcols` using a
   `feature_col` argument as in `get_df_string()` - names were
   previously pulled only from `names()`. This means GRanges inputs to
