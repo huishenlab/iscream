@@ -90,7 +90,7 @@ iscream has two `tabix()` implementations, one using the command line `tabix`
 executable and the other using the htslib API. The command line tool is faster
 as it can stream to a file which can be read from R while the htslib API stores
 the strings in memory and is slower. iscream will look for the tabix executable
-on startup and will only fall back to the htslip API if the executable is not
+on startup and will only fall back to the htslib API if the executable is not
 found. See `?tabix` details for more information.
 
 ```{r}
