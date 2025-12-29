@@ -21,14 +21,14 @@ BREAKING CHANGES to `summarize_regions()` and `summarize_meth_regions()`:
 
 BUG FIXES
 
- - Rownames are no longer set for the `summarize_regions` or
-   `summarize_meth_regions` output using the input region strings as these were
-   repeating and not unique. It was only possible because they were set from the
-   C++ scope instead of R.
+ - Rownames are no longer set for the `summarize_regions()` or
+   `summarize_meth_regions()` output using the input region strings as these
+   were repeating and not unique. It was only possible because they were set
+   from the C++ scope instead of R.
 
 ENHANCEMENTS
 
- - `summarize_regions` and `summarize_meth_regions` now support the following
+ - `summarize_regions()` and `summarize_meth_regions()` now support the following
    new functions, inspired by [`bedtools map`](https://bedtools.readthedocs.io/en/latest/content/tools/map.html):
 
      * First element (`first`)
