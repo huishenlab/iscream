@@ -1,38 +1,8 @@
 # Changelog
 
-## iscream 1.1.8
+## iscream 1.1.5
 
-DOCUMENTATION
-
-- Update Zenodo URLs in vignettes to the updated record:
-  <https://zenodo.org/records/18089082>. The `genes.bed` file used in
-  `vignette("performance"`) now contains the gene names that the
-  vignette references.
-
-INTERNAL
-
-- [`tabix()`](https://huishenlab.github.io/iscream/dev/reference/tabix.md)
-  writes the input regions of interest to disk only once instead of
-  doing it for every file
-
-## iscream 1.1.7
-
-ENHANCEMENTS
-
-- `summarize_regions` and `summarize_meth_regions` now support the
-  following new functions, inspired by
-  [`bedtools map`](https://bedtools.readthedocs.io/en/latest/content/tools/map.html):
-
-  - First element (`first`)
-  - Last element (`last`)
-  - Anti-mode (`antimode`)
-  - Absolute min (`absmin`)
-  - Absolute max (`absmax`)
-  - Count of unique values (`count_distinct`)
-
-## iscream 1.1.6
-
-BREAKING CHANGES -
+BREAKING CHANGES to
 [`summarize_regions()`](https://huishenlab.github.io/iscream/dev/reference/summarize_regions.md)
 and
 [`summarize_meth_regions()`](https://huishenlab.github.io/iscream/dev/reference/summarize_meth_regions.md):
@@ -66,9 +36,18 @@ BUG FIXES
   these were repeating and not unique. It was only possible because they
   were set from the C++ scope instead of R.
 
-## iscream 1.1.5
-
 ENHANCEMENTS
+
+- `summarize_regions` and `summarize_meth_regions` now support the
+  following new functions, inspired by
+  [`bedtools map`](https://bedtools.readthedocs.io/en/latest/content/tools/map.html):
+
+  - First element (`first`)
+  - Last element (`last`)
+  - Anti-mode (`antimode`)
+  - Absolute min (`absmin`)
+  - Absolute max (`absmax`)
+  - Count of unique values (`count_distinct`)
 
 - [`get_granges_string()`](https://huishenlab.github.io/iscream/dev/reference/get_granges_string.md)
   can now extract names from its `mcols` using a `feature_col` argument
@@ -81,10 +60,21 @@ ENHANCEMENTS
   can have the `feature_col` in its `mcols` rather than just as its
   names.
 
+DOCUMENTATION
+
+- Update Zenodo URLs in vignettes to the updated record:
+  <https://zenodo.org/records/18089082>. The `genes.bed` file used in
+  `vignette("performance"`) now contains the gene names that the
+  vignette references.
+
 INTERNAL
 
 - Refactored `summarize_regions` to collect similar validation and
   regions parsing functions
+
+- [`tabix()`](https://huishenlab.github.io/iscream/dev/reference/tabix.md)
+  writes the input regions of interest to disk only once instead of
+  doing it for every file
 
 ## iscream 1.1.4
 

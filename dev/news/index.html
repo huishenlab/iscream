@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.8</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,16 +54,15 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.1.8" id="iscream-118">iscream 1.1.8<a class="anchor" aria-label="anchor" href="#iscream-118"></a></h2>
-<p>DOCUMENTATION</p>
-<ul><li>Update Zenodo URLs in vignettes to the updated record: <a href="https://zenodo.org/records/18089082" class="external-link uri">https://zenodo.org/records/18089082</a>. The <code>genes.bed</code> file used in <code>vignette("performance"</code>) now contains the gene names that the vignette references.</li>
-</ul><p>INTERNAL</p>
-<ul><li>
-<code><a href="../reference/tabix.html">tabix()</a></code> writes the input regions of interest to disk only once instead of doing it for every file</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.1.7" id="iscream-117">iscream 1.1.7<a class="anchor" aria-label="anchor" href="#iscream-117"></a></h2>
-<p>ENHANCEMENTS</p>
+<h2 class="pkg-version" data-toc-text="1.1.5" id="iscream-115">iscream 1.1.5<a class="anchor" aria-label="anchor" href="#iscream-115"></a></h2>
+<p>BREAKING CHANGES to <code><a href="../reference/summarize_regions.html">summarize_regions()</a></code> and <code><a href="../reference/summarize_meth_regions.html">summarize_meth_regions()</a></code>:</p>
+<ul><li><p>The summary output now has position as chromosome, start, and end columns instead of just a <code>feature</code> column with the position string. This allows direct conversion to <code>GRanges</code> objects without having to use rownames. It is still possible to use chromosome names as the input query regions (“chr1”), the start and end in those cases will be <code>NA</code>.</p></li>
+<li><p>The <code>feature</code> column is now only populated if the input regions are named, if a vector, or the <code>feature_col</code> argument is set to a column for <code>data.frame</code>/<code>GRanges</code> inputs.</p></li>
+<li><p>The count column from <code><a href="../reference/summarize_meth_regions.html">summarize_meth_regions()</a></code> is now named <code>count</code> instead of <code>cpg_count</code>.</p></li>
+<li><p>These functions now return a <code>data.table</code> instead of a <code>data.frame</code> to allow for faster in-place modifications and consistency with <code><a href="../reference/tabix.html">tabix()</a></code> output. Use <code><a href="https://rdatatable.gitlab.io/data.table/reference/setDF.html" class="external-link">data.table::setDF()</a></code> to convert to a <code>data.frame</code> in-place.</p></li>
+</ul><p>BUG FIXES</p>
+<ul><li>Rownames are no longer set for the <code>summarize_regions</code> or <code>summarize_meth_regions</code> output using the input region strings as these were repeating and not unique. It was only possible because they were set from the C++ scope instead of R.</li>
+</ul><p>ENHANCEMENTS</p>
 <ul><li>
 <p><code>summarize_regions</code> and <code>summarize_meth_regions</code> now support the following new functions, inspired by <a href="https://bedtools.readthedocs.io/en/latest/content/tools/map.html" class="external-link"><code>bedtools map</code></a>:</p>
 <ul><li>First element (<code>first</code>)</li>
@@ -73,24 +72,12 @@
 <li>Absolute max (<code>absmax</code>)</li>
 <li>Count of unique values (<code>count_distinct</code>)</li>
 </ul></li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.1.6" id="iscream-116">iscream 1.1.6<a class="anchor" aria-label="anchor" href="#iscream-116"></a></h2>
-<p>BREAKING CHANGES - <code><a href="../reference/summarize_regions.html">summarize_regions()</a></code> and <code><a href="../reference/summarize_meth_regions.html">summarize_meth_regions()</a></code>:</p>
-<ul><li><p>The summary output now has position as chromosome, start, and end columns instead of just a <code>feature</code> column with the position string. This allows direct conversion to <code>GRanges</code> objects without having to use rownames. It is still possible to use chromosome names as the input query regions (“chr1”), the start and end in those cases will be <code>NA</code>.</p></li>
-<li><p>The <code>feature</code> column is now only populated if the input regions are named, if a vector, or the <code>feature_col</code> argument is set to a column for <code>data.frame</code>/<code>GRanges</code> inputs.</p></li>
-<li><p>The count column from <code><a href="../reference/summarize_meth_regions.html">summarize_meth_regions()</a></code> is now named <code>count</code> instead of <code>cpg_count</code>.</p></li>
-<li><p>These functions now return a <code>data.table</code> instead of a <code>data.frame</code> to allow for faster in-place modifications and consistency with <code><a href="../reference/tabix.html">tabix()</a></code> output. Use <code><a href="https://rdatatable.gitlab.io/data.table/reference/setDF.html" class="external-link">data.table::setDF()</a></code> to convert to a <code>data.frame</code> in-place.</p></li>
-</ul><p>BUG FIXES</p>
-<ul><li>Rownames are no longer set for the <code>summarize_regions</code> or <code>summarize_meth_regions</code> output using the input region strings as these were repeating and not unique. It was only possible because they were set from the C++ scope instead of R.</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.1.5" id="iscream-115">iscream 1.1.5<a class="anchor" aria-label="anchor" href="#iscream-115"></a></h2>
-<p>ENHANCEMENTS</p>
-<ul><li>
-<code><a href="../reference/get_granges_string.html">get_granges_string()</a></code> can now extract names from its <code>mcols</code> using a <code>feature_col</code> argument as in <code><a href="../reference/get_df_string.html">get_df_string()</a></code> - names were previously pulled only from <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code>. This means GRanges inputs to <code><a href="../reference/summarize_regions.html">summarize_regions()</a></code> can have the <code>feature_col</code> in its <code>mcols</code> rather than just as its names.</li>
+<li><p><code><a href="../reference/get_granges_string.html">get_granges_string()</a></code> can now extract names from its <code>mcols</code> using a <code>feature_col</code> argument as in <code><a href="../reference/get_df_string.html">get_df_string()</a></code> - names were previously pulled only from <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code>. This means GRanges inputs to <code><a href="../reference/summarize_regions.html">summarize_regions()</a></code> can have the <code>feature_col</code> in its <code>mcols</code> rather than just as its names.</p></li>
+</ul><p>DOCUMENTATION</p>
+<ul><li>Update Zenodo URLs in vignettes to the updated record: <a href="https://zenodo.org/records/18089082" class="external-link uri">https://zenodo.org/records/18089082</a>. The <code>genes.bed</code> file used in <code>vignette("performance"</code>) now contains the gene names that the vignette references.</li>
 </ul><p>INTERNAL</p>
-<ul><li>Refactored <code>summarize_regions</code> to collect similar validation and regions parsing functions</li>
+<ul><li><p>Refactored <code>summarize_regions</code> to collect similar validation and regions parsing functions</p></li>
+<li><p><code><a href="../reference/tabix.html">tabix()</a></code> writes the input regions of interest to disk only once instead of doing it for every file</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.4" id="iscream-114">iscream 1.1.4<a class="anchor" aria-label="anchor" href="#iscream-114"></a></h2>

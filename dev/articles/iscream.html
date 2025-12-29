@@ -33,7 +33,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.8</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -429,9 +429,9 @@ summarizing functions are run on each input column by default - see
 <span>  columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,</span>
 <span>  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"coverage"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [20:57:24.582201] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
-<span><span class="co">## [20:57:24.582236] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count</span></span>
-<span><span class="co">## [20:57:24.582240] [iscream::summarize_regions] [info] with columns 4, 5 as beta, coverage</span></span></code></pre>
+<pre><code><span><span class="co">## [21:25:21.193798] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
+<span><span class="co">## [21:25:21.193833] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count</span></span>
+<span><span class="co">## [21:25:21.193838] [iscream::summarize_regions] [info] with columns 4, 5 as beta, coverage</span></span></code></pre>
 <pre><code><span><span class="co">##       chr    start      end   file beta.sum coverage.sum beta.mean</span></span>
 <span><span class="co">##    &lt;char&gt;    &lt;int&gt;    &lt;int&gt; &lt;char&gt;    &lt;num&gt;        &lt;num&gt;     &lt;num&gt;</span></span>
 <span><span class="co">## 1:   chr1   184577   680065  cell1      2.0            9 0.2222222</span></span>
@@ -515,9 +515,9 @@ names for the regions. You can also select the functions applied with
 <span>  columns <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  col_names <span class="op">=</span> <span class="st">"coverage"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [20:57:24.696990] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
-<span><span class="co">## [20:57:24.697011] [iscream::summarize_regions] [info] using mean, sum</span></span>
-<span><span class="co">## [20:57:24.697016] [iscream::summarize_regions] [info] with columns 5 as coverage</span></span></code></pre>
+<pre><code><span><span class="co">## [21:25:21.309785] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
+<span><span class="co">## [21:25:21.309806] [iscream::summarize_regions] [info] using mean, sum</span></span>
+<span><span class="co">## [21:25:21.309810] [iscream::summarize_regions] [info] with columns 5 as coverage</span></span></code></pre>
 <pre><code><span><span class="co">##       chr    start      end   file feature coverage.mean coverage.sum</span></span>
 <span><span class="co">##    &lt;char&gt;    &lt;int&gt;    &lt;int&gt; &lt;char&gt;  &lt;char&gt;         &lt;num&gt;        &lt;num&gt;</span></span>
 <span><span class="co">## 1:   chr1   184577   680065  cell1      R1      1.000000            9</span></span>
@@ -541,9 +541,9 @@ names for the regions. You can also select the functions applied with
 <span>  aligner <span class="op">=</span> <span class="st">"biscuit"</span>,</span>
 <span>  fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"sum"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [20:57:24.768029] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
-<span><span class="co">## [20:57:24.768050] [iscream::summarize_regions] [info] using mean, sum</span></span>
-<span><span class="co">## [20:57:24.768054] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
+<pre><code><span><span class="co">## [21:25:21.379072] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles</span></span>
+<span><span class="co">## [21:25:21.379095] [iscream::summarize_regions] [info] using mean, sum</span></span>
+<span><span class="co">## [21:25:21.379099] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span></span></code></pre>
 <pre><code><span><span class="co">##       chr    start      end   file feature coverage.mean    M.mean coverage.sum</span></span>
 <span><span class="co">##    &lt;char&gt;    &lt;int&gt;    &lt;int&gt; &lt;char&gt;  &lt;char&gt;         &lt;num&gt;     &lt;num&gt;        &lt;num&gt;</span></span>
 <span><span class="co">## 1:   chr1   184577   680065  cell1      R1      1.000000 0.2222222            9</span></span>
@@ -581,11 +581,11 @@ returns a <code>RangedSummarizedExperiment</code>, and
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"The 'SummarizedExperiment' package must be installed for this functionality"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="op">(</span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mat.html">make_mat_se</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, column <span class="op">=</span> <span class="fl">4</span>, mat_name <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [20:57:27.090329] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [21:25:23.771041] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [20:57:27.090869] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [20:57:27.090926] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [20:57:27.090931] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
+<span><span class="co">## [21:25:23.771645] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [21:25:23.771741] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [21:25:23.771752] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
 <pre><code><span><span class="co">## class: RangedSummarizedExperiment </span></span>
 <span><span class="co">## dim: 62 4 </span></span>
 <span><span class="co">## metadata(0):</span></span>
@@ -612,11 +612,11 @@ returns a <code>RangedSummarizedExperiment</code>, and
 <code><a href="../reference/make_mat.html">make_mat_se()</a></code>.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mat.html">make_mat</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, column <span class="op">=</span> <span class="fl">4</span>, mat_name <span class="op">=</span> <span class="st">"beta"</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [20:57:27.211393] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [21:25:23.891013] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [20:57:27.211860] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [20:57:27.211895] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [20:57:27.211907] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
+<span><span class="co">## [21:25:23.891499] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [21:25:23.891534] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [21:25:23.891548] [iscream::query_all] [info] Creating sparse matrix</span></span></code></pre>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mat</span><span class="op">$</span><span class="va">beta</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 10 x 4 sparse Matrix of class "dgCMatrix"</span></span>
@@ -642,11 +642,11 @@ of BSseq inputs. To make the <code>BSseq</code> object run</p>
 <span>  <span class="va">meth_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mat_bsseq.html">make_mat_bsseq</a></span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">BSseq</span>, <span class="va">meth_mat</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<pre><code><span><span class="co">## [20:57:30.998388] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
+<pre><code><span><span class="co">## [21:25:27.855796] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## [20:57:30.998916] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">## [20:57:30.998951] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">## [20:57:30.998954] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
+<span><span class="co">## [21:25:27.856335] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">## [21:25:27.856371] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">## [21:25:27.856377] [iscream::query_all] [info] Creating dense matrix</span></span></code></pre>
 <pre><code><span><span class="co">## An object of type 'BSseq' with</span></span>
 <span><span class="co">##   62 methylation loci</span></span>
 <span><span class="co">##   4 samples</span></span>
@@ -698,7 +698,7 @@ structures and conversions see
 <span><span class="co">##  [5] matrixStats_1.5.0           GenomicRanges_1.62.1       </span></span>
 <span><span class="co">##  [7] Seqinfo_1.0.0               IRanges_2.44.0             </span></span>
 <span><span class="co">##  [9] S4Vectors_0.48.0            BiocGenerics_0.56.0        </span></span>
-<span><span class="co">## [11] generics_0.1.4              iscream_1.1.8              </span></span>
+<span><span class="co">## [11] generics_0.1.4              iscream_1.1.5              </span></span>
 <span><span class="co">## [13] BiocStyle_2.38.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>

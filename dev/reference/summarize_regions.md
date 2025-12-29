@@ -163,9 +163,9 @@ lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 # make a vector of regions
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 summarize_regions(bedfiles, regions, columns = c(4, 5), col_names = c("beta", "cov"))
-#> [20:57:01.824573] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [20:57:01.824589] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count
-#> [20:57:01.824592] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov
+#> [21:24:58.973821] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [21:24:58.973838] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count
+#> [21:24:58.973842] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov
 #>        chr start   end   file beta.sum cov.sum beta.mean cov.mean beta.median
 #>     <char> <int> <int> <char>    <num>   <num>     <num>    <num>       <num>
 #>  1:   chr1     1     6      a      2.0       4 0.6666667 1.333333        1.00
@@ -259,9 +259,9 @@ summarize_regions(
   columns = c(4, 5),
   col_names = c("beta", "cov")
 )
-#> [20:57:01.864918] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [20:57:01.864934] [iscream::summarize_regions] [info] using mean, stddev
-#> [20:57:01.864937] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov
+#> [21:24:59.011055] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [21:24:59.011070] [iscream::summarize_regions] [info] using mean, stddev
+#> [21:24:59.011073] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov
 #>        chr start   end   file beta.mean cov.mean beta.stddev cov.stddev
 #>     <char> <int> <int> <char>     <num>    <num>       <num>      <num>
 #>  1:   chr1     1     6      a 0.6666667 1.333333   0.5773503  0.5773503
@@ -286,9 +286,9 @@ summarize_regions(
   columns = 5,
   col_names = "coverage"
 )
-#> [20:57:01.873411] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [20:57:01.873433] [iscream::summarize_regions] [info] using sum
-#> [20:57:01.873437] [iscream::summarize_regions] [info] with columns 5 as coverage
+#> [21:24:59.019441] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [21:24:59.019462] [iscream::summarize_regions] [info] using sum
+#> [21:24:59.019466] [iscream::summarize_regions] [info] with columns 5 as coverage
 #>        chr start   end   file feature coverage.sum
 #>     <char> <int> <int> <char>  <char>        <num>
 #>  1:   chr1     1     6      a   gene1            4
@@ -326,9 +326,9 @@ summarize_regions(
   col_names = "coverage",
   feature_col = "feature"
 )
-#> [20:57:01.890004] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [20:57:01.890019] [iscream::summarize_regions] [info] using sum
-#> [20:57:01.890022] [iscream::summarize_regions] [info] with columns 5 as coverage
+#> [21:24:59.035996] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [21:24:59.036011] [iscream::summarize_regions] [info] using sum
+#> [21:24:59.036014] [iscream::summarize_regions] [info] with columns 5 as coverage
 #>        chr start   end   file feature coverage.sum
 #>     <char> <int> <int> <char>  <char>        <num>
 #>  1:   chr1     1     6      a   gene1            4

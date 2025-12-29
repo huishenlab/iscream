@@ -120,9 +120,9 @@ bedfiles <- system.file("extdata", package = "iscream") |>
 # make a vector of regions
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 summarize_meth_regions(bedfiles, regions)
-#> [20:57:00.864795] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [20:57:00.864817] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count
-#> [20:57:00.864822] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
+#> [21:24:57.973463] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [21:24:57.973484] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count
+#> [21:24:57.973489] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
 #>        chr start   end   file coverage.sum M.sum coverage.mean    M.mean
 #>     <char> <int> <int> <char>        <num> <num>         <num>     <num>
 #>  1:   chr1     1     6      a            4     2      1.333333 0.6666667
@@ -211,9 +211,9 @@ summarize_meth_regions(bedfiles, regions)
 # add names to the regions to populate the 'feature' column
 names(regions) <- c("gene1", "gene2", "gene3")
 summarize_meth_regions(bedfiles, regions, fun = c("mean", "stddev"), mval = FALSE)
-#> [20:57:00.916639] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [20:57:00.916652] [iscream::summarize_regions] [info] using mean, stddev
-#> [20:57:00.916655] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta
+#> [21:24:58.025579] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [21:24:58.025594] [iscream::summarize_regions] [info] using mean, stddev
+#> [21:24:58.025598] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta
 #>        chr start   end   file feature coverage.mean beta.mean coverage.stddev
 #>     <char> <int> <int> <char>  <char>         <num>     <num>           <num>
 #>  1:   chr1     1     6      a   gene1      1.333333 0.6666667       0.5773503
@@ -243,9 +243,9 @@ summarize_meth_regions(bedfiles, regions, fun = c("mean", "stddev"), mval = FALS
 #> 11:   0.3535534
 #> 12:   0.0000000
 summarize_meth_regions(bedfiles, regions, fun = "sum")
-#> [20:57:00.927049] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [20:57:00.927061] [iscream::summarize_regions] [info] using sum
-#> [20:57:00.927065] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
+#> [21:24:58.035632] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [21:24:58.035646] [iscream::summarize_regions] [info] using sum
+#> [21:24:58.035649] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
 #>        chr start   end   file feature coverage.sum M.sum
 #>     <char> <int> <int> <char>  <char>        <num> <num>
 #>  1:   chr1     1     6      a   gene1            4     2
