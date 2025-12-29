@@ -1,4 +1,4 @@
-chr,start,end,file,feature,coverage.sum,M.sum,coverage.mean,M.mean,coverage.median,M.median,coverage.mode,M.mode,coverage.antimode,M.antimode,coverage.stddev,M.stddev,coverage.variance,M.variance,coverage.min,M.min,coverage.max,M.max,coverage.range,M.range,coverage.first,M.first,coverage.last,M.last,coverage.count_unique,M.count_unique,count
+chr,start,end,file,feature,coverage.sum,M.sum,coverage.mean,M.mean,coverage.median,M.median,coverage.mode,M.mode,coverage.antimode,M.antimode,coverage.stddev,M.stddev,coverage.variance,M.variance,coverage.min,M.min,coverage.max,M.max,coverage.range,M.range,coverage.first,M.first,coverage.last,M.last,coverage.count_distinct,M.count_distinct,count
 chr1,1,6,a,A,4,2,1.33333333333333,0.666666666666667,1,1,1,1,2,0,0.577350269189626,0.577350269189626,0.333333333333333,0.333333333333333,1,0,2,1,1,1,1,1,2,0,2,2,3
 chr1,7,10,a,B,3,1,1.5,0.5,1.5,0.5,1,0,1,0,0.707106781186548,0.707106781186548,0.5,0.5,1,0,2,1,1,1,1,0,2,1,2,2,2
 chr1,11,14,a,C,5,5,2.5,2.5,2.5,2.5,2,2,2,2,0.707106781186548,0.707106781186548,0.5,0.5,2,2,3,3,1,1,2,2,3,3,2,2,2

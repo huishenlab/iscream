@@ -31,7 +31,7 @@
 #' - First element: `"first"`
 #' - Last element: `"last"`
 #' - No. of records in the region: `"count"`
-#' - No. of records in the region with unique data values: `"count_unique"`
+#' - No. of records in the region with unique data values: `"count_distinct"`
 #'
 #' Most summarizing computations are backed by the Armadillo library. See
 #' <https://arma.sourceforge.net/docs.html#stats_fns> for futher details on the
@@ -125,7 +125,7 @@ summarize_regions <- function(
     "range",
     "first",
     "last",
-    "count_unique",
+    "count_distinct",
     "count"
   )
 

@@ -22,7 +22,7 @@ supported_funcs <- c(
   "range",
   "first",
   "last",
-  "count_unique"
+  "count_distinct"
 )
 
 # utils

@@ -23,7 +23,7 @@ supported_funcs <- c(
   "range",
   "first",
   "last",
-  "count_unique"
+  "count_distinct"
 )
 
 get_colnames <- function(funcs, col_names, regs) {

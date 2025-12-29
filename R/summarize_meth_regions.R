@@ -63,7 +63,7 @@ summarize_meth_regions <- function(
     "range",
     "first",
     "last",
-    "count_unique",
+    "count_distinct",
     "count"
   )
 

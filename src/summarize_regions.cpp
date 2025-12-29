@@ -27,7 +27,7 @@ enum StatFunction {
     STDDEV,
     VARIANCE,
     COUNT,
-    COUNT_UNIQUE,
+    COUNT_DISTINCT,
     MIN,
     MAX,
     RANGE,
@@ -45,7 +45,7 @@ std::unordered_map<std::string, StatFunction> str_to_enum {
     {"stddev", STDDEV},
     {"variance", VARIANCE},
     {"count", COUNT},
-    {"count_unique", COUNT_UNIQUE},
+    {"count_distinct", COUNT_DISTINCT},
     {"min", MIN},
     {"max", MAX},
     {"range", RANGE},
@@ -190,7 +190,7 @@ double summarize(const StatFunction func, const arma::vec& data_vec) {
             return arma::var(data_vec);
         case COUNT:
             return data_vec.size();
-        case COUNT_UNIQUE:
+        case COUNT_DISTINCT:
             {
                 arma::vec unique = arma::unique(arma::sort(data_vec));
                 return unique.size();

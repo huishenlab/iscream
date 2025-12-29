@@ -55,7 +55,7 @@ Parallelized across files using threads from the \code{"iscream.threads"} option
 \item First element: \code{"first"}
 \item Last element: \code{"last"}
 \item No. of records in the region: \code{"count"}
-\item No. of records in the region with unique data values: \code{"count_unique"}
+\item No. of records in the region with unique data values: \code{"count_distinct"}
 }
 
 Most summarizing computations are backed by the Armadillo library. See

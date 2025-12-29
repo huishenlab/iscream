@@ -54,11 +54,13 @@ regions. Parallelized across files using threads from the
 \item Variance: \code{"variance"}
 \item Minimum: \code{"min"}
 \item Maximum: \code{"max"}
+\item Minimum of absolute values: \code{"absmin"}
+\item Maximum of absolute values: \code{"absmax"}
 \item Range: \code{"range"}
 \item First element: \code{"first"}
 \item Last element: \code{"last"}
 \item No. of records in the region: \code{"count"}
-\item No. of records in the region with unique data values: \code{"count_unique"}
+\item No. of records in the region with unique data values: \code{"count_distinct"}
 }
 
 Most summarizing computations are backed by the Armadillo library. See
