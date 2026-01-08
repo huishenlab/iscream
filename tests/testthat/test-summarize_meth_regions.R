@@ -16,6 +16,7 @@ supported_funcs <- c(
   "mode",
   "antimode",
   "stddev",
+  "pstddev",
   "variance",
   "min",
   "max",
