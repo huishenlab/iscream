@@ -47,6 +47,7 @@ ENHANCEMENTS
   now support the following new functions, inspired by
   [`bedtools map`](https://bedtools.readthedocs.io/en/latest/content/tools/map.html):
 
+  - Population standard deviation (`pstddev`)
   - First element (`first`)
   - Last element (`last`)
   - Mode (`mode`)

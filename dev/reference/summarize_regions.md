@@ -70,7 +70,9 @@ A data.table
 
 - Anti-mode: `"antimode"`
 
-- Standard deviation: `"stddev"`
+- Sample standard deviation: `"stddev"` (`sstdev` in `bedtools map`)
+
+- Population standard deviation: `"pstddev"` (`stdev` in `bedtools map`)
 
 - Variance: `"variance"`
 
@@ -164,9 +166,9 @@ lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 # make a vector of regions
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 summarize_regions(bedfiles, regions, columns = c(4, 5), col_names = c("beta", "cov"))
-#> [21:51:26.217461] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [21:51:26.217476] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count
-#> [21:51:26.217479] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov
+#> [15:32:59.427266] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [15:32:59.427282] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, pstddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count
+#> [15:32:59.427286] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov
 #>        chr start   end   file beta.sum cov.sum beta.mean cov.mean beta.median
 #>     <char> <int> <int> <char>    <num>   <num>     <num>    <num>       <num>
 #>  1:   chr1     1     6      a      2.0       4 0.6666667 1.333333        1.00
@@ -195,62 +197,62 @@ summarize_regions(bedfiles, regions, columns = c(4, 5), col_names = c("beta", "c
 #> 10:        1.5         1        1             1            1   0.0000000
 #> 11:        1.5         0        1             0            1   0.3535534
 #> 12:        1.0         1        1             1            1   0.0000000
-#>     cov.stddev beta.variance cov.variance beta.min cov.min beta.max cov.max
-#>          <num>         <num>        <num>    <num>   <num>    <num>   <num>
-#>  1:  0.5773503     0.3333333    0.3333333        0       1      1.0       2
-#>  2:  0.7071068     0.1250000    0.5000000        0       1      0.5       2
-#>  3:  0.7071068     0.0000000    0.5000000        1       2      1.0       3
-#>  4:  0.0000000     0.5000000    0.0000000        0       2      1.0       2
-#>  5:  0.0000000     0.0000000    0.0000000        1       1      1.0       1
-#>  6:  0.7071068     0.5000000    0.5000000        0       1      1.0       2
-#>  7:  0.0000000     0.0000000    0.0000000        1       2      1.0       2
-#>  8:  0.7071068     0.5000000    0.5000000        0       1      1.0       2
-#>  9:         NA            NA           NA       NA      NA       NA      NA
-#> 10:  0.7071068     0.0000000    0.5000000        1       1      1.0       2
-#> 11:  0.7071068     0.1250000    0.5000000        0       1      0.5       2
-#> 12:  0.0000000     0.0000000    0.0000000        1       1      1.0       1
-#>     beta.absmin cov.absmin beta.absmax cov.absmax beta.range cov.range
-#>           <num>      <num>       <num>      <num>      <num>     <num>
-#>  1:           0          1         1.0          2        1.0         1
-#>  2:           0          1         0.5          2        0.5         1
-#>  3:           1          2         1.0          3        0.0         1
-#>  4:           0          2         1.0          2        1.0         0
-#>  5:           1          1         1.0          1        0.0         0
-#>  6:           0          1         1.0          2        1.0         1
-#>  7:           1          2         1.0          2        0.0         0
-#>  8:           0          1         1.0          2        1.0         1
-#>  9:          NA         NA          NA         NA         NA        NA
-#> 10:           1          1         1.0          2        0.0         1
-#> 11:           0          1         0.5          2        0.5         1
-#> 12:           1          1         1.0          1        0.0         0
-#>     beta.first cov.first beta.last cov.last beta.count_distinct
-#>          <num>     <num>     <num>    <num>               <num>
-#>  1:          1         1       0.0        2                   2
-#>  2:          0         1       0.5        2                   2
-#>  3:          1         2       1.0        3                   1
-#>  4:          0         2       1.0        2                   2
-#>  5:          1         1       1.0        1                   1
-#>  6:          0         2       1.0        1                   2
-#>  7:          1         2       1.0        2                   1
-#>  8:          0         2       1.0        1                   2
-#>  9:         NA        NA        NA       NA                  NA
-#> 10:          1         1       1.0        2                   1
-#> 11:          0         1       0.5        2                   2
-#> 12:          1         1       1.0        1                   1
-#>     cov.count_distinct count
-#>                  <num> <num>
-#>  1:                  2     3
-#>  2:                  2     2
-#>  3:                  2     2
-#>  4:                  1     2
-#>  5:                  1     1
-#>  6:                  2     2
-#>  7:                  1     1
-#>  8:                  2     2
-#>  9:                 NA    NA
-#> 10:                  2     2
-#> 11:                  2     2
-#> 12:                  1     1
+#>     cov.stddev beta.pstddev cov.pstddev beta.variance cov.variance beta.min
+#>          <num>        <num>       <num>         <num>        <num>    <num>
+#>  1:  0.5773503    0.4714045   0.4714045     0.3333333    0.3333333        0
+#>  2:  0.7071068    0.2500000   0.5000000     0.1250000    0.5000000        0
+#>  3:  0.7071068    0.0000000   0.5000000     0.0000000    0.5000000        1
+#>  4:  0.0000000    0.5000000   0.0000000     0.5000000    0.0000000        0
+#>  5:  0.0000000    0.0000000   0.0000000     0.0000000    0.0000000        1
+#>  6:  0.7071068    0.5000000   0.5000000     0.5000000    0.5000000        0
+#>  7:  0.0000000    0.0000000   0.0000000     0.0000000    0.0000000        1
+#>  8:  0.7071068    0.5000000   0.5000000     0.5000000    0.5000000        0
+#>  9:         NA           NA          NA            NA           NA       NA
+#> 10:  0.7071068    0.0000000   0.5000000     0.0000000    0.5000000        1
+#> 11:  0.7071068    0.2500000   0.5000000     0.1250000    0.5000000        0
+#> 12:  0.0000000    0.0000000   0.0000000     0.0000000    0.0000000        1
+#>     cov.min beta.max cov.max beta.absmin cov.absmin beta.absmax cov.absmax
+#>       <num>    <num>   <num>       <num>      <num>       <num>      <num>
+#>  1:       1      1.0       2           0          1         1.0          2
+#>  2:       1      0.5       2           0          1         0.5          2
+#>  3:       2      1.0       3           1          2         1.0          3
+#>  4:       2      1.0       2           0          2         1.0          2
+#>  5:       1      1.0       1           1          1         1.0          1
+#>  6:       1      1.0       2           0          1         1.0          2
+#>  7:       2      1.0       2           1          2         1.0          2
+#>  8:       1      1.0       2           0          1         1.0          2
+#>  9:      NA       NA      NA          NA         NA          NA         NA
+#> 10:       1      1.0       2           1          1         1.0          2
+#> 11:       1      0.5       2           0          1         0.5          2
+#> 12:       1      1.0       1           1          1         1.0          1
+#>     beta.range cov.range beta.first cov.first beta.last cov.last
+#>          <num>     <num>      <num>     <num>     <num>    <num>
+#>  1:        1.0         1          1         1       0.0        2
+#>  2:        0.5         1          0         1       0.5        2
+#>  3:        0.0         1          1         2       1.0        3
+#>  4:        1.0         0          0         2       1.0        2
+#>  5:        0.0         0          1         1       1.0        1
+#>  6:        1.0         1          0         2       1.0        1
+#>  7:        0.0         0          1         2       1.0        2
+#>  8:        1.0         1          0         2       1.0        1
+#>  9:         NA        NA         NA        NA        NA       NA
+#> 10:        0.0         1          1         1       1.0        2
+#> 11:        0.5         1          0         1       0.5        2
+#> 12:        0.0         0          1         1       1.0        1
+#>     beta.count_distinct cov.count_distinct count
+#>                   <num>              <num> <num>
+#>  1:                   2                  2     3
+#>  2:                   2                  2     2
+#>  3:                   1                  2     2
+#>  4:                   2                  1     2
+#>  5:                   1                  1     1
+#>  6:                   2                  2     2
+#>  7:                   1                  1     1
+#>  8:                   2                  2     2
+#>  9:                  NA                 NA    NA
+#> 10:                   1                  2     2
+#> 11:                   2                  2     2
+#> 12:                   1                  1     1
 
 # select functions
 summarize_regions(
@@ -260,9 +262,9 @@ summarize_regions(
   columns = c(4, 5),
   col_names = c("beta", "cov")
 )
-#> [21:51:26.249158] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [21:51:26.249174] [iscream::summarize_regions] [info] using mean, stddev
-#> [21:51:26.249176] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov
+#> [15:32:59.467846] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [15:32:59.467861] [iscream::summarize_regions] [info] using mean, stddev
+#> [15:32:59.467865] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov
 #>        chr start   end   file beta.mean cov.mean beta.stddev cov.stddev
 #>     <char> <int> <int> <char>     <num>    <num>       <num>      <num>
 #>  1:   chr1     1     6      a 0.6666667 1.333333   0.5773503  0.5773503
@@ -287,9 +289,9 @@ summarize_regions(
   columns = 5,
   col_names = "coverage"
 )
-#> [21:51:26.255851] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [21:51:26.255870] [iscream::summarize_regions] [info] using sum
-#> [21:51:26.255872] [iscream::summarize_regions] [info] with columns 5 as coverage
+#> [15:32:59.475690] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [15:32:59.475704] [iscream::summarize_regions] [info] using sum
+#> [15:32:59.475708] [iscream::summarize_regions] [info] with columns 5 as coverage
 #>        chr start   end   file feature coverage.sum
 #>     <char> <int> <int> <char>  <char>        <num>
 #>  1:   chr1     1     6      a   gene1            4
@@ -327,9 +329,9 @@ summarize_regions(
   col_names = "coverage",
   feature_col = "feature"
 )
-#> [21:51:26.270398] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [21:51:26.270410] [iscream::summarize_regions] [info] using sum
-#> [21:51:26.270412] [iscream::summarize_regions] [info] with columns 5 as coverage
+#> [15:32:59.492448] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [15:32:59.492461] [iscream::summarize_regions] [info] using sum
+#> [15:32:59.492464] [iscream::summarize_regions] [info] with columns 5 as coverage
 #>        chr start   end   file feature coverage.sum
 #>     <char> <int> <int> <char>  <char>        <num>
 #>  1:   chr1     1     6      a   gene1            4

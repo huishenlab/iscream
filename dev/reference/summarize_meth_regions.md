@@ -72,7 +72,9 @@ A data.table
 
 - Anti-mode: `"antimode"`
 
-- Standard deviation: `"stddev"`
+- Sample standard deviation: `"stddev"` (`sstdev` in `bedtools map`)
+
+- Population standard deviation: `"pstddev"` (`stdev` in `bedtools map`)
 
 - Variance: `"variance"`
 
@@ -121,9 +123,9 @@ bedfiles <- system.file("extdata", package = "iscream") |>
 # make a vector of regions
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 summarize_meth_regions(bedfiles, regions)
-#> [21:51:25.351888] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [21:51:25.351915] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count
-#> [21:51:25.351918] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
+#> [15:32:58.431264] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [15:32:58.431288] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, pstddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count
+#> [15:32:58.431293] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
 #>        chr start   end   file coverage.sum M.sum coverage.mean    M.mean
 #>     <char> <int> <int> <char>        <num> <num>         <num>     <num>
 #>  1:   chr1     1     6      a            4     2      1.333333 0.6666667
@@ -152,69 +154,69 @@ summarize_meth_regions(bedfiles, regions)
 #> 10:             1.5      1.5             1      1                 1          1
 #> 11:             1.5      0.5             1      0                 1          0
 #> 12:             1.0      1.0             1      1                 1          1
-#>     coverage.stddev  M.stddev coverage.variance M.variance coverage.min M.min
-#>               <num>     <num>             <num>      <num>        <num> <num>
-#>  1:       0.5773503 0.5773503         0.3333333  0.3333333            1     0
-#>  2:       0.7071068 0.7071068         0.5000000  0.5000000            1     0
-#>  3:       0.7071068 0.7071068         0.5000000  0.5000000            2     2
-#>  4:       0.0000000 1.4142136         0.0000000  2.0000000            2     0
-#>  5:       0.0000000 0.0000000         0.0000000  0.0000000            1     1
-#>  6:       0.7071068 0.7071068         0.5000000  0.5000000            1     0
-#>  7:       0.0000000 0.0000000         0.0000000  0.0000000            2     2
-#>  8:       0.7071068 0.7071068         0.5000000  0.5000000            1     0
-#>  9:              NA        NA                NA         NA           NA    NA
-#> 10:       0.7071068 0.7071068         0.5000000  0.5000000            1     1
-#> 11:       0.7071068 0.7071068         0.5000000  0.5000000            1     0
-#> 12:       0.0000000 0.0000000         0.0000000  0.0000000            1     1
-#>     coverage.max M.max coverage.absmin M.absmin coverage.absmax M.absmax
-#>            <num> <num>           <num>    <num>           <num>    <num>
-#>  1:            2     1               1        0               2        1
-#>  2:            2     1               1        0               2        1
-#>  3:            3     3               2        2               3        3
-#>  4:            2     2               2        0               2        2
-#>  5:            1     1               1        1               1        1
-#>  6:            2     1               1        0               2        1
-#>  7:            2     2               2        2               2        2
-#>  8:            2     1               1        0               2        1
-#>  9:           NA    NA              NA       NA              NA       NA
-#> 10:            2     2               1        1               2        2
-#> 11:            2     1               1        0               2        1
-#> 12:            1     1               1        1               1        1
-#>     coverage.range M.range coverage.first M.first coverage.last M.last
-#>              <num>   <num>          <num>   <num>         <num>  <num>
-#>  1:              1       1              1       1             2      0
-#>  2:              1       1              1       0             2      1
-#>  3:              1       1              2       2             3      3
-#>  4:              0       2              2       0             2      2
-#>  5:              0       0              1       1             1      1
-#>  6:              1       1              2       0             1      1
-#>  7:              0       0              2       2             2      2
-#>  8:              1       1              2       0             1      1
-#>  9:             NA      NA             NA      NA            NA     NA
-#> 10:              1       1              1       1             2      2
-#> 11:              1       1              1       0             2      1
-#> 12:              0       0              1       1             1      1
-#>     coverage.count_distinct M.count_distinct count
-#>                       <num>            <num> <num>
-#>  1:                       2                2     3
-#>  2:                       2                2     2
-#>  3:                       2                2     2
-#>  4:                       1                2     2
-#>  5:                       1                1     1
-#>  6:                       2                2     2
-#>  7:                       1                1     1
-#>  8:                       2                2     2
-#>  9:                      NA               NA    NA
-#> 10:                       2                2     2
-#> 11:                       2                2     2
-#> 12:                       1                1     1
+#>     coverage.stddev  M.stddev coverage.pstddev M.pstddev coverage.variance
+#>               <num>     <num>            <num>     <num>             <num>
+#>  1:       0.5773503 0.5773503        0.4714045 0.4714045         0.3333333
+#>  2:       0.7071068 0.7071068        0.5000000 0.5000000         0.5000000
+#>  3:       0.7071068 0.7071068        0.5000000 0.5000000         0.5000000
+#>  4:       0.0000000 1.4142136        0.0000000 1.0000000         0.0000000
+#>  5:       0.0000000 0.0000000        0.0000000 0.0000000         0.0000000
+#>  6:       0.7071068 0.7071068        0.5000000 0.5000000         0.5000000
+#>  7:       0.0000000 0.0000000        0.0000000 0.0000000         0.0000000
+#>  8:       0.7071068 0.7071068        0.5000000 0.5000000         0.5000000
+#>  9:              NA        NA               NA        NA                NA
+#> 10:       0.7071068 0.7071068        0.5000000 0.5000000         0.5000000
+#> 11:       0.7071068 0.7071068        0.5000000 0.5000000         0.5000000
+#> 12:       0.0000000 0.0000000        0.0000000 0.0000000         0.0000000
+#>     M.variance coverage.min M.min coverage.max M.max coverage.absmin M.absmin
+#>          <num>        <num> <num>        <num> <num>           <num>    <num>
+#>  1:  0.3333333            1     0            2     1               1        0
+#>  2:  0.5000000            1     0            2     1               1        0
+#>  3:  0.5000000            2     2            3     3               2        2
+#>  4:  2.0000000            2     0            2     2               2        0
+#>  5:  0.0000000            1     1            1     1               1        1
+#>  6:  0.5000000            1     0            2     1               1        0
+#>  7:  0.0000000            2     2            2     2               2        2
+#>  8:  0.5000000            1     0            2     1               1        0
+#>  9:         NA           NA    NA           NA    NA              NA       NA
+#> 10:  0.5000000            1     1            2     2               1        1
+#> 11:  0.5000000            1     0            2     1               1        0
+#> 12:  0.0000000            1     1            1     1               1        1
+#>     coverage.absmax M.absmax coverage.range M.range coverage.first M.first
+#>               <num>    <num>          <num>   <num>          <num>   <num>
+#>  1:               2        1              1       1              1       1
+#>  2:               2        1              1       1              1       0
+#>  3:               3        3              1       1              2       2
+#>  4:               2        2              0       2              2       0
+#>  5:               1        1              0       0              1       1
+#>  6:               2        1              1       1              2       0
+#>  7:               2        2              0       0              2       2
+#>  8:               2        1              1       1              2       0
+#>  9:              NA       NA             NA      NA             NA      NA
+#> 10:               2        2              1       1              1       1
+#> 11:               2        1              1       1              1       0
+#> 12:               1        1              0       0              1       1
+#>     coverage.last M.last coverage.count_distinct M.count_distinct count
+#>             <num>  <num>                   <num>            <num> <num>
+#>  1:             2      0                       2                2     3
+#>  2:             2      1                       2                2     2
+#>  3:             3      3                       2                2     2
+#>  4:             2      2                       1                2     2
+#>  5:             1      1                       1                1     1
+#>  6:             1      1                       2                2     2
+#>  7:             2      2                       1                1     1
+#>  8:             1      1                       2                2     2
+#>  9:            NA     NA                      NA               NA    NA
+#> 10:             2      2                       2                2     2
+#> 11:             2      1                       2                2     2
+#> 12:             1      1                       1                1     1
 
 # add names to the regions to populate the 'feature' column
 names(regions) <- c("gene1", "gene2", "gene3")
 summarize_meth_regions(bedfiles, regions, fun = c("mean", "stddev"), mval = FALSE)
-#> [21:51:25.393439] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [21:51:25.393454] [iscream::summarize_regions] [info] using mean, stddev
-#> [21:51:25.393456] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta
+#> [15:32:58.487832] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [15:32:58.487846] [iscream::summarize_regions] [info] using mean, stddev
+#> [15:32:58.487850] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta
 #>        chr start   end   file feature coverage.mean beta.mean coverage.stddev
 #>     <char> <int> <int> <char>  <char>         <num>     <num>           <num>
 #>  1:   chr1     1     6      a   gene1      1.333333 0.6666667       0.5773503
@@ -244,9 +246,9 @@ summarize_meth_regions(bedfiles, regions, fun = c("mean", "stddev"), mval = FALS
 #> 11:   0.3535534
 #> 12:   0.0000000
 summarize_meth_regions(bedfiles, regions, fun = "sum")
-#> [21:51:25.401708] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-#> [21:51:25.401721] [iscream::summarize_regions] [info] using sum
-#> [21:51:25.401723] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
+#> [15:32:58.498542] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+#> [15:32:58.498557] [iscream::summarize_regions] [info] using sum
+#> [15:32:58.498560] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
 #>        chr start   end   file feature coverage.sum M.sum
 #>     <char> <int> <int> <char>  <char>        <num> <num>
 #>  1:   chr1     1     6      a   gene1            4     2
