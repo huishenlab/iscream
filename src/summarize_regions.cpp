@@ -25,6 +25,7 @@ enum StatFunction {
     MODE,
     ANTIMODE,
     STDDEV,
+    PSTDDEV,
     VARIANCE,
     COUNT,
     COUNT_DISTINCT,
@@ -45,6 +46,7 @@ std::unordered_map<std::string, StatFunction> str_to_enum {
     {"mode", MODE},
     {"antimode", ANTIMODE},
     {"stddev", STDDEV},
+    {"pstddev", PSTDDEV},
     {"variance", VARIANCE},
     {"count", COUNT},
     {"count_distinct", COUNT_DISTINCT},
@@ -190,6 +192,8 @@ double summarize(const StatFunction func, const arma::vec& data_vec) {
             return get_antimode(data_vec);
         case STDDEV:
             return arma::stddev(data_vec);
+        case PSTDDEV:
+            return arma::stddev(data_vec, 1);
         case VARIANCE:
             return arma::var(data_vec);
         case COUNT:

@@ -57,6 +57,7 @@ summarize_meth_regions <- function(
     "mode",
     "antimode",
     "stddev",
+    "pstddev",
     "variance",
     "min",
     "max",

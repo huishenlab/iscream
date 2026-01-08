@@ -31,6 +31,7 @@ ENHANCEMENTS
  - `summarize_regions()` and `summarize_meth_regions()` now support the following
    new functions, inspired by [`bedtools map`](https://bedtools.readthedocs.io/en/latest/content/tools/map.html):
 
+     * Population standard deviation (`pstddev`)
      * First element (`first`)
      * Last element (`last`)
      * Mode (`mode`)

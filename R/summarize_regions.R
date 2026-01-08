@@ -24,7 +24,8 @@
 #' - Median: `"median"`
 #' - Mode: `"mode"`
 #' - Anti-mode: `"antimode"`
-#' - Standard deviation: `"stddev"`
+#' - Sample standard deviation: `"stddev"` (`sstdev` in `bedtools map`)
+#' - Population standard deviation: `"pstddev"` (`stdev` in `bedtools map`)
 #' - Variance: `"variance"`
 #' - Minimum: `"min"`
 #' - Maximum: `"max"`
@@ -122,6 +123,7 @@ summarize_regions <- function(
     "mode",
     "antimode",
     "stddev",
+    "pstddev",
     "variance",
     "min",
     "max",

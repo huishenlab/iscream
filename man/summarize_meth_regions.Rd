@@ -51,7 +51,8 @@ regions. Parallelized across files using threads from the
 \item Median: \code{"median"}
 \item Mode: \code{"mode"}
 \item Anti-mode: \code{"antimode"}
-\item Standard deviation: \code{"stddev"}
+\item Sample standard deviation: \code{"stddev"} (\code{sstdev} in \verb{bedtools map})
+\item Population standard deviation: \code{"pstddev"} (\code{stdev} in \verb{bedtools map})
 \item Variance: \code{"variance"}
 \item Minimum: \code{"min"}
 \item Maximum: \code{"max"}
