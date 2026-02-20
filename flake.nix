@@ -60,39 +60,36 @@
       htslib = pkgs.htslib.overrideAttrs (finalAttrs: previousAttrs: {
         buildInputs = previousAttrs.buildInputs ++ [ pkgs.libdeflate ];
       });
-      sysDeps = with pkgs; [
-        R
-        gcc
-        htslib
-        pkg-config
-      ];
 
-      sysDevDeps = with pkgs; [
+      devDeps = with pkgs; [
         air-formatter
+        ccls
+        checkbashisms
         html-tidy
         texlive.combined.scheme-full
-        checkbashisms
-        ccls
       ];
 
       # default package
-      rDeps = [ LinkingTo Imports Suggests ];
+      rBuildInputs = [ ];
+      rPropagatedBuildInputs = [  LinkingTo Imports Suggests htslib ];
+      rNativeBuildInputs = with pkgs; [
+        pkg-config
+        which
+      ];
+
       iscream = pkgs.rPackages.buildRPackage {
         name = "iscream";
         src = self;
-        nativeBuildInputs = sysDeps;
-        propagatedBuildInputs = rDeps;
+        nativeBuildInputs = rNativeBuildInputs;
+        propagatedBuildInputs = [ rPropagatedBuildInputs ];
       };
+
       # Create R development environment with iscream and other useful libraries
-      rvenv = pkgs.rWrapper.override {
-        packages = rDeps ++ rDevDeps ++ sysDeps ++ sysDevDeps;
-      };
     in {
       packages.default = iscream;
       devShells.default = pkgs.mkShell {
-          buildInputs = rDeps ++ rDevDeps ++ sysDeps ++ sysDevDeps;
           inputsFrom = pkgs.lib.singleton iscream;
-          packages = pkgs.lib.singleton rvenv;
+          packages = pkgs.lib.singleton devDeps;
           shellHook = ''
             export I_R=${pkgs.R}/lib/R/include/
             export I_RCPP=${pkgs.rPackages.Rcpp}/library/Rcpp/include/
