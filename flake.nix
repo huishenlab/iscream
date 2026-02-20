@@ -26,19 +26,20 @@
       Suggests = with pkgs.rPackages; [
         BiocFileCache
         BiocStyle
+        bsseq
         GenomicRanges
         ggplot2
         ggridges
         microbenchmark
         Rsamtools
         SummarizedExperiment
+        testthat
       ];
 
       rDevDeps = with pkgs.rPackages; [
         BiocCheck
         BiocManager
         BiocVersion
-        bsseq
         covr
         devtools
         DT
@@ -47,14 +48,8 @@
         pkgdown
         rhub
         roxygen2
-        styler
-        testthat
         usethis
         V8
-      ];
-
-      Bioc = with pkgs.rPackages; [
-        biscuiteer
       ];
 
       htslib = pkgs.htslib.overrideAttrs (finalAttrs: previousAttrs: {
