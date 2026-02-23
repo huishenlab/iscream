@@ -204,9 +204,9 @@ used to populate a 'feature' column in the summary. See examples.</p>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"cov"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:06:28.306970] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:06:28.306988] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, pstddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:06:28.306991] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19:05:05.096802] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19:05:05.096819] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, pstddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19:05:05.096823] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr start   end   file beta.sum cov.sum beta.mean cov.mean beta.median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;char&gt;    &lt;num&gt;   &lt;num&gt;     &lt;num&gt;    &lt;num&gt;       &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:   chr1     1     6      a      2.0       4 0.6666667 1.333333        1.00</span>
@@ -300,9 +300,9 @@ used to populate a 'feature' column in the summary. See examples.</p>
 <span class="r-in"><span>  columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"cov"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:06:28.351190] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:06:28.351209] [iscream::summarize_regions] [info] using mean, stddev</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:06:28.351212] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19:05:05.151989] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19:05:05.152007] [iscream::summarize_regions] [info] using mean, stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19:05:05.152010] [iscream::summarize_regions] [info] with columns 4, 5 as beta, cov</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr start   end   file beta.mean cov.mean beta.stddev cov.stddev</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;char&gt;     &lt;num&gt;    &lt;num&gt;       &lt;num&gt;      &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:   chr1     1     6      a 0.6666667 1.333333   0.5773503  0.5773503</span>
@@ -327,9 +327,9 @@ used to populate a 'feature' column in the summary. See examples.</p>
 <span class="r-in"><span>  columns <span class="op">=</span> <span class="fl">5</span>,</span></span>
 <span class="r-in"><span>  col_names <span class="op">=</span> <span class="st">"coverage"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:06:28.359302] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:06:28.359317] [iscream::summarize_regions] [info] using sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:06:28.359320] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19:05:05.161643] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19:05:05.161656] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19:05:05.161659] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr start   end   file feature coverage.sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;char&gt;  &lt;char&gt;        &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:   chr1     1     6      a   gene1            4</span>
@@ -367,9 +367,9 @@ used to populate a 'feature' column in the summary. See examples.</p>
 <span class="r-in"><span>  col_names <span class="op">=</span> <span class="st">"coverage"</span>,</span></span>
 <span class="r-in"><span>  feature_col <span class="op">=</span> <span class="st">"feature"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:06:28.375701] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:06:28.375718] [iscream::summarize_regions] [info] using sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:06:28.375721] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19:05:05.179144] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19:05:05.179158] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19:05:05.179160] [iscream::summarize_regions] [info] with columns 5 as coverage</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr start   end   file feature coverage.sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;char&gt;  &lt;char&gt;        &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:   chr1     1     6      a   gene1            4</span>

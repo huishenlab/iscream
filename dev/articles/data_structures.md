@@ -117,9 +117,9 @@ the BED-file data columns.
 )
 ```
 
-    ## [18:06:35.425541] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-    ## [18:06:35.425581] [iscream::summarize_regions] [info] using sum, mean
-    ## [18:06:35.425586] [iscream::summarize_regions] [info] with columns 4 as data_col
+    ## [19:05:12.233553] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+    ## [19:05:12.233584] [iscream::summarize_regions] [info] using sum, mean
+    ## [19:05:12.233589] [iscream::summarize_regions] [info] with columns 4 as data_col
 
     ##        chr start   end   file feature data_col.sum data_col.mean
     ##     <char> <int> <int> <char>  <char>        <num>         <num>
@@ -179,11 +179,11 @@ returns a `GRanges` object for dense matrices.
 make_mat_gr(bedfiles, regions, column = 4, mat_name = "beta")
 ```
 
-    ## [18:06:35.506586] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [19:05:12.320372] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [18:06:35.506884] [iscream::query_all] [info] Creating metadata vectors
-    ## [18:06:35.506922] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [18:06:35.506924] [iscream::query_all] [info] Creating dense matrix
+    ## [19:05:12.320690] [iscream::query_all] [info] Creating metadata vectors
+    ## [19:05:12.320726] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [19:05:12.320729] [iscream::query_all] [info] Creating dense matrix
 
     ## GRanges object with 7 ranges and 4 metadata columns:
     ##       seqnames    ranges strand |         a         b         c         d
@@ -211,11 +211,11 @@ if (!require("SummarizedExperiment", quietly = TRUE)) {
 make_mat_se(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
 ```
 
-    ## [18:06:37.705261] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [19:05:14.707064] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [18:06:37.705577] [iscream::query_all] [info] Creating metadata vectors
-    ## [18:06:37.705597] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [18:06:37.705602] [iscream::query_all] [info] Creating sparse matrix
+    ## [19:05:14.707475] [iscream::query_all] [info] Creating metadata vectors
+    ## [19:05:14.707501] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [19:05:14.707508] [iscream::query_all] [info] Creating sparse matrix
 
     ## class: RangedSummarizedExperiment 
     ## dim: 7 4 
@@ -238,11 +238,11 @@ if (!require("bsseq", quietly = TRUE)) {
 mats <- make_mat_bsseq(bedfiles, regions, sparse = FALSE)
 ```
 
-    ## [18:06:41.291987] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [19:05:18.655192] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [18:06:41.292281] [iscream::query_all] [info] Creating metadata vectors
-    ## [18:06:41.292303] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [18:06:41.292305] [iscream::query_all] [info] Creating dense matrix
+    ## [19:05:18.655554] [iscream::query_all] [info] Creating metadata vectors
+    ## [19:05:18.655577] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [19:05:18.655580] [iscream::query_all] [info] Creating dense matrix
 
 ``` r
 do.call(BSseq, mats)
