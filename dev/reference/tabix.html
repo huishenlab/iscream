@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.5</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -132,7 +132,7 @@ of <code><a href="https://rdrr.io/pkg/Rsamtools/man/scanTabix.html" class="exter
 
 
 <p>'<em>iscream</em> has two methods to query records from BED files:</p><ul><li><p>the <em>tabix</em> shell executable: fast since its output can be redirected to a
-file (which <code><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">data.table::fread()</a></code> can then read) instead of having to
+file (which <code><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">data.table::fread()</a></code> can then read) instead of having to
 allocate memory and store it during the query</p></li>
 <li><p><em>iscream's</em> tabix implementation, based on the <em>tabix</em> executable using
 <em>htslib</em>, but slower on large queries since it stores the records as they

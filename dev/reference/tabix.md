@@ -78,7 +78,7 @@ tabix_raw(bedfiles, regions, nthreads = NULL)
 
 - the *tabix* shell executable: fast since its output can be redirected
   to a file (which
-  [`data.table::fread()`](https://rdatatable.gitlab.io/data.table/reference/fread.html)
+  [`data.table::fread()`](https://rdrr.io/pkg/data.table/man/fread.html)
   can then read) instead of having to allocate memory and store it
   during the query
 

@@ -26,7 +26,7 @@ and
   allow for faster in-place modifications and consistency with
   [`tabix()`](https://huishenlab.github.io/iscream/dev/reference/tabix.md)
   output. Use
-  [`data.table::setDF()`](https://rdatatable.gitlab.io/data.table/reference/setDF.html)
+  [`data.table::setDF()`](https://rdrr.io/pkg/data.table/man/setDF.html)
   to convert to a `data.frame` in-place.
 
 BUG FIXES
