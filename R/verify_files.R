@@ -9,7 +9,7 @@
 check_files_exist <- function(files_vec, error_file_prefix = "Bedfile") {
   valid_files <- file.exists(files_vec)
   missing_files <- files_vec[!valid_files]
-  if (length(missing_files != 0)) {
+  if (length(missing_files) != 0) {
     stop(error_file_prefix, ": ", missing_files, " could not be found\n")
   }
 }
