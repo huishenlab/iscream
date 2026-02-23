@@ -47,10 +47,10 @@ verify_filetype <- function(bedfiles, aligner, stop_on_error = FALSE) {
   check_name_warning <- "- verify aligner"
   warning_msg <- ifelse(stop_on_error, check_name_warning, paste(check_name_warning, "and data frame colnames"))
 
-  if (aligner == "biscuit" & any(sf_grepl(bedfiles, pattern = ".cov"))) {
+  if (aligner == "biscuit" && any(sf_grepl(bedfiles, pattern = ".cov"))) {
     warn_stop("'aligner' set to 'biscuit' but files found with '.cov', extension ", warning_msg)
   }
-  if (aligner != "biscuit" & any(!sf_grepl(bedfiles, pattern = ".cov"))) {
+  if (aligner != "biscuit" && !all(sf_grepl(bedfiles, pattern = ".cov"))) {
     warn_stop("'aligner' set to ", aligner, " but no files found with '.cov', extension ", warning_msg)
   }
 }
