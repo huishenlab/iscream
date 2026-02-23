@@ -31,7 +31,7 @@ tabix_gr <- function(
   )
   if (is(regions, "character")) {
     regions <- GenomicRanges::GRanges(regions)
-  } else if ("data.frame" %in% class(regions)) {
+  } else if (inherits(regions, "data.frame")) {
     regions <- GenomicRanges::makeGRangesFromDataFrame(regions)
   }
   overlaps <- GenomicRanges::findOverlaps(result.gr, regions)

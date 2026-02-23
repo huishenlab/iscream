@@ -67,7 +67,7 @@ make_mat_bsseq <- function(
   verify_files_or_stop(bedfiles, verify_tabix = TRUE)
   if (is(regions, "GRanges")) {
     regions <- get_granges_string(regions)
-  } else if ("data.frame" %in% class(regions)) {
+  } else if (inherits(regions, "data.frame")) {
     regions <- get_df_string(regions)
   }
 
