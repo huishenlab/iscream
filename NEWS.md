@@ -1,3 +1,14 @@
+# iscream 1.1.6
+
+BUG FIXES
+
+ - Fix a check for missing input files by correcting checking the filepath
+   vector length
+
+INTERNAL
+
+ - Use `inherits(x, "data.frame")` instead of `"data.frame" %in% class(x)"`
+
 # iscream 1.1.5
 
 BREAKING CHANGES to `summarize_regions()` and `summarize_meth_regions()`:
