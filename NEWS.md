@@ -1,3 +1,13 @@
+# iscream 1.1.7
+
+BUG FIXES
+
+ - Fix `htslib_version()` to return the version as a string instead of simply
+   printing it to allow programmatic checks for libdeflate presence.
+
+ - iscream now informs users whether they have libdeflate-enabled htslib on
+   package load.
+
 # iscream 1.1.6
 
 BUG FIXES

@@ -43,6 +43,14 @@ package_loader <- function() {
     options("tabix.method" = "shell")
   }
 
+  if (grepl("libdeflate=no", htslib_version()['features'])) {
+    msg <- paste0(
+      msg,
+      "\nNOTE: 'htslib' was not compiled with libdeflate which supports fast querying.",
+      " See <https://huishenlab.github.io/iscream/articles/htslib.html> for more information"
+    )
+  }
+
   return(msg)
 }
 
