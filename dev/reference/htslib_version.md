@@ -14,12 +14,15 @@ htslib_version()
 
 ## Value
 
-None
+named vector with `"version"` containing the version number and
+`"features"` containing the available features
 
 ## Examples
 
 ``` r
 htslib_version()
-#> 1.19
-#> build=configure libcurl=yes S3=yes GCS=yes libdeflate=yes lzma=yes bzip2=yes plugins=yes plugin-path=/usr/local/lib/htslib:/usr/local/libexec/htslib:/usr/lib/x86_64-linux-gnu/htslib: htscodecs=1.6.0
+#>                                                                                                                                                                                                  version 
+#>                                                                                                                                                                                                   "1.19" 
+#>                                                                                                                                                                                                 features 
+#> "build=configure libcurl=yes S3=yes GCS=yes libdeflate=yes lzma=yes bzip2=yes plugins=yes plugin-path=/usr/local/lib/htslib:/usr/local/libexec/htslib:/usr/lib/x86_64-linux-gnu/htslib: htscodecs=1.6.0" 
 ```

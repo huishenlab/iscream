@@ -148,11 +148,11 @@ lapply(bedfiles, function(i) knitr::kable(read.table(i, col.names = colnames)))
 # make a vector of regions
 regions <- c("chr1:1-6", "chr1:7-10", "chr1:11-14")
 mat <- make_mat_bsseq(bedfiles, regions)
-#> [19:04:56.845773] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+#> [17:08:48.265243] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
 #> 
-#> [19:04:56.846089] [iscream::query_all] [info] Creating metadata vectors
-#> [19:04:56.846121] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-#> [19:04:56.846126] [iscream::query_all] [info] Creating dense matrix
+#> [17:08:48.265661] [iscream::query_all] [info] Creating metadata vectors
+#> [17:08:48.265693] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+#> [17:08:48.265699] [iscream::query_all] [info] Creating dense matrix
 # for BSseq object run
 if (requireNamespace("bsseq", quietly = TRUE)) {
   do.call(bsseq::BSseq, mat)

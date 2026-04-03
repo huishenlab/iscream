@@ -19,7 +19,7 @@ different htslib version is available for linking at runtime."><meta property="o
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.6</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,14 +74,17 @@ different htslib version is available for linking at runtime.</p>
 
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>None</p>
+    <p>named vector with <code>"version"</code> containing the version number and
+<code>"features"</code> containing the available features</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">htslib_version</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> build=configure libcurl=yes S3=yes GCS=yes libdeflate=yes lzma=yes bzip2=yes plugins=yes plugin-path=/usr/local/lib/htslib:/usr/local/libexec/htslib:/usr/lib/x86_64-linux-gnu/htslib: htscodecs=1.6.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                  version </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                   "1.19" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                 features </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "build=configure libcurl=yes S3=yes GCS=yes libdeflate=yes lzma=yes bzip2=yes plugins=yes plugin-path=/usr/local/lib/htslib:/usr/local/libexec/htslib:/usr/lib/x86_64-linux-gnu/htslib: htscodecs=1.6.0" </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -117,9 +117,9 @@ the BED-file data columns.
 )
 ```
 
-    ## [19:05:12.233553] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-    ## [19:05:12.233584] [iscream::summarize_regions] [info] using sum, mean
-    ## [19:05:12.233589] [iscream::summarize_regions] [info] with columns 4 as data_col
+    ## [17:09:04.220575] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+    ## [17:09:04.220609] [iscream::summarize_regions] [info] using sum, mean
+    ## [17:09:04.220616] [iscream::summarize_regions] [info] with columns 4 as data_col
 
     ##        chr start   end   file feature data_col.sum data_col.mean
     ##     <char> <int> <int> <char>  <char>        <num>         <num>
@@ -179,11 +179,11 @@ returns a `GRanges` object for dense matrices.
 make_mat_gr(bedfiles, regions, column = 4, mat_name = "beta")
 ```
 
-    ## [19:05:12.320372] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [17:09:04.308953] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [19:05:12.320690] [iscream::query_all] [info] Creating metadata vectors
-    ## [19:05:12.320726] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [19:05:12.320729] [iscream::query_all] [info] Creating dense matrix
+    ## [17:09:04.309350] [iscream::query_all] [info] Creating metadata vectors
+    ## [17:09:04.309391] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [17:09:04.309395] [iscream::query_all] [info] Creating dense matrix
 
     ## GRanges object with 7 ranges and 4 metadata columns:
     ##       seqnames    ranges strand |         a         b         c         d
@@ -211,11 +211,11 @@ if (!require("SummarizedExperiment", quietly = TRUE)) {
 make_mat_se(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
 ```
 
-    ## [19:05:14.707064] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [17:09:06.740234] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [19:05:14.707475] [iscream::query_all] [info] Creating metadata vectors
-    ## [19:05:14.707501] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [19:05:14.707508] [iscream::query_all] [info] Creating sparse matrix
+    ## [17:09:06.740632] [iscream::query_all] [info] Creating metadata vectors
+    ## [17:09:06.740654] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [17:09:06.740661] [iscream::query_all] [info] Creating sparse matrix
 
     ## class: RangedSummarizedExperiment 
     ## dim: 7 4 
@@ -238,11 +238,11 @@ if (!require("bsseq", quietly = TRUE)) {
 mats <- make_mat_bsseq(bedfiles, regions, sparse = FALSE)
 ```
 
-    ## [19:05:18.655192] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [17:09:10.735979] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [19:05:18.655554] [iscream::query_all] [info] Creating metadata vectors
-    ## [19:05:18.655577] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [19:05:18.655580] [iscream::query_all] [info] Creating dense matrix
+    ## [17:09:10.736405] [iscream::query_all] [info] Creating metadata vectors
+    ## [17:09:10.736432] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [17:09:10.736435] [iscream::query_all] [info] Creating dense matrix
 
 ``` r
 do.call(BSseq, mats)
@@ -260,9 +260,9 @@ do.call(BSseq, mats)
 sessionInfo()
 ```
 
-    ## R version 4.5.2 (2025-10-31)
+    ## R version 4.5.3 (2026-03-11)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.3 LTS
+    ## Running under: Ubuntu 24.04.4 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -287,47 +287,47 @@ sessionInfo()
     ##  [5] matrixStats_1.5.0           GenomicRanges_1.62.1       
     ##  [7] Seqinfo_1.0.0               IRanges_2.44.0             
     ##  [9] S4Vectors_0.48.0            BiocGenerics_0.56.0        
-    ## [11] generics_0.1.4              iscream_1.1.6              
+    ## [11] generics_0.1.4              iscream_1.1.7              
     ## [13] BiocStyle_2.38.0           
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] farver_2.1.2              R.utils_2.13.0           
     ##  [3] Biostrings_2.78.0         bitops_1.0-9             
-    ##  [5] fastmap_1.2.0             RCurl_1.98-1.17          
+    ##  [5] fastmap_1.2.0             RCurl_1.98-1.18          
     ##  [7] GenomicAlignments_1.46.0  stringfish_0.18.0        
-    ##  [9] XML_3.99-0.22             digest_0.6.39            
+    ##  [9] XML_3.99-0.23             digest_0.6.39            
     ## [11] lifecycle_1.0.5           statmod_1.5.1            
-    ## [13] compiler_4.5.2            rlang_1.1.7              
-    ## [15] sass_0.4.10               tools_4.5.2              
+    ## [13] compiler_4.5.3            rlang_1.1.7              
+    ## [15] sass_0.4.10               tools_4.5.3              
     ## [17] yaml_2.3.12               data.table_1.18.2.1      
     ## [19] rtracklayer_1.70.1        knitr_1.51               
     ## [21] S4Arrays_1.10.1           curl_7.0.0               
-    ## [23] DelayedArray_0.36.0       RColorBrewer_1.1-3       
+    ## [23] DelayedArray_0.36.1       RColorBrewer_1.1-3       
     ## [25] abind_1.4-8               BiocParallel_1.44.0      
     ## [27] HDF5Array_1.38.0          R.oo_1.27.1              
-    ## [29] desc_1.4.3                grid_4.5.2               
+    ## [29] desc_1.4.3                grid_4.5.3               
     ## [31] beachmat_2.26.0           Rhdf5lib_1.32.0          
     ## [33] scales_1.4.0              gtools_3.9.5             
-    ## [35] cli_3.6.5                 rmarkdown_2.30           
-    ## [37] crayon_1.5.3              ragg_1.5.0               
-    ## [39] RcppParallel_5.1.11-1     httr_1.4.8               
+    ## [35] cli_3.6.5                 rmarkdown_2.31           
+    ## [37] crayon_1.5.3              ragg_1.5.2               
+    ## [39] RcppParallel_5.1.11-2     httr_1.4.8               
     ## [41] rjson_0.2.23              DelayedMatrixStats_1.32.0
     ## [43] pbapply_1.7-4             cachem_1.1.0             
-    ## [45] rhdf5_2.54.1              parallel_4.5.2           
+    ## [45] rhdf5_2.54.1              parallel_4.5.3           
     ## [47] BiocManager_1.30.27       XVector_0.50.0           
     ## [49] restfulr_0.0.16           Matrix_1.7-4             
     ## [51] jsonlite_2.0.0            bookdown_0.46            
-    ## [53] systemfonts_1.3.1         h5mread_1.2.1            
+    ## [53] systemfonts_1.3.2         h5mread_1.2.1            
     ## [55] locfit_1.5-9.12           limma_3.66.0             
     ## [57] jquerylib_0.1.4           glue_1.8.0               
     ## [59] parallelly_1.46.1         pkgdown_2.2.0            
     ## [61] codetools_0.2-20          BiocIO_1.20.0            
     ## [63] htmltools_0.5.9           rhdf5filters_1.22.0      
     ## [65] BSgenome_1.78.0           R6_2.6.1                 
-    ## [67] textshaping_1.0.4         sparseMatrixStats_1.22.0 
-    ## [69] evaluate_1.0.5            lattice_0.22-7           
+    ## [67] textshaping_1.0.5         sparseMatrixStats_1.22.0 
+    ## [69] evaluate_1.0.5            lattice_0.22-9           
     ## [71] R.methodsS3_1.8.2         Rsamtools_2.26.0         
     ## [73] cigarillo_1.0.0           bslib_0.10.0             
-    ## [75] Rcpp_1.1.1                SparseArray_1.10.8       
-    ## [77] permute_0.9-10            xfun_0.56                
-    ## [79] fs_1.6.6
+    ## [75] Rcpp_1.1.1                SparseArray_1.10.10      
+    ## [77] permute_0.9-10            xfun_0.57                
+    ## [79] fs_2.0.1
