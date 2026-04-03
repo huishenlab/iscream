@@ -70,14 +70,15 @@ get_log_level <- function() {
 #' correspond to the htslib version used during iscream's installation if a
 #' different htslib version is available for linking at runtime.
 #'
-#' @returns None
+#' @returns named vector with `"version"` containing the version number and
+#' `"features"` containing the available features
 #'
 #' @examples
 #' htslib_version()
 #'
 #' @export
 htslib_version <- function() {
-    invisible(.Call(`_iscream_htslib_version`))
+    .Call(`_iscream_htslib_version`)
 }
 
 Cpp_query_chroms <- function(bedfile_vec, nthreads) {

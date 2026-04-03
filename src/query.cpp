@@ -8,16 +8,19 @@
 //' correspond to the htslib version used during iscream's installation if a
 //' different htslib version is available for linking at runtime.
 //'
-//' @returns None
+//' @returns named vector with `"version"` containing the version number and
+//' `"features"` containing the available features
 //'
 //' @examples
 //' htslib_version()
 //'
 //' @export
 // [[Rcpp::export]]
-void htslib_version() {
-    Rprintf("%s\n", hts_version());
-    Rprintf("%s\n", hts_feature_string());
+Rcpp::CharacterVector htslib_version() {
+    return(Rcpp::CharacterVector::create(
+        Rcpp::Named("version") = hts_version(),
+        Rcpp::Named("features") = hts_feature_string()
+    ));
 }
 
 // Query a genomic interval from a opened htsFile and return the reads in it

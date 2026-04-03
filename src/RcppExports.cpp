@@ -139,12 +139,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // htslib_version
-void htslib_version();
+Rcpp::CharacterVector htslib_version();
 RcppExport SEXP _iscream_htslib_version() {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    htslib_version();
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(htslib_version());
+    return rcpp_result_gen;
 END_RCPP
 }
 // Cpp_query_chroms

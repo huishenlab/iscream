@@ -7,7 +7,8 @@
 htslib_version()
 }
 \value{
-None
+named vector with \code{"version"} containing the version number and
+\code{"features"} containing the available features
 }
 \description{
 Returns the version of htslib being used by iscream and whether features
