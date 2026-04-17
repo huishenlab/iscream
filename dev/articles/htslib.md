@@ -138,18 +138,18 @@ sessionInfo()
     ## [1] ggplot2_4.0.2    BiocStyle_2.38.0
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] gtable_0.3.6        jsonlite_2.0.0      dplyr_1.2.0        
+    ##  [1] gtable_0.3.6        jsonlite_2.0.0      dplyr_1.2.1        
     ##  [4] compiler_4.5.3      BiocManager_1.30.27 tidyselect_1.2.1   
     ##  [7] jquerylib_0.1.4     systemfonts_1.3.2   scales_1.4.0       
     ## [10] textshaping_1.0.5   yaml_2.3.12         fastmap_1.2.0      
     ## [13] R6_2.6.1            labeling_0.4.3      generics_0.1.4     
     ## [16] knitr_1.51          tibble_3.3.1        bookdown_0.46      
     ## [19] desc_1.4.3          bslib_0.10.0        pillar_1.11.1      
-    ## [22] RColorBrewer_1.1-3  rlang_1.1.7         cachem_1.1.0       
+    ## [22] RColorBrewer_1.1-3  rlang_1.2.0         cachem_1.1.0       
     ## [25] xfun_0.57           fs_2.0.1            sass_0.4.10        
-    ## [28] S7_0.2.1            cli_3.6.5           pkgdown_2.2.0      
-    ## [31] withr_3.0.2         magrittr_2.0.4      digest_0.6.39      
-    ## [34] grid_4.5.3          lifecycle_1.0.5     vctrs_0.7.2        
+    ## [28] S7_0.2.1-1          cli_3.6.6           pkgdown_2.2.0      
+    ## [31] withr_3.0.2         magrittr_2.0.5      digest_0.6.39      
+    ## [34] grid_4.5.3          lifecycle_1.0.5     vctrs_0.7.3        
     ## [37] evaluate_1.0.5      glue_1.8.0          farver_2.1.2       
     ## [40] ragg_1.5.2          rmarkdown_2.31      tools_4.5.3        
     ## [43] pkgconfig_2.0.3     htmltools_0.5.9
