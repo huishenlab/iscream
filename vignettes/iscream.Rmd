@@ -101,7 +101,7 @@ For demonstration, I'm using two regions.
 regions <- c("chr1:184577-680065", "chrY:56877780-56882524")
 ```
 
-**Note**: in this dataset the chromosome identifier is in a "chr[number]"
+> **Note**: in this dataset the chromosome identifier is in a "chr[number]"
 format. However, in some datasets, the chromosome ID is just a number or a
 letter like '1', or 'Y'. To see the chromosome ID format across your files you
 can use `query_chroms()` to get all unique chromosomes across all input files:
