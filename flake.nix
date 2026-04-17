@@ -84,7 +84,7 @@
       packages.default = iscream;
       devShells.default = pkgs.mkShell {
           inputsFrom = pkgs.lib.singleton iscream;
-          packages = pkgs.lib.singleton devDeps;
+          packages = pkgs.lib.singleton devDeps ++ rDevDeps;
           shellHook = ''
             export I_R=${pkgs.R}/lib/R/include/
             export I_RCPP=${pkgs.rPackages.Rcpp}/library/Rcpp/include/
