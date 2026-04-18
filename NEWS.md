@@ -1,3 +1,15 @@
+# iscream 1.1.8
+
+INTERNAL
+
+- Remove an unused debug string for printing the locus ID from
+  `src/query_all.cpp`
+
+DOCUMENTATION
+
+- Use blockquote the "Getting Started" vignette to call out the note about
+  chromosome formatting in input regions - `chr1` vs `1`.
+
 # iscream 1.1.7
 
 BUG FIXES
