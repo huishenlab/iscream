@@ -91,8 +91,6 @@ QueryAll<Mat>::QueryAll(
             int row_idx = kh_val(cpg_map, iter) - 1;
             starts_vec[row_idx] = cpg.start;
             seq_data[row_idx] = sfstring(chr_rev_map[cpg.chr], CE_UTF8);
-            std::stringstream cpgid_stream;
-            cpgid_stream << chr_rev_map[cpg.chr] << ":" << cpg.start + 1;
         }
     }
     start = Rcpp::wrap(starts_vec);
