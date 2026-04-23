@@ -117,9 +117,9 @@ the BED-file data columns.
 )
 ```
 
-    ## [13:36:18.574360] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-    ## [13:36:18.574409] [iscream::summarize_regions] [info] using sum, mean
-    ## [13:36:18.574415] [iscream::summarize_regions] [info] with columns 4 as data_col
+    ## [13:51:12.405302] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+    ## [13:51:12.405340] [iscream::summarize_regions] [info] using sum, mean
+    ## [13:51:12.405346] [iscream::summarize_regions] [info] with columns 4 as data_col
 
     ##        chr start   end   file feature data_col.sum data_col.mean
     ##     <char> <int> <int> <char>  <char>        <num>         <num>
@@ -179,11 +179,11 @@ returns a `GRanges` object for dense matrices.
 make_mat_gr(bedfiles, regions, column = 4, mat_name = "beta")
 ```
 
-    ## [13:36:18.665925] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [13:51:12.493776] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [13:36:18.666377] [iscream::query_all] [info] Creating metadata vectors
-    ## [13:36:18.666403] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [13:36:18.666406] [iscream::query_all] [info] Creating dense matrix
+    ## [13:51:12.494136] [iscream::query_all] [info] Creating metadata vectors
+    ## [13:51:12.494156] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [13:51:12.494159] [iscream::query_all] [info] Creating dense matrix
 
     ## GRanges object with 7 ranges and 4 metadata columns:
     ##       seqnames    ranges strand |         a         b         c         d
@@ -211,11 +211,11 @@ if (!require("SummarizedExperiment", quietly = TRUE)) {
 make_mat_se(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
 ```
 
-    ## [13:36:21.187202] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [13:51:14.882959] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [13:36:21.187618] [iscream::query_all] [info] Creating metadata vectors
-    ## [13:36:21.187635] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [13:36:21.187641] [iscream::query_all] [info] Creating sparse matrix
+    ## [13:51:14.883333] [iscream::query_all] [info] Creating metadata vectors
+    ## [13:51:14.883348] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [13:51:14.883355] [iscream::query_all] [info] Creating sparse matrix
 
     ## class: RangedSummarizedExperiment 
     ## dim: 7 4 
@@ -238,11 +238,11 @@ if (!require("bsseq", quietly = TRUE)) {
 mats <- make_mat_bsseq(bedfiles, regions, sparse = FALSE)
 ```
 
-    ## [13:36:25.298674] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [13:51:18.810330] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [13:36:25.299051] [iscream::query_all] [info] Creating metadata vectors
-    ## [13:36:25.299067] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [13:36:25.299070] [iscream::query_all] [info] Creating dense matrix
+    ## [13:51:18.810733] [iscream::query_all] [info] Creating metadata vectors
+    ## [13:51:18.810751] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [13:51:18.810754] [iscream::query_all] [info] Creating dense matrix
 
 ``` r
 do.call(BSseq, mats)
@@ -294,7 +294,7 @@ sessionInfo()
     ##  [1] farver_2.1.2              R.utils_2.13.0           
     ##  [3] Biostrings_2.78.0         bitops_1.0-9             
     ##  [5] fastmap_1.2.0             RCurl_1.98-1.18          
-    ##  [7] GenomicAlignments_1.46.0  stringfish_0.18.0        
+    ##  [7] GenomicAlignments_1.46.0  stringfish_0.19.0        
     ##  [9] XML_3.99-0.23             digest_0.6.39            
     ## [11] lifecycle_1.0.5           statmod_1.5.1            
     ## [13] compiler_4.5.3            rlang_1.2.0              
@@ -330,4 +330,4 @@ sessionInfo()
     ## [73] cigarillo_1.0.0           bslib_0.10.0             
     ## [75] Rcpp_1.1.1-1              SparseArray_1.10.10      
     ## [77] permute_0.9-10            xfun_0.57                
-    ## [79] fs_2.0.1
+    ## [79] fs_2.1.0

@@ -146,7 +146,7 @@ sessionInfo()
     ## [16] knitr_1.51          tibble_3.3.1        bookdown_0.46      
     ## [19] desc_1.4.3          bslib_0.10.0        pillar_1.11.1      
     ## [22] RColorBrewer_1.1-3  rlang_1.2.0         cachem_1.1.0       
-    ## [25] xfun_0.57           fs_2.0.1            sass_0.4.10        
+    ## [25] xfun_0.57           fs_2.1.0            sass_0.4.10        
     ## [28] S7_0.2.1-1          cli_3.6.6           pkgdown_2.2.0      
     ## [31] withr_3.0.2         magrittr_2.0.5      digest_0.6.39      
     ## [34] grid_4.5.3          lifecycle_1.0.5     vctrs_0.7.3        

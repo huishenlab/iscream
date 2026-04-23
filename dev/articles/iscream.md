@@ -376,9 +376,9 @@ summarize_regions(
 )
 ```
 
-    ## [13:36:35.088712] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
-    ## [13:36:35.088756] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, pstddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count
-    ## [13:36:35.088763] [iscream::summarize_regions] [info] with columns 4, 5 as beta, coverage
+    ## [13:51:28.398544] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
+    ## [13:51:28.398602] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, pstddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count
+    ## [13:51:28.398607] [iscream::summarize_regions] [info] with columns 4, 5 as beta, coverage
 
     ##       chr    start      end   file beta.sum coverage.sum beta.mean
     ##    <char>    <int>    <int> <char>    <num>        <num>     <num>
@@ -466,9 +466,9 @@ summarize_regions(
 )
 ```
 
-    ## [13:36:35.222751] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
-    ## [13:36:35.222779] [iscream::summarize_regions] [info] using mean, sum
-    ## [13:36:35.222783] [iscream::summarize_regions] [info] with columns 5 as coverage
+    ## [13:51:28.529044] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
+    ## [13:51:28.529068] [iscream::summarize_regions] [info] using mean, sum
+    ## [13:51:28.529072] [iscream::summarize_regions] [info] with columns 5 as coverage
 
     ##       chr    start      end   file feature coverage.mean coverage.sum
     ##    <char>    <int>    <int> <char>  <char>         <num>        <num>
@@ -496,9 +496,9 @@ summarize_meth_regions(
 )
 ```
 
-    ## [13:36:35.291966] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
-    ## [13:36:35.291997] [iscream::summarize_regions] [info] using mean, sum
-    ## [13:36:35.292001] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
+    ## [13:51:28.597029] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
+    ## [13:51:28.597052] [iscream::summarize_regions] [info] using mean, sum
+    ## [13:51:28.597056] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
 
     ##       chr    start      end   file feature coverage.mean    M.mean coverage.sum
     ##    <char>    <int>    <int> <char>  <char>         <num>     <num>        <num>
@@ -540,11 +540,11 @@ if (!require("SummarizedExperiment", quietly = TRUE)) {
 (mat <- make_mat_se(bedfiles, regions, column = 4, mat_name = "beta"))
 ```
 
-    ## [13:36:38.066910] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
+    ## [13:51:31.252476] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
     ## 
-    ## [13:36:38.067433] [iscream::query_all] [info] Creating metadata vectors
-    ## [13:36:38.067459] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
-    ## [13:36:38.067463] [iscream::query_all] [info] Creating dense matrix
+    ## [13:51:31.252955] [iscream::query_all] [info] Creating metadata vectors
+    ## [13:51:31.252979] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
+    ## [13:51:31.252983] [iscream::query_all] [info] Creating dense matrix
 
     ## class: RangedSummarizedExperiment 
     ## dim: 62 4 
@@ -560,16 +560,16 @@ head(assay(mat), 10)
 ```
 
     ##       cell1 cell2 cell3 cell4
-    ##  [1,]     0     0     0     0
-    ##  [2,]     0     0     0     0
-    ##  [3,]     0     0     0     0
-    ##  [4,]     0     0     0     1
-    ##  [5,]     0     0     0     1
-    ##  [6,]     0     0     0     0
-    ##  [7,]     0     0     0     0
-    ##  [8,]     1     0     0     0
-    ##  [9,]     1     0     0     0
-    ## [10,]     0     0     0     0
+    ##  [1,]     0     0   1.0     0
+    ##  [2,]     0     0   0.5     0
+    ##  [3,]     0     0   1.0     0
+    ##  [4,]     0     0   1.0     0
+    ##  [5,]     0     0   1.0     0
+    ##  [6,]     0     0   0.0     0
+    ##  [7,]     0     0   0.0     0
+    ##  [8,]     0     0   0.5     0
+    ##  [9,]     0     0   0.0     0
+    ## [10,]     0     0   0.0     0
 
 If you have sparse data, you can save memory with `sparse = TRUE`, but
 only for
@@ -581,11 +581,11 @@ and
 mat <- make_mat(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
 ```
 
-    ## [13:36:38.188318] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
+    ## [13:51:31.370438] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
     ## 
-    ## [13:36:38.188858] [iscream::query_all] [info] Creating metadata vectors
-    ## [13:36:38.188879] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
-    ## [13:36:38.188889] [iscream::query_all] [info] Creating sparse matrix
+    ## [13:51:31.370925] [iscream::query_all] [info] Creating metadata vectors
+    ## [13:51:31.370945] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
+    ## [13:51:31.370955] [iscream::query_all] [info] Creating sparse matrix
 
 ``` r
 head(mat$beta, 10)
@@ -602,7 +602,7 @@ head(mat$beta, 10)
     ##  [7,]     .     .     .     .
     ##  [8,]     1     .     .     .
     ##  [9,]     1     .     .     .
-    ## [10,]     .     .     1     .
+    ## [10,]     .     .     .     .
 
 ### WGBS BED files
 
@@ -617,11 +617,11 @@ if (require("bsseq", quietly = TRUE)) {
 }
 ```
 
-    ## [13:36:42.302894] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
+    ## [13:51:35.334934] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
     ## 
-    ## [13:36:42.303468] [iscream::query_all] [info] Creating metadata vectors
-    ## [13:36:42.303859] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
-    ## [13:36:42.303866] [iscream::query_all] [info] Creating dense matrix
+    ## [13:51:35.335425] [iscream::query_all] [info] Creating metadata vectors
+    ## [13:51:35.335443] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
+    ## [13:51:35.335446] [iscream::query_all] [info] Creating dense matrix
 
     ## An object of type 'BSseq' with
     ##   62 methylation loci
@@ -681,7 +681,7 @@ sessionInfo()
     ##  [1] farver_2.1.2              R.utils_2.13.0           
     ##  [3] Biostrings_2.78.0         bitops_1.0-9             
     ##  [5] fastmap_1.2.0             RCurl_1.98-1.18          
-    ##  [7] GenomicAlignments_1.46.0  stringfish_0.18.0        
+    ##  [7] GenomicAlignments_1.46.0  stringfish_0.19.0        
     ##  [9] XML_3.99-0.23             digest_0.6.39            
     ## [11] lifecycle_1.0.5           statmod_1.5.1            
     ## [13] compiler_4.5.3            rlang_1.2.0              
@@ -717,7 +717,7 @@ sessionInfo()
     ## [73] cigarillo_1.0.0           bslib_0.10.0             
     ## [75] Rcpp_1.1.1-1              SparseArray_1.10.10      
     ## [77] permute_0.9-10            xfun_0.57                
-    ## [79] fs_2.0.1
+    ## [79] fs_2.1.0
 
 ## References
 
