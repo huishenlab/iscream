@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,14 +104,15 @@
 </h3>
 <p>Running this vignette requires downloading 2GB of single-cell whole
 genome bisulfite sequencing (WGBS) BED files and tabix indices from this
-Zenodo record: <a href="https://zenodo.org/records/14733834" class="external-link uri">https://zenodo.org/records/14733834</a>.</p>
+Zenodo record: <a href="https://zenodo.org/records/18089082" class="external-link uri">https://zenodo.org/records/18089082</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"BiocFileCache"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: dbplyr</span></span>
 <span><span class="va">cachedir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">BiocFileCache</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">snmc_zip_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">bfcrpath</a></span><span class="op">(</span><span class="va">cachedir</span>, <span class="st">"https://zenodo.org/records/14733834/files/sc_beds.zip"</span><span class="op">)</span></span>
+<span><span class="va">snmc_zip_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">bfcrpath</a></span><span class="op">(</span><span class="va">cachedir</span>, <span class="st">"https://zenodo.org/records/18089082/files/sc_beds.zip"</span><span class="op">)</span></span>
 <span><span class="va">snmc_unzip</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"sc_beds"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">snmc_zip_path</span>, exdir <span class="op">=</span> <span class="va">snmc_unzip</span><span class="op">)</span></span>
-<span><span class="va">genes_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">bfcrpath</a></span><span class="op">(</span><span class="va">cachedir</span>, <span class="st">"https://zenodo.org/records/14733834/files/genes.bed"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">genes_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocFileCache/man/BiocFileCache-class.html" class="external-link">bfcrpath</a></span><span class="op">(</span><span class="va">cachedir</span>, <span class="st">"https://zenodo.org/records/18089082/files/genes.bed"</span><span class="op">)</span></span></code></pre></div>
 <p>Select 100 human cell WGBS data from the snmC-seq2 <span class="citation">(<a href="#ref-luo2018a">Luo et al. 2018</a>)</span>
 dataset:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -128,19 +129,19 @@ dataset:</p>
 <p>Here we’ll be using 5000 gene body regions as the input:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
-<span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span></span>
+<span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span></span>
 <span>  <span class="va">genes_file</span>,</span>
-<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"start"</span>, <span class="st">"end"</span><span class="op">)</span></span>
+<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"gene"</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5000</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       chr    start      end</span></span>
-<span><span class="co">#&gt;    &lt;char&gt;    &lt;int&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1:   chr1  1471764  1497848</span></span>
-<span><span class="co">#&gt; 2:   chr1  3069167  3438621</span></span>
-<span><span class="co">#&gt; 3:   chr1  2403963  2413797</span></span>
-<span><span class="co">#&gt; 4:   chr1 10472287 10630758</span></span>
-<span><span class="co">#&gt; 5:   chr1  2425979  2505532</span></span>
-<span><span class="co">#&gt; 6:   chr1  9292893  9369532</span></span></code></pre></div>
+<span><span class="co">#&gt;       chr    start      end   gene</span></span>
+<span><span class="co">#&gt;    &lt;char&gt;    &lt;int&gt;    &lt;int&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:   chr1  1471764  1497848 ATAD3B</span></span>
+<span><span class="co">#&gt; 2:   chr1  3069167  3438621 PRDM16</span></span>
+<span><span class="co">#&gt; 3:   chr1  2403963  2413797  PEX10</span></span>
+<span><span class="co">#&gt; 4:   chr1 10472287 10630758  PEX14</span></span>
+<span><span class="co">#&gt; 5:   chr1  2425979  2505532  PLCH2</span></span>
+<span><span class="co">#&gt; 6:   chr1  9292893  9369532  SPSB1</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -172,7 +173,7 @@ command line <code>tabix</code> executable and the other using the
 htslib API. The command line tool is faster as it can stream to a file
 which can be read from R while the htslib API stores the strings in
 memory and is slower. iscream will look for the tabix executable on
-startup and will only fall back to the htslip API if the executable is
+startup and will only fall back to the htslib API if the executable is
 not found. See <code><a href="../reference/tabix.html">?tabix</a></code> details for more information.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
@@ -193,7 +194,7 @@ not found. See <code><a href="../reference/tabix.html">?tabix</a></code> details
 <span><span class="co">#&gt; 45733378:   chr4 190179753 190179754 1.000        1 bisc_SRR6911723</span></span>
 <span><span class="co">#&gt; 45733379:   chr4 190179754 190179755 0.333        3 bisc_SRR6911723</span></span></code></pre></div>
 <p>On 8 threads, retrieving 45,733,379 records across 100 files took
-11.814 seconds.</p>
+11.014 seconds.</p>
 </div>
 <div class="section level3">
 <h3 id="summarize_regions">
@@ -208,30 +209,33 @@ feature column:</p>
 <span>    <span class="va">bedfiles</span>,</span>
 <span>    <span class="va">regions</span>,</span>
 <span>    columns <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>    fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sum"</span>, <span class="st">"mean"</span>, <span class="st">"range"</span>, <span class="st">"count"</span><span class="op">)</span>,</span>
 <span>    col_names <span class="op">=</span> <span class="st">"beta"</span>,</span>
 <span>    feature_col <span class="op">=</span> <span class="st">"gene"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; [10:51:04.214132] [iscream::summarize_regions] [info] Summarizing 5000 regions from 100 bedfiles</span></span>
-<span><span class="co">#&gt; [10:51:04.214257] [iscream::summarize_regions] [info] using sum, mean, median, stddev, variance, min, max, range, count</span></span>
-<span><span class="co">#&gt; [10:51:04.214269] [iscream::summarize_regions] [info] with columns 4 as beta</span></span>
+<span><span class="co">#&gt; [15:00:22.484494] [iscream::summarize_regions] [info] Summarizing 5000 regions from 100 bedfiles</span></span>
+<span><span class="co">#&gt; [15:00:22.484628] [iscream::summarize_regions] [info] using sum, mean, range, count</span></span>
+<span><span class="co">#&gt; [15:00:22.484635] [iscream::summarize_regions] [info] with columns 4 as beta</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">summary_query</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   feature            file beta.sum beta.mean beta.median beta.stddev</span></span>
-<span><span class="co">#&gt; 1  ATAD3B bisc_SRR6911624   85.000 0.8585859           1   0.3502215</span></span>
-<span><span class="co">#&gt; 2  PRDM16 bisc_SRR6911624  723.500 0.5288743           1   0.4976973</span></span>
-<span><span class="co">#&gt; 3   PEX10 bisc_SRR6911624   15.000 0.2419355           0   0.4317514</span></span>
-<span><span class="co">#&gt; 4   PEX14 bisc_SRR6911624  198.000 0.7764706           1   0.4174294</span></span>
-<span><span class="co">#&gt; 5   PLCH2 bisc_SRR6911624  184.333 0.7228745           1   0.4474832</span></span>
-<span><span class="co">#&gt; 6   SPSB1 bisc_SRR6911624   64.000 0.8648649           1   0.3442015</span></span>
-<span><span class="co">#&gt;   beta.variance beta.min beta.max beta.range count</span></span>
-<span><span class="co">#&gt; 1     0.1226551        0        1          1    99</span></span>
-<span><span class="co">#&gt; 2     0.2477026        0        1          1  1368</span></span>
-<span><span class="co">#&gt; 3     0.1864093        0        1          1    62</span></span>
-<span><span class="co">#&gt; 4     0.1742473        0        1          1   255</span></span>
-<span><span class="co">#&gt; 5     0.2002412        0        1          1   255</span></span>
-<span><span class="co">#&gt; 6     0.1184746        0        1          1    74</span></span></code></pre></div>
+<span><span class="co">#&gt;       chr    start      end            file feature beta.sum beta.mean</span></span>
+<span><span class="co">#&gt;    &lt;char&gt;    &lt;int&gt;    &lt;int&gt;          &lt;char&gt;  &lt;char&gt;    &lt;num&gt;     &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:   chr1  1471764  1497848 bisc_SRR6911624  ATAD3B   85.000 0.8585859</span></span>
+<span><span class="co">#&gt; 2:   chr1  3069167  3438621 bisc_SRR6911624  PRDM16  723.500 0.5288743</span></span>
+<span><span class="co">#&gt; 3:   chr1  2403963  2413797 bisc_SRR6911624   PEX10   15.000 0.2419355</span></span>
+<span><span class="co">#&gt; 4:   chr1 10472287 10630758 bisc_SRR6911624   PEX14  198.000 0.7764706</span></span>
+<span><span class="co">#&gt; 5:   chr1  2425979  2505532 bisc_SRR6911624   PLCH2  184.333 0.7228745</span></span>
+<span><span class="co">#&gt; 6:   chr1  9292893  9369532 bisc_SRR6911624   SPSB1   64.000 0.8648649</span></span>
+<span><span class="co">#&gt;    beta.range count</span></span>
+<span><span class="co">#&gt;         &lt;num&gt; &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:          1    99</span></span>
+<span><span class="co">#&gt; 2:          1  1368</span></span>
+<span><span class="co">#&gt; 3:          1    62</span></span>
+<span><span class="co">#&gt; 4:          1   255</span></span>
+<span><span class="co">#&gt; 5:          1   255</span></span>
+<span><span class="co">#&gt; 6:          1    74</span></span></code></pre></div>
 <p>On 8 threads, summarizing the 45,733,379 records across all 100 files
-took 4.948 seconds. As with <code><a href="../reference/tabix.html">tabix()</a></code>, runtime reduces and
+took 4.683 seconds. As with <code><a href="../reference/tabix.html">tabix()</a></code>, runtime reduces and
 memory usage increases with increasing thread counts.</p>
 </div>
 <div class="section level3">
@@ -260,7 +264,8 @@ query of the full dataset, you can approximate how many CpGs to expect
 based on CpG counts in one file and the coverage of your WGBS method.
 Here we make a matrix of the beta-values in the 4th column:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cpg.count</span> <span class="op">&lt;-</span> <span class="va">tbx_query</span><span class="op">$</span><span class="va">start</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">"SummarizedExperiment"</a></span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">cpg.count</span> <span class="op">&lt;-</span> <span class="va">tbx_query</span><span class="op">$</span><span class="va">start</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">qt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">meth_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mat.html">make_mat_se</a></span><span class="op">(</span></span>
 <span>  <span class="va">bedfiles</span>,</span>
 <span>  <span class="va">regions</span>,</span>
@@ -268,11 +273,11 @@ Here we make a matrix of the beta-values in the 4th column:</p>
 <span>  sparse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  prealloc <span class="op">=</span> <span class="va">cpg.count</span> <span class="op">+</span> <span class="fl">1e5</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [10:51:11.215841] [iscream::query_all] [info] Querying 5000 regions from 100 bedfiles</span></span>
+<span><span class="co">#&gt; [15:00:32.589487] [iscream::query_all] [info] Querying 5000 regions from 100 bedfiles</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [10:51:51.998902] [iscream::query_all] [info] Creating metadata vectors</span></span>
-<span><span class="co">#&gt; [10:51:52.457885] [iscream::query_all] [info] 7276107 loci found - 16250 extra rows allocated with 0 resizes</span></span>
-<span><span class="co">#&gt; [10:51:57.284487] [iscream::query_all] [info] Creating sparse matrix</span></span>
+<span><span class="co">#&gt; [15:01:12.454511] [iscream::query_all] [info] Creating metadata vectors</span></span>
+<span><span class="co">#&gt; [15:01:12.911981] [iscream::query_all] [info] 7276107 loci found - 16250 extra rows allocated with 0 resizes</span></span>
+<span><span class="co">#&gt; [15:01:17.720398] [iscream::query_all] [info] Creating sparse matrix</span></span>
 <span><span class="va">meth_mat</span></span>
 <span><span class="co">#&gt; class: RangedSummarizedExperiment </span></span>
 <span><span class="co">#&gt; dim: 7276107 100 </span></span>
@@ -283,7 +288,7 @@ Here we make a matrix of the beta-values in the 4th column:</p>
 <span><span class="co">#&gt; colnames(100): bisc_SRR6911624 bisc_SRR6911625 ... bisc_SRR6911722</span></span>
 <span><span class="co">#&gt;   bisc_SRR6911723</span></span>
 <span><span class="co">#&gt; colData names(0):</span></span></code></pre></div>
-<p>Making this 7,276,107 x 100 matrix took 50.429 seconds.</p>
+<p>Making this 7,276,107 x 100 matrix took 45.812 seconds.</p>
 </div>
 </div>
 <div class="section level2">
@@ -299,7 +304,7 @@ Here we make a matrix of the beta-values in the 4th column:</p>
 <span><span class="co">#&gt; BLAS/LAPACK: /usr/lib64/libopenblas-r0.3.26.so;  LAPACK version 3.12.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; locale:</span></span>
-<span><span class="co">#&gt;  [1] LC_CTYPE=C.utf8        LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
+<span><span class="co">#&gt;  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
 <span><span class="co">#&gt;  [4] LC_COLLATE=C.utf8      LC_MONETARY=C.UTF-8    LC_MESSAGES=C.utf8    </span></span>
 <span><span class="co">#&gt;  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
 <span><span class="co">#&gt; [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
@@ -308,30 +313,34 @@ Here we make a matrix of the beta-values in the 4th column:</p>
 <span><span class="co">#&gt; tzcode source: internal</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; attached base packages:</span></span>
-<span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
+<span><span class="co">#&gt; [8] base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] iscream_0.99.0    data.table_1.17.6</span></span>
+<span><span class="co">#&gt;  [1] SummarizedExperiment_1.40.0 Biobase_2.70.0             </span></span>
+<span><span class="co">#&gt;  [3] GenomicRanges_1.62.0        Seqinfo_1.0.0              </span></span>
+<span><span class="co">#&gt;  [5] IRanges_2.44.0              S4Vectors_0.48.0           </span></span>
+<span><span class="co">#&gt;  [7] BiocGenerics_0.56.0         generics_0.1.4             </span></span>
+<span><span class="co">#&gt;  [9] MatrixGenerics_1.22.0       matrixStats_1.5.0          </span></span>
+<span><span class="co">#&gt; [11] iscream_1.1.6               data.table_1.17.8          </span></span>
+<span><span class="co">#&gt; [13] BiocFileCache_3.0.0         dbplyr_2.5.1               </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;  [1] crayon_1.5.3                httr_1.4.7                 </span></span>
-<span><span class="co">#&gt;  [3] knitr_1.50                  xfun_0.52                  </span></span>
-<span><span class="co">#&gt;  [5] UCSC.utils_1.4.0            generics_0.1.4             </span></span>
-<span><span class="co">#&gt;  [7] DelayedArray_0.34.1         jsonlite_2.0.0             </span></span>
-<span><span class="co">#&gt;  [9] RcppParallel_5.1.10         SummarizedExperiment_1.38.1</span></span>
-<span><span class="co">#&gt; [11] S4Vectors_0.46.0            stringfish_0.16.0          </span></span>
-<span><span class="co">#&gt; [13] stats4_4.5.0                MatrixGenerics_1.20.0      </span></span>
-<span><span class="co">#&gt; [15] Biobase_2.68.0              grid_4.5.0                 </span></span>
-<span><span class="co">#&gt; [17] abind_1.4-8                 evaluate_1.0.4             </span></span>
-<span><span class="co">#&gt; [19] IRanges_2.42.0              GenomeInfoDb_1.44.0        </span></span>
-<span><span class="co">#&gt; [21] compiler_4.5.0              Rcpp_1.1.0                 </span></span>
-<span><span class="co">#&gt; [23] XVector_0.48.0              lattice_0.22-7             </span></span>
-<span><span class="co">#&gt; [25] R6_2.6.1                    SparseArray_1.8.0          </span></span>
-<span><span class="co">#&gt; [27] parallelly_1.45.0           parallel_4.5.0             </span></span>
-<span><span class="co">#&gt; [29] GenomeInfoDbData_1.2.14     GenomicRanges_1.60.0       </span></span>
-<span><span class="co">#&gt; [31] Matrix_1.7-3                tools_4.5.0                </span></span>
-<span><span class="co">#&gt; [33] matrixStats_1.5.0           S4Arrays_1.8.1             </span></span>
-<span><span class="co">#&gt; [35] BiocGenerics_0.54.0</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] rappdirs_0.3.3        SparseArray_1.10.1    RSQLite_2.4.3        </span></span>
+<span><span class="co">#&gt;  [4] lattice_0.22-7        magrittr_2.0.4        evaluate_1.0.5       </span></span>
+<span><span class="co">#&gt;  [7] grid_4.5.0            fastmap_1.2.0         blob_1.2.4           </span></span>
+<span><span class="co">#&gt; [10] Matrix_1.7-4          DBI_1.2.3             purrr_1.1.0          </span></span>
+<span><span class="co">#&gt; [13] pbapply_1.7-4         httr2_1.2.1           abind_1.4-8          </span></span>
+<span><span class="co">#&gt; [16] cli_3.6.5             rlang_1.1.6           XVector_0.50.0       </span></span>
+<span><span class="co">#&gt; [19] parallelly_1.45.1     bit64_4.6.0-1         DelayedArray_0.36.0  </span></span>
+<span><span class="co">#&gt; [22] withr_3.0.2           cachem_1.1.0          S4Arrays_1.10.0      </span></span>
+<span><span class="co">#&gt; [25] tools_4.5.0           parallel_4.5.0        memoise_2.0.1        </span></span>
+<span><span class="co">#&gt; [28] dplyr_1.1.4           filelock_1.0.3        curl_7.0.0           </span></span>
+<span><span class="co">#&gt; [31] vctrs_0.6.5           R6_2.6.1              lifecycle_1.0.4      </span></span>
+<span><span class="co">#&gt; [34] stringfish_0.17.0     bit_4.6.0             pkgconfig_2.0.3      </span></span>
+<span><span class="co">#&gt; [37] RcppParallel_5.1.11-1 pillar_1.11.1         glue_1.8.0           </span></span>
+<span><span class="co">#&gt; [40] Rcpp_1.1.0            xfun_0.54             tibble_3.3.0         </span></span>
+<span><span class="co">#&gt; [43] tidyselect_1.2.1      knitr_1.50            compiler_4.5.0</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -358,7 +367,7 @@ Laurie Kurihara, Jacinta Lucero, Rosa Castanon, et al. 2018.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

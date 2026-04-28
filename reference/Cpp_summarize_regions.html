@@ -15,7 +15,7 @@ sanity checks on the C++ side."><meta property="og:image" content="https://huish
 
     <a class="navbar-brand me-2" href="../index.html">iscream</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,9 +69,9 @@ sanity checks on the C++ side.</p>
 <span>  <span class="va">fun_vec</span>,</span>
 <span>  <span class="va">col_indices</span>,</span>
 <span>  <span class="va">col_names</span>,</span>
+<span>  <span class="va">regions_df</span>,</span>
 <span>  <span class="va">aligner</span>,</span>
 <span>  mval <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  region_rownames <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  nthreads <span class="op">=</span> <span class="fl">1L</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -106,12 +106,6 @@ CpGs in the ' regions: <code>"sum"</code>, <code>"mean"</code>, <code>"median"</
 <dd><p>Calculates M values when TRUE, use beta values when FALSE</p></dd>
 
 
-<dt id="arg-region-rownames">region_rownames<a class="anchor" aria-label="anchor" href="#arg-region-rownames"></a></dt>
-<dd><p>Whether to set rownames to the regions strings. Not
-necessary if your regions vector is unnamed. If its names, then the "feature"
-column is set to the names and the rownames are set to the regions string</p></dd>
-
-
 <dt id="arg-nthreads">nthreads<a class="anchor" aria-label="anchor" href="#arg-nthreads"></a></dt>
 <dd><p>Number of cores to use. See details.</p></dd>
 
@@ -136,7 +130,7 @@ can be manaully set with <code><a href="set_threads.html">set_threads()</a></cod
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

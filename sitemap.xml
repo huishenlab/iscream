@@ -18,8 +18,11 @@
 <url><loc>https://huishenlab.github.io/iscream/reference/Cpp_summarize_regions.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/check_files_exist.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/check_thread_count.html</loc></url>
+<url><loc>https://huishenlab.github.io/iscream/reference/get_df_input_regions.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/get_df_string.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/get_granges_string.html</loc></url>
+<url><loc>https://huishenlab.github.io/iscream/reference/get_regions_as_df.html</loc></url>
+<url><loc>https://huishenlab.github.io/iscream/reference/get_string_input_regions.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/get_threads.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/htslib_version.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/index.html</loc></url>
@@ -32,6 +35,7 @@
 <url><loc>https://huishenlab.github.io/iscream/reference/summarize_regions.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/tabix.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/validate_log_level.html</loc></url>
+<url><loc>https://huishenlab.github.io/iscream/reference/validate_summary_function.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/verify_aligner_or_stop.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/verify_files_or_stop.html</loc></url>
 <url><loc>https://huishenlab.github.io/iscream/reference/verify_filetype.html</loc></url>
