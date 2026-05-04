@@ -10,8 +10,8 @@ and make matrices, with specific support for WGBS BED files aligned by
 and [BSBolt](https://bsbolt.readthedocs.io/en/latest/).
 
 Analysis and visualization of Whole Genome Bisulfite Sequencing
-(WGBS)[¹](#fn1) data requires reading aligned sequencing data into
-formats that existing packages like
+(WGBS)[^1] data requires reading aligned sequencing data into formats
+that existing packages like
 [BSseq](https://bioconductor.org/packages/devel/bioc/html/bsseq.html)
 and [scMET](https://github.com/andreaskapou/scMET) can analyze. Getting
 the data from on-disk BED files to a matrix of methylation values can be
@@ -62,13 +62,14 @@ function will be faster if the executable is installed.
 
 GNU GCC must be installed for OpenMP support. This is usually installed
 by default on Linux systems, but may need to be manually installed on
-MacOS to use iscream with multiple threads[²](#fn2).
+MacOS to use iscream with multiple threads[^2].
 
 ## Installation
 
 ### Bioconductor
 
 ``` r
+
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("iscream")
@@ -88,12 +89,14 @@ You can also use the R [`devtools`](https://devtools.r-lib.org/)
 package:
 
 ``` r
+
 devtools::install_github("huishenlab/iscream")
 ```
 
 or [`pak`](https://pak.r-lib.org/):
 
 ``` r
+
 pak::pkg_install("huishenlab/iscream")
 ```
 
@@ -106,13 +109,11 @@ reference](https://huishenlab.github.io/iscream/reference/) for all
 available functions. Bug reports may be submitted through [GitHub
 issues](https://github.com/huishenlab/iscream/issues).
 
-------------------------------------------------------------------------
-
-1.  The name iscream comes from “*Integrating Single-Cell Results for
+[^1]: The name iscream comes from “*Integrating Single-Cell Results for
     Exploring and Analyzing Methylation*” as it was originally developed
     to read BED files from WGBS. It was then generalized to work with
     any BED file.
 
-2.  Using OpenMP is also possible with Clang on MacOS
+[^2]: Using OpenMP is also possible with Clang on MacOS
     (<https://mac.r-project.org/openmp/>) but installing GCC with
     Homebrew may be easier (<https://formulae.brew.sh/formula/gcc>).

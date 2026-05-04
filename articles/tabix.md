@@ -12,6 +12,7 @@ files and tabix indices from this Zenodo record:
 <https://zenodo.org/records/18089082>
 
 ``` r
+
 library("BiocFileCache") |> suppressPackageStartupMessages()
 cachedir <- BiocFileCache()
 methscan_zip_path <- bfcrpath(cachedir, "https://zenodo.org/records/18089082/files/methscan_data.zip")
@@ -34,12 +35,14 @@ make fair comparisons between Rsamtools and iscream since `scanTabix`
 does not use the executable, but stores the strings in memory.
 
 ``` r
+
 library(iscream)
 ```
 
     ## iscream using 1 thread by default but parallelly::availableCores() detects 16 possibly available threads. See `?set_threads` for information on multithreading before trying to use more.
 
 ``` r
+
 options("tabix.method" = 'htslib')
 options("iscream.threads" = 8)
 ```
@@ -49,6 +52,7 @@ Using `scanTabix` requires the input regions to be `GRanges`.
 accepts strings, data frames and GRanges.
 
 ``` r
+
 library(data.table)
 library(GenomicRanges) |> suppressPackageStartupMessages()
 library(Rsamtools) |> suppressPackageStartupMessages()
@@ -58,6 +62,7 @@ library(ggplot2)
 ```
 
 ``` r
+
 methscan_files <- list.files(
   methscan_dir,
   full.names = T,
@@ -74,6 +79,7 @@ and `scanTabix` produce a list of unparsed or raw strings. The result of
 both are identical.
 
 ``` r
+
 bench_1_raw <- microbenchmark(
   `rsamtools 1 file raw` = rq <- scanTabix(methscan_files[1], param = mouse_promoters.gr),
   `iscream 1 file raw` = iq <- tabix_raw(methscan_files[1], mouse_promoters),
@@ -91,6 +97,7 @@ bench_1_raw
     ##    93.51341     3
 
 ``` r
+
 autoplot(bench_1_raw)
 ```
 
@@ -108,6 +115,7 @@ file](../reference/figures/bench_1_raw-1.png)
 tabix vs scanTabix raw string output on 1 file
 
 ``` r
+
 iq[1:5]
 ```
 
@@ -141,6 +149,7 @@ iq[1:5]
     ## [9] "1\t4807950\t4807950\t0.000000\t0\t1"
 
 ``` r
+
 all.equal(iq, rq)
 ```
 
@@ -155,6 +164,7 @@ but each input file is a list of it’s own.
 not support this.
 
 ``` r
+
 bench_30_raw <- microbenchmark(
   `iscream 30 files raw` = iq <- tabix_raw(methscan_files, mouse_promoters),
   times = 3
@@ -169,6 +179,7 @@ bench_30_raw
     ##      3
 
 ``` r
+
 names(iq)
 ```
 
@@ -179,6 +190,7 @@ names(iq)
     ## [29] "cell_29" "cell_30"
 
 ``` r
+
 iq[["cell_01"]][1:5]
 ```
 
@@ -212,6 +224,7 @@ iq[["cell_01"]][1:5]
     ## [9] "1\t4807950\t4807950\t0.000000\t0\t1"
 
 ``` r
+
 scanTabix(methscan_files, param = GRanges(mouse_promoters))
 ```
 
@@ -227,6 +240,7 @@ For `scanTabix`, this custom function parses the list of strings to make
 a similar data frame:
 
 ``` r
+
 rtbx <- function(bed) {
   q <- scanTabix(bed, param = GRanges(mouse_promoters)) |>
     lapply(strsplit, split = "\t") |>
@@ -261,6 +275,7 @@ rq
     ## 79904:      X 169318831 169318831 100.000000      1      0
 
 ``` r
+
 iq
 ```
 
@@ -279,6 +294,7 @@ iq
     ## 79904:      X 169318831 169318831   100     1     0
 
 ``` r
+
 all.equal(iq, rq, check.attributes = F)
 ```
 
@@ -287,6 +303,7 @@ all.equal(iq, rq, check.attributes = F)
 The column types are different but the data is identical.
 
 ``` r
+
 bench_1_df
 ```
 
@@ -299,6 +316,7 @@ bench_1_df
     ##   156.7588     3
 
 ``` r
+
 autoplot(bench_1_df)
 ```
 
@@ -313,6 +331,7 @@ We can try to query multiple BED files using Rsamtools with this
 function that uses 8 cores like iscream does:
 
 ``` r
+
 partbx <- function(bedfiles) {
   pblapply(
     methscan_files,
@@ -343,6 +362,7 @@ bench_30_df
     ##   2.200326     3
 
 ``` r
+
 autoplot(bench_30_df)
 ```
 
@@ -354,6 +374,7 @@ tabix vs scanTabix parsed data frame from 30 files
 ### All benchmarks
 
 ``` r
+
 bench_all <- rbind(bench_1_raw, bench_30_raw, bench_1_df, bench_30_raw, bench_30_df)
 
 bench.dt <- as.data.table(bench_all)[, .(
@@ -369,6 +390,7 @@ bench.dt <- as.data.table(bench_all)[, .(
 #### Runtime
 
 ``` r
+
 ggplot(bench.dt, aes(x = as.factor(files), y = time / 1000, color = as.factor(package))) +
   geom_boxplot(position = position_dodge(preserve = "single")) +
   scale_color_discrete(name = "Package") +
@@ -389,6 +411,7 @@ Comparing all benchmarked iscream and Rsamtools querying runtimes
 ### Session info
 
 ``` r
+
 sessionInfo()
 ```
 

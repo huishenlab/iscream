@@ -23,6 +23,7 @@ To see what htslib version iscream is using and whether it has
 libdeflate, run
 
 ``` r
+
 library(iscream)
 htslib_version()
 #> 1.21
@@ -111,6 +112,7 @@ You should get something like
 ## Session info
 
 ``` r
+
 sessionInfo()
 ```
 
@@ -135,7 +137,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.3    BiocStyle_2.39.0
+    ## [1] ggplot2_4.0.3    BiocStyle_2.40.0
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] gtable_0.3.6        jsonlite_2.0.0      dplyr_1.2.1        
