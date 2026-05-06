@@ -72,7 +72,9 @@ tabixed BED files and regions of interest. The input regions may be a vector of
 `"chr:start-end"` strings, a data frame with `"chr"`, `"start"`, and `"end"`
 columns or a `GRanges` object. It queries the BED files and returns the records
 as a parsed `r CRANpkg("data.table")`. To get a `GRanges` object instead, use
-`tabix_gr`.
+`tabix_gr`. As with tabix, any duplicated records, either in the file or because
+of overlapping input regions, will be returned as-is. To get only the unique
+records, use `unique()`.
 
 Using iscream eliminates context switching between the shell and R for tabix
 queries since the queries are made in R and the result is an R data structure.
@@ -123,6 +125,11 @@ With multiple files, the output contains a column for the file name.
 ```{r tabix_all}
 tabix(bedfiles, regions)
 ```
+
+> **Note:** because the tabix API does not currently support multiple regions as
+> input, it retrieves duplicate records if the input regions overlap and contain
+> overlapping records. With `tabix()` you can use `unique()` to filter these
+> out.
 
 ### Using `r Biocpkg("GenomicRanges")`
 
@@ -221,6 +228,11 @@ file and the columns are the input files. It returns a named list of the matrix,
 coordinates, and file names you can use for analysis or other data structures.
 `make_mat_se()` returns a `RangedSummarizedExperiment`, and `make_mat_gr()`
 returns a `GRanges` object.
+
+> **Note:** as with `tabix()`, you may have duplicated records if your input
+regions overlap. Check the `mat$chr` and `mat$pos` vectors to find duplicate
+loci. With `make_mat_gr()` and `make_mat_se()` outputs, you can find duplicate
+loci with `GRanges`.
 
 ```{r make_mat, message=FALSE}
 if (!require("SummarizedExperiment", quietly = TRUE)) {
