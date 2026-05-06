@@ -52,13 +52,12 @@ Krueger, Felix, and Simon R. Andrews. 2011. “Bismark: A Flexible Aligner
 and Methylation Caller for Bisulfite-Seq Applications.” *Bioinformatics*
 27 (11): 1571–72. <https://doi.org/10.1093/bioinformatics/btr167>.
 
-Luo, Chongyuan, Angeline Rivkin, Jingtian Zhou, Justin P. Sandoval,
-Laurie Kurihara, Jacinta Lucero, Rosa Castanon, et al. 2018. “Robust
+Luo, Chongyuan, Angeline Rivkin, Jingtian Zhou, et al. 2018. “Robust
 Single-Cell DNA Methylome Profiling with snmC-seq2.” *Nat Commun* 9 (1):
 3824. <https://doi.org/10.1038/s41467-018-06355-2>.
 
-Zhou, Wanding, Benjamin K Johnson, Jacob Morrison, Ian Beddows, James
-Eapen, Efrat Katsman, Ayush Semwal, et al. 2024. “BISCUIT: An Efficient,
-Standards-Compliant Tool Suite for Simultaneous Genetic and Epigenetic
-Inference in Bulk and Single-Cell Studies.” *Nucleic Acids Research* 52
-(6): gkae097. <https://doi.org/10.1093/nar/gkae097>.
+Zhou, Wanding, Benjamin K Johnson, Jacob Morrison, et al. 2024.
+“BISCUIT: An Efficient, Standards-Compliant Tool Suite for Simultaneous
+Genetic and Epigenetic Inference in Bulk and Single-Cell Studies.”
+*Nucleic Acids Research* 52 (6): gkae097.
+<https://doi.org/10.1093/nar/gkae097>.

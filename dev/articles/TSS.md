@@ -30,6 +30,7 @@ third is done in R.
 ## Setup
 
 ``` r
+
 options("iscream.threads" = 8)
 library(iscream)
 library(data.table)
@@ -42,6 +43,7 @@ Running this vignette requires downloading 18MB of BED files and tabix
 indices from this Zenodo record: <https://zenodo.org/records/18089082>.
 
 ``` r
+
 library("BiocFileCache") |> suppressPackageStartupMessages()
 cachedir <- BiocFileCache()
 methscan_zip_path <- bfcrpath(cachedir, "https://zenodo.org/records/18089082/files/methscan_data.zip")
@@ -54,6 +56,7 @@ start_time = proc.time()
 First, we generate a list of the BED file paths:
 
 ``` r
+
 bedfiles <- list.files(
     methscan_dir,
     pattern = "*.cov.gz$",
@@ -69,6 +72,7 @@ Then we read the provided TSS BED file and create 2kb flanking regions
 around the start sites.
 
 ``` r
+
 tss.regions <- fread(
     file.path(methscan_dir, "Mus_musculus.GRCm38.102_TSS.bed"), drop = c(3, 5, 6)
 )
@@ -86,6 +90,7 @@ head(tss.regions)
     ## 6:      1 4857814 ENSMUSG00000033813
 
 ``` r
+
 tss.regions[, `:=`(tss.start = tss - 2000, tss.end = tss + 2000)]
 
 # make a new data frame with chr, start, end as iscream requires these columns
@@ -100,6 +105,7 @@ function queries the provided BED files for the TSS flanking regions to
 produce a data frame:
 
 ``` r
+
 query_runtime.start <- proc.time()
 tss.query <- tabix(bedfiles, tss.for_query, aligner = "bismark")
 head(tss.query)
@@ -132,6 +138,7 @@ column relative to the TSS (using rounded values as in the *methscan*
 tutorial):
 
 ``` r
+
 # join
 tss.profile <- tss.regions[tss.query, .(
     chr,
@@ -158,6 +165,7 @@ cpu).
 ### Plot average methylation profiles around the TSS
 
 ``` r
+
 tss.plot <- ggplot(tss.summary, aes(x = position / 1000, y = meth_frac)) +
   scale_y_continuous(
     labels=scales::percent_format(accuracy=1),
@@ -189,6 +197,7 @@ function if you only need to see the distribution of beta means by file,
 rather than means by relative position per file
 
 ``` r
+
 library("ggridges")
 tss.means <- summarize_meth_regions(
   bedfiles,
@@ -204,6 +213,7 @@ tss.means <- summarize_meth_regions(
     ## [11:28:24.770925] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta
 
 ``` r
+
 ggplot(tss.means, aes(x = beta.mean, y = file, fill = after_stat(x))) +
   geom_density_ridges_gradient() +
   scale_fill_distiller(palette = "BrBG") +
@@ -218,6 +228,7 @@ TSS distribution by file
 For per-file means you could collapse the means within file:
 
 ``` r
+
 tss.means[, .(beta.mean = mean(beta.mean, na.rm = TRUE)), by = file] |>
   ggplot(
     aes(
@@ -237,6 +248,7 @@ Mean TSS by file
 ## Session info
 
 ``` r
+
 sessionInfo()
 ```
 

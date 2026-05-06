@@ -20,6 +20,7 @@ datasets see
 iscream may be installed from <https://bioconductor.org> with
 
 ``` r
+
 if (!require("BiocManager"))
     install.packages("BiocManager")
 BiocManager::install("iscream")
@@ -34,12 +35,14 @@ for more information.
 ### Loading iscream
 
 ``` r
+
 library(iscream)
 ```
 
     ## iscream using 1 thread by default but parallelly::availableCores() detects 4 possibly available threads. See `?set_threads` for information on multithreading before trying to use more.
 
 ``` r
+
 set_threads(2)
 ```
 
@@ -69,7 +72,10 @@ vector of `"chr:start-end"` strings, a data frame with `"chr"`,
 `"start"`, and `"end"` columns or a `GRanges` object. It queries the BED
 files and returns the records as a parsed
 *[data.table](https://CRAN.R-project.org/package=data.table)*. To get a
-`GRanges` object instead, use `tabix_gr`.
+`GRanges` object instead, use `tabix_gr`. As with tabix, any duplicated
+records, either in the file or because of overlapping input regions,
+will be returned as-is. To get only the unique records, use
+[`unique()`](https://rdrr.io/pkg/BiocGenerics/man/unique.html).
 
 Using iscream eliminates context switching between the shell and R for
 tabix queries since the queries are made in R and the result is an R
@@ -89,6 +95,7 @@ contain small regions from chromosome 1 and Y from the snmC-seq2
 methylation data ([Luo et al. 2018](#ref-luo2018a)).
 
 ``` r
+
 data_dir <- system.file("extdata", package = "iscream")
 (bedfiles <- list.files(
   data_dir,
@@ -104,6 +111,7 @@ data_dir <- system.file("extdata", package = "iscream")
 For demonstration, I’m using two regions.
 
 ``` r
+
 regions <- c("chr1:184577-680065", "chrY:56877780-56882524")
 ```
 
@@ -115,6 +123,7 @@ regions <- c("chr1:184577-680065", "chrY:56877780-56882524")
 > to get all unique chromosomes across all input files:
 
 ``` r
+
 query_chroms(bedfiles)
 ```
 
@@ -126,6 +135,7 @@ query_chroms(bedfiles)
 one file:
 
 ``` r
+
 tabix(bedfiles[1], regions)
 ```
 
@@ -161,6 +171,7 @@ tabix(bedfiles[1], regions)
 With multiple files, the output contains a column for the file name.
 
 ``` r
+
 tabix(bedfiles, regions)
 ```
 
@@ -178,6 +189,14 @@ tabix(bedfiles, regions)
     ## 73:   chrY 56881927 56881928     1     1  cell4
     ## 74:   chrY 56882345 56882346     1     1  cell4
 
+> **Note:** because the tabix API does not currently support multiple
+> regions as input, it retrieves duplicate records if the input regions
+> overlap and contain overlapping records. With
+> [`tabix()`](https://huishenlab.github.io/iscream/dev/reference/tabix.md)
+> you can use
+> [`unique()`](https://rdrr.io/pkg/BiocGenerics/man/unique.html) to
+> filter these out.
+
 ### Using *[GenomicRanges](https://bioconductor.org/packages/3.23/GenomicRanges)*
 
 Both
@@ -190,6 +209,7 @@ returns `GRanges` objects instead of data frames. `tabix_gr` will also
 preserve any input `GRanges` metadata.
 
 ``` r
+
 if (!require("GenomicRanges", quietly = TRUE)) {
   stop("The 'GenomicRanges' package must be installed for this functionality")
 }
@@ -225,6 +245,7 @@ You can set the result data frame’s column names or the `GRanges`
 `mcols` with `col.names`:
 
 ``` r
+
 tabix_gr(bedfiles, regions, col.names = c("beta", "coverage"))
 ```
 
@@ -258,6 +279,7 @@ will return an unparsed named list like
 with multi-file support:
 
 ``` r
+
 tabix_raw(bedfiles, regions)
 ```
 
@@ -333,6 +355,7 @@ Bismark ([Krueger and Andrews 2011](#ref-krueger2011)), and BSBolt
 ([Farrell et al. 2021](#ref-farrell2021)).
 
 ``` r
+
 tabix_gr(bedfiles, regions, aligner = "biscuit")
 ```
 
@@ -368,6 +391,7 @@ summarizing functions are run on each input column by default - see
 for supported functions.
 
 ``` r
+
 summarize_regions(
   bedfiles,
   regions,
@@ -376,9 +400,9 @@ summarize_regions(
 )
 ```
 
-    ## [15:40:15.500293] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
-    ## [15:40:15.500330] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, pstddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count
-    ## [15:40:15.500335] [iscream::summarize_regions] [info] with columns 4, 5 as beta, coverage
+    ## [18:12:52.380233] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
+    ## [18:12:52.380293] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, pstddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count
+    ## [18:12:52.380298] [iscream::summarize_regions] [info] with columns 4, 5 as beta, coverage
 
     ##       chr    start      end   file beta.sum coverage.sum beta.mean
     ##    <char>    <int>    <int> <char>    <num>        <num>     <num>
@@ -456,6 +480,7 @@ can be set to something more informational if you have names for the
 regions. You can also select the functions applied with `fun`:
 
 ``` r
+
 names(regions) <- c("R1", "R2")
 summarize_regions(
   bedfiles,
@@ -466,9 +491,9 @@ summarize_regions(
 )
 ```
 
-    ## [15:40:15.631654] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
-    ## [15:40:15.631687] [iscream::summarize_regions] [info] using mean, sum
-    ## [15:40:15.631691] [iscream::summarize_regions] [info] with columns 5 as coverage
+    ## [18:12:52.501928] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
+    ## [18:12:52.501967] [iscream::summarize_regions] [info] using mean, sum
+    ## [18:12:52.501971] [iscream::summarize_regions] [info] with columns 5 as coverage
 
     ##       chr    start      end   file feature coverage.mean coverage.sum
     ##    <char>    <int>    <int> <char>  <char>         <num>        <num>
@@ -488,6 +513,7 @@ For WGBS data specifically, you can use
 which takes the `aligner` argument to correctly parse the columns.
 
 ``` r
+
 summarize_meth_regions(
   bedfiles,
   regions,
@@ -496,9 +522,9 @@ summarize_meth_regions(
 )
 ```
 
-    ## [15:40:15.703383] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
-    ## [15:40:15.703410] [iscream::summarize_regions] [info] using mean, sum
-    ## [15:40:15.703415] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
+    ## [18:12:52.587942] [iscream::summarize_regions] [info] Summarizing 2 regions from 4 bedfiles
+    ## [18:12:52.587989] [iscream::summarize_regions] [info] using mean, sum
+    ## [18:12:52.587993] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M
 
     ##       chr    start      end   file feature coverage.mean    M.mean coverage.sum
     ##    <char>    <int>    <int> <char>  <char>         <num>     <num>        <num>
@@ -533,18 +559,28 @@ returns a `RangedSummarizedExperiment`, and
 [`make_mat_gr()`](https://huishenlab.github.io/iscream/dev/reference/make_mat.md)
 returns a `GRanges` object.
 
+> **Note:** as with
+> [`tabix()`](https://huishenlab.github.io/iscream/dev/reference/tabix.md),
+> you may have duplicated records if your input regions overlap. Check
+> the `mat$chr` and `mat$pos` vectors to find duplicate loci. With
+> [`make_mat_gr()`](https://huishenlab.github.io/iscream/dev/reference/make_mat.md)
+> and
+> [`make_mat_se()`](https://huishenlab.github.io/iscream/dev/reference/make_mat.md)
+> outputs, you can find duplicate loci with `GRanges`.
+
 ``` r
+
 if (!require("SummarizedExperiment", quietly = TRUE)) {
   stop("The 'SummarizedExperiment' package must be installed for this functionality")
 }
 (mat <- make_mat_se(bedfiles, regions, column = 4, mat_name = "beta"))
 ```
 
-    ## [15:40:18.495147] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
+    ## [18:12:55.405651] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
     ## 
-    ## [15:40:18.495714] [iscream::query_all] [info] Creating metadata vectors
-    ## [15:40:18.495736] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
-    ## [15:40:18.495740] [iscream::query_all] [info] Creating dense matrix
+    ## [18:12:55.406215] [iscream::query_all] [info] Creating metadata vectors
+    ## [18:12:55.406245] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
+    ## [18:12:55.406251] [iscream::query_all] [info] Creating dense matrix
 
     ## class: RangedSummarizedExperiment 
     ## dim: 62 4 
@@ -556,20 +592,21 @@ if (!require("SummarizedExperiment", quietly = TRUE)) {
     ## colData names(0):
 
 ``` r
+
 head(assay(mat), 10)
 ```
 
     ##       cell1 cell2 cell3 cell4
-    ##  [1,]     0     0     0     0
-    ##  [2,]     0     0     0     0
-    ##  [3,]     0     0     0     0
-    ##  [4,]     0     0     0     1
-    ##  [5,]     0     0     0     1
-    ##  [6,]     0     0     0     0
-    ##  [7,]     0     0     0     0
-    ##  [8,]     1     0     0     0
-    ##  [9,]     1     0     0     0
-    ## [10,]     0     0     1     0
+    ##  [1,]     0     0   1.0     0
+    ##  [2,]     0     0   0.5     0
+    ##  [3,]     0     0   1.0     0
+    ##  [4,]     0     0   1.0     0
+    ##  [5,]     0     0   1.0     0
+    ##  [6,]     0     0   0.0     0
+    ##  [7,]     0     0   0.0     0
+    ##  [8,]     0     0   0.5     0
+    ##  [9,]     0     0   0.0     0
+    ## [10,]     0     0   0.0     0
 
 If you have sparse data, you can save memory with `sparse = TRUE`, but
 only for
@@ -578,31 +615,33 @@ and
 [`make_mat_se()`](https://huishenlab.github.io/iscream/dev/reference/make_mat.md).
 
 ``` r
+
 mat <- make_mat(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
 ```
 
-    ## [15:40:18.614815] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
+    ## [18:12:55.531176] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
     ## 
-    ## [15:40:18.615323] [iscream::query_all] [info] Creating metadata vectors
-    ## [15:40:18.615340] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
-    ## [15:40:18.615350] [iscream::query_all] [info] Creating sparse matrix
+    ## [18:12:55.531740] [iscream::query_all] [info] Creating metadata vectors
+    ## [18:12:55.531760] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
+    ## [18:12:55.531772] [iscream::query_all] [info] Creating sparse matrix
 
 ``` r
+
 head(mat$beta, 10)
 ```
 
     ## 10 x 4 sparse Matrix of class "dgCMatrix"
     ##       cell1 cell2 cell3 cell4
-    ##  [1,]     .     .     .     .
-    ##  [2,]     .     .     .     .
-    ##  [3,]     .     .     .     .
-    ##  [4,]     .     .     .     1
-    ##  [5,]     .     .     .     1
-    ##  [6,]     .     .     .     .
-    ##  [7,]     .     .     .     .
-    ##  [8,]     1     .     .     .
-    ##  [9,]     1     .     .     .
-    ## [10,]     .     .     .     .
+    ##  [1,]     .     .   1.0     .
+    ##  [2,]     .     .   0.5     .
+    ##  [3,]     .     .   1.0     .
+    ##  [4,]     .     .   1.0     .
+    ##  [5,]     .     .   1.0     .
+    ##  [6,]     .     .   .       .
+    ##  [7,]     .     .   .       .
+    ##  [8,]     .     .   0.5     .
+    ##  [9,]     .     .   .       .
+    ## [10,]     .     .   .       .
 
 ### WGBS BED files
 
@@ -611,17 +650,18 @@ object, use `make_meth_mat` which returns a list of BSseq inputs. To
 make the `BSseq` object run
 
 ``` r
+
 if (require("bsseq", quietly = TRUE)) {
   meth_mat <- make_mat_bsseq(bedfiles, regions)
   do.call(BSseq, meth_mat)
 }
 ```
 
-    ## [15:40:22.619913] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
+    ## [18:12:59.710599] [iscream::query_all] [info] Querying 2 regions from 4 bedfiles
     ## 
-    ## [15:40:22.620425] [iscream::query_all] [info] Creating metadata vectors
-    ## [15:40:22.620443] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
-    ## [15:40:22.620447] [iscream::query_all] [info] Creating dense matrix
+    ## [18:12:59.711182] [iscream::query_all] [info] Creating metadata vectors
+    ## [18:12:59.711207] [iscream::query_all] [info] 62 loci found - 9938 extra rows allocated with 0 resizes
+    ## [18:12:59.711211] [iscream::query_all] [info] Creating dense matrix
 
     ## An object of type 'BSseq' with
     ##   62 methylation loci
@@ -644,6 +684,7 @@ on the supported Bioconductor data structures and conversions see
 ## Session info
 
 ``` r
+
 sessionInfo()
 ```
 
@@ -669,53 +710,53 @@ sessionInfo()
     ## [8] base     
     ## 
     ## other attached packages:
-    ##  [1] bsseq_1.47.1                SummarizedExperiment_1.41.1
-    ##  [3] Biobase_2.71.0              MatrixGenerics_1.23.0      
-    ##  [5] matrixStats_1.5.0           GenomicRanges_1.63.2       
-    ##  [7] Seqinfo_1.1.0               IRanges_2.45.0             
-    ##  [9] S4Vectors_0.49.3            BiocGenerics_0.57.1        
-    ## [11] generics_0.1.4              iscream_1.3.0              
-    ## [13] BiocStyle_2.39.0           
+    ##  [1] bsseq_1.48.0                SummarizedExperiment_1.42.0
+    ##  [3] Biobase_2.72.0              MatrixGenerics_1.24.0      
+    ##  [5] matrixStats_1.5.0           GenomicRanges_1.64.0       
+    ##  [7] Seqinfo_1.2.0               IRanges_2.46.0             
+    ##  [9] S4Vectors_0.50.0            BiocGenerics_0.58.0        
+    ## [11] generics_0.1.4              iscream_1.3.1              
+    ## [13] BiocStyle_2.40.0           
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] farver_2.1.2              R.utils_2.13.0           
-    ##  [3] Biostrings_2.79.5         bitops_1.0-9             
+    ##  [3] Biostrings_2.80.0         bitops_1.0-9             
     ##  [5] fastmap_1.2.0             RCurl_1.98-1.18          
-    ##  [7] GenomicAlignments_1.47.0  stringfish_0.19.0        
+    ##  [7] GenomicAlignments_1.48.0  stringfish_0.19.0        
     ##  [9] XML_3.99-0.23             digest_0.6.39            
     ## [11] lifecycle_1.0.5           statmod_1.5.1            
     ## [13] compiler_4.6.0            rlang_1.2.0              
     ## [15] sass_0.4.10               tools_4.6.0              
     ## [17] yaml_2.3.12               data.table_1.18.2.1      
-    ## [19] rtracklayer_1.71.3        knitr_1.51               
-    ## [21] S4Arrays_1.11.1           curl_7.1.0               
-    ## [23] DelayedArray_0.37.1       RColorBrewer_1.1-3       
-    ## [25] abind_1.4-8               BiocParallel_1.45.0      
-    ## [27] HDF5Array_1.39.1          R.oo_1.27.1              
+    ## [19] rtracklayer_1.72.0        knitr_1.51               
+    ## [21] S4Arrays_1.12.0           curl_7.1.0               
+    ## [23] DelayedArray_0.38.1       RColorBrewer_1.1-3       
+    ## [25] abind_1.4-8               BiocParallel_1.46.0      
+    ## [27] HDF5Array_1.40.0          R.oo_1.27.1              
     ## [29] desc_1.4.3                grid_4.6.0               
-    ## [31] beachmat_2.27.5           Rhdf5lib_1.99.6          
+    ## [31] beachmat_2.28.0           Rhdf5lib_2.0.0           
     ## [33] scales_1.4.0              gtools_3.9.5             
     ## [35] cli_3.6.6                 rmarkdown_2.31           
     ## [37] crayon_1.5.3              ragg_1.5.2               
     ## [39] RcppParallel_5.1.11-2     httr_1.4.8               
-    ## [41] rjson_0.2.23              DelayedMatrixStats_1.33.0
+    ## [41] rjson_0.2.23              DelayedMatrixStats_1.34.0
     ## [43] pbapply_1.7-4             cachem_1.1.0             
-    ## [45] rhdf5_2.55.16             parallel_4.6.0           
-    ## [47] BiocManager_1.30.27       XVector_0.51.0           
+    ## [45] rhdf5_2.56.0              parallel_4.6.0           
+    ## [47] BiocManager_1.30.27       XVector_0.52.0           
     ## [49] restfulr_0.0.16           Matrix_1.7-5             
     ## [51] jsonlite_2.0.0            bookdown_0.46            
-    ## [53] systemfonts_1.3.2         h5mread_1.3.3            
-    ## [55] locfit_1.5-9.12           limma_3.67.3             
+    ## [53] systemfonts_1.3.2         h5mread_1.4.0            
+    ## [55] locfit_1.5-9.12           limma_3.68.2             
     ## [57] jquerylib_0.1.4           glue_1.8.1               
     ## [59] parallelly_1.47.0         pkgdown_2.2.0            
-    ## [61] codetools_0.2-20          BiocIO_1.21.0            
-    ## [63] htmltools_0.5.9           rhdf5filters_1.23.3      
-    ## [65] BSgenome_1.79.1           R6_2.6.1                 
-    ## [67] textshaping_1.0.5         sparseMatrixStats_1.23.0 
+    ## [61] codetools_0.2-20          BiocIO_1.22.0            
+    ## [63] htmltools_0.5.9           rhdf5filters_1.24.0      
+    ## [65] BSgenome_1.80.0           R6_2.6.1                 
+    ## [67] textshaping_1.0.5         sparseMatrixStats_1.24.0 
     ## [69] evaluate_1.0.5            lattice_0.22-9           
-    ## [71] R.methodsS3_1.8.2         Rsamtools_2.27.2         
-    ## [73] cigarillo_1.1.0           bslib_0.10.0             
-    ## [75] Rcpp_1.1.1-1.1            SparseArray_1.11.13      
+    ## [71] R.methodsS3_1.8.2         Rsamtools_2.28.0         
+    ## [73] cigarillo_1.2.0           bslib_0.10.0             
+    ## [75] Rcpp_1.1.1-1.1            SparseArray_1.12.2       
     ## [77] permute_0.9-10            xfun_0.57                
     ## [79] fs_2.1.0
 
@@ -730,13 +771,12 @@ Krueger, Felix, and Simon R. Andrews. 2011. “Bismark: A Flexible Aligner
 and Methylation Caller for Bisulfite-Seq Applications.” *Bioinformatics*
 27 (11): 1571–72. <https://doi.org/10.1093/bioinformatics/btr167>.
 
-Luo, Chongyuan, Angeline Rivkin, Jingtian Zhou, Justin P. Sandoval,
-Laurie Kurihara, Jacinta Lucero, Rosa Castanon, et al. 2018. “Robust
+Luo, Chongyuan, Angeline Rivkin, Jingtian Zhou, et al. 2018. “Robust
 Single-Cell DNA Methylome Profiling with snmC-seq2.” *Nat Commun* 9 (1):
 3824. <https://doi.org/10.1038/s41467-018-06355-2>.
 
-Zhou, Wanding, Benjamin K Johnson, Jacob Morrison, Ian Beddows, James
-Eapen, Efrat Katsman, Ayush Semwal, et al. 2024. “BISCUIT: An Efficient,
-Standards-Compliant Tool Suite for Simultaneous Genetic and Epigenetic
-Inference in Bulk and Single-Cell Studies.” *Nucleic Acids Research* 52
-(6): gkae097. <https://doi.org/10.1093/nar/gkae097>.
+Zhou, Wanding, Benjamin K Johnson, Jacob Morrison, et al. 2024.
+“BISCUIT: An Efficient, Standards-Compliant Tool Suite for Simultaneous
+Genetic and Epigenetic Inference in Bulk and Single-Cell Studies.”
+*Nucleic Acids Research* 52 (6): gkae097.
+<https://doi.org/10.1093/nar/gkae097>.

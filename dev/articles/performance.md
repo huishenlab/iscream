@@ -13,6 +13,7 @@ genome bisulfite sequencing (WGBS) BED files and tabix indices from this
 Zenodo record: <https://zenodo.org/records/18089082>.
 
 ``` r
+
 library("BiocFileCache")
 #> Loading required package: dbplyr
 cachedir <- BiocFileCache()
@@ -26,6 +27,7 @@ Select 100 human cell WGBS data from the snmC-seq2 ([Luo et al.
 2018](#ref-luo2018a)) dataset:
 
 ``` r
+
 snmc_dir <- file.path(snmc_unzip, "sc_biscuit")
 bedfiles <- list.files(
   snmc_dir,
@@ -39,6 +41,7 @@ bedfiles <- list.files(
 Here we’ll be using 5000 gene body regions as the input:
 
 ``` r
+
 library(data.table)
 regions <- fread(
   genes_file,
@@ -62,6 +65,7 @@ threads can be set before or after loading the library. iscream will
 read the option while loading and so can be set in `.Rprofile`
 
 ``` r
+
 options("iscream.threads" = 8)
 library(iscream)
 #> iscream using 8 threads based on 'options(iscream.threads)' but parallelly::availableCores() detects 16 possibly available threads. See `?set_threads` for information on multithreading before trying to use more.
@@ -94,6 +98,7 @@ executable is not found. See
 details for more information.
 
 ``` r
+
 qt <- system.time(
   tbx_query <- tabix(bedfiles, regions, col.names = c("beta", "coverage"))
 )
@@ -123,6 +128,7 @@ To get a summary of the information of the gene bodies use
 column:
 
 ``` r
+
 qt <- system.time(
   summary_query <- summarize_regions(
     bedfiles,
@@ -190,6 +196,7 @@ based on CpG counts in one file and the coverage of your WGBS method.
 Here we make a matrix of the beta-values in the 4th column:
 
 ``` r
+
 suppressPackageStartupMessages(library("SummarizedExperiment"))
 cpg.count <- tbx_query$start |> unique() |> length()
 qt <- system.time(meth_mat <- make_mat_se(
@@ -221,6 +228,7 @@ Making this 7,276,107 x 100 matrix took 45.812 seconds.
 ## Session info
 
 ``` r
+
 sessionInfo()
 #> R version 4.5.0 (2025-04-11)
 #> Platform: x86_64-pc-linux-gnu
@@ -271,7 +279,6 @@ sessionInfo()
 
 ## References
 
-Luo, Chongyuan, Angeline Rivkin, Jingtian Zhou, Justin P. Sandoval,
-Laurie Kurihara, Jacinta Lucero, Rosa Castanon, et al. 2018. “Robust
+Luo, Chongyuan, Angeline Rivkin, Jingtian Zhou, et al. 2018. “Robust
 Single-Cell DNA Methylome Profiling with snmC-seq2.” *Nat Commun* 9 (1):
 3824. <https://doi.org/10.1038/s41467-018-06355-2>.

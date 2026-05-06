@@ -1,5 +1,16 @@
 # Changelog
 
+## iscream 1.3.1
+
+DOCUMENTATION
+
+- Note that there may be duplicate records returned when input regions
+  overlap
+
+## iscream 1.2.0
+
+RELEASE 3.23
+
 ## iscream 1.1.8
 
 INTERNAL
