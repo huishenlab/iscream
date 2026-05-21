@@ -5,7 +5,7 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Summarize methylation information over genomic regions — summarize_meth_regions"><meta name="description" content='Run summarizing functions on the CpG/CpH loci in BED files across genomic
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Summarize methylation information over genomic regions — summarize_meth_regions"><meta name="description" content='Run summarizing functions on the CpG/CpH loci in BED files across genomic
 regions. Parallelized across files using threads from the
 "iscream.threads" option.'><meta property="og:description" content='Run summarizing functions on the CpG/CpH loci in BED files across genomic
 regions. Parallelized across files using threads from the
@@ -164,9 +164,9 @@ used to populate a 'feature' column in the summary. See examples.</p>
 <span class="r-in"><span><span class="co"># make a vector of regions</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:1-6"</span>, <span class="st">"chr1:7-10"</span>, <span class="st">"chr1:11-14"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_meth_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:12:26.736076] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:12:26.736114] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, pstddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:12:26.736121] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23:39:34.138512] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23:39:34.138542] [iscream::summarize_regions] [info] using sum, mean, median, mode, antimode, stddev, pstddev, variance, min, max, absmin, absmax, range, first, last, count_distinct, count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23:39:34.138546] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr start   end   file coverage.sum M.sum coverage.mean    M.mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;char&gt;        &lt;num&gt; &lt;num&gt;         &lt;num&gt;     &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:   chr1     1     6      a            4     2      1.333333 0.6666667</span>
@@ -255,9 +255,9 @@ used to populate a 'feature' column in the summary. See examples.</p>
 <span class="r-in"><span><span class="co"># add names to the regions to populate the 'feature' column</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gene1"</span>, <span class="st">"gene2"</span>, <span class="st">"gene3"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_meth_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"stddev"</span><span class="op">)</span>, mval <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:12:26.799481] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:12:26.799505] [iscream::summarize_regions] [info] using mean, stddev</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:12:26.799508] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23:39:34.903813] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23:39:34.903830] [iscream::summarize_regions] [info] using mean, stddev</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23:39:34.903833] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, beta</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr start   end   file feature coverage.mean beta.mean coverage.stddev</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;char&gt;  &lt;char&gt;         &lt;num&gt;     &lt;num&gt;           &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:   chr1     1     6      a   gene1      1.333333 0.6666667       0.5773503</span>
@@ -287,9 +287,9 @@ used to populate a 'feature' column in the summary. See examples.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11:   0.3535534</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12:   0.0000000</span>
 <span class="r-in"><span><span class="fu">summarize_meth_regions</span><span class="op">(</span><span class="va">bedfiles</span>, <span class="va">regions</span>, fun <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:12:26.810385] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:12:26.810402] [iscream::summarize_regions] [info] using sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18:12:26.810405] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23:39:34.915396] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23:39:34.915416] [iscream::summarize_regions] [info] using sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23:39:34.915420] [iscream::summarize_regions] [info] with columns 4, 5 as coverage, M</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr start   end   file feature coverage.sum M.sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;char&gt;  &lt;char&gt;        &lt;num&gt; &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:   chr1     1     6      a   gene1            4     2</span>

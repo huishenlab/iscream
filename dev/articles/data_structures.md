@@ -124,9 +124,9 @@ the BED-file data columns.
 )
 ```
 
-    ## [18:12:34.973446] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
-    ## [18:12:34.973504] [iscream::summarize_regions] [info] using sum, mean
-    ## [18:12:34.973511] [iscream::summarize_regions] [info] with columns 4 as data_col
+    ## [23:39:41.940008] [iscream::summarize_regions] [info] Summarizing 3 regions from 4 bedfiles
+    ## [23:39:41.940053] [iscream::summarize_regions] [info] using sum, mean
+    ## [23:39:41.940059] [iscream::summarize_regions] [info] with columns 4 as data_col
 
     ##        chr start   end   file feature data_col.sum data_col.mean
     ##     <char> <int> <int> <char>  <char>        <num>         <num>
@@ -188,11 +188,11 @@ returns a `GRanges` object for dense matrices.
 make_mat_gr(bedfiles, regions, column = 4, mat_name = "beta")
 ```
 
-    ## [18:12:35.067735] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [23:39:42.031595] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [18:12:35.068112] [iscream::query_all] [info] Creating metadata vectors
-    ## [18:12:35.068137] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [18:12:35.068141] [iscream::query_all] [info] Creating dense matrix
+    ## [23:39:42.031983] [iscream::query_all] [info] Creating metadata vectors
+    ## [23:39:42.032006] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [23:39:42.032009] [iscream::query_all] [info] Creating dense matrix
 
     ## GRanges object with 7 ranges and 4 metadata columns:
     ##       seqnames    ranges strand |         a         b         c         d
@@ -221,11 +221,11 @@ if (!require("SummarizedExperiment", quietly = TRUE)) {
 make_mat_se(bedfiles, regions, column = 4, mat_name = "beta", sparse = TRUE)
 ```
 
-    ## [18:12:37.684674] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [23:39:44.469881] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [18:12:37.685088] [iscream::query_all] [info] Creating metadata vectors
-    ## [18:12:37.685108] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [18:12:37.685115] [iscream::query_all] [info] Creating sparse matrix
+    ## [23:39:44.470275] [iscream::query_all] [info] Creating metadata vectors
+    ## [23:39:44.470293] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [23:39:44.470299] [iscream::query_all] [info] Creating sparse matrix
 
     ## class: RangedSummarizedExperiment 
     ## dim: 7 4 
@@ -249,11 +249,11 @@ if (!require("bsseq", quietly = TRUE)) {
 mats <- make_mat_bsseq(bedfiles, regions, sparse = FALSE)
 ```
 
-    ## [18:12:42.111713] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
+    ## [23:39:48.498059] [iscream::query_all] [info] Querying 3 regions from 4 bedfiles
     ## 
-    ## [18:12:42.112171] [iscream::query_all] [info] Creating metadata vectors
-    ## [18:12:42.112198] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
-    ## [18:12:42.112202] [iscream::query_all] [info] Creating dense matrix
+    ## [23:39:48.498429] [iscream::query_all] [info] Creating metadata vectors
+    ## [23:39:48.498445] [iscream::query_all] [info] 7 loci found - 9993 extra rows allocated with 0 resizes
+    ## [23:39:48.498448] [iscream::query_all] [info] Creating dense matrix
 
 ``` r
 
@@ -299,7 +299,7 @@ sessionInfo()
     ##  [3] Biobase_2.72.0              MatrixGenerics_1.24.0      
     ##  [5] matrixStats_1.5.0           GenomicRanges_1.64.0       
     ##  [7] Seqinfo_1.2.0               IRanges_2.46.0             
-    ##  [9] S4Vectors_0.50.0            BiocGenerics_0.58.0        
+    ##  [9] S4Vectors_0.50.1            BiocGenerics_0.58.1        
     ## [11] generics_0.1.4              iscream_1.3.1              
     ## [13] BiocStyle_2.40.0           
     ## 
@@ -309,10 +309,10 @@ sessionInfo()
     ##  [5] fastmap_1.2.0             RCurl_1.98-1.18          
     ##  [7] GenomicAlignments_1.48.0  stringfish_0.19.0        
     ##  [9] XML_3.99-0.23             digest_0.6.39            
-    ## [11] lifecycle_1.0.5           statmod_1.5.1            
+    ## [11] lifecycle_1.0.5           statmod_1.5.2            
     ## [13] compiler_4.6.0            rlang_1.2.0              
     ## [15] sass_0.4.10               tools_4.6.0              
-    ## [17] yaml_2.3.12               data.table_1.18.2.1      
+    ## [17] yaml_2.3.12               data.table_1.18.4        
     ## [19] rtracklayer_1.72.0        knitr_1.51               
     ## [21] S4Arrays_1.12.0           curl_7.1.0               
     ## [23] DelayedArray_0.38.1       RColorBrewer_1.1-3       
@@ -331,7 +331,7 @@ sessionInfo()
     ## [49] restfulr_0.0.16           Matrix_1.7-5             
     ## [51] jsonlite_2.0.0            bookdown_0.46            
     ## [53] systemfonts_1.3.2         h5mread_1.4.0            
-    ## [55] locfit_1.5-9.12           limma_3.68.2             
+    ## [55] locfit_1.5-9.12           limma_3.68.3             
     ## [57] jquerylib_0.1.4           glue_1.8.1               
     ## [59] parallelly_1.47.0         pkgdown_2.2.0            
     ## [61] codetools_0.2-20          BiocIO_1.22.0            
@@ -340,7 +340,7 @@ sessionInfo()
     ## [67] textshaping_1.0.5         sparseMatrixStats_1.24.0 
     ## [69] evaluate_1.0.5            lattice_0.22-9           
     ## [71] R.methodsS3_1.8.2         Rsamtools_2.28.0         
-    ## [73] cigarillo_1.2.0           bslib_0.10.0             
+    ## [73] cigarillo_1.2.0           bslib_0.11.0             
     ## [75] Rcpp_1.1.1-1.1            SparseArray_1.12.2       
     ## [77] permute_0.9-10            xfun_0.57                
     ## [79] fs_2.1.0

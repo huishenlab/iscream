@@ -146,7 +146,7 @@ sessionInfo()
     ## [10] textshaping_1.0.5   yaml_2.3.12         fastmap_1.2.0      
     ## [13] R6_2.6.1            labeling_0.4.3      generics_0.1.4     
     ## [16] knitr_1.51          tibble_3.3.1        bookdown_0.46      
-    ## [19] desc_1.4.3          bslib_0.10.0        pillar_1.11.1      
+    ## [19] desc_1.4.3          bslib_0.11.0        pillar_1.11.1      
     ## [22] RColorBrewer_1.1-3  rlang_1.2.0         cachem_1.1.0       
     ## [25] xfun_0.57           fs_2.1.0            sass_0.4.10        
     ## [28] S7_0.2.2            cli_3.6.6           pkgdown_2.2.0      
