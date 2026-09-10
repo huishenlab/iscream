@@ -102,6 +102,9 @@ CPPFLAGS=`${R_HOME}/bin/R CMD config CPPFLAGS`
 if $(echo $CC | grep -q "clang"); then
     echo "**** Using clang"
     $CC --version | sed 's/^/     /'
+elif [ "$CC" = "emcc" ]; then
+    echo "**** Using emscripten"
+    $CC --version | head -n 1
 else
     echo "**** Checking GCC version"
     checkGCCVersion "$CC" 9.4

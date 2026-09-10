@@ -202,6 +202,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_loci
+void get_loci(const std::vector<std::string>& bedfiles, const Rcpp::CharacterVector& regions, const int nthreads);
+RcppExport SEXP _iscream_get_loci(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP nthreadsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type bedfiles(bedfilesSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::CharacterVector& >::type regions(regionsSEXP);
+    Rcpp::traits::input_parameter< const int >::type nthreads(nthreadsSEXP);
+    get_loci(bedfiles, regions, nthreads);
+    return R_NilValue;
+END_RCPP
+}
 // Cpp_summarize_regions
 Rcpp::DataFrame Cpp_summarize_regions(const std::vector<std::string>& bedfiles, const Rcpp::CharacterVector& regions, const std::vector<std::string>& fun_vec, const std::vector<int>& col_indices, const std::vector<std::string>& col_names, const Rcpp::DataFrame& regions_df, const std::string& aligner, const bool mval, const int nthreads);
 RcppExport SEXP _iscream_Cpp_summarize_regions(SEXP bedfilesSEXP, SEXP regionsSEXP, SEXP fun_vecSEXP, SEXP col_indicesSEXP, SEXP col_namesSEXP, SEXP regions_dfSEXP, SEXP alignerSEXP, SEXP mvalSEXP, SEXP nthreadsSEXP) {
@@ -240,6 +252,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_iscream_Cpp_query_interval", (DL_FUNC) &_iscream_Cpp_query_interval, 2},
     {"_iscream_scan_tabix", (DL_FUNC) &_iscream_scan_tabix, 2},
     {"_iscream_Cpp_query_all", (DL_FUNC) &_iscream_Cpp_query_all, 8},
+    {"_iscream_get_loci", (DL_FUNC) &_iscream_get_loci, 3},
     {"_iscream_Cpp_summarize_regions", (DL_FUNC) &_iscream_Cpp_summarize_regions, 9},
     {NULL, NULL, 0}
 };

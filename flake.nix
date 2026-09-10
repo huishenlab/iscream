@@ -1,6 +1,7 @@
 {
   description = "Flake to get iscream development environment";
-  inputs.nixpkgs.url = "github:rstats-on-nix/nixpkgs/r-bioc-devel";
+  # inputs.nixpkgs.url = "github:rstats-on-nix/nixpkgs/r-bioc-devel";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
   outputs = { self, nixpkgs, flake-utils }:
@@ -33,13 +34,12 @@
         microbenchmark
         Rsamtools
         SummarizedExperiment
-        testthat
+         testthat
       ];
 
       rDevDeps = with pkgs.rPackages; [
         BiocCheck
         BiocManager
-        BiocVersion
         covr
         devtools
         DT
@@ -108,7 +108,6 @@
             -I$I_RCPP
             -I$I_ARMA
             -I$I_HTSLIB
-            -I$I_CLOCK
             -I$I_PROGRESS
             -I$I_LOG
             -I$I_STRINGFISH

@@ -111,6 +111,11 @@ Cpp_query_all <- function(bedfiles, regions, aligner, valInd, merged, sparse, pr
     .Call(`_iscream_Cpp_query_all`, bedfiles, regions, aligner, valInd, merged, sparse, prealloc, nthreads)
 }
 
+#' @export
+get_loci <- function(bedfiles, regions, nthreads = 1L) {
+    invisible(.Call(`_iscream_get_loci`, bedfiles, regions, nthreads))
+}
+
 #' Apply a function over BED file records within genomic features
 #'
 #' This function should be called from `summarize_regions()` since there are few
